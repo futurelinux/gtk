@@ -1,0 +1,41 @@
+# CCR: Ben R <thebenj88 *AT* gmail *DOT* com>
+
+pkgname=libwebkit-gtk2
+pkgver=1.7.1
+pkgrel=2
+pkgdesc="An opensource web content engine"
+arch=('i686' 'x86_64')
+url="http://webkitgtk.org/"
+license=('custom')
+depends=('libxt' 'libxslt' 'sqlite3' 'icu' 'gstreamer0.10-base' 'libsoup' 'enchant')
+makedepends=('gperf' 'gobject-introspection' 'python2' 'gtk2' 'ruby')
+provides=('libwebkit')
+options=('!libtool' '!emptydirs')
+install=libwebkit.install
+source=(http://webkitgtk.org/releases/webkit-${pkgver}.tar.gz
+	test_netscape-gcc_3.7.patch)
+sha256sums=('d928be29ec403cdaa4ef77766d0b08990b477f97b9cc3d008d347d3040493ed9'
+            '9f00344fecf78335208cd4450328ed48c79d4982f54cefdb05869f33f8fabffe')
+
+build() {
+  cd "${srcdir}/webkit-${pkgver}/Tools/DumpRenderTree/TestNetscapePlugIn"
+  patch -uNp1 -i "${srcdir}/test_netscape-gcc_3.7.patch"
+  
+  cd "${srcdir}/webkit-${pkgver}"
+  mkdir build-gtk2
+
+  cd build-gtk2
+  PYTHON=/usr/bin/python2 ../configure --prefix=/usr \
+    --enable-introspection \
+    --with-font-backend=freetype --disable-gtk-doc \
+    --with-unicode-backend=icu \
+    --with-gtk=2.0 \
+    --enable-spellcheck "$@"
+  make all stamp-po
+}
+
+package() {
+  cd "$srcdir/webkit-$pkgver/build-gtk2"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 ../Source/WebKit/LICENSE "${pkgdir}/usr/share/licenses/libwebkit/LICENSE"
+}

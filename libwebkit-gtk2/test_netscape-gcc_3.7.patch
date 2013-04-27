@@ -1,0 +1,22 @@
+diff -Naur TestNetscapePlugIn.new//PluginTest.cpp TestNetscapePlugIn/PluginTest.cpp
+--- TestNetscapePlugIn.new//PluginTest.cpp	2011-09-05 19:57:40.000000000 +1000
++++ TestNetscapePlugIn/PluginTest.cpp	2012-12-11 14:06:35.000000000 +1000
+@@ -28,6 +28,7 @@
+ #include "PluginObject.h"
+ #include <assert.h>
+ #include <string.h>
++#include <unistd.h>
+ 
+ using namespace std;
+ extern NPNetscapeFuncs *browser;
+diff -Naur TestNetscapePlugIn.new//TestObject.cpp TestNetscapePlugIn/TestObject.cpp
+--- TestNetscapePlugIn.new//TestObject.cpp	2011-01-28 05:18:56.000000000 +1000
++++ TestNetscapePlugIn/TestObject.cpp	2012-12-11 12:56:53.000000000 +1000
+@@ -28,6 +28,7 @@
+ 
+ #include <string.h>
+ #include <stdlib.h>
++#include <unistd.h>
+ 
+ static bool testEnumerate(NPObject *npobj, NPIdentifier **value, uint32_t *count);
+ static bool testHasMethod(NPObject*, NPIdentifier name);
