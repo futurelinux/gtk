@@ -1,0 +1,114 @@
+# Contributor: Weng Xuetian <wengxt@gmail.com>
+
+pkgname=firefox-kde
+pkgver=20.0.1
+pkgrel=1
+pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
+url='http://www.mozilla.org/projects/firefox'
+arch=('x86_64')
+license=('MPL' 'GPL' 'LGPL')
+depends=('gtk2' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'firefox-i18n' 'dbus-glib')
+makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm')
+screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
+
+provides=("firefox=${pkgver}")
+conflicts=('firefox')
+install=firefox.install
+url="http://www.mozilla.org/projects/firefox"
+#source=(http://releases.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
+#patch http://www.rosenauer.org/hg/mozilla/
+#patch https://build.opensuse.org/package/show?package=MozillaFirefox&project=mozilla%3AFactory
+source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
+        mozconfig
+        firefox.desktop
+        firefox-install-dir.patch
+        vendor.js
+        kde.js
+        firefox-kde.patch
+        mozilla-nongnome-proxies.patch
+        mozilla-kde.patch
+        mozilla-gstreamer-760140.patch
+	firefox-712763.patch
+	duckduckgo.xml
+)
+md5sums=('b822ff4b2348410587dec563235d9320'
+         '55864e6a1b7f165efe272472217934d3'
+         'af37777ea15a693e837a5be36e0de3ca'
+         '150ac0fb3ac7b2114c8e8851a9e0516c'
+         'b1b1ad060b411a4abee7dcc63927aa02'
+         '75df0f88cc7a7fa7d522459e4ff82cc5'
+         '194da028eba1fbc316cf37dd586c4112'
+         '79f113b56057e17ca2466cd0ac578bb3'
+         '8e833c5abff5ddd3d20bc81eb9bfc028'
+         '9f4e6467284a5c82fbba0c0afe862f31'
+         '7303a96e92e600a46dd6a2cf9af5ada5'
+         'f6e2a6759b8711b445dbc9d35cbd275f')
+
+
+build() {
+  cd "mozilla-release"
+  patch -Np1 -i "../firefox-install-dir.patch"
+
+  # modify the patch to make it work in bundle
+  cp ../mozilla-kde.patch ../mozilla-kde-mod.patch
+  sed -i 's|\(\+\#define KMOZILLAHELPER "\)/usr/lib/mozilla/kmozillahelper\("\)|\1kmozillahelper\2|' ../mozilla-kde-mod.patch
+  sed -i 's|\(\+            \)execv\(( KMOZILLAHELPER, args )\)|\1execvp\2|' ../mozilla-kde-mod.patch
+
+  # remove the new file, to make life easier with call makepkg multiple times
+  rm -f content/media/gstreamer/nsGStreamerFormatHelper.cpp \
+        content/media/gstreamer/GStreamerFormatHelper.cpp \
+        content/media/gstreamer/nsGStreamerFormatHelper.h \
+        content/media/gstreamer/GStreamerFormatHelper.h
+  rm -f browser/components/shell/src/nsKDEShellService.cpp \
+        browser/components/shell/src/nsKDEShellService.h \
+        browser/components/shell/src/nsUnixShellService.cpp \
+        browser/components/shell/src/nsUnixShellService.h \
+        browser/base/content/browser-kde.xul
+  rm -f toolkit/xre/nsKDEUtils.cpp \
+        toolkit/xre/nsKDEUtils.h \
+        uriloader/exthandler/unix/nsCommonRegistry.cpp \
+        uriloader/exthandler/unix/nsCommonRegistry.h \
+        uriloader/exthandler/unix/nsKDERegistry.cpp \
+        uriloader/exthandler/unix/nsKDERegistry.h \
+        toolkit/content/widgets/dialog-kde.xml \
+        toolkit/content/widgets/preferences-kde.xml
+
+  msg "apply mozilla-gstreamer-760140.patch"
+  patch -Np1 -i "../mozilla-gstreamer-760140.patch" || return 1
+  msg "apply firefox-712763.patch"
+  patch -Np1 -i "../firefox-712763.patch" || return 1
+  msg "apply mozilla-nongnome-proxies.patch"
+  patch -Np1 -i "../mozilla-nongnome-proxies.patch" || return 1
+  msg "apply mozilla-kde.patch"
+  patch -Np1 -i "../mozilla-kde-mod.patch" || return 1
+  msg "apply firefox-kde.patch"
+  patch -Np1 -i "../firefox-kde.patch" || return 1
+
+  cp "../mozconfig" .mozconfig
+
+  # Fix PRE_RELEASE_SUFFIX
+  sed -i '/^PRE_RELEASE_SUFFIX := ""/s/ ""//' \
+      browser/base/Makefile.in
+  
+  export LDFLAGS="$LDFLAGS"
+  export PYTHON="/usr/bin/python2"
+  
+  make -j1 -f client.mk build MOZ_MAKE_FLAGS="${MAKEFLAGS}"
+
+}
+
+package() {
+  cd mozilla-release
+  make -j1 -f client.mk MOZ_PKG_FATAL_WARNINGS=0 package
+  mkdir -p $pkgdir/opt
+  tar -C $pkgdir/opt -xf obj-ff/dist/firefox-$pkgver.en-US.linux-${CARCH}.tar.bz2
+ 
+  install -Dm644 ../vendor.js "$pkgdir/opt/firefox/defaults/preferences/vendor.js"
+  install -Dm644 ../kde.js "$pkgdir/opt/firefox/defaults/preferences/kde.js"
+  install -Dm644 ../duckduckgo.xml "$pkgdir/opt/firefox/searchplugins/duckduckgo.xml"
+
+  # Use system-provided dictionaries
+  rm -rf "$pkgdir"/opt/firefox/{dictionaries,hyphenation}
+  ln -s /usr/share/hunspell "$pkgdir/opt/firefox/dictionaries"
+  ln -s /usr/share/hyphen "$pkgdir/opt/firefox/hyphenation"
+}

@@ -1,0 +1,42 @@
+. $topsrcdir/browser/config/mozconfig
+
+# System libraries
+ac_add_options --without-system-nspr
+ac_add_options --without-system-nss
+ac_add_options --without-system-jpeg
+ac_add_options --without-system-zlib
+ac_add_options --without-system-bz2
+ac_add_options --without-system-png
+ac_add_options --without-system-libevent
+ac_add_options --without-system-libvpx
+#ac_add_options --enable-system-hunspell
+#ac_add_options --enable-system-sqlite
+#ac_add_options --enable-system-ffi
+#ac_add_options --enable-system-pixman
+ac_add_options --enable-gstreamer
+ac_add_options --disable-libproxy
+ac_add_options --with-pthreads
+
+# Features
+ac_add_options --enable-official-branding
+ac_add_options --enable-safe-browsing
+ac_add_options --enable-startup-notification
+
+ac_add_options --disable-gio
+ac_add_options --disable-gconf
+ac_add_options --disable-gnomevfs
+ac_add_options --disable-crashreporter
+ac_add_options --disable-updater
+ac_add_options --disable-tests
+ac_add_options --disable-mochitest
+ac_add_options --disable-installer
+
+# Optimization
+ac_add_options --enable-optimize
+
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-ff
+
+export BUILD_OFFICIAL=1
+export MOZILLA_OFFICIAL=1
+mk_add_options BUILD_OFFICIAL=1
+mk_add_options MOZILLA_OFFICIAL=1

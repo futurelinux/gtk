@@ -1,0 +1,14 @@
+name=firefox
+version=20.0.1
+description=The Mozilla Web-Browser
+icon=firefox.png
+desktop=firefox.desktop
+screenshot=http://www.ghacks.net/wp-content/uploads/2008/11/firefox_default_header1-500x338.jpg
+url=http://www.mozilla.com
+type=Launcher
+config=external
+pkgz=flashplugin kmozillahelper firefox alsa-lib glib2 atk cairo dbus-core dbus-glib expat fontconfig freetype2 gcc-libs gdk-pixbuf2 gstreamer0.10 gstreamer0.10-base gtk2 libffi libice libpng libsm libx11 libxau libxcb libxcomposite libxcursor libxdamage libxdmcp libxext libxfixes libxi libxinerama libxml2 libxrandr libxrender libxt orc pango pixman startup-notification xcb-util zlib pcre yasm firefox-i18n
+build=alsa-lib atk cairo dbus-core dbus-glib glib2 expat fontconfig freetype2 gcc-libs gdk-pixbuf2 gstreamer0.10 gstreamer0.10-base gtk2 libffi libice libpng libsm libx11 libxau libxcb libxcomposite libxcursor libxdamage libxdmcp libxext libxfixes libxi libxinerama libxml2 libxrandr libxrender libxt orc pango pixman startup-notification xcb-util zlib python2 wireless_tools autoconf2.13 mesa pcre yasm flashplugin kmozillahelper firefox-i18n @firefox
+env==LD_LIBRARY_PATH=$ORIGIN/lib:$ORIGIN/usr/lib:$ORIGIN/usr/lib/gtk-2.0,,,MOZ_PLUGIN_PATH=$ORIGIN/usr/lib/mozilla/plugins,,,PATH=$ORIGIN/usr/lib/mozilla/:$PATH,,,_BUNDLE_FIREFOX_DESKTOP=firefox-20.0.1-1-x86_64.desktop
+binary=/opt/firefox/firefox /opt/firefox/libxul.so
+exec=/firefox_launcher.sh
