@@ -1,0 +1,28 @@
+pkgname=('gcompris')
+pkgver=12.11
+pkgrel=1
+pkgdesc="Educational software suite comprising of numerous activities for children aged 2 to 10"
+arch=('x86_64')
+url="http://gcompris.net/"
+license=('GPL3')
+depends=('pygtk' 'python-pyxml' 'librsvg' 'gnet' 'python-pysqlite'
+           'gstreamer0.10-base-plugins')
+makedepends=('texinfo' 'texi2html' 'intltool' 'gettext' 'gnuchess')
+optdepends=('gnucap: for computer simulation within the electricity activity'
+            'tuxpaint: for the painting activity'
+            'gnuchess: for the chess activity')
+options=('!libtool')
+source=("http://downloads.sourceforge.net/project/$pkgname/$pkgver/$pkgname-$pkgver.tar.bz2")
+md5sums=('3c6b3aee13708d9066366bbbc9b7d4ff')
+ 
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+ 
+  ./configure --prefix=/usr
+  make
+}
+ 
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}
