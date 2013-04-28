@@ -2,12 +2,12 @@
 
 pkgname=firefox-kde
 pkgver=20.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
-depends=('gtk2' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'firefox-i18n' 'dbus-glib')
+depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'firefox-i18n')
 makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 
@@ -111,4 +111,10 @@ package() {
   rm -rf "$pkgdir"/opt/firefox/{dictionaries,hyphenation}
   ln -s /usr/share/hunspell "$pkgdir/opt/firefox/dictionaries"
   ln -s /usr/share/hyphen "$pkgdir/opt/firefox/hyphenation"
+  
+  # Installation
+  install -d $pkgdir/{usr/{bin,share/{applications,pixmaps}},opt}
+  ln -s /opt/firefox/firefox $pkgdir/usr/bin/
+  install -m644 $srcdir/firefox.desktop $pkgdir/usr/share/applications/
+  install -m644 $pkgdir/opt/firefox/icons/mozicon128.png $pkgdir/usr/share/pixmaps/firefox-icon.png
 }
