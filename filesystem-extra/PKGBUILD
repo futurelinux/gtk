@@ -1,0 +1,29 @@
+# Maintainer: Manuel Tortosa <manutortos@chakra-project.org>
+
+pkgname=filesystem-extra
+pkgver=2013.04
+pkgrel=1
+arch=('any')
+pkgdesc="Extra filesystem"
+groups=('extra')
+source=('extra.conf')
+md5sums=('b0f054b6c5f809927817b345351ed7b6')
+
+package() {
+  cd ${pkgdir}
+
+  install -d -m755 extra
+  install -d -m755 extra/etc
+  install -d -m755 extra/opt
+
+  # Setup /extra/usr hierarchy
+  for d in bin sbin lib share/misc include src; do	
+    install -d -m755 extra/usr/${d}	
+  done
+  for d in $(seq 8); do	
+    install -d -m755 extra/usr/share/man/man${d}	
+  done
+
+  # Add /extra/usr/lib to the default library search path
+  install -Dm644 "$srcdir/extra.conf" "$pkgdir/etc/ld.so.conf.d/extra.conf"
+}
