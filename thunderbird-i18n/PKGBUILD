@@ -1,0 +1,142 @@
+pkgname=thunderbird-i18n
+pkgver=17.0.5
+pkgrel=1
+pkgdesc="Language pack for Thunderbird"
+arch=('any')
+url="http://www.mozilla.com/"
+license=('MPL' 'GPL')
+depends=("thunderbird>=$pkgver")
+
+_languages=(
+  'ar     "Arabic"'
+  'ast    "Asturian"'
+  'be     "Belarusian"'
+  'bg     "Bulgarian"'
+  'bn-BD  "Bengali (Bangladesh)"'
+  'br     "Breton"'
+  'ca     "Catalan"'
+  'cs     "Czech"'
+  'da     "Danish"'
+  'de     "German"'
+  'el     "Greek"'
+  'en-GB  "English (United Kingdom)"'
+  'en-US  "English (United States)"'
+  'es-AR  "Spanish (Argentina)"'
+  'es-ES  "Spanish (Spain)"'
+  'et     "Estonian"'
+  'eu     "Basque"'
+  'fi     "Finnish"'
+  'fr     "French"'
+  'fy-NL  "Frisian (Netherlands)"'
+  'ga-IE  "Irish"'
+  'gd     "Gaelic"'
+  'gl     "Galician"'
+  'he     "Hebrew"'
+  'hr     "Croatian"'
+  'hu     "Hungarian"'
+  'hy-AM  "Armenian"'
+  'id     "Indonesian"'
+  'is     "Icelandic"'
+  'it     "Italian"'
+  'ja     "Japanese"'
+  'ko     "Korean"'
+  'lt     "Lithuanian"'
+  'nb-NO  "Norwegian (Bokmal)"'
+  'nl     "Dutch"'
+  'nn-NO  "Norwegian (Nynorsk)"'
+  'pa-IN  "Punjabi"'
+  'pl     "Polish"'
+  'pt-BR  "Brazilian Portuguese"'
+  'pt-PT  "Portuguese"'
+  'rm     "Romansh"'
+  'ro     "Romanian"'
+  'ru     "Russian"'
+  'si     "Sinhalese"'
+  'sk     "Slovak"'
+  'sl     "Slovenian"'
+  'sq     "Albanian"'
+  'sr     "Serbian"'
+  'sv-SE  "Swedish"'
+  'ta-LK  "Tamil (Sri Lanka)"'
+  'tr     "Turkish"'
+  'uk     "Ukrainian"'
+  'vi     "Vietnamese"'
+  'zh-CN  "Chinese (simplified)"'
+  'zh-TW  "Chinese (traditional)"'
+)
+
+source=()
+_url=https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/linux-i686/xpi
+
+for _lang in "${_languages[@]}"; do
+  _locale=${_lang%% *}
+
+  source+=("thunderbird-i18n-$pkgver-$_locale.xpi::$_url/$_locale.xpi")
+done
+
+# Don't extract anything
+noextract=(${source[@]%%::*})
+
+package() {
+  for _lang in "${_languages[@]}"; do
+    _locale=${_lang%% *}
+    install -Dm644 thunderbird-i18n-$pkgver-${_locale}.xpi \
+      "$pkgdir/extra/usr/lib/thunderbird/extensions/langpack-${_locale}@thunderbird.mozilla.org.xpi"
+  done
+}
+
+md5sums=('ef463b3772f804beb4108e15917485fd'
+	'6125a2e91119afe4cd4fb78909bc2168'
+	'990067ee981db3bf9873e4bd9b2b1eba'
+	'e32d496230cba49a435775359d4485ce'
+	'd212d8bc244184e816cf36a9b654e7e6'
+	'4a83b506d1b81dfffa0b33bc0f12b24f'
+	'6349985a77b2db81a43cb22291bfd972'
+	'dd4a259bfa4ce6816c55e9d7ff7f1172'
+	'dc3ec06ccb5e98cfa332fca40af77470'
+	'e81e63d8fac6c61cbbe72b1c8b0ce05c'
+	'f0850f83f396c33a4e69abd00bda0e55'
+	'ffc5de6b5409cf7cdd411ae853e0ba05'
+	'169780df5d160a04221dd80c92dd131a'
+	'8d1eacb770748156dbe02e493c41a5a6'
+	'a3a0d856da6af722a6444567b684eb14'
+	'798415f06ce916eb6c84ea4cf97e1253'
+	'c8eefe6a65295d354beb59e8f1b3116e'
+	'3ec1490226e064bc1145072ecdf031b4'
+	'a3ff2959c9375084683b0741797103f9'
+	'99ea64506470bf7938e169bfe5f569b3'
+	'8170d58dcbb1b84820ef0ace6dc23965'
+	'24ba56f81446d551101d1848ed660682'
+	'53b9b22f7ad5916c8dfccd8b758828dc'
+	'0bdcd2f628dff58a4544e93a88344b76'
+	'87d516fbb68ae06d5ee7439a8a4d3d96'
+	'c3cfa07d55fec1eb558e11c63ebd2a97'
+	'9845802371f603cb70df77a63088c16d'
+	'552e297a315a1b6f308604da4b492c53'
+	'dc6755c33351b95f9e883c8e64fab7b6'
+	'f3a67c52f5c5ca8cd5484250617f1aff'
+	'48fc583c7e67e87113fb73243da46313'
+	'4450b7753336f279296260e444cb0ba2'
+	'3a639521e20e5fb936f6d1b7679becd9'
+	'241a29846743f4dbcd5704e470193f30'
+	'71d71192e076a889da26129efd5f2f3d'
+	'efc91beb8c199d459e1f24164066d75e'
+	'ed717c1b94618faa8304796f1ff0acd7'
+	'8fc0aea02c1373f0ac0b7fa7eac2fa0c'
+	'808c60d4af8ee7b6bbbd82a5079c293e'
+	'6f0e4c6fe66e6d0e98f2fc444b59d629'
+	'bc5e9972f5a092f4f28f577f7ade7ad7'
+	'2f852610ddc1550200965d4be6320879'
+	'6ad80cd433ef69c3577bfea9fd26cedc'
+	'0dd02b5317c9656c64543067956940bf'
+	'9e0d2f288130f048358135a89732ca85'
+	'936dbda4758d9a65f8c27603a2dee3bd'
+	'820d70ce31ca9731c162ab942b0daea1'
+	'd737350d9edb73c15096e867fbdd8f3c'
+	'b1896502d411dd6037f141d3561461d4'
+	'491a3a386c4963f162e050c370ffa140'
+	'aa9f4e83501e624e4054f3ff61b71db3'
+	'257ee623933cfda550a8643a1a0b1d1c'
+	'c3a8fa4fc511d914892e08fa17fab8a9'
+	'44be6381519c6c5ea785a4f5a5122a64'
+	'6693c752bf6272caed2e204556fc69b8')
