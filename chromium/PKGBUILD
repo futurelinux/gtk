@@ -1,0 +1,117 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+
+pkgname=chromium
+pkgver=26.0.1410.63
+pkgrel=1
+_verbld=26.0.1410.63-192696 # used for libpdf and pepper-flash
+_pepperflashver=11.7.700.169
+pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
+arch=('x86_64')
+url="http://www.chromium.org/"
+license=('BSD')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'harfbuzz'
+         'libxss' 'libgcrypt' 'ttf-dejavu' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'filesystem-extra')
+makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion')
+install=chromium.install
+source=(http://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz 
+	http://dl.google.com/linux/chrome/rpm/stable/${CARCH}/google-chrome-stable-${_verbld}.${CARCH}.rpm
+	license.html::http://www.google.com/chrome/intl/en/eula_text.html
+        chromium.desktop
+        chromium.sh
+        chromium.default
+        template_url_prepopulate_data.diff
+        search_engine_type.diff
+        prepopulated_engines_json.diff
+        system-libpng.patch
+        chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch)
+sha1sums=('3e0f15bded75561d09aace52712cd24fe799dcb6'
+	  '295df87c2983b425258d33fc44e97b92afc352cc'
+	  'cdda47faa791d56089f92854957070b1ec135c2e'
+          'd02e7eaaa5de9407d8744a03a1306c117b659098'
+          'e4b853a245fe47ce37fd0035e9671b65f98bd2be'
+          '3d9663f614113c137016fadb963e150f11f17402'
+          '90619af5afa000b47ac03ab01b7cba8b6d16daa1'
+          'f7a705d539361d63fa0e3fe0e276341c87d484fc'
+          '4ac33284c534b5117741b551cc531589cfa08d75'
+          'bfb59a53456272c901b8e4eb872069ff99a2cbeb'
+          '73fc081513282ae94fe7a050f3636f8d3056b49e')
+
+build() {
+  cd "$srcdir/chromium-$pkgver"
+
+  # Set DDG as default search
+  patch -p1 -i "$srcdir/chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch"
+  patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
+  patch -p1 -i "$srcdir/search_engine_type.diff"
+  patch -p1 -i "$srcdir/prepopulated_engines_json.diff"
+
+
+  build/gyp_chromium --depth=. \
+    -Dwerror= \
+    -Dlinux_sandbox_path=/extra/usr/lib/chromium/chromium-sandbox \
+    -Dlinux_strip_binary=1 \
+    -Dlinux_use_gold_binary=0 \
+    -Dlinux_use_gold_flags=0 \
+    -Drelease_extra_cflags="$CFLAGS" \
+    -Dffmpeg_branding=Chrome \
+    -Dproprietary_codecs=1 \
+    -Duse_system_bzip2=1 \
+    -Duse_system_ffmpeg=0 \
+    -Duse_system_libevent=1 \
+    -Duse_system_libjpeg=1 \
+    -Duse_system_libpng=1 \
+    -Duse_system_libxml=0 \
+    -Duse_system_ssl=0 \
+    -Duse_system_yasm=1 \
+    -Duse_system_zlib=0 \
+    -Duse_gconf=0 \
+    -Ddisable_nacl=1 
+
+  make chrome chrome_sandbox BUILDTYPE=Release
+}
+
+package() {
+  cd "$srcdir/chromium-$pkgver"
+
+  install -D out/Release/chrome ${pkgdir}/extra/usr/lib/chromium/chromium
+
+  install -Dm4755 -o root -g root out/Release/chrome_sandbox \
+    "$pkgdir/extra/usr/lib/chromium/chromium-sandbox"
+
+  cp out/Release/{*.pak,libffmpegsumo.so} \
+    "$pkgdir/extra/usr/lib/chromium/"
+
+  # override command-line options
+  install -Dm644 "$srcdir/chromium.default" "$pkgdir/extra/etc/chromium/default"
+
+  cp -a out/Release/locales out/Release/resources "$pkgdir/extra/usr/lib/chromium/"
+
+  find "$pkgdir/extra/usr/lib/chromium/" -name '*.d' -type f -delete
+
+  install -Dm644 out/Release/chrome.1 "$pkgdir/extra/usr/share/man/man1/chromium.1"
+
+  install -Dm644 "$srcdir/chromium.desktop" \
+    "$pkgdir/extra/usr/share/applications/chromium.desktop"
+
+  for size in 22 24 48 64 128 256; do
+    install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
+      "$pkgdir/extra/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+  done
+
+  install -D "$srcdir/chromium.sh" "$pkgdir/extra/usr/bin/chromium"
+
+  install -Dm644 LICENSE "$pkgdir/extra/usr/share/licenses/chromium/LICENSE"
+  
+  #### PepperFlash ####
+  cd "$srcdir"
+  install -d "$pkgdir/extra/usr/lib/PepperFlash"
+  install -m644 opt/google/chrome/PepperFlash/* "$pkgdir/extra/usr/lib/PepperFlash"
+  sed -i "s/flashver=.*/flashver=$_pepperflashver/" "$startdir/chromium.install"
+  install -Dm644 "$srcdir/license.html" "$pkgdir/extra/usr/share/licenses/$pkgname/license.html"
+  
+  #### libpdf ####
+  install -d "${pkgdir}/extra/usr/lib/chromium"
+  install -m644 opt/google/chrome/libpdf.so "${pkgdir}/extra/usr/lib/chromium"
+}

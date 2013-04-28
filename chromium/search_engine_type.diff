@@ -1,0 +1,10 @@
+--- a/chrome/browser/search_engines/search_engine_type.h	2013-01-07 21:41:59.000000000 -0500
++++ a/chrome/browser/search_engines/search_engine_type.h	2013-01-10 16:12:16.581024995 -0500
+@@ -27,6 +27,7 @@
+   SEARCH_ENGINE_DAUM,
+   SEARCH_ENGINE_DELFI,
+   SEARCH_ENGINE_DIRI,
++  SEARCH_ENGINE_DUCKDUCKGO,
+   SEARCH_ENGINE_GOO,
+   SEARCH_ENGINE_IN,
+   SEARCH_ENGINE_NAJDI,
