@@ -2,12 +2,15 @@
 
 pkgname=filesystem-extra
 pkgver=2013.04
-pkgrel=1
+pkgrel=2
 arch=('any')
 pkgdesc="Extra filesystem"
 groups=('extra')
-source=('extra.conf')
-md5sums=('b0f054b6c5f809927817b345351ed7b6')
+install=extra.install
+source=('extra.conf' 'extra.profile' 'extra.tcsh')
+md5sums=('b0f054b6c5f809927817b345351ed7b6'
+         '82035bfff814b360f0c91c47cc866a7d'
+         'e952737c61ed941f970b1341631b9a00')
 
 package() {
   cd ${pkgdir}
@@ -23,6 +26,10 @@ package() {
   for d in $(seq 8); do	
     install -d -m755 extra/usr/share/man/man${d}	
   done
+  
+  # Add a profile for extra
+  install -D -m755 $startdir/src/extra.profile $startdir/pkg/etc/profile.d/extra.sh
+  install -D -m755 $startdir/src/extra.tcsh $startdir/pkg/etc/profile.d/extra.csh
 
   # Add /extra/usr/lib to the default library search path
   install -Dm644 "$srcdir/extra.conf" "$pkgdir/etc/ld.so.conf.d/extra.conf"
