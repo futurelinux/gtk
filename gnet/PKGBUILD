@@ -1,12 +1,13 @@
 pkgname=gnet
 pkgver=2.0.8
-pkgrel=1
+pkgrel=2
 pkgdesc="GNet is a simple network library. It is written in C, object-oriented, and built upon GLib."
 arch=('x86_64')
 url="https://live.gnome.org/GNetLibrary"
 license=('LGPL')
-depends=('glib2')
+depends=('glib2' 'filesystem-extra')
 options=('!libtool')
+install=install
 source=("http://ftp.gnome.org/pub/GNOME/sources/gnet/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('93327d2fca333d7e54ba2cf54e071165')
 sha1sums=('74a33dd25cc594b874e3a5171795efd99e567387')
@@ -14,7 +15,7 @@ sha1sums=('74a33dd25cc594b874e3a5171795efd99e567387')
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
  
-  ./configure --prefix=/usr \
+  ./configure --prefix=/extra/usr \
               --disable-gtk-doc \
               CFLAGS="$(pkg-config --cflags glib-2.0)" \
               LIBS="$(pkg-config --libs glib-2.0)" \
