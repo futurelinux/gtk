@@ -1,11 +1,11 @@
 pkgname=filezilla
 pkgver=3.6.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
 url="http://filezilla-project.org/"
 license=('GPL')
-depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'hicolor-icon-theme' 'sqlite3')
+depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'hicolor-icon-theme' 'sqlite3' 'filesystem-extra')
 install=filezilla.install
 source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2")
 
@@ -13,7 +13,7 @@ build() {
   cd "${pkgname}-${pkgver}"
    ./autogen.sh
   ./configure \
-    --prefix=/usr \
+    --prefix=/extra/usr \
     --disable-manualupdatecheck \
     --disable-autoupdatecheck \
     --disable-static \
