@@ -1,11 +1,11 @@
 pkgname=amule
 pkgver=10802
-pkgrel=1
+pkgrel=3
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
 url="http://www.amule.org"
 license=('GPL')
-depends=('wxgtk' 'gd' 'geoip' 'libupnp' 'crypto++' 'kdelibs')
+depends=('wxgtk' 'gd' 'geoip' 'libupnp' 'crypto++' 'kdelibs' 'filesystem-extra')
 makedepends=('automoc4' 'ccache')
 source=("http://amule.sourceforge.net/tarballs/aMule-SVN-r${pkgver}.tar.bz2")
 md5sums=('46bbfbfba0af431b6baa0c30bd35600c')
@@ -13,8 +13,8 @@ md5sums=('46bbfbfba0af431b6baa0c30bd35600c')
 build() {
   cd "${srcdir}/aMule-SVN-r${pkgver}"
 
-  ./configure --prefix=/usr \
-              --mandir=/usr/share/man \
+  ./configure --prefix=/extra/usr \
+              --mandir=/extra/usr/share/man \
               --enable-cas \
               --enable-wxcas \
               --enable-amule-daemon \
