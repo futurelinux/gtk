@@ -1,13 +1,11 @@
 pkgname=thunderbird
 pkgver=17.0.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
 license=('MPL' 'GPL')
 url="http://www.mozilla.org/thunderbird/"
-depends=('alsa-lib' 'dbus-glib' 'desktop-file-utils' 'gtk2' 'hicolor-icon-theme' 'hunspell' 
-         'libevent' 'libnotify' 'libvpx' 'libxt' 'mime-types' 'mozilla-common' 'nss' 
-         'sqlite3' 'startup-notification')
+depends=('alsa-lib' 'dbus-glib' 'desktop-file-utils' 'gtk2' 'hicolor-icon-theme' 'hunspell' 'libevent' 'libnotify' 'libvpx' 'libxt' 'mime-types' 'mozilla-common' 'nss' 'sqlite3' 'startup-notification' 'thunderbird-i18n' 'filesystem-extra')
 makedepends=('unzip' 'zip' 'pkg-config' 'python2' 'wireless_tools' 'yasm' 'mesa' 'autoconf2.13')
 optdepends=('libcanberra: for sound support')
 install=thunderbird.install
@@ -18,12 +16,12 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sourc
         vendor.js)
 options=(!emptydirs)
 md5sums=('609a11ce7bb246cebf67d993a035ca52'
-         '41511a6bcdd04cf56706218e4670e631'
+         '2e6dfd672d63a72d1e2fe1f9b91807e6'
          'af3e5b344d2edf1c7d61bb0a5a96de9a'
          '1c6f47b315a5d7830f8e901b1f723cfc'
          '5a53179d14ae9631b7afe5e4d0fc0b25')
 
-prepare() {
+build() {
   cd comm-esr17
   patch -Np1 -i "$srcdir/thunderbird-install-dir.patch"
 
@@ -32,12 +30,8 @@ prepare() {
   # configure script misdetects the preprocessor without an optimization level
   # https://bugs.archlinux.org/task/34644
   sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' configure
-}
 
-build() {
-  cd comm-esr17
-
-  export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/thunderbird"
+  export LDFLAGS="$LDFLAGS -Wl,-rpath,/extra/usr/lib/thunderbird"
   export PYTHON="/usr/bin/python2"
 
   make -j1 -f client.mk build MOZ_MAKE_FLAGS="$MAKEFLAGS"
@@ -47,17 +41,20 @@ package() {
   cd comm-esr17
   make -j1 -f client.mk DESTDIR="$pkgdir" install
 
-  install -Dm644 "$srcdir"/vendor.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/vendor.js"
+  install -Dm644 "$srcdir"/vendor.js "$pkgdir/extra/usr/lib/thunderbird/defaults/preferences/vendor.js"
 
   for i in 16x16 22x22 24x24 32x32 48x48 256x256; do
       install -Dm644 other-licenses/branding/thunderbird/mailicon${i/x*/}.png \
-          "$pkgdir/usr/share/icons/hicolor/$i/apps/thunderbird.png"
+          "$pkgdir/extra/usr/share/icons/hicolor/$i/apps/thunderbird.png"
   done
 
   install -Dm644 "$srcdir/thunderbird.desktop" \
-      "$pkgdir/usr/share/applications/thunderbird.desktop"
+      "$pkgdir/extra/usr/share/applications/thunderbird.desktop"
 
-  rm -rf "$pkgdir"/usr/lib/thunderbird/{dictionaries,hyphenation}
-  ln -sf /usr/share/hunspell "$pkgdir/usr/lib/thunderbird/dictionaries"
-  ln -sf /usr/share/hyphen "$pkgdir/usr/lib/thunderbird/hyphenation"
+  rm -rf "$pkgdir"/extra/usr/lib/thunderbird/{dictionaries,hyphenation}
+  ln -sf /usr/share/hunspell "$pkgdir/extra/usr/lib/thunderbird/dictionaries"
+  ln -sf /usr/share/hyphen "$pkgdir/extra/usr/lib/thunderbird/hyphenation"
+  
+  # We don't want the development stuff
+  rm -r "$pkgdir"/extra/usr/{include,lib/thunderbird-devel,share/idl}
 }
