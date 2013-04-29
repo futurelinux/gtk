@@ -2,15 +2,15 @@
 
 pkgname=filesystem-extra
 pkgver=2013.04
-pkgrel=4
+pkgrel=6
 arch=('any')
 pkgdesc="Extra filesystem"
 groups=('extra')
 install=extra.install
 source=('extra.conf' 'extra.profile' 'extra.tcsh')
 md5sums=('b0f054b6c5f809927817b345351ed7b6'
-         '1b6239c9831a902984bfae2ef225dee6'
-         '92f34257b49c2b15c7205222c4c22d5b')
+         '820748a27c22315e23ab22ddf4be7880'
+         '3ab04e0f2ac65f4834e1861d65bbf83d')
 
 package() {
   cd ${pkgdir}
