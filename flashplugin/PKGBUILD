@@ -1,0 +1,35 @@
+pkgname=flashplugin
+_licensefile='PlatformClients_PC_WWEULA_Combined_20100108_1657.pdf'
+pkgver=11.2.202.275
+pkgrel=2
+pkgdesc='Adobe Flash Player'
+url='http://labs.adobe.com/technologies/flashplatformruntimes/flashplayer11/'
+arch=('x86_64')
+depends=('mozilla-common' 'libxt' 'libxpm' 'gtk2' 'nss' 'curl' 'filesystem-extra')
+optdepends=('libvdpau: GPU acceleration on Nvidia card')
+provides=('flashplayer')
+license=('custom')
+options=(!strip)
+install='flashplugin.install'
+backup=('extra/etc/adobe/mms.cfg')
+source=("http://fpdownload.macromedia.com/get/flashplayer/pdc/$pkgver/install_flash_player_11_linux.x86_64.tar.gz"
+        "http://www.adobe.com/products/eulas/pdfs/${_licensefile}"
+        'mms.cfg')
+md5sums=('d0a35620a3e54f6fa9e4c64b7c3d095f'
+         '94ca2aecb409abfe36494d1a7ec7591d'
+         '31e165d90ffbfdd9d25291b74d68eded')
+
+package () {
+    cd ${srcdir}
+    install -Dm755 libflashplayer.so "${pkgdir}/extra/usr/lib/mozilla/plugins/libflashplayer.so"
+    install -Dm755 usr/lib64/kde4/kcm_adobe_flash_player.so "${pkgdir}/extra/usr/lib/kde4/kcm_adobe_flash_player.so"
+    install -Dm755 usr/bin/flash-player-properties "${pkgdir}/extra/usr/bin/flash-player-properties"
+    for i in 16x16 22x22 24x24 32x32 48x48; do
+        install -Dm644 usr/share/icons/hicolor/${i}/apps/flash-player-properties.png \
+            "${pkgdir}/extra/usr/share/icons/hicolor/${i}/apps/flash-player-properties.png"
+    done
+    install -Dm644 usr/share/applications/flash-player-properties.desktop "${pkgdir}/extra/usr/share/applications/flash-player-properties.desktop"
+    install -Dm644 usr/share/kde4/services/kcm_adobe_flash_player.desktop "${pkgdir}/extra/usr/share/kde4/services/kcm_adobe_flash_player.desktop"
+    install -Dm644 "${_licensefile}" "${pkgdir}/extra/usr/share/licenses/${pkgname}/LICENSE.pdf"
+    install -Dm644 ${srcdir}/mms.cfg "${pkgdir}/extra/etc/adobe/mms.cfg"
+}

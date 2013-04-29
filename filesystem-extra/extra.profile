@@ -13,3 +13,9 @@ if [ ! -z $XDG_CONFIG_DIRS ]; then
 else 
   export XDG_CONFIG_DIRS=$EXTRADIR/etc/xdg 
 fi
+if [ ! -z $MOZ_PLUGIN_PATH ]; then
+  export XMOZ_PLUGIN_PATH=$MOZ_PLUGIN_PATH:$EXTRADIR/usr/lib/mozilla/plugins
+else
+  export MOZ_PLUGIN_PATH=$EXTRADIR/usr/lib/mozilla/plugins
+fi
+
