@@ -1,0 +1,62 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+
+pkgname=eclipse
+pkgver=4.2.2
+pkgrel=1
+_date=201302041200
+pkgdesc="An IDE for Java and other languages."
+arch=('x86_64')
+url="http://eclipse.org"
+depends=('openjdk' 'gtk2' 'unzip' 'libwebkit' 'libxtst')
+install=${pkgname}.install
+makedepends=('zip')
+license=("EPL/1.1")
+
+# The file eclipse.png in this directory was fetched from:
+#
+#   http://download.eclipse.org/eclipse/eclipse/downloads/drops4/R-${pkgver}-${_date}/news/images/icon.png
+#
+# (At the time of this writing, ${pkgver} is '4.2.1' and ${_date} is '201209141800'.)
+
+source=("ftp://ftp.osuosl.org/pub/eclipse/eclipse/downloads/drops4/R-${pkgver}-${_date}/${pkgname}-SDK-${pkgver}-linux-gtk-x86_64.tar.gz"
+        'eclipse.png'
+        'eclipse.desktop'
+        'eclipse.ini.patch')
+md5sums=('902102ec85539f4c9342b2c1c4c67f64'
+         '04e05dda343b1b0c521a1e094e69f98b'
+         'ba8a37e30a7ebd69774cec87c69e8c44'
+         'cd4c9c9430445775cff64f13553fdbf5')
+
+build() {
+  cd "${srcdir}/${pkgname}"
+  patch -Np1 -i "${srcdir}/eclipse.ini.patch"
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+
+  # install eclipse
+  install -d -m755 "${pkgdir}/extra/usr/share"
+  cp -ar "${srcdir}/eclipse" "${pkgdir}/extra/usr/share/"
+
+  # install misc
+  install -d "${pkgdir}/extra/usr/bin" \
+             "${pkgdir}/extra/usr/share/applications" \
+             "${pkgdir}/extra/usr/share/icons/hicolor"/{16x16,32x32,48x48}/apps
+
+  # install bin symlink
+  ln -s "/extra/usr/share/eclipse/eclipse" "$pkgdir/extra/usr/bin/"
+
+  install -m644 "${srcdir}/eclipse.desktop" "${pkgdir}/extra/usr/share/applications/"
+  ln -s "/extra/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse.png"   "${pkgdir}/extra/usr/share/icons/hicolor/16x16/apps/eclipse.png"
+  ln -s "/extra/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse32.png" "${pkgdir}/extra/usr/share/icons/hicolor/32x32/apps/eclipse.png"
+  ln -s "/extra/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse48.png" "${pkgdir}/extra/usr/share/icons/hicolor/48x48/apps/eclipse.png"
+
+  # install icon
+  install -D -m644 "${srcdir}/eclipse.png" \
+                   "${pkgdir}/extra/usr/share/icons/hicolor/512x512/apps/eclipse.png"
+}
+
+# vim:set ts=2 sw=2 et:
