@@ -1,0 +1,26 @@
+pkgname=audacity
+pkgver=2.0.3
+pkgrel=1
+pkgdesc="A program that lets you manipulate digital audio waveforms"
+arch=('x86_64')
+url="http://audacity.sourceforge.net/"
+license=('GPL')
+depends=('libvorbis' 'libmad' 'libid3tag' 'wxgtk' 'libsamplerate' 'lame' 'hicolor-icon-theme'
+  'shared-mime-info' 'desktop-file-utils' 'redland' 'jack' 'soundtouch')
+makedepends=('zip' 'python' 'pkgconfig')
+options=('!makeflags')
+install="${pkgname}.install"
+source=("http://audacity.googlecode.com/files/${pkgname}-minsrc-${pkgver}.tar.xz")
+sha1sums=('72e634711fb96aac9df445e75e16e12e00c047e6')
+
+build() {
+  cd "${srcdir}/${pkgname}-src-${pkgver}"
+  WX_CONFIG=/extra/usr/bin/wx-config ./configure --prefix=/extra/usr \
+    --enable-unicode 
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-src-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
