@@ -1,0 +1,46 @@
+diff -rupN wxMaxima-13.04.0/locales/Makefile.am wxMaxima-13.04.0_new/locales/Makefile.am
+--- wxMaxima-13.04.0/locales/Makefile.am	2013-01-08 09:31:01.000000000 +0000
++++ wxMaxima-13.04.0_new/locales/Makefile.am	2013-04-24 19:33:30.315291128 +0000
+@@ -2,8 +2,8 @@
+ # This file is based on the corresponding file for the poedit program
+ #
+ 
+-WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN
+-WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN
++WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl
++WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl
+ 
+ localedir = $(datadir)/locale
+ 
+@@ -112,8 +112,6 @@ transcoded:
+ 	$(MSGFMT) transcoded/ca.po -o transcoded/ca.mo
+ 	cp gl.po transcoded
+ 	$(MSGFMT) transcoded/gl.po -o transcoded/gl.mo
+-	cp zh_CN.po transcoded
+-	$(MSGFMT) transcoded/zh_CN.po -o transcoded/zh_CN.mo
+ 
+ 
+ EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
+diff -rupN wxMaxima-13.04.0/locales/Makefile.in wxMaxima-13.04.0_new/locales/Makefile.in
+--- wxMaxima-13.04.0/locales/Makefile.in	2013-04-04 08:56:20.000000000 +0000
++++ wxMaxima-13.04.0_new/locales/Makefile.in	2013-04-24 19:33:44.585432363 +0000
+@@ -162,8 +162,8 @@ target_os = @target_os@
+ target_vendor = @target_vendor@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN
+-WXWIN_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl zh_CN
++WXMAXIMA_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl
++WXWIN_LINGUAS = fr es it de pt_BR ru hu uk pl zh_TW da cs el ja ca gl
+ 
+ # ----------------------------------------------------------------------------
+ # Logic for catalogs updating follows
+@@ -445,8 +445,6 @@ transcoded:
+ 	$(MSGFMT) transcoded/ca.po -o transcoded/ca.mo
+ 	cp gl.po transcoded
+ 	$(MSGFMT) transcoded/gl.po -o transcoded/gl.mo
+-	cp zh_CN.po transcoded
+-	$(MSGFMT) transcoded/zh_CN.po -o transcoded/zh_CN.mo
+ 
+ .PHONY: allpo allmo force-update stats FORCE
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -1,17 +1,22 @@
 pkgname=wxmaxima
-pkgver=12.09.0
-pkgrel=2
+pkgver=13.04.0
+pkgrel=1
 pkgdesc="A wxWidgets GUI for the computer algebra system Maxima"
 arch=('x86_64')
 url="http://wxmaxima.sourceforge.net/"
 license=('GPL2')
 depends=('maxima' 'libxml2' 'wxgtk' 'shared-mime-info' 'desktop-file-utils' 'filesystem-extra')
-source=(http://downloads.sourceforge.net/$pkgname/wxMaxima-$pkgver.tar.gz)
+source=(http://downloads.sourceforge.net/$pkgname/wxMaxima-$pkgver.tar.gz
+	Makefile_locale_zh_CN.patch)
 install=wxmaxima.install
-sha1sums=('9b56f674392eabb75183b228757df8834b45b2a6')
+sha1sums=('1dac390257a4c8424781c6b8e7d1d22ee2024449'
+	  'e2004670c38dc2ef65586e89e1246e14dca232c2')
 
 build() {
   cd "${srcdir}/wxMaxima-${pkgver}"
+  
+  patch -p1 -i "$srcdir/Makefile_locale_zh_CN.patch"
+  
   ./configure --prefix=/extra/usr
   make
 }
