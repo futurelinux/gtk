@@ -13,4 +13,8 @@ if [ ! -z $XDG_CONFIG_DIRS ]; then
 else 
   export XDG_CONFIG_DIRS=$EXTRADIR/etc/xdg 
 fi
-
+if [ ! -z $GTK_PATH ]; then
+  export GTK_PATH=$GTKPATH:$EXTRADIR/usr/lib/gtk-2.0/2.10.0 
+else
+  export GTK_PATH=$EXTRADIR/usr/lib/gtk-2.0/2.10.0
+fi
