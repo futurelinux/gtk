@@ -1,7 +1,7 @@
 pkgname=gimp
 pkgver=2.8.4
 _pkgver=2.8
-pkgrel=5
+pkgrel=6
 pkgdesc="GNU Image Manipulation Program (Development Version)"
 arch=('x86_64')
 url="http://www.gimp.org/"
@@ -10,7 +10,7 @@ depends=('pygtk' 'lcms' 'libxpm' 'libwmf' 'librsvg' 'libmng' 'dbus-glib' 'filesy
          'jasper' 'libexif' 'gegl' 'desktop-file-utils' 'hicolor-icon-theme')
 makedepends=('intltool' 'libwebkit' 'poppler-glib' 'alsa-lib' 'iso-codes' 'curl' 'ghostscript')
 optdepends=('gutenprint: for sophisticated printing only as gimp has built-in cups print support'
-            'libwebkit: for the help browser or web-page plug-ins'
+            'libwebkit-gtk2: for the help browser or web-page plug-ins'
             'poppler-glib: for pdf support'
             'alsa-lib: for MIDI event controller module'
             'curl: for URI support')
