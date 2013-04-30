@@ -1,11 +1,11 @@
 pkgname=firefox-i18n
 pkgver=20.0.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Language pack for Firefox"
 arch=('any')
 url="http://www.mozilla.com/"
 license=('MPL' 'GPL')
-depends=("firefox-kde>=$pkgver")
+depends=("firefox-kde>=$pkgver" 'filesystem-extra')
 
 _languages=(
   'ach    "Acoli"'

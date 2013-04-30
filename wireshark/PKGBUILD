@@ -1,14 +1,12 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
+# maintainer: AlmAck
 
 pkgname=wireshark
 pkgver=1.8.6
-pkgrel=1
+pkgrel=2
 pkgdesc='A free network protocol analyzer for Unix/Linux and Windows'
 arch=('x86_64')
 license=('GPL2')
-depends=('libpcap' 'glib2' 'desktop-file-utils' 'hicolor-icon-theme')
+depends=('libpcap' 'glib2' 'desktop-file-utils' 'hicolor-icon-theme' 'filesystem-extra')
 makedepends=('bison' 'flex' 'gtk2' 'krb5' 'libcap' 'libpcap' 'bash' 'gnutls'
              'libgcrypt' 'lua' 'python' 'portaudio')
 url='http://www.wireshark.org/'

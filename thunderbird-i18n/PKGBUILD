@@ -1,11 +1,11 @@
 pkgname=thunderbird-i18n
 pkgver=17.0.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Language pack for Thunderbird"
 arch=('any')
 url="http://www.mozilla.com/"
 license=('MPL' 'GPL')
-depends=("thunderbird>=$pkgver")
+depends=("thunderbird>=$pkgver" 'filesystem-extra')
 
 _languages=(
   'ar     "Arabic"'

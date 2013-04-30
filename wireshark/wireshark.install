@@ -1,7 +1,7 @@
 
 update_cache() {
-    gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor
-    update-desktop-database -q
+    /usr/bin/kbuildsycoca4 --global &> /dev/null
+    xdg-icon-resource forceupdate --theme hicolor &> /dev/null
     sbin/ldconfig -r .
 }
 
