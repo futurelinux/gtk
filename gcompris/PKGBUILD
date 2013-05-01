@@ -1,6 +1,6 @@
 pkgname=('gcompris')
 pkgver=12.11
-pkgrel=2
+pkgrel=3
 pkgdesc="Educational software suite comprising of numerous activities for children aged 2 to 10"
 arch=('x86_64')
 url="http://gcompris.net/"
@@ -25,4 +25,7 @@ build() {
 package() {
   cd "$srcdir/$pkgname-$pkgver"
   make DESTDIR="$pkgdir" install
+
+  # Fix path for editor
+  sed -i -e "~s~gcompris -a~gcompris -l /extra/usr/lib/gcompris/ -a~" ${pkgdir}/extra/usr/share/applications/gcompris-edit.desktop
 }
