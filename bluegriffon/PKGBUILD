@@ -1,6 +1,6 @@
 pkgname=bluegriffon
 pkgver=1.6.2
-pkgrel=1
+pkgrel=2
 pkgdesc='The next-generation Web Editor'
 url="http://bluegriffon.org/"
 arch=('x86_64')
@@ -17,11 +17,11 @@ md5sums=('9cb696fede820b98a8dcb1da207399ee'
 
 package() {
 	cd ${srcdir}
-	mkdir -p ${pkgdir}/extra/usr/{bin,share/{applications,pixmaps}}
-	cp -R bluegriffon ${pkgdir}/extra/usr/${pkgname}
+	mkdir -p ${pkgdir}/extra/usr/{bin,lib,share/{applications,pixmaps}}
+	cp -R bluegriffon ${pkgdir}/extra/usr/lib/${pkgname}
 
         install -m644 ${srcdir}/${pkgname}.desktop ${pkgdir}/extra/usr/share/applications/
         install -m644 ${srcdir}/bluegriffon/chrome/icons/default/default48.png ${pkgdir}/extra/usr/share/pixmaps/${pkgname}-icon.png
 
-        ln -sf /extra/usr/bluegriffon/bluegriffon $pkgdir/extra/usr/bin/
+        ln -sf /extra/usr/lib/bluegriffon/bluegriffon $pkgdir/extra/usr/bin/
 }
