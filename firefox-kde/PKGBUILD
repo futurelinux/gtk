@@ -2,12 +2,12 @@
 
 pkgname=firefox-kde
 pkgver=20.0.1
-pkgrel=4
+pkgrel=5
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
-depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'filesystem-extra')
+depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'filesystem-extra' 'kmozillahelper')
 makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 
@@ -49,11 +49,6 @@ build() {
   cd "mozilla-release"
   patch -Np1 -i "../firefox-install-dir.patch"
 
-  # modify the patch to make it work in bundle
-  cp ../mozilla-kde.patch ../mozilla-kde-mod.patch
-  sed -i 's|\(\+\#define KMOZILLAHELPER "\)/usr/lib/mozilla/kmozillahelper\("\)|\1kmozillahelper\2|' ../mozilla-kde-mod.patch
-  sed -i 's|\(\+            \)execv\(( KMOZILLAHELPER, args )\)|\1execvp\2|' ../mozilla-kde-mod.patch
-
   # remove the new file, to make life easier with call makepkg multiple times
   rm -f content/media/gstreamer/nsGStreamerFormatHelper.cpp \
         content/media/gstreamer/GStreamerFormatHelper.cpp \
@@ -80,7 +75,7 @@ build() {
   msg "apply mozilla-nongnome-proxies.patch"
   patch -Np1 -i "../mozilla-nongnome-proxies.patch" || return 1
   msg "apply mozilla-kde.patch"
-  patch -Np1 -i "../mozilla-kde-mod.patch" || return 1
+  patch -Np1 -i "../mozilla-kde.patch" || return 1
   msg "apply firefox-kde.patch"
   patch -Np1 -i "../firefox-kde.patch" || return 1
 
