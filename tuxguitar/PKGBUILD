@@ -13,15 +13,19 @@ install=tuxguitar.install
 source=(tuxguitar-src-$pkgver.tar.gz::http://sourceforge.net/projects/tuxguitar/files/TuxGuitar/TuxGuitar-$pkgver/tuxguitar-src-$pkgver.tar.gz/download
         http://chakra.sourceforge.net/sources/tuxguitar/TuxGuitar-Oxygen.tar.gz
 	tuxguitar.desktop \
-	tuxguitar.xml)
+	tuxguitar.xml
+        no-cairo.patch)
 md5sums=('f41ed20e77c6c3d8968991a29c71b912'
          '7b2a6ffbf4fc6bcf4ed8e7453dd1bb52'
          '8d8f813a721ed3979b8e59c71d773e7a'
          '59ce4eb8dcc0d0dde81e6cf2820aa9b0')
 
 build() {
-  cd $srcdir/tuxguitar-src-$pkgver
+  cd $srcdir/tuxguitar-src-$pkgver/TuxGuitar/xml
 
+  patch -p0 -i ${srcdir}/no-cairo.patch
+
+  cd $srcdir/tuxguitar-src-$pkgver
   export CLASSPATH=/extra/usr/share/java/swt.jar:$CLASSPATH
 
   (cd TuxGuitar/ && ant)
