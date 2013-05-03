@@ -1,0 +1,44 @@
+pkgname=swt
+pkgver=4.2.1
+pkgrel=1
+_date=201209141800
+pkgdesc='An open source widget toolkit for Java'
+arch=('x86_64')
+url='http://www.eclipse.org/swt/'
+license=('EPL')
+depends=('java-runtime>=6' 'gtk2>=2.20.1' 'libxtst')
+optdepends=('mesa' 'glu' 'libwebkit-qtk2')
+makedepends=('java-environment' 'libxtst' 'mesa' 'glu' 'unzip' 'pkgconfig' 'libwebkit-gtk2' 'apache-ant')
+source=(http://archive.eclipse.org/eclipse/downloads/drops4/R-${pkgver}-${_date}/swt-${pkgver}-gtk-linux-x86_64.zip
+        build-swt.xml)
+sha256sums=('e89e330df24ca72c57a381e81590293ce3f475d855258183179436bd5dcd85c8'
+             '6bb48007a95e3d8c6b577cc9cc4b61a51ce928b04f4fcd393cf72f8f727fe923')
+
+build() {
+  cd ${srcdir}
+  unzip -oq src.zip -d src
+
+  . /etc/profile.d/openjdk.sh
+  . /etc/profile.d/apache-ant.sh
+
+  # Shared objects
+  cd src
+  ./build.sh
+
+  # SWT jar
+  ant -f ../build-swt.xml compile
+}
+
+package() {
+  cd ${srcdir}/src
+
+  # Shared objects
+  export OUTPUT_DIR=${pkgdir}/extra/usr/lib
+  install -dm755 ${OUTPUT_DIR} 
+  make -f make_linux.mak install
+
+  # SWT jar
+  ant -f ../build-swt.xml jar
+  install -Dm755 ../swt.jar ${pkgdir}/extra/usr/share/java/swt-${pkgver}.jar
+  ln -s swt-${pkgver}.jar ${pkgdir}/extra/usr/share/java/swt.jar
+}
