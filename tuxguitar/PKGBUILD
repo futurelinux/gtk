@@ -7,7 +7,7 @@ arch=('x86_64')
 #url="http://www.herac.com.ar/contenidos/tuxguitar.html"
 url="http://sourceforge.net/projects/tuxguitar"
 license=('LGPL')
-depends=('java-runtime' 'swt' 'alsa-lib')
+depends=('java-runtime' 'swt-extra' 'alsa-lib')
 makedepends=('unzip' 'zip' 'apache-ant' 'jack' 'fluidsynth')
 install=tuxguitar.install
 source=(tuxguitar-src-$pkgver.tar.gz::http://sourceforge.net/projects/tuxguitar/files/TuxGuitar/TuxGuitar-$pkgver/tuxguitar-src-$pkgver.tar.gz/download
@@ -16,7 +16,7 @@ source=(tuxguitar-src-$pkgver.tar.gz::http://sourceforge.net/projects/tuxguitar/
 	tuxguitar.xml)
 md5sums=('f41ed20e77c6c3d8968991a29c71b912'
          '7b2a6ffbf4fc6bcf4ed8e7453dd1bb52'
-         '63f9ca355a7f24f6c4d652179770afb4'
+         '8d8f813a721ed3979b8e59c71d773e7a'
          '59ce4eb8dcc0d0dde81e6cf2820aa9b0')
 
 build() {
