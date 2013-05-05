@@ -15,7 +15,7 @@ options=('!libtool' '!docs')
 license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-$pkgver.tar.xz"
         'xid-collision-debug.patch')
-md5sums=('68f034fb4f68086790d7488cf00e71c8'
+md5sums=('a10cc43fad8d64f8893d779b1f8322ff'
          '22355df723f6ca358e30e6b8f0baace5')
 
 build() {
