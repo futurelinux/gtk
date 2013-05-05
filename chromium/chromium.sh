@@ -10,6 +10,7 @@ fi
 # default CHROMIUM_FLAGS (from /etc/chromium/default)
 CHROMIUM_FLAGS=${CHROMIUM_USER_FLAGS:-$CHROMIUM_FLAGS}
 
+
 export CHROME_WRAPPER=$(readlink -f "$0")
 export CHROME_DESKTOP=chromium.desktop
 

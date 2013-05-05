@@ -4,16 +4,15 @@
 
 pkgname=chromium
 pkgver=26.0.1410.63
-pkgrel=1
+pkgrel=2
 _verbld=26.0.1410.63-192696 # used for libpdf and pepper-flash
 _pepperflashver=11.7.700.169
-pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
+pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'harfbuzz'
-         'libxss' 'libgcrypt' 'ttf-dejavu' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'filesystem-extra')
-makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'filesystem-extra')
+makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion' 'ninja')
 install=chromium.install
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz 
 	http://dl.google.com/linux/chrome/rpm/stable/${CARCH}/google-chrome-stable-${_verbld}.${CARCH}.rpm
@@ -30,7 +29,7 @@ sha1sums=('3e0f15bded75561d09aace52712cd24fe799dcb6'
 	  '295df87c2983b425258d33fc44e97b92afc352cc'
 	  'cdda47faa791d56089f92854957070b1ec135c2e'
           'd02e7eaaa5de9407d8744a03a1306c117b659098'
-          'e4b853a245fe47ce37fd0035e9671b65f98bd2be'
+          'fa93e2d3d4d52a1a29a1c446092a158f05751fcc'
           '3d9663f614113c137016fadb963e150f11f17402'
           '90619af5afa000b47ac03ab01b7cba8b6d16daa1'
           'f7a705d539361d63fa0e3fe0e276341c87d484fc'
@@ -38,17 +37,31 @@ sha1sums=('3e0f15bded75561d09aace52712cd24fe799dcb6'
           'bfb59a53456272c901b8e4eb872069ff99a2cbeb'
           '73fc081513282ae94fe7a050f3636f8d3056b49e')
 
+# Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
+# Note: These are for Chakra Linux use ONLY. For your own distribution, please
+# get your own set of keys.
+_google_api_key=AIzaSyA33sdKPff0x3KBByOhpzc1i7RS2A1mEpY
+_google_default_client_id=3502044743.apps.googleusercontent.com
+_google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
+
+
 build() {
   cd "$srcdir/chromium-$pkgver"
-
-  # Set DDG as default search
+  
   patch -p1 -i "$srcdir/chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch"
+  
+  # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
   patch -p1 -i "$srcdir/search_engine_type.diff"
   patch -p1 -i "$srcdir/prepopulated_engines_json.diff"
 
-
+  # activate ninja compile method
+  export GYP_GENERATORS='ninja'
+  
   build/gyp_chromium --depth=. \
+    -Dgoogle_api_key=$_google_api_key \
+    -Dgoogle_default_client_id=$_google_default_client_id \
+    -Dgoogle_default_client_secret=$_google_default_client_secret \
     -Dwerror= \
     -Dlinux_sandbox_path=/extra/usr/lib/chromium/chromium-sandbox \
     -Dlinux_strip_binary=1 \
@@ -58,18 +71,27 @@ build() {
     -Dffmpeg_branding=Chrome \
     -Dproprietary_codecs=1 \
     -Duse_system_bzip2=1 \
+    -Duse_system_flac=1 \
     -Duse_system_ffmpeg=0 \
     -Duse_system_libevent=1 \
     -Duse_system_libjpeg=1 \
     -Duse_system_libpng=1 \
-    -Duse_system_libxml=0 \
+    -Duse_system_libxml=1 \
+    -Duse_system_opus=1 \
     -Duse_system_ssl=0 \
+    -Duse_system_xdg_utils=1 \
     -Duse_system_yasm=1 \
     -Duse_system_zlib=0 \
     -Duse_gconf=0 \
+    -Dtarget_arch=x64 \
     -Ddisable_nacl=1 
 
   make chrome chrome_sandbox BUILDTYPE=Release
+  
+  # Build chrome base
+  #ninja -C out/Release chrome
+  # Build the required SUID_SANDBOX helper
+  #ninja -C out/Release chrome_sandbox
 }
 
 package() {
@@ -97,6 +119,11 @@ package() {
 
   for size in 22 24 48 64 128 256; do
     install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
+      "$pkgdir/extra/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+  done
+  
+  for size in 16 32; do
+    install -Dm644 "chrome/app/theme/default_100_percent/chromium/product_logo_$size.png" \
       "$pkgdir/extra/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
   done
 
