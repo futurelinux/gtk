@@ -1,0 +1,36 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+
+pkgbase=nvidia-utils
+pkgname=('nvidia-settings')
+pkgdesc="Gtk Graphical User Interface for nVidia"
+depends=('nvidia-utils' 'gtk2' 'pangox-compat' 'filesystem-extra')
+pkgver=313.30
+pkgrel=2
+arch=('x86_64')
+url="http://www.nvidia.com/"
+license=('custom')
+options=('!strip')
+source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
+        'nvidia-restore-settings.desktop')
+md5sums=('e5f147fbcdcad71472b4ddeccf259bd7'
+         '9237516792da7b6df32f8c7e8a98f475')
+
+build() {
+  cd "${srcdir}"
+  sh "NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run" --extract-only
+}
+
+package() {
+  cd "${srcdir}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+
+  install -D -m755 nvidia-settings "${pkgdir}/extra/usr/bin/nvidia-settings"
+  install -D -m644 nvidia-settings.1.gz "${pkgdir}/extra/usr/share/man/man1/nvidia-settings.1.gz"
+  install -D -m644 nvidia-settings.desktop "${pkgdir}/extra/usr/share/applications/nvidia-settings.desktop"
+  install -D -m644 nvidia-settings.png "${pkgdir}/extra/usr/share/pixmaps/nvidia-settings.png"
+  sed -e 's:__UTILS_PATH__:/extra/usr/bin:' -e 's:__PIXMAP_PATH__:/extra/usr/share/pixmaps:' -i "${pkgdir}/extra/usr/share/applications/nvidia-settings.desktop"
+
+  # Install the autostart .desktop file, so that parameters saved through nvidia-settings
+  # are automatically reloaded at each login
+  install -D -m644 "${srcdir}/nvidia-restore-settings.desktop" "${pkgdir}/extra/usr/share/autostart/nvidia-restore-settings.desktop"
+}
