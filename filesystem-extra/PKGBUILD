@@ -1,17 +1,16 @@
 # Maintainer: Manuel Tortosa <manutortos@chakra-project.org>
 
 pkgname=filesystem-extra
-pkgver=2013.04
-pkgrel=7
+pkgver=2013.05
+pkgrel=1
 arch=('any')
 pkgdesc="Extra filesystem"
 groups=('extra')
 install=extra.install
 source=('extra.conf' 'extra.profile' 'extra.tcsh')
 md5sums=('b0f054b6c5f809927817b345351ed7b6'
-         '040ac04839c1402ce8515f95feb88e63'
-         '917d7c2c300f8c24709b66200faf9477')
-
+         'f0430380a444da52658fe835025f7a41'
+         'db20c7b6fdb2902b8481fdbcfadb1a39')
 
 package() {
   cd ${pkgdir}

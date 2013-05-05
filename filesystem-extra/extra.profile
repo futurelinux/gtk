@@ -1,8 +1,11 @@
 export EXTRADIR=/extra
-export EXTRADIRS=$EXTRADIR/usr:/usr
 export PATH=$PATH:$EXTRADIR/usr/bin 
 export MANPATH=$MANPATH:$EXTRADIR/usr/man 
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$EXTRADIR/usr/lib/pkgconfig
+if [ ! -z $PKG_CONFIG_PATH ]; then
+  export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$EXTRADIR/usr/lib/pkgconfig
+else
+  export PKG_CONFIG_PATH=$EXTRADIR/usr/lib/pkgconfig
+fi 
 if [ ! -z $XDG_DATA_DIRS ]; then 
   export XDG_DATA_DIRS=$XDG_DATA_DIRS:$EXTRADIR/usr/share 
 else 
@@ -17,4 +20,9 @@ if [ ! -z $GTK_PATH ]; then
   export GTK_PATH=$GTKPATH:$EXTRADIR/usr/lib/gtk-2.0/2.10.0 
 else
   export GTK_PATH=$EXTRADIR/usr/lib/gtk-2.0/2.10.0
+fi
+if [ ! -z $PYTHONPATH ]; then
+  export PYTHONPATH=$PYTHONPATH:$EXTRADIR/usr/lib/python2.7/site-packages:$EXTRADIR/usr/lib/python2.7/site-packages/gtk-2.0
+else
+  export PYTHONPATH=$EXTRADIR/usr/lib/python2.7/site-packages:$EXTRADIR/usr/lib/python2.7/site-packages/gtk-2.0
 fi

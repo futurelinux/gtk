@@ -14,7 +14,12 @@ else
   setenv XDG_CONFIG_DIRS $XDG_CONFIG_DIRS:$EXTRADIR/etc/xdg
 endif
 if ( ! $?GTK_PATH ) then
-  setenv $EXTRADIR/usr/lib/gtk-2.0/2.10.0
+  setenv GTK_PATH $EXTRADIR/usr/lib/gtk-2.0/2.10.0
 else
   setenv GTK_PATH $GTK_PATH:$EXTRADIR/usr/lib/gtk-2.0/2.10.0
+endif
+if ( ! $?PYTHONPATH ) then
+  setenv PYTHONPATH $EXTRADIR/usr/lib/python2.7/site-packages:$EXTRADIR/usr/lib/python2.7/site-packages/gtk-2.0
+else
+  setenv PYTHONPATH $PYTHONPATH:$EXTRADIR/usr/lib/python2.7/site-packages:$EXTRADIR/usr/lib/python2.7/site-packages/gtk-2.0
 endif
