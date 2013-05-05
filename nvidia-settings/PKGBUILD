@@ -4,7 +4,7 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-settings')
 pkgdesc="Gtk Graphical User Interface for nVidia"
-depends=('nvidia-utils' 'gtk2' 'pangox-compat' 'filesystem-extra')
+depends=('gtk2' 'pangox-compat' 'filesystem-extra')
 pkgver=313.30
 pkgrel=2
 arch=('x86_64')
