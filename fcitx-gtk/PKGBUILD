@@ -1,0 +1,40 @@
+# Maintainer: Weng Xuetian <wengxt@gmail.com>
+
+pkgbase=fcitx-gtk
+pkgname=('fcitx-gtk2' 'fcitx-gtk3')
+pkgver=4.2.7
+pkgrel=1
+pkgdesc="Gtk im module for fcitx"
+arch=('i686' 'x86_64')
+url="http://code.google.com/p/fcitx/"
+license=('GPL')
+makedepends=('fcitx>=4.2.7' 'gtk2' 'gtk3' 'cmake')
+source=(http://fcitx.googlecode.com/files/${pkgbase}-${pkgver}.tar.xz)
+md5sums=('c178aeca39bd2e24a907d4540503595d')
+
+build(){
+    rm -rf build
+    mkdir build
+    cd build
+
+    cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release "../${pkgbase}-${pkgver}"
+    make
+}
+
+package_fcitx-gtk2 ()
+{
+    pkgdesc='GTK2 IM Module for fcitx'
+    depends=('gtk2' "fcitx>=$pkgver")
+    install="fcitx-gtk2.install"
+    cd "build/gtk2"
+    make DESTDIR=${pkgdir} install
+}
+
+package_fcitx-gtk3 ()
+{
+    pkgdesc='GTK3 IM Module for fcitx'
+    depends=('gtk3' "fcitx>=$pkgver")
+    install="fcitx-gtk3.install"
+    cd "build/gtk3"
+    make DESTDIR=${pkgdir} install
+}
