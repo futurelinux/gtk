@@ -11,12 +11,12 @@ license=('MPL' 'GPL' 'LGPL')
 depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'filesystem-extra' 'kdelibs')
 makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
-
 provides=("firefox=${pkgver}" "kmozillahelper=0.6.4")
 conflicts=('firefox' 'kmozillahelper')
 replaces=('kmozillahelper')
 install=firefox.install
 url="http://www.mozilla.org/projects/firefox"
+optdepends=('firefox-i18n: for multilanguage support')
 #
 # For whom want to update this package
 #
