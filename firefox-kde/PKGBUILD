@@ -2,17 +2,19 @@
 
 pkgname=firefox-kde
 pkgver=20.0.1
-pkgrel=5
+pkgrel=6
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
+_obsver=b88c72dfdc858f6209feb123227bd7df
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
-depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'filesystem-extra' 'kmozillahelper')
-makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm')
+depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'filesystem-extra' 'kdelibs')
+makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 
-provides=("firefox=${pkgver}")
-conflicts=('firefox')
+provides=("firefox=${pkgver}" "kmozillahelper=0.6.4")
+conflicts=('firefox' 'kmozillahelper')
+replaces=('kmozillahelper')
 install=firefox.install
 url="http://www.mozilla.org/projects/firefox"
 #source=(http://releases.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
@@ -30,6 +32,7 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
         mozilla-gstreamer-760140.patch
 	firefox-712763.patch
 	duckduckgo.xml
+	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${pkgname}-${pkgver}.tar.bz2?rev=${_obsver}"
 )
 md5sums=('b822ff4b2348410587dec563235d9320'
          'b2a0c175d063e6c4fe0c7ed6c27ac443'
@@ -44,8 +47,25 @@ md5sums=('b822ff4b2348410587dec563235d9320'
          '7303a96e92e600a46dd6a2cf9af5ada5'
          'f6e2a6759b8711b445dbc9d35cbd275f')
 
-
 build() {
+	pushd .
+	build_kmozillahelper
+	popd
+	pushd .
+	build_firefox
+	popd
+}
+
+build_kmozillahelper() {
+	mkdir -p kmozillahelper-build
+	cd kmozillahelper-build
+
+	cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ../kmozillahelper
+	make || return 1
+
+}
+
+build_firefox() {
   cd "mozilla-release"
   patch -Np1 -i "../firefox-install-dir.patch"
 
@@ -94,6 +114,10 @@ build() {
 }
 
 package() {
+  pushd .
+  cd $srcdir/kmozillahelper-build
+  make DESTDIR=$pkgdir install
+  popd
 
   cd mozilla-release
   make -j1 -f client.mk MOZ_PKG_FATAL_WARNINGS=0 package
@@ -122,3 +146,16 @@ package() {
   ln -s /usr/share/hyphen "$pkgdir/extra/usr/lib/firefox/hyphenation"
 
 }
+md5sums=('b822ff4b2348410587dec563235d9320'
+         'b2a0c175d063e6c4fe0c7ed6c27ac443'
+         '22c8f014ca98e49c4c107e2671dd0e51'
+         '150ac0fb3ac7b2114c8e8851a9e0516c'
+         'b1b1ad060b411a4abee7dcc63927aa02'
+         '75df0f88cc7a7fa7d522459e4ff82cc5'
+         '194da028eba1fbc316cf37dd586c4112'
+         '79f113b56057e17ca2466cd0ac578bb3'
+         '69a90693ab4fc4d81afd83c1524e73d4'
+         '9f4e6467284a5c82fbba0c0afe862f31'
+         '7303a96e92e600a46dd6a2cf9af5ada5'
+         'f6e2a6759b8711b445dbc9d35cbd275f'
+         '7db8c8904371204fb4c13e9cd306deb0')
