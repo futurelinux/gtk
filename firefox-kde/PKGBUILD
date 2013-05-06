@@ -47,7 +47,9 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
 	firefox-712763.patch
 	duckduckgo.xml
 	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${pkgname}-${pkgver}.tar.bz2?rev=${_obsver}"
+	move-to-extra.patch
 )
+
 md5sums=('b822ff4b2348410587dec563235d9320'
          'b2a0c175d063e6c4fe0c7ed6c27ac443'
          '22c8f014ca98e49c4c107e2671dd0e51'
@@ -56,10 +58,12 @@ md5sums=('b822ff4b2348410587dec563235d9320'
          '75df0f88cc7a7fa7d522459e4ff82cc5'
          '194da028eba1fbc316cf37dd586c4112'
          '79f113b56057e17ca2466cd0ac578bb3'
-         '8e833c5abff5ddd3d20bc81eb9bfc028'
+         '69a90693ab4fc4d81afd83c1524e73d4'
          '9f4e6467284a5c82fbba0c0afe862f31'
          '7303a96e92e600a46dd6a2cf9af5ada5'
-         'f6e2a6759b8711b445dbc9d35cbd275f')
+         'f6e2a6759b8711b445dbc9d35cbd275f'
+         '7db8c8904371204fb4c13e9cd306deb0'
+         '4baee75ae2e23b2aa2f129385d4dcb82')
 
 build() {
 	pushd .
@@ -71,6 +75,11 @@ build() {
 }
 
 build_kmozillahelper() {
+	pushd .
+	cd kmozillahelper
+	patch -Np1 -i ../move-to-extra.patch || return 1
+	popd
+
 	mkdir -p kmozillahelper-build
 	cd kmozillahelper-build
 
@@ -160,16 +169,3 @@ package() {
   ln -s /usr/share/hyphen "$pkgdir/extra/usr/lib/firefox/hyphenation"
 
 }
-md5sums=('b822ff4b2348410587dec563235d9320'
-         'b2a0c175d063e6c4fe0c7ed6c27ac443'
-         '22c8f014ca98e49c4c107e2671dd0e51'
-         '150ac0fb3ac7b2114c8e8851a9e0516c'
-         'b1b1ad060b411a4abee7dcc63927aa02'
-         '75df0f88cc7a7fa7d522459e4ff82cc5'
-         '194da028eba1fbc316cf37dd586c4112'
-         '79f113b56057e17ca2466cd0ac578bb3'
-         '69a90693ab4fc4d81afd83c1524e73d4'
-         '9f4e6467284a5c82fbba0c0afe862f31'
-         '7303a96e92e600a46dd6a2cf9af5ada5'
-         'f6e2a6759b8711b445dbc9d35cbd275f'
-         '7db8c8904371204fb4c13e9cd306deb0')
