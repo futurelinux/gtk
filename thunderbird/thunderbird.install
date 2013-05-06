@@ -1,6 +1,6 @@
 post_install() {
-    update-desktop-database -q
-    gtk-update-icon-cache -q -t -f usr/share/icons/hicolor
+  xdg-icon-resource forceupdate --theme hicolor &> /dev/null
+  /usr/bin/kbuildsycoca4 --global --noincremental &> /dev/null
 }
 
 post_upgrade() {
