@@ -17,9 +17,23 @@ conflicts=('firefox' 'kmozillahelper')
 replaces=('kmozillahelper')
 install=firefox.install
 url="http://www.mozilla.org/projects/firefox"
-#source=(http://releases.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
-#patch http://www.rosenauer.org/hg/mozilla/
-#patch https://build.opensuse.org/package/show?package=MozillaFirefox&project=mozilla%3AFactory
+#
+# For whom want to update this package
+#
+# Alternative firefox source url: 
+# http://releases.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
+# This URL uses CDN so it's faster, but maybe out of date when new firefox release comes out.
+#
+# Find Firefox KDE related patch:
+# patch http://www.rosenauer.org/hg/mozilla/
+# patch https://build.opensuse.org/package/show?package=MozillaFirefox&project=mozilla%3AFactory
+#
+# Usually, we also port non-openSUSE specific patch together.
+#
+# Customization in chakra:
+# since 20.0.1-6: remove patch for toolkit/components/downloads/nsDownloadManager.cpp in mozilla-kde.patch
+# since mozilla's own implementation with libnotify is better
+#
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
         mozconfig
         firefox.desktop
