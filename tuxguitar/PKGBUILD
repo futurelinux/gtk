@@ -1,6 +1,6 @@
 pkgname=tuxguitar
 pkgver=1.2
-pkgrel=1
+pkgrel=2
 _jdk=java-7-openjdk
 pkgdesc="multitrack guitar tablature editor and player"
 arch=('x86_64')
@@ -18,7 +18,8 @@ source=(tuxguitar-src-$pkgver.tar.gz::http://sourceforge.net/projects/tuxguitar/
 md5sums=('f41ed20e77c6c3d8968991a29c71b912'
          '7b2a6ffbf4fc6bcf4ed8e7453dd1bb52'
          '8d8f813a721ed3979b8e59c71d773e7a'
-         '59ce4eb8dcc0d0dde81e6cf2820aa9b0')
+         '59ce4eb8dcc0d0dde81e6cf2820aa9b0'
+         '90259fd596f5ca9bd321285b02a021c2')
 
 build() {
   cd $srcdir/tuxguitar-src-$pkgver/TuxGuitar/xml
@@ -101,7 +102,7 @@ package() {
   # oss
   pushd TuxGuitar-oss/jni
   install -D -m0755 libtuxguitar-oss-jni.so $pkgdir/extra/usr/lib/tuxguitar/libtuxguitar-oss-jni.so
-  mkdir -p $pkgdir/exthttp://paste.chakra-project.org/4544/ra/usr/share/tuxguitar/lib
+  mkdir -p $pkgdir/extra/usr/share/tuxguitar/lib
   ln -s /usr/lib/tuxguitar/libtuxguitar-oss-jni.so $pkgdir/extra/usr/share/tuxguitar/lib/libtuxguitar-oss-jni.so
   popd
 
