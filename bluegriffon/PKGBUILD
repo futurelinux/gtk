@@ -1,6 +1,6 @@
 pkgname=bluegriffon
-pkgver=1.6.2
-pkgrel=2
+pkgver=1.7
+pkgrel=1
 pkgdesc='The next-generation Web Editor'
 url="http://bluegriffon.org/"
 arch=('x86_64')
@@ -8,10 +8,10 @@ license=('MPL' 'GPL' 'LGPL')
 depends=('libpng' 'libjpeg' 'desktop-file-utils' 'libxt' 'mime-types' 'nss' 'shared-mime-info' 'filesystem-extra' 'gtk2')
 makedepends=('wget')
 install='bluegriffon.install'
-source=("http://bluegriffon.org/freshmeat/${pkgver}/bluegriffon-1.6.2-Ubuntu12.04-x86_64.tar.bz2"
+source=("http://bluegriffon.org/freshmeat/${pkgver}/bluegriffon-${pkgver}.Ubuntu13.04-x86_64.tar.bz2"
         'bluegriffon.desktop'
         'bluegriffon.install')
-md5sums=('9cb696fede820b98a8dcb1da207399ee'
+md5sums=('c4676b0794c4456aa1a5ccff5ca13c74'
          'e532ce3a2163d91b11a19176dcf2dbe1'
          '42d885a1665f32babc8045b2041949ea')
 
