@@ -2,7 +2,7 @@
 
 pkgname=wireshark
 pkgver=1.8.6
-pkgrel=3
+pkgrel=4
 pkgdesc='A free network protocol analyzer for Unix/Linux and Windows'
 arch=('x86_64')
 license=('GPL2')
@@ -25,7 +25,8 @@ build() {
       --with-libcap \
       --with-zlib \
       --with-lua \
-      --with-krb5
+      --with-krb5 \
+      --without-portaudio
   make all
 }
 
