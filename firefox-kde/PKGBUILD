@@ -1,14 +1,14 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=20.0.1
-pkgrel=6
+pkgver=21.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _obsver=b88c72dfdc858f6209feb123227bd7df
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
-depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'filesystem-extra' 'kdelibs')
+depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'libevent' 'filesystem-extra' 'kdelibs')
 makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 provides=("firefox=${pkgver}" "kmozillahelper=0.6.4")
@@ -44,7 +44,6 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
         mozilla-nongnome-proxies.patch
         mozilla-kde.patch
         mozilla-gstreamer-760140.patch
-	firefox-712763.patch
 	duckduckgo.xml
 	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${pkgname}-${pkgver}.tar.bz2?rev=${_obsver}"
 	move-to-extra.patch
@@ -117,8 +116,6 @@ build_firefox() {
 
   msg "apply mozilla-gstreamer-760140.patch"
   patch -Np1 -i "../mozilla-gstreamer-760140.patch" || return 1
-  msg "apply firefox-712763.patch"
-  patch -Np1 -i "../firefox-712763.patch" || return 1
   msg "apply mozilla-nongnome-proxies.patch"
   patch -Np1 -i "../mozilla-nongnome-proxies.patch" || return 1
   msg "apply mozilla-kde-mod.patch"
@@ -147,6 +144,7 @@ package() {
   popd
 
   cd mozilla-release
+  install -Dm644 ../kde.js "obj-ff/dist/bin/defaults/pref/kde.js"
   make -j1 -f client.mk MOZ_PKG_FATAL_WARNINGS=0 package
   #make -j1 -f client.mk DESTDIR="$pkgdir" install
   mkdir -p $pkgdir/extra/usr/lib/ 
@@ -173,3 +171,42 @@ package() {
   ln -s /usr/share/hyphen "$pkgdir/extra/usr/lib/firefox/hyphenation"
 
 }
+md5sums=('6e2510e9466b280c367de0e4c05a8840'
+         'b2a0c175d063e6c4fe0c7ed6c27ac443'
+         '22c8f014ca98e49c4c107e2671dd0e51'
+         '150ac0fb3ac7b2114c8e8851a9e0516c'
+         'b1b1ad060b411a4abee7dcc63927aa02'
+         '75df0f88cc7a7fa7d522459e4ff82cc5'
+         '755528dfc7143f695bf5800f923bf384'
+         '79f113b56057e17ca2466cd0ac578bb3'
+         '79241d15f99ff67acf88209f5c083aa6'
+         '70fb43a673328e3665e999659b3a0d4b'
+         'f6e2a6759b8711b445dbc9d35cbd275f'
+         '7db8c8904371204fb4c13e9cd306deb0'
+         '4baee75ae2e23b2aa2f129385d4dcb82')
+md5sums=('6e2510e9466b280c367de0e4c05a8840'
+         '8e326fc09a96b40bd347a393c2d4b0b3'
+         '22c8f014ca98e49c4c107e2671dd0e51'
+         '150ac0fb3ac7b2114c8e8851a9e0516c'
+         'b1b1ad060b411a4abee7dcc63927aa02'
+         '75df0f88cc7a7fa7d522459e4ff82cc5'
+         '755528dfc7143f695bf5800f923bf384'
+         '79f113b56057e17ca2466cd0ac578bb3'
+         '79241d15f99ff67acf88209f5c083aa6'
+         '70fb43a673328e3665e999659b3a0d4b'
+         'f6e2a6759b8711b445dbc9d35cbd275f'
+         '7db8c8904371204fb4c13e9cd306deb0'
+         '4baee75ae2e23b2aa2f129385d4dcb82')
+md5sums=('6e2510e9466b280c367de0e4c05a8840'
+         'bbcfd1b4fc60495a7e49a66be1a637f7'
+         '22c8f014ca98e49c4c107e2671dd0e51'
+         '150ac0fb3ac7b2114c8e8851a9e0516c'
+         'b1b1ad060b411a4abee7dcc63927aa02'
+         '75df0f88cc7a7fa7d522459e4ff82cc5'
+         '755528dfc7143f695bf5800f923bf384'
+         '79f113b56057e17ca2466cd0ac578bb3'
+         '79241d15f99ff67acf88209f5c083aa6'
+         '70fb43a673328e3665e999659b3a0d4b'
+         'f6e2a6759b8711b445dbc9d35cbd275f'
+         '7db8c8904371204fb4c13e9cd306deb0'
+         '4baee75ae2e23b2aa2f129385d4dcb82')
