@@ -2,7 +2,7 @@
 
 pkgname=firefox-kde
 pkgver=21.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _obsver=b88c72dfdc858f6209feb123227bd7df
 url='http://www.mozilla.org/projects/firefox'
@@ -179,7 +179,7 @@ md5sums=('6e2510e9466b280c367de0e4c05a8840'
          '75df0f88cc7a7fa7d522459e4ff82cc5'
          '755528dfc7143f695bf5800f923bf384'
          '79f113b56057e17ca2466cd0ac578bb3'
-         '79241d15f99ff67acf88209f5c083aa6'
+         'f6ee269b0ecfbf6a4ddcf8d45cfd6e4f'
          '70fb43a673328e3665e999659b3a0d4b'
          'f6e2a6759b8711b445dbc9d35cbd275f'
          '7db8c8904371204fb4c13e9cd306deb0'
