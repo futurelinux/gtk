@@ -1,12 +1,11 @@
 pkgname=audacity
 pkgver=2.0.3
-pkgrel=1
+pkgrel=2
 pkgdesc="A program that lets you manipulate digital audio waveforms"
 arch=('x86_64')
 url="http://audacity.sourceforge.net/"
 license=('GPL')
-depends=('libvorbis' 'libmad' 'libid3tag' 'wxgtk' 'libsamplerate' 'lame' 'hicolor-icon-theme'
-  'shared-mime-info' 'desktop-file-utils' 'redland' 'jack' 'soundtouch')
+depends=('libvorbis' 'libmad' 'libid3tag' 'wxgtk' 'libsamplerate' 'lame' 'hicolor-icon-theme' 'shared-mime-info' 'desktop-file-utils' 'redland' 'jack' 'soundtouch' 'filesystem-extra')
 makedepends=('zip' 'python' 'pkgconfig')
 options=('!makeflags')
 install="${pkgname}.install"
