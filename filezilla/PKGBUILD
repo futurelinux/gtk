@@ -1,5 +1,5 @@
 pkgname=filezilla
-pkgver=3.7.0
+pkgver=3.7.0.1
 pkgrel=1
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
@@ -7,7 +7,10 @@ url="http://filezilla-project.org/"
 license=('GPL')
 depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'hicolor-icon-theme' 'sqlite3' 'filesystem-extra')
 install=filezilla.install
-source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2")
+source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
+        "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz")
+md5sums=('cb07cf02ee4cc767e10e8a022ad0ce0d'
+         'cc6b7f92cab532d2eb88eb7d931de756')
 
 build() {
   cd "${pkgname}-${pkgver}"
@@ -23,8 +26,10 @@ build() {
 }
 
 package() {
-  cd "${pkgname}-${pkgver}"
+   cd "${pkgname}-${pkgver}"
 
-  make DESTDIR="${pkgdir}" install
+   make DESTDIR="${pkgdir}" install
+
+   mkdir -p $pkgdir/extra/usr/share/filezilla/resources	
+   cp -rf $srcdir/oxygen $pkgdir/extra/usr/share/filezilla/resources/
 }
-md5sums=('de827a062ec316d0da99936aeaaeeb79')
