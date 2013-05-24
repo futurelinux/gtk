@@ -3,15 +3,15 @@
 #
 
 pkgname=chromium
-pkgver=26.0.1410.63
-pkgrel=2
-_verbld=26.0.1410.63-192696 # used for libpdf and pepper-flash
-_pepperflashver=11.7.700.169
+pkgver=27.0.1453.93
+pkgrel=1
+_verbld=${pkgver}-200836 # used for libpdf and pepper-flash
+_pepperflashver=11.7.700.202
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'filesystem-extra')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'filesystem-extra')
 makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion' 'ninja')
 install=chromium.install
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz 
@@ -25,9 +25,9 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/$pkgna
         prepopulated_engines_json.diff
         system-libpng.patch
         chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch)
-sha1sums=('3e0f15bded75561d09aace52712cd24fe799dcb6'
-	  '295df87c2983b425258d33fc44e97b92afc352cc'
-	  'cdda47faa791d56089f92854957070b1ec135c2e'
+sha1sums=('0779e5dc73cee50ca2797c6ea4fc515c31bad0aa'
+          'a8e6ec7fcbce370337571e8220bc82b5b14409bc'
+          'cdda47faa791d56089f92854957070b1ec135c2e'
           'd02e7eaaa5de9407d8744a03a1306c117b659098'
           'fa93e2d3d4d52a1a29a1c446092a158f05751fcc'
           '3d9663f614113c137016fadb963e150f11f17402'
@@ -46,9 +46,9 @@ _google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
 
 
 build() {
-  cd "$srcdir/chromium-$pkgver"
+  cd "$srcdir/$pkgname-$pkgver"
   
-  patch -p1 -i "$srcdir/chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch"
+  #patch -p1 -i "$srcdir/chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch"
   
   # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
@@ -67,6 +67,7 @@ build() {
     -Dlinux_strip_binary=1 \
     -Dlinux_use_gold_binary=0 \
     -Dlinux_use_gold_flags=0 \
+    -Dlinux_link_pulseaudio=1 \
     -Drelease_extra_cflags="$CFLAGS" \
     -Dffmpeg_branding=Chrome \
     -Dproprietary_codecs=1 \
@@ -95,7 +96,7 @@ build() {
 }
 
 package() {
-  cd "$srcdir/chromium-$pkgver"
+  cd "$srcdir/$pkgname-$pkgver"
 
   install -D out/Release/chrome ${pkgdir}/extra/usr/lib/chromium/chromium
 
