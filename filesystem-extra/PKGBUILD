@@ -2,7 +2,9 @@
 
 pkgname=filesystem-extra
 pkgver=2013.05
-pkgrel=2
+pkgrel=3
+url="http://chakra-project.org"
+license="GPLv2"
 arch=('any')
 pkgdesc="Extra filesystem"
 groups=('extra')
