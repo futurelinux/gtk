@@ -1,18 +1,18 @@
 # maintainer: AlmAck
 
 pkgname=wireshark
-pkgver=1.8.6
-pkgrel=4
+pkgver=1.8.7
+pkgrel=1
 pkgdesc='A free network protocol analyzer for Unix/Linux and Windows'
 arch=('x86_64')
 license=('GPL2')
-depends=('libpcap' 'libcap' 'krb5' 'glib2' 'desktop-file-utils' 'hicolor-icon-theme' 'lua' 'libgcrypt' 'filesystem-extra')
+depends=('libpcap' 'libcap' 'krb5' 'glib2' 'desktop-file-utils' 'hicolor-icon-theme' 'lua' 'libgcrypt' 'gtk2' 'filesystem-extra')
 makedepends=('bison' 'flex' 'bash' 'gnutls' 'python' 'portaudio')
 url='http://www.wireshark.org/'
 install=wireshark.install
 options=(!libtool)
 source=(http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('0f51ed901b5e07cceb1373f3368f739be8f1e827')
+sha1sums=('c131ce10555e608e691aa36190c8d5a1b271c955')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
