@@ -1,0 +1,13 @@
+post_install() {
+    /extra/usr/bin/gtk-query-immodules-2.0 > extra/etc/gtk-2.0/gtk.immodules
+    /extra/usr/bin/gtk-query-immodules-3.0 --update-cache 
+
+    /extra/usr/bin/gtk-update-icon-cache -fq -t extra/usr/share/icons/hicolor
+
+    /extra/usr/bin/glib-compile-schemas /extra/usr/share/glib-2.0/schemas
+}
+
+post_remove() {
+    post_install()
+}
+

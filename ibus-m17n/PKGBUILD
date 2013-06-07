@@ -1,0 +1,27 @@
+
+pkgname=ibus-m17n
+pkgver=1.3.4
+pkgrel=1
+pkgdesc='M17N engine for IBus'
+arch=('x86_64')
+url='http://code.google.com/p/ibus/'
+license=('LGPL')
+depends=('ibus' 'm17n-db' 'm17n-lib')
+source=("http://ibus.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
+md5sums=('6f644b73c5943e3c7fb2e02b9e259804')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure  \
+	  --prefix=/extra/usr \
+	  --libexecdir=/extra/usr/lib/ibus
+
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+}
