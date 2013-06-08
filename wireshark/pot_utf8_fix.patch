@@ -1,0 +1,29 @@
+diff -rupN wireshark-1.10.0/doc/asn2deb.pod wireshark-1.10.0_mod/doc/asn2deb.pod
+--- wireshark-1.10.0/doc/asn2deb.pod	2013-06-07 22:27:00.666492981 +0000
++++ wireshark-1.10.0_mod/doc/asn2deb.pod	2013-06-07 22:30:19.914829449 +0000
+@@ -5,8 +5,8 @@ asn2deb - Create a Debian package for BE
+ 
+ =head1 SYNOPSIS
+ 
+-B<asn2deb> [-a I<ASN.1 file>] [--asn=I<ASN.1 file>] [B<-d >I<opts>] [B<--dbopts=>I<opts>] [B<-e >I<address>]
+-[B<--email=>I<address>] [B<-h>] [B<--help>] [B<-n >I<name>] [B<--name=>I<name>] [B<-p>] [B<--preserve>] [B<-v>] [B<--version>]
++B<asn2deb> [-a I<ASN.1 file>] [--asn=I<ASN.1 file>] [B<-d>I<opts>] [B<--dbopts=>I<opts>] [B<-e>I<address>]
++[B<--email=>I<address>] [B<-h>] [B<--help>] [B<-n>I<name>] [B<--name=>I<name>] [B<-p>] [B<--preserve>] [B<-v>] [B<--version>]
+ 
+ =head1 DESCRIPTION
+ 
+diff -rupN wireshark-1.10.0/doc/idl2deb.pod wireshark-1.10.0_mod/doc/idl2deb.pod
+--- wireshark-1.10.0/doc/idl2deb.pod	2013-05-20 23:00:25.000000000 +0000
++++ wireshark-1.10.0_mod/doc/idl2deb.pod	2013-06-07 22:30:01.324673872 +0000
+@@ -5,8 +5,8 @@ idl2deb - Create a Debian package for CO
+ 
+ =head1 SYNOPSIS
+ 
+-B<idl2deb> [B<-d >I<opts>] [B<--dbopts=>I<opts>] [B<-e >I<address>] [B<--email=>I<address>] [-i I<idlfile>]
+-[--idl=I<idlfile>] [B<-h>] [B<--help>] [B<-n >I<name>] [B<--name=>I<name>] [B<-p>] [B<--preserve>] [B<-v>] [B<--version>]
++B<idl2deb> [B<-d>I<opts>] [B<--dbopts=>I<opts>] [B<-e>I<address>] [B<--email=>I<address>] [-i I<idlfile>]
++[--idl=I<idlfile>] [B<-h>] [B<--help>] [B<-n>I<name>] [B<--name=>I<name>] [B<-p>] [B<--preserve>] [B<-v>] [B<--version>]
+ 
+ 
+ =head1 DESCRIPTION
+ 

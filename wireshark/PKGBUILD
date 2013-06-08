@@ -1,22 +1,30 @@
 # maintainer: AlmAck
 
 pkgname=wireshark
-pkgver=1.8.6
-pkgrel=4
+pkgver=1.10.0
+pkgrel=1
 pkgdesc='A free network protocol analyzer for Unix/Linux and Windows'
 arch=('x86_64')
 license=('GPL2')
-depends=('libpcap' 'libcap' 'krb5' 'glib2' 'desktop-file-utils' 'hicolor-icon-theme' 'lua' 'libgcrypt' 'filesystem-extra')
+depends=('libpcap' 'libcap' 'krb5' 'glib2' 'desktop-file-utils' 'hicolor-icon-theme' 'lua' 'libgcrypt' 'gtk2' 'filesystem-extra')
 makedepends=('bison' 'flex' 'bash' 'gnutls' 'python' 'portaudio')
 url='http://www.wireshark.org/'
 install=wireshark.install
 options=(!libtool)
-source=(http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('0f51ed901b5e07cceb1373f3368f739be8f1e827')
+source=(http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2
+	pot_utf8_fix.patch
+	AUTHORS_utf8_fix.patch)
+sha1sums=('c78a5d5e589edc8ebc702eb00a284ccbca7721bc'
+	  'ef10675131d0957ade52fb6d0c4542fe8411180d'
+	  '8d511ea7cdf2fc8c5f5685285a37679588900094')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
+  # apply a patch to remove non utf-8 characters
+  patch -Np1 -i ../pot_utf8_fix.patch
+  patch -Np1 -i ../AUTHORS_utf8_fix.patch
+  
   ./autogen.sh
   ./configure \
       --prefix=/extra/usr \
