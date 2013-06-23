@@ -3,15 +3,15 @@
 #
 
 pkgname=chromium
-pkgver=27.0.1453.93
+pkgver=28.0.1500.52
 pkgrel=1
-_verbld=${pkgver}-200836 # used for libpdf and pepper-flash
-_pepperflashver=11.7.700.202
+_verbld=${pkgver}-207119 # used for libpdf and pepper-flash
+_pepperflashver=11.7.700.203
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'filesystem-extra')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'filesystem-extra')
 makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion' 'ninja')
 install=chromium.install
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz 
@@ -22,20 +22,16 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/$pkgna
         chromium.default
         template_url_prepopulate_data.diff
         search_engine_type.diff
-        prepopulated_engines_json.diff
-        system-libpng.patch
-        chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch)
-sha1sums=('0779e5dc73cee50ca2797c6ea4fc515c31bad0aa'
-          'a8e6ec7fcbce370337571e8220bc82b5b14409bc'
+        prepopulated_engines_json.diff)
+sha1sums=('ea2497fd447726593fc6fe55d31e4f1b3c69f3bb'
+          '2fe457c3f92889d2051d7bf452214b80fced6c52'
           'cdda47faa791d56089f92854957070b1ec135c2e'
           'd02e7eaaa5de9407d8744a03a1306c117b659098'
           'fa93e2d3d4d52a1a29a1c446092a158f05751fcc'
           '3d9663f614113c137016fadb963e150f11f17402'
           '90619af5afa000b47ac03ab01b7cba8b6d16daa1'
           'f7a705d539361d63fa0e3fe0e276341c87d484fc'
-          '4ac33284c534b5117741b551cc531589cfa08d75'
-          'bfb59a53456272c901b8e4eb872069ff99a2cbeb'
-          '73fc081513282ae94fe7a050f3636f8d3056b49e')
+          '4ac33284c534b5117741b551cc531589cfa08d75')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -47,8 +43,6 @@ _google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
-  
-  #patch -p1 -i "$srcdir/chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch"
   
   # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
@@ -69,11 +63,13 @@ build() {
     -Dlinux_use_gold_flags=0 \
     -Dlinux_link_pulseaudio=1 \
     -Drelease_extra_cflags="$CFLAGS" \
+    -Dlibspeechd_h_prefix=speech-dispatcher/ \
     -Dffmpeg_branding=Chrome \
     -Dproprietary_codecs=1 \
     -Duse_system_bzip2=1 \
     -Duse_system_flac=1 \
     -Duse_system_ffmpeg=0 \
+    -Duse_system_icu=1 \
     -Duse_system_libevent=1 \
     -Duse_system_libjpeg=1 \
     -Duse_system_libpng=1 \
