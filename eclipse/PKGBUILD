@@ -1,12 +1,12 @@
 
 pkgname=eclipse
-pkgver=4.2.2
-pkgrel=2
-_date=201302041200
+pkgver=4.3
+pkgrel=1
+_date=201306052000
 pkgdesc="An IDE for Java and other languages."
 arch=('x86_64')
 url="http://eclipse.org"
-depends=('openjdk' 'gtk2' 'unzip' 'libwebkit' 'libxtst' 'filesystem-extra')
+depends=('openjdk' 'gtk2' 'unzip' 'libwebkit-gtk2' 'libxtst' 'filesystem-extra')
 install=${pkgname}.install
 makedepends=('zip')
 license=("EPL/1.1")
@@ -19,16 +19,13 @@ license=("EPL/1.1")
 
 source=("ftp://ftp.osuosl.org/pub/eclipse/eclipse/downloads/drops4/R-${pkgver}-${_date}/${pkgname}-SDK-${pkgver}-linux-gtk-x86_64.tar.gz"
         'eclipse.png'
-        'eclipse.desktop'
-        'eclipse.ini.patch')
-md5sums=('902102ec85539f4c9342b2c1c4c67f64'
+        'eclipse.desktop')
+md5sums=('8dba840856c5ca38b3c08ebac9a47cb8'
          '04e05dda343b1b0c521a1e094e69f98b'
-         'ba8a37e30a7ebd69774cec87c69e8c44'
-         'cd4c9c9430445775cff64f13553fdbf5')
+         'ba8a37e30a7ebd69774cec87c69e8c44')
 
 build() {
   cd "${srcdir}/${pkgname}"
-  patch -Np1 -i "${srcdir}/eclipse.ini.patch"
 }
 
 package() {
