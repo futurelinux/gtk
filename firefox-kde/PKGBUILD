@@ -1,15 +1,17 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=21.0
-pkgrel=2
+pkgver=22.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _obsver=b88c72dfdc858f6209feb123227bd7df
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'libevent' 'filesystem-extra' 'kdelibs')
-makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4')
+makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4' 'libpulse')
+optdepends=('networkmanager: Location detection via available WiFi networks'
+            'libpulse: PulseAudio audio driver')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 provides=("firefox=${pkgver}" "kmozillahelper=0.6.4")
 conflicts=('firefox' 'kmozillahelper')
@@ -43,63 +45,20 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
         firefox-kde.patch
         mozilla-nongnome-proxies.patch
         mozilla-kde.patch
-        mozilla-gstreamer-760140.patch
+  	firefox-22.0-do-not-fallback-to-manual-proxy-settings.patch
+	firefox-20.0.1-fixed-loading-icon.png
 	duckduckgo.xml
 	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${pkgname}-${pkgver}.tar.bz2?rev=${_obsver}"
 	move-to-extra.patch
 )
 
-md5sums=('b822ff4b2348410587dec563235d9320'
-         'b2a0c175d063e6c4fe0c7ed6c27ac443'
-         '22c8f014ca98e49c4c107e2671dd0e51'
-         '150ac0fb3ac7b2114c8e8851a9e0516c'
-         'b1b1ad060b411a4abee7dcc63927aa02'
-         '75df0f88cc7a7fa7d522459e4ff82cc5'
-         '194da028eba1fbc316cf37dd586c4112'
-         '79f113b56057e17ca2466cd0ac578bb3'
-         '69a90693ab4fc4d81afd83c1524e73d4'
-         '9f4e6467284a5c82fbba0c0afe862f31'
-         '7303a96e92e600a46dd6a2cf9af5ada5'
-         'f6e2a6759b8711b445dbc9d35cbd275f'
-         '7db8c8904371204fb4c13e9cd306deb0'
-         '4baee75ae2e23b2aa2f129385d4dcb82')
-
-build() {
-	pushd .
-	build_kmozillahelper
-	popd
-	pushd .
-	build_firefox
-	popd
-}
-
-build_kmozillahelper() {
-	pushd .
-	cd kmozillahelper
-	patch -Np1 -i ../move-to-extra.patch || return 1
-	popd
-
-	mkdir -p kmozillahelper-build
-	cd kmozillahelper-build
-
-	cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ../kmozillahelper
-	make || return 1
-
-}
-
-build_firefox() {
+_prepare() {
+  pushd .
   cd "mozilla-release"
-  patch -Np1 -i "../firefox-install-dir.patch"
 
-  # modify the patch to make it under extra
-  cp ../mozilla-kde.patch ../mozilla-kde-mod.patch
-  sed -i 's|\(\+\#define KMOZILLAHELPER "\)\(/usr/lib/mozilla/kmozillahelper"\)|\1/extra\2|' ../mozilla-kde-mod.patch
+  cp "../mozconfig" .mozconfig
 
-  # remove the new file, to make life easier with call makepkg multiple times
-  rm -f content/media/gstreamer/nsGStreamerFormatHelper.cpp \
-        content/media/gstreamer/GStreamerFormatHelper.cpp \
-        content/media/gstreamer/nsGStreamerFormatHelper.h \
-        content/media/gstreamer/GStreamerFormatHelper.h
+  # make makepkg -R easier
   rm -f browser/components/shell/src/nsKDEShellService.cpp \
         browser/components/shell/src/nsKDEShellService.h \
         browser/components/shell/src/nsUnixShellService.cpp \
@@ -114,8 +73,17 @@ build_firefox() {
         toolkit/content/widgets/dialog-kde.xml \
         toolkit/content/widgets/preferences-kde.xml
 
-  msg "apply mozilla-gstreamer-760140.patch"
-  patch -Np1 -i "../mozilla-gstreamer-760140.patch" || return 1
+
+  cp toolkit/components/downloads/nsDownloadManager.cpp{,.bak}
+
+  patch -Np1 -i "../firefox-install-dir.patch"
+
+  # modify the patch to make it under extra
+  cp ../mozilla-kde.patch ../mozilla-kde-mod.patch
+  sed -i 's|\(\+\#define KMOZILLAHELPER "\)\(/usr/lib/mozilla/kmozillahelper"\)|\1/extra\2|' ../mozilla-kde-mod.patch
+  
+  cp toolkit/components/downloads/nsDownloadManager.cpp{.bak,}
+
   msg "apply mozilla-nongnome-proxies.patch"
   patch -Np1 -i "../mozilla-nongnome-proxies.patch" || return 1
   msg "apply mozilla-kde-mod.patch"
@@ -123,12 +91,52 @@ build_firefox() {
   msg "apply firefox-kde.patch"
   patch -Np1 -i "../firefox-kde.patch" || return 1
 
-  cp "../mozconfig" .mozconfig
+  # Should be fixed in Firefox 23
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=817533
+  patch -Np1 -i ../firefox-22.0-do-not-fallback-to-manual-proxy-settings.patch
+
+  mkdir -p "$srcdir/path"
+
+  # WebRTC build tries to execute "python" and expects Python 2
+  ln -sf /usr/bin/python2 "$srcdir/path/python"
 
   # Fix PRE_RELEASE_SUFFIX
   sed -i '/^PRE_RELEASE_SUFFIX := ""/s/ ""//' \
       browser/base/Makefile.in
-  
+
+  # Fix tab loading icon (flickers with libpng 1.6)
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
+  cp "$srcdir/firefox-20.0.1-fixed-loading-icon.png" \
+    browser/themes/linux/tabbrowser/loading.png 
+  popd
+
+  pushd .
+  cd kmozillahelper
+  patch -Np1 -i ../move-to-extra.patch || return 1
+  popd
+}
+
+build() {
+	_prepare
+	pushd .
+	build_kmozillahelper
+	popd
+	pushd .
+	build_firefox
+	popd
+}
+
+build_kmozillahelper() {
+	mkdir -p kmozillahelper-build
+	cd kmozillahelper-build
+
+	cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ../kmozillahelper
+	make || return 1
+}
+
+build_firefox() {
+  cd "mozilla-release"
+ 
   export PATH="$srcdir/path:$PATH"
   export LDFLAGS="$LDFLAGS -Wl,-rpath,/extra/usr/lib/firefox"
   export PYTHON="/usr/bin/python2"
@@ -171,16 +179,18 @@ package() {
   ln -s /usr/share/hyphen "$pkgdir/extra/usr/lib/firefox/hyphenation"
 
 }
-md5sums=('6e2510e9466b280c367de0e4c05a8840'
-         'bbcfd1b4fc60495a7e49a66be1a637f7'
-         '22c8f014ca98e49c4c107e2671dd0e51'
-         '150ac0fb3ac7b2114c8e8851a9e0516c'
-         'b1b1ad060b411a4abee7dcc63927aa02'
-         '75df0f88cc7a7fa7d522459e4ff82cc5'
-         '755528dfc7143f695bf5800f923bf384'
-         '79f113b56057e17ca2466cd0ac578bb3'
-         'f6ee269b0ecfbf6a4ddcf8d45cfd6e4f'
-         '70fb43a673328e3665e999659b3a0d4b'
-         'f6e2a6759b8711b445dbc9d35cbd275f'
-         '7db8c8904371204fb4c13e9cd306deb0'
-         '4baee75ae2e23b2aa2f129385d4dcb82')
+
+sha1sums=('db2d5b028b6ea95b5f006b46e153f50f7a52bf80'
+          '1ab24e03f04c8641c7bba1ace285b9db98feed23'
+          '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
+          '28e6c025e1bfa0784648fcf3876c1ffc7a79aeec'
+          'e0f399de01da908f474c237bc6c5a15678cd8fcd'
+          'ce48f8e5065319e191a7389539ec663dc8a919d7'
+          '417da8cc3599b575c9c26ecd546e612b978cf260'
+          'ec793946d5ae5a3e4e8f2a2f78aacb8f1b50ee04'
+          '3b2481ec13f8eefc2d38c658d2cdedbe538f0816'
+          '783d7ca683b911ef388fd265caef552e1e346d71'
+          '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
+          'aa3442d291bd77fefa3758291baa9c609a74e5dc'
+          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
+          'a905b224834c8f2d40a2f4e39a3f47ba6b1d2952')
