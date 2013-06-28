@@ -4,7 +4,9 @@ pkgname=firefox-kde
 pkgver=22.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
-_obsver=b88c72dfdc858f6209feb123227bd7df
+_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
+_kmozillahelper_pkgname=kmozillahelper
+_kmozillahelper_pkgver=0.6.4
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -13,7 +15,7 @@ makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' '
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libpulse: PulseAudio audio driver')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
-provides=("firefox=${pkgver}" "kmozillahelper=0.6.4")
+provides=("firefox=${pkgver}" "kmozillahelper=${_kmozillahelper_pkgver}")
 conflicts=('firefox' 'kmozillahelper')
 replaces=('kmozillahelper')
 install=firefox.install
@@ -48,7 +50,7 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
   	firefox-22.0-do-not-fallback-to-manual-proxy-settings.patch
 	firefox-20.0.1-fixed-loading-icon.png
 	duckduckgo.xml
-	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${pkgname}-${pkgver}.tar.bz2?rev=${_obsver}"
+	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
 	move-to-extra.patch
 )
 
