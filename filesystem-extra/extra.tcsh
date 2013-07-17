@@ -13,8 +13,3 @@ if ( ! $?XDG_CONFIG_DIRS ) then
 else
   setenv XDG_CONFIG_DIRS $XDG_CONFIG_DIRS:$EXTRADIR/etc/xdg
 endif
-if ( ! $?PYTHONPATH ) then
-  setenv PYTHONPATH $EXTRADIR/usr/lib/python2.7/site-packages:$EXTRADIR/usr/lib/python2.7/site-packages/gtk-2.0
-else
-  setenv PYTHONPATH $PYTHONPATH:$EXTRADIR/usr/lib/python2.7/site-packages:$EXTRADIR/usr/lib/python2.7/site-packages/gtk-2.0
-endif

@@ -2,17 +2,19 @@
 
 pkgname=filesystem-extra
 pkgver=2013.05
-pkgrel=3
+pkgrel=4
 url="http://chakra-project.org"
 license="GPLv2"
 arch=('any')
 pkgdesc="Extra filesystem"
+makedepends=('python2' 'python3')
 groups=('extra')
 install=extra.install
-source=('extra.conf' 'extra.profile' 'extra.tcsh')
+source=('extra.conf' 'extra.profile' 'extra.tcsh' 'get_site_directory.py')
 md5sums=('b0f054b6c5f809927817b345351ed7b6'
-         '261292ee4a7f62a3aa215e350f884d2f'
-         'eb765bc6e868e76bd5eac071beee9583')
+         '82a68055d010cee9447a831a99b82279'
+         '3ab04e0f2ac65f4834e1861d65bbf83d'
+         '265cffea08e37a0651b2296dedd159d3')
 
 package() {
   cd ${pkgdir}
@@ -30,9 +32,26 @@ package() {
   done
   
   # Add a profile for extra
-  install -D -m755 $startdir/src/extra.profile $startdir/pkg/etc/profile.d/extra.sh
-  install -D -m755 $startdir/src/extra.tcsh $startdir/pkg/etc/profile.d/extra.csh
+  install -D -m755 "$srcdir/extra.profile" "$pkgdir/etc/profile.d/extra.sh"
+  install -D -m755 "$srcdir/extra.tcsh" "$pkgdir/etc/profile.d/extra.csh"
 
   # Add /extra/usr/lib to the default library search path
   install -Dm644 "$srcdir/extra.conf" "$pkgdir/etc/ld.so.conf.d/extra.conf"
+
+  # Add /extra/usr/lib/python-${version}/site-packages to python site-packages directory
+  PYTHON2_SITE_DIRECTORY=`python2 "$srcdir/get_site_directory.py"`
+  PYTHON3_SITE_DIRECTORY=`python3 "$srcdir/get_site_directory.py"`
+
+  cat > extra-python2.pth <<EOF
+/extra$PYTHON2_SITE_DIRECTORY
+/extra$PYTHON2_SITE_DIRECTORY/gtk-2.0
+EOF
+
+  cat > extra-python3.pth <<EOF
+/extra$PYTHON3_SITE_DIRECTORY
+/extra$PYTHON3_SITE_DIRECTORY/gtk-2.0
+EOF
+
+  install -Dm644 extra-python2.pth "$pkgdir/$PYTHON2_SITE_DIRECTORY/extra.pth"
+  install -Dm644 extra-python3.pth "$pkgdir/$PYTHON3_SITE_DIRECTORY/extra.pth"
 }

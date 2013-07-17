@@ -16,8 +16,3 @@ if [ ! -z $XDG_CONFIG_DIRS ]; then
 else 
   export XDG_CONFIG_DIRS=$EXTRADIR/etc/xdg 
 fi
-if [ ! -z $PYTHONPATH ]; then
-  export PYTHONPATH=$PYTHONPATH:$EXTRADIR/usr/lib/python2.7/site-packages:$EXTRADIR/usr/lib/python2.7/site-packages/gtk-2.0
-else
-  export PYTHONPATH=$EXTRADIR/usr/lib/python2.7/site-packages:$EXTRADIR/usr/lib/python2.7/site-packages/gtk-2.0
-fi
