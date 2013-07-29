@@ -1,6 +1,6 @@
 pkgname=thunderbird
 pkgver=17.0.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
 license=('MPL' 'GPL')
