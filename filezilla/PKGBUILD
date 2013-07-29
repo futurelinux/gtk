@@ -1,20 +1,23 @@
 pkgname=filezilla
-pkgver=3.7.0.1
+pkgver=3.7.1.1
 pkgrel=1
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
 url="http://filezilla-project.org/"
 license=('GPL')
-depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'hicolor-icon-theme' 'sqlite3' 'filesystem-extra')
-install=filezilla.install
+depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'libsm' 'libxxf86vm' 'hicolor-icon-theme' 'sqlite3' 'filesystem-extra')
+install=${pkgname}.install
+changelog=${pkgname}.changelog
 source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
-        "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz")
-md5sums=('cb07cf02ee4cc767e10e8a022ad0ce0d'
-         'cc6b7f92cab532d2eb88eb7d931de756')
+        "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz"
+        "${pkgname}.changelog")
+sha256sums=('9b848662f84efaba8771cb462cc49588f12bc95480df4e303e848e4499e31855'
+            '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740'
+            'e2a461e6107fd6ff465c44a12c06081f218321e80def249b8d02e80a8b33faf1')
 
 build() {
   cd "${pkgname}-${pkgver}"
-   ./autogen.sh
+  ./autogen.sh
   ./configure \
     --prefix=/extra/usr \
     --disable-manualupdatecheck \
@@ -26,10 +29,16 @@ build() {
 }
 
 package() {
-   cd "${pkgname}-${pkgver}"
+  cd "${pkgname}-${pkgver}"
 
-   make DESTDIR="${pkgdir}" install
+  make DESTDIR="${pkgdir}" install
 
-   mkdir -p $pkgdir/extra/usr/share/filezilla/resources	
-   cp -rf $srcdir/oxygen $pkgdir/extra/usr/share/filezilla/resources/
+  install -dm755 "${pkgdir}/extra/usr/share/filezilla/resources/oxygen"
+  cp -dpr --no-preserve=ownership "${srcdir}/oxygen" "${pkgdir}/extra/usr/share/filezilla/resources/"
+  
+  # Install changelog
+  install -Dm644 NEWS "${startdir}/${pkgname}.changelog"
+  
+  install -dm755 "${pkgdir}/extra/usr/share/doc/${pkgname}"
+  install -Dm644 {AUTHORS,ChangeLog,README} "${pkgdir}/extra/usr/share/doc/${pkgname}/"
 }
