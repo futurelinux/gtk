@@ -1,8 +1,8 @@
 # CCR: Ben R <thebenj88 *AT* gmail *DOT* com>
 
 pkgname=libwebkit-gtk2
-pkgver=1.7.1
-pkgrel=3
+pkgver=1.10.2
+pkgrel=1
 pkgdesc="An opensource web content engine"
 arch=('x86_64')
 url="http://webkitgtk.org/"
@@ -12,30 +12,38 @@ makedepends=('gperf' 'gobject-introspection' 'python2' 'gtk2' 'ruby' 'filesystem
 provides=('libwebkit')
 options=('!libtool' '!emptydirs')
 install=libwebkit.install
-source=(http://webkitgtk.org/releases/webkit-${pkgver}.tar.gz
-	test_netscape-gcc_3.7.patch)
-sha256sums=('d928be29ec403cdaa4ef77766d0b08990b477f97b9cc3d008d347d3040493ed9'
-            '9f00344fecf78335208cd4450328ed48c79d4982f54cefdb05869f33f8fabffe')
+source=(http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz)
+sha256sums=('19234f8e4edfaefe91ed06471a2aa8c71d26dd55d33787eede1dcfc9a3a96d9c')
 
 build() {
-  cd "${srcdir}/webkit-${pkgver}/Tools/DumpRenderTree/TestNetscapePlugIn"
-  patch -uNp1 -i "${srcdir}/test_netscape-gcc_3.7.patch"
-  
-  cd "${srcdir}/webkit-${pkgver}"
-  mkdir build-gtk2
 
-  cd build-gtk2
-  PYTHON=/usr/bin/python2 ../configure --prefix=/extra/usr \
+  cd "${srcdir}/webkitgtk-${pkgver}"
+
+  # Suppress a *lot* of gcc 4.8 warnings
+  CPPFLAGS+=" -Wno-unused-local-typedefs"
+
+  # fix a bug, where documentation is build even when gtk-doc is not installed, which fails
+  # http://www.linuxfromscratch.org/blfs/view/svn/x/webkitgtk.html
+  sed -i '/generate-gtkdoc --rebase/s:^:# :' GNUmakefile.in
+
+
+  PYTHON=/usr/bin/python2 ./configure --prefix=/extra/usr \
     --enable-introspection \
+    --disable-geolocation \
     --with-font-backend=freetype --disable-gtk-doc \
     --with-unicode-backend=icu \
     --with-gtk=2.0 \
+    --disable-webkit2 \
     --enable-spellcheck "$@"
+
+
+  # https://bugzilla.gnome.org/show_bug.cgi?id=655517
+  sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
   make all stamp-po
 }
 
 package() {
-  cd "$srcdir/webkit-$pkgver/build-gtk2"
-  make DESTDIR="${pkgdir}" install
-  install -Dm644 ../Source/WebKit/LICENSE "${pkgdir}/extra/usr/share/licenses/libwebkit/LICENSE"
+  cd "$srcdir/webkitgtk-$pkgver"
+  make -j1 DESTDIR="${pkgdir}" install
 }
