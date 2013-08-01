@@ -2,7 +2,7 @@
 
 pkgname=filesystem-extra
 pkgver=2013.05
-pkgrel=4
+pkgrel=5
 url="http://chakra-project.org"
 license="GPLv2"
 arch=('any')
@@ -12,8 +12,8 @@ groups=('extra')
 install=extra.install
 source=('extra.conf' 'extra.profile' 'extra.tcsh' 'get_site_directory.py')
 md5sums=('b0f054b6c5f809927817b345351ed7b6'
-         '82a68055d010cee9447a831a99b82279'
-         '3ab04e0f2ac65f4834e1861d65bbf83d'
+         'a2834ec1cb203cbb67a5a82460aa4b0a'
+         '5b3f072290c29ebd4989303f8a44e998'
          '265cffea08e37a0651b2296dedd159d3')
 
 package() {

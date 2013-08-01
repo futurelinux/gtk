@@ -13,3 +13,8 @@ if ( ! $?XDG_CONFIG_DIRS ) then
 else
   setenv XDG_CONFIG_DIRS $XDG_CONFIG_DIRS:$EXTRADIR/etc/xdg
 endif
+if ( ! $?GI_TYPELIB_PATH ) then
+  setenv GI_TYPELIB_PATH $EXTRADIR/usr/lib/girepository-1.0
+else
+  export GI_TYPELIB_PATH $GI_TYPELIB_PATH:$EXTRADIR/usr/lib/girepository-1.0
+fi

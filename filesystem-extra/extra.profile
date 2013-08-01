@@ -16,3 +16,8 @@ if [ ! -z $XDG_CONFIG_DIRS ]; then
 else 
   export XDG_CONFIG_DIRS=$EXTRADIR/etc/xdg 
 fi
+if [ ! -z $GI_TYPELIB_PATH ]; then
+  export GI_TYPELIB_PATH=$GI_TYPELIB_PATH:$EXTRADIR/usr/lib/girepository-1.0
+else
+  export GI_TYPELIB_PATH=$EXTRADIR/usr/lib/girepository-1.0
+fi
