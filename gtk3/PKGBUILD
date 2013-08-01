@@ -1,7 +1,7 @@
 pkgname=gtk3
 pkgver=3.6.4
 pkgmin="${pkgver%.*}"
-pkgrel=2
+pkgrel=4
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
@@ -11,7 +11,7 @@ depends=('cairo' 'gtk-update-icon-cache' 'libcups' 'libxcursor'
          'pango' 'shared-mime-info' 'colord' 'at-spi2-atk' 'filesystem-extra')
 makedepends=('gobject-introspection')
 options=('!libtool' '!docs')
-backup=("etc/gtk-3.0/settings.ini" "extra/gtk-3.0/settings.ini")
+backup=("etc/gtk-3.0/settings.ini" "extra/etc/gtk-3.0/settings.ini")
 license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgmin}/gtk+-${pkgver}.tar.xz"
         'settings.ini')

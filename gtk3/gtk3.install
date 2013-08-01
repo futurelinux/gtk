@@ -1,4 +1,6 @@
 post_install() {
+    sbin/ldconfig -r .
+
     extra/usr/bin/gtk-query-immodules-3.0 --update-cache &>/dev/null
     usr/bin/glib-compile-schemas usr/share/glib-2.0/schemas &>/dev/null
 }
@@ -12,5 +14,7 @@ pre_remove() {
     rm -f extra/usr/lib/gtk-3.0/3.0.0/immodules.cache &>/dev/null
 }
 post_remove() {
+    sbin/ldconfig -r .
+
     usr/bin/glib-compile-schemas usr/share/glib-2.0/schemas &>/dev/null
 }
