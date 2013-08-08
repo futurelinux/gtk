@@ -1,8 +1,8 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=22.0
-pkgrel=2
+pkgver=23.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -34,10 +34,6 @@ optdepends=('firefox-i18n: for multilanguage support')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-# Customization in chakra:
-# since 20.0.1-6: remove patch for toolkit/components/downloads/nsDownloadManager.cpp in mozilla-kde.patch
-# since mozilla's own implementation with libnotify is better
-#
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
         mozconfig
         firefox.desktop
@@ -47,7 +43,6 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
         firefox-kde.patch
         mozilla-nongnome-proxies.patch
         mozilla-kde.patch
-  	firefox-22.0-do-not-fallback-to-manual-proxy-settings.patch
 	firefox-20.0.1-fixed-loading-icon.png
 	duckduckgo.xml
 	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
@@ -75,16 +70,11 @@ _prepare() {
         toolkit/content/widgets/dialog-kde.xml \
         toolkit/content/widgets/preferences-kde.xml
 
-
-  cp toolkit/components/downloads/nsDownloadManager.cpp{,.bak}
-
   patch -Np1 -i "../firefox-install-dir.patch"
 
   # modify the patch to make it under extra
   cp ../mozilla-kde.patch ../mozilla-kde-mod.patch
   sed -i 's|\(\+\#define KMOZILLAHELPER "\)\(/usr/lib/mozilla/kmozillahelper"\)|\1/extra\2|' ../mozilla-kde-mod.patch
-  
-  cp toolkit/components/downloads/nsDownloadManager.cpp{.bak,}
 
   msg "apply mozilla-nongnome-proxies.patch"
   patch -Np1 -i "../mozilla-nongnome-proxies.patch" || return 1
@@ -92,11 +82,7 @@ _prepare() {
   patch -Np1 -i "../mozilla-kde-mod.patch" || return 1
   msg "apply firefox-kde.patch"
   patch -Np1 -i "../firefox-kde.patch" || return 1
-
-  # Should be fixed in Firefox 23
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=817533
-  patch -Np1 -i ../firefox-22.0-do-not-fallback-to-manual-proxy-settings.patch
-
+  
   mkdir -p "$srcdir/path"
 
   # WebRTC build tries to execute "python" and expects Python 2
@@ -182,7 +168,7 @@ package() {
 
 }
 
-sha1sums=('db2d5b028b6ea95b5f006b46e153f50f7a52bf80'
+sha1sums=('31936d2ddb727640c96a3ae697bf145c42a2a20e'
           '1ab24e03f04c8641c7bba1ace285b9db98feed23'
           '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
           '28e6c025e1bfa0784648fcf3876c1ffc7a79aeec'
@@ -191,7 +177,19 @@ sha1sums=('db2d5b028b6ea95b5f006b46e153f50f7a52bf80'
           '417da8cc3599b575c9c26ecd546e612b978cf260'
           'ec793946d5ae5a3e4e8f2a2f78aacb8f1b50ee04'
           '3b2481ec13f8eefc2d38c658d2cdedbe538f0816'
-          '783d7ca683b911ef388fd265caef552e1e346d71'
+          '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
+          'aa3442d291bd77fefa3758291baa9c609a74e5dc'
+          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
+          'a905b224834c8f2d40a2f4e39a3f47ba6b1d2952')
+sha1sums=('31936d2ddb727640c96a3ae697bf145c42a2a20e'
+          '1ab24e03f04c8641c7bba1ace285b9db98feed23'
+          '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
+          '28e6c025e1bfa0784648fcf3876c1ffc7a79aeec'
+          'e0f399de01da908f474c237bc6c5a15678cd8fcd'
+          'ce48f8e5065319e191a7389539ec663dc8a919d7'
+          'b5dd0532eea8d4d14f79c44778792d46b7902bd0'
+          'ec793946d5ae5a3e4e8f2a2f78aacb8f1b50ee04'
+          '325007ae3355bc516f434732c1633da9eec23d79'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           'aa3442d291bd77fefa3758291baa9c609a74e5dc'
           '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
