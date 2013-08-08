@@ -2,7 +2,7 @@
 
 pkgname=filesystem-extra
 pkgver=2013.05
-pkgrel=5
+pkgrel=6
 url="http://chakra-project.org"
 license="GPLv2"
 arch=('any')
@@ -42,16 +42,16 @@ package() {
   PYTHON2_SITE_DIRECTORY=`python2 "$srcdir/get_site_directory.py"`
   PYTHON3_SITE_DIRECTORY=`python3 "$srcdir/get_site_directory.py"`
 
-  cat > extra-python2.pth <<EOF
+  cat > "$srcdir/extra-python2.pth" <<EOF
 /extra$PYTHON2_SITE_DIRECTORY
 /extra$PYTHON2_SITE_DIRECTORY/gtk-2.0
 EOF
 
-  cat > extra-python3.pth <<EOF
+  cat > "$srcdir/extra-python3.pth" <<EOF
 /extra$PYTHON3_SITE_DIRECTORY
 /extra$PYTHON3_SITE_DIRECTORY/gtk-2.0
 EOF
 
-  install -Dm644 extra-python2.pth "$pkgdir/$PYTHON2_SITE_DIRECTORY/extra.pth"
-  install -Dm644 extra-python3.pth "$pkgdir/$PYTHON3_SITE_DIRECTORY/extra.pth"
+  install -Dm644 "$srcdir/extra-python2.pth" "$pkgdir/$PYTHON2_SITE_DIRECTORY/extra.pth"
+  install -Dm644 "$srcdir/extra-python3.pth" "$pkgdir/$PYTHON3_SITE_DIRECTORY/extra.pth"
 }
