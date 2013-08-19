@@ -1,6 +1,6 @@
 pkgname=inkscape
 pkgver=0.48.4
-pkgrel=2
+pkgrel=3
 pkgdesc='Vector graphics editor using the SVG file format'
 url='http://inkscape.sourceforge.net/'
 license=('GPL' 'LGPL')
@@ -33,7 +33,6 @@ prepare() {
 }
 
 build() {
-        prepare
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure \
 		--prefix=/extra/usr \
