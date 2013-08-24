@@ -1,7 +1,7 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=23.0
+pkgver=23.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
@@ -168,20 +168,7 @@ package() {
 
 }
 
-sha1sums=('31936d2ddb727640c96a3ae697bf145c42a2a20e'
-          '1ab24e03f04c8641c7bba1ace285b9db98feed23'
-          '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
-          '28e6c025e1bfa0784648fcf3876c1ffc7a79aeec'
-          'e0f399de01da908f474c237bc6c5a15678cd8fcd'
-          'ce48f8e5065319e191a7389539ec663dc8a919d7'
-          '417da8cc3599b575c9c26ecd546e612b978cf260'
-          'ec793946d5ae5a3e4e8f2a2f78aacb8f1b50ee04'
-          '3b2481ec13f8eefc2d38c658d2cdedbe538f0816'
-          '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
-          'aa3442d291bd77fefa3758291baa9c609a74e5dc'
-          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
-          'a905b224834c8f2d40a2f4e39a3f47ba6b1d2952')
-sha1sums=('31936d2ddb727640c96a3ae697bf145c42a2a20e'
+sha1sums=('937bcd41aa316afff60b04fa4813f59bb9608631'
           '1ab24e03f04c8641c7bba1ace285b9db98feed23'
           '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
           '28e6c025e1bfa0784648fcf3876c1ffc7a79aeec'
