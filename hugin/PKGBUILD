@@ -2,7 +2,7 @@
 
 pkgname=hugin
 pkgver=2012.0.0
-pkgrel=4
+pkgrel=5
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
@@ -17,6 +17,9 @@ install=install
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
+	sed 's/Luk.... Jirkovsk../Lukas Jirkovsky/g' -i doc/deghosting_mask.pod
+	# pod2man limitation (makepkg uses LC_ALL=C and Unicode chars take two bytes)
+	
 	export CXXFLAGS+=" -fpermissive" 
 	cmake . \
 		-DCMAKE_BUILD_TYPE=Release \

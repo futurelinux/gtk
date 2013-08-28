@@ -1,12 +1,12 @@
 
 pkgname=eclipse
 pkgver=4.3
-pkgrel=1
+pkgrel=2
 _date=201306052000
 pkgdesc="An IDE for Java and other languages."
 arch=('x86_64')
 url="http://eclipse.org"
-depends=('openjdk' 'gtk2' 'unzip' 'libwebkit-gtk2' 'libxtst' 'filesystem-extra')
+depends=('java-environment' 'gtk2' 'unzip' 'libwebkit-gtk2' 'libxtst' 'filesystem-extra')
 install=${pkgname}.install
 makedepends=('zip')
 license=("EPL/1.1")
