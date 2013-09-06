@@ -3,10 +3,10 @@
 #
 
 pkgname=chromium
-pkgver=29.0.1547.62
+pkgver=29.0.1547.65
 pkgrel=1
-_verbld=${pkgver}-219432 # used for libpdf and pepper-flash
-_pepperflashver=11.8.800.115
+_verbld=${pkgver}-220622 # used for libpdf and pepper-flash
+_pepperflashver=11.8.800.154
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
 url="http://www.chromium.org/"
@@ -23,8 +23,8 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/$pkgna
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff)
-sha1sums=('e39a45beabc1b16053b2d49c9d35221e9ff35cc3'
-          '9455e975f35fade07b34c03ba594bb6ee4ea732c'
+sha1sums=('391679dead54ddc20ed0a3b95becd697b59d9d48'
+          'b92e472240ba85c191eae40b70f04a64f7af5e54'
           'cdda47faa791d56089f92854957070b1ec135c2e'
           'd02e7eaaa5de9407d8744a03a1306c117b659098'
           'fa93e2d3d4d52a1a29a1c446092a158f05751fcc'

@@ -1,6 +1,6 @@
 [ -f extra/etc/chromium-browser/default ] && _default='extra/etc/chromium-browser/default'
 [ -f extra/etc/chromium/default ] && _default='extra/etc/chromium/default'
-flashver=11.7.700.169
+flashver=11.8.800.154
 
 post_install() {
 	xdg-icon-resource forceupdate --theme hicolor &> /dev/null
