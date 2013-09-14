@@ -1,7 +1,7 @@
 # maintainer: AlmAck
 
 pkgname=wireshark
-pkgver=1.10.1
+pkgver=1.10.2
 pkgrel=1
 pkgdesc='A free network protocol analyzer for Unix/Linux and Windows'
 arch=('x86_64')
@@ -13,13 +13,13 @@ install=wireshark.install
 options=(!libtool)
 source=(http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2
 	01_fix_pod_file.patch)
-sha1sums=('7763c864c1e3a3b4e6b6947631392b35fefe4187'
+sha1sums=('1f8f877f17dea23e1cf2bafeef0f71323df43521'
 	  '36d7140c536954337f0399cbcfc6d43e54929d61')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  patch -p1 <${srcdir}/01_fix_pod_file.patch
+  #patch -p1 <${srcdir}/01_fix_pod_file.patch
   
   ./autogen.sh
   ./configure \
