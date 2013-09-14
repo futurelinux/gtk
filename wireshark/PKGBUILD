@@ -11,15 +11,11 @@ makedepends=('bison' 'flex' 'bash' 'gnutls' 'python' 'portaudio')
 url='http://www.wireshark.org/'
 install=wireshark.install
 options=(!libtool)
-source=(http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2
-	01_fix_pod_file.patch)
-sha1sums=('1f8f877f17dea23e1cf2bafeef0f71323df43521'
-	  '36d7140c536954337f0399cbcfc6d43e54929d61')
+source=(http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2)
+sha1sums=('1f8f877f17dea23e1cf2bafeef0f71323df43521')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
-  #patch -p1 <${srcdir}/01_fix_pod_file.patch
   
   ./autogen.sh
   ./configure \
