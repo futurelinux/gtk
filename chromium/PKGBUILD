@@ -3,34 +3,51 @@
 #
 
 pkgname=chromium
-pkgver=29.0.1547.76
+pkgver=30.0.1599.66
 pkgrel=1
-_verbld=${pkgver}-223446 # used for libpdf and pepper-flash
+_verbld=${pkgver}-1 # used for libpdf and pepper-flash
 _pepperflashver=11.8.800.170
+_toolchains_rev=12029
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
 depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'filesystem-extra')
-makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion' 'ninja')
+makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion' 'lib32-gcc-libs' 'lib32-zlib' 'ninja')
 install=chromium.install
-source=(http://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz 
-	http://dl.google.com/linux/chrome/rpm/stable/${CARCH}/google-chrome-stable-${_verbld}.${CARCH}.rpm
-	license.html::http://www.google.com/chrome/intl/en/eula_text.html
+source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgname}-${pkgver}.tar.xz                 
+        http://dl.google.com/linux/chrome/rpm/stable/${CARCH}/google-chrome-stable-${_verbld}.x86_64.rpm
+        license.html::http://www.google.com/chrome/intl/en/eula_text.html
+        naclsdk_nacl_linux_x86-$_toolchains_rev.tgz::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_toolchains_rev/naclsdk_linux_x86.tgz
+        naclsdk_pnacl_linux_x86-$_toolchains_rev.tgz::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_toolchains_rev/naclsdk_pnacl_linux_x86.tgz
+        naclsdk_pnacl_translator-$_toolchains_rev.tgz::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_toolchains_rev/naclsdk_pnacl_translator.tgz
+        naclsdk_pnacl_translator-$_toolchains_rev.tgz.sha1hash::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_toolchains_rev/naclsdk_pnacl_translator.tgz.sha1hash
+        toolchain_linux_x86-$_toolchains_rev.tar.bz2::https://commondatastorage.googleapis.com/nativeclient-archive2/x86_toolchain/r$_toolchains_rev/toolchain_linux_x86.tar.bz2
         chromium.desktop
         chromium.sh
         chromium.default
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff)
-sha1sums=('9dc311ba925ab05cfca3f49df8d71b23d09de57f'
-          '82cb14f18110cb3dc62f4733cc851b475fe0cf39'
+        
+noextract=(naclsdk_nacl_linux_x86-$_toolchains_rev.tgz
+           naclsdk_pnacl_linux_x86-$_toolchains_rev.tgz
+           naclsdk_pnacl_translator-$_toolchains_rev.tgz
+           toolchain_linux_x86-$_toolchains_rev.tar.bz2)
+           
+sha1sums=('b6970ad5972906ac9cf482700d54209ffda50ea2'
+          '0b82915c439109f34685dbd404257143b659369c'
           'cdda47faa791d56089f92854957070b1ec135c2e'
+          'b8145d737f60b5518bf439cfd8a64ac10b244c6b'
+          '3b4526c84f7e585bf3fa719e6e83b117d42b6c34'
+          '4dba1c5504537a3565cd93345e4c6eabd98d5d05'
+          'd9f4b2b624e8580c947ddf2377480122b295460f'
+          'b595fda0dc2f18af1723976a9bf9c5725d3ec31c'
           'd02e7eaaa5de9407d8744a03a1306c117b659098'
           'fa93e2d3d4d52a1a29a1c446092a158f05751fcc'
           '3d9663f614113c137016fadb963e150f11f17402'
-          '90619af5afa000b47ac03ab01b7cba8b6d16daa1'
-          'f7a705d539361d63fa0e3fe0e276341c87d484fc'
+          '5cd50202719569cb9bc6624ad0bb3c9cbbc5a828'
+          '51065e45d0060374346f3c756a6b1cd0d1fb1323'
           '4ac33284c534b5117741b551cc531589cfa08d75')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -40,28 +57,52 @@ _google_api_key=AIzaSyA33sdKPff0x3KBByOhpzc1i7RS2A1mEpY
 _google_default_client_id=3502044743.apps.googleusercontent.com
 _google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
 
-
-build() {
+prepare() {
   cd "$srcdir/$pkgname-$pkgver"
-  
+
   # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
   patch -p1 -i "$srcdir/search_engine_type.diff"
   patch -p1 -i "$srcdir/prepopulated_engines_json.diff"
 
+  # Prepare NaCL toolchain
+  mkdir native_client/toolchain/{.tars,pnacl_translator}
+  ln -s "$srcdir/naclsdk_nacl_linux_x86-$_toolchains_rev.tgz" \
+    native_client/toolchain/.tars/naclsdk_linux_x86.tgz
+  ln -s "$srcdir/naclsdk_pnacl_linux_x86-$_toolchains_rev.tgz" \
+    native_client/toolchain/.tars/naclsdk_pnacl_linux_x86.tgz
+  ln -s "$srcdir/naclsdk_pnacl_translator-$_toolchains_rev.tgz" \
+    native_client/toolchain/.tars/naclsdk_pnacl_translator.tgz
+  ln -s "$srcdir/naclsdk_pnacl_translator-$_toolchains_rev.tgz.sha1hash" \
+    native_client/toolchain/pnacl_translator/SOURCE_SHA1
+  ln -s "$srcdir/toolchain_linux_x86-$_toolchains_rev.tar.bz2" \
+    native_client/toolchain/.tars/toolchain_linux_x86.tar.bz2
+}
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
   # activate ninja compile method
   export GYP_GENERATORS='ninja'
+  
+  # ToDo 
+  # enable icu with new version, 30.0.1599.66 returns some error during configuration
+  # activate link libspeechd when speech-dispatcher is >= 0.8
+  
+  # NOTE
+  # -Dremove_webcore_debug_symbols=1  speed up the build by removing debug symbols for webkit
   
   build/gyp_chromium --depth=. \
     -Dgoogle_api_key=$_google_api_key \
     -Dgoogle_default_client_id=$_google_default_client_id \
     -Dgoogle_default_client_secret=$_google_default_client_secret \
     -Dwerror= \
-    -Dlinux_sandbox_path=/extra/usr/lib/chromium/chromium-sandbox \
     -Dlinux_strip_binary=1 \
     -Dlinux_use_gold_binary=0 \
     -Dlinux_use_gold_flags=0 \
+    -Dlogging_like_official_build=1 \
     -Dlinux_link_pulseaudio=1 \
+    -Dlinux_link_libspeechd=0 \
     -Drelease_extra_cflags="$CFLAGS" \
     -Dlibspeechd_h_prefix=speech-dispatcher/ \
     -Dffmpeg_branding=Chrome \
@@ -69,7 +110,7 @@ build() {
     -Duse_system_bzip2=1 \
     -Duse_system_flac=1 \
     -Duse_system_ffmpeg=0 \
-    -Duse_system_icu=1 \
+    -Duse_system_icu=0 \
     -Duse_system_libevent=1 \
     -Duse_system_libjpeg=1 \
     -Duse_system_libpng=1 \
@@ -81,14 +122,15 @@ build() {
     -Duse_system_zlib=0 \
     -Duse_gconf=0 \
     -Dtarget_arch=x64 \
-    -Ddisable_nacl=1 
+    -Dremove_webcore_debug_symbols=1
+    #-Ddisable_nacl=1 
 
-  make chrome chrome_sandbox BUILDTYPE=Release
+  #make chrome chrome_sandbox BUILDTYPE=Release
   
   # Build chrome base
-  #ninja -C out/Release chrome
+  ninja -C out/Release chrome
   # Build the required SUID_SANDBOX helper
-  #ninja -C out/Release chrome_sandbox
+  ninja -C out/Release chrome_sandbox
 }
 
 package() {
@@ -97,9 +139,10 @@ package() {
   install -D out/Release/chrome ${pkgdir}/extra/usr/lib/chromium/chromium
 
   install -Dm4755 -o root -g root out/Release/chrome_sandbox \
-    "$pkgdir/extra/usr/lib/chromium/chromium-sandbox"
+    "$pkgdir/extra/usr/lib/chromium/chrome-sandbox"
 
-  cp out/Release/{*.pak,libffmpegsumo.so} \
+  cp out/Release/{*.pak,libffmpegsumo.so,nacl_helper{,_bootstrap}} \
+    out/Release/{libppGoogleNaClPluginChrome.so,nacl_irt_*.nexe} \
     "$pkgdir/extra/usr/lib/chromium/"
 
   # override command-line options
