@@ -4,7 +4,7 @@
 
 pkgname=chromium
 pkgver=30.0.1599.66
-pkgrel=1
+pkgrel=2
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
 _pepperflashver=11.8.800.170
 _toolchains_rev=12029
@@ -12,8 +12,8 @@ pkgdesc="The open-source project behind Google Chrome, an attempt at creating a 
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'filesystem-extra')
-makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion' 'lib32-gcc-libs' 'lib32-zlib' 'ninja')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'v8' 'zlib' 'lib32-gcc-libs' 'filesystem-extra')
+makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion' 'ninja')
 install=chromium.install
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgname}-${pkgver}.tar.xz                 
         http://dl.google.com/linux/chrome/rpm/stable/${CARCH}/google-chrome-stable-${_verbld}.x86_64.rpm
@@ -28,7 +28,8 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         chromium.default
         template_url_prepopulate_data.diff
         search_engine_type.diff
-        prepopulated_engines_json.diff)
+        prepopulated_engines_json.diff
+        chromium-system-icu-r0.patch)
         
 noextract=(naclsdk_nacl_linux_x86-$_toolchains_rev.tgz
            naclsdk_pnacl_linux_x86-$_toolchains_rev.tgz
@@ -48,7 +49,8 @@ sha1sums=('b6970ad5972906ac9cf482700d54209ffda50ea2'
           '3d9663f614113c137016fadb963e150f11f17402'
           '5cd50202719569cb9bc6624ad0bb3c9cbbc5a828'
           '51065e45d0060374346f3c756a6b1cd0d1fb1323'
-          '4ac33284c534b5117741b551cc531589cfa08d75')
+          '4ac33284c534b5117741b551cc531589cfa08d75'
+          '88478f33ac3bad1933ca7a5cc7e0d5441d170f1a')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -64,6 +66,9 @@ prepare() {
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
   patch -p1 -i "$srcdir/search_engine_type.diff"
   patch -p1 -i "$srcdir/prepopulated_engines_json.diff"
+  
+  # Fix build with system ICU (patch from Gentoo)
+  #patch -Np0 -i "$srcdir/chromium-system-icu-r0.patch"
 
   # Prepare NaCL toolchain
   mkdir native_client/toolchain/{.tars,pnacl_translator}
@@ -77,6 +82,7 @@ prepare() {
     native_client/toolchain/pnacl_translator/SOURCE_SHA1
   ln -s "$srcdir/toolchain_linux_x86-$_toolchains_rev.tar.bz2" \
     native_client/toolchain/.tars/toolchain_linux_x86.tar.bz2
+
 }
 
 build() {
@@ -87,7 +93,6 @@ build() {
   
   # ToDo 
   # enable icu with new version, 30.0.1599.66 returns some error during configuration
-  # activate link libspeechd when speech-dispatcher is >= 0.8
   
   # NOTE
   # -Dremove_webcore_debug_symbols=1  speed up the build by removing debug symbols for webkit
@@ -102,7 +107,7 @@ build() {
     -Dlinux_use_gold_flags=0 \
     -Dlogging_like_official_build=1 \
     -Dlinux_link_pulseaudio=1 \
-    -Dlinux_link_libspeechd=0 \
+    -Dlinux_link_libspeechd=1 \
     -Drelease_extra_cflags="$CFLAGS" \
     -Dlibspeechd_h_prefix=speech-dispatcher/ \
     -Dffmpeg_branding=Chrome \
@@ -119,7 +124,8 @@ build() {
     -Duse_system_ssl=0 \
     -Duse_system_xdg_utils=1 \
     -Duse_system_yasm=1 \
-    -Duse_system_zlib=0 \
+    -Duse_system_zlib=1 \
+    -Duse_system_v8=1 \
     -Duse_gconf=0 \
     -Dtarget_arch=x64 \
     -Dremove_webcore_debug_symbols=1
