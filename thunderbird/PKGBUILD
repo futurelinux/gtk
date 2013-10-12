@@ -1,12 +1,15 @@
 pkgname=thunderbird
-pkgver=24.0
+pkgver=24.0.1
 pkgrel=1
 pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
 license=('MPL' 'GPL')
 url="http://www.mozilla.org/thunderbird/"
-depends=('alsa-lib' 'dbus-glib' 'desktop-file-utils' 'gtk2' 'hicolor-icon-theme' 'hunspell' 'libevent' 'libnotify' 'libvpx' 'libxt' 'mime-types' 'mozilla-common' 'nss' 'sqlite3' 'startup-notification' 'nspr' 'filesystem-extra')
-makedepends=('unzip' 'zip' 'pkg-config' 'python2' 'wireless_tools' 'yasm' 'mesa' 'autoconf2.13')
+depends=('alsa-lib' 'dbus-glib' 'desktop-file-utils' 'gtk2' 'hicolor-icon-theme' 'hunspell' 'libevent' 'libnotify'
+         'libvpx' 'libxt' 'mime-types' 'mozilla-common' 'nss' 'sqlite3' 'startup-notification' 'nspr'
+         'filesystem-extra')
+makedepends=('unzip' 'zip' 'pkg-config' 'python2' 'wireless_tools' 'yasm' 'mesa' 'autoconf2.13' 
+             'gstreamer0.10-base-plugins')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 install=thunderbird.install
@@ -16,7 +19,7 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sourc
         thunderbird-install-dir.patch
         vendor.js)
 options=(!emptydirs)
-md5sums=('38f4b2e574751e4e6cbe36dc8b3bce20'
+md5sums=('c45da94c03fe5bdd624ca016058a8eb2'
          '2e6dfd672d63a72d1e2fe1f9b91807e6'
          'af3e5b344d2edf1c7d61bb0a5a96de9a'
          '1c6f47b315a5d7830f8e901b1f723cfc'
