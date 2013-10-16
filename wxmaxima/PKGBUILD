@@ -1,6 +1,6 @@
 pkgname=wxmaxima
 pkgver=13.04.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A wxWidgets GUI for the computer algebra system Maxima"
 arch=('x86_64')
 url="http://wxmaxima.sourceforge.net/"
