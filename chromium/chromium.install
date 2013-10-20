@@ -1,6 +1,6 @@
 [ -f extra/etc/chromium-browser/default ] && _default='extra/etc/chromium-browser/default'
 [ -f extra/etc/chromium/default ] && _default='extra/etc/chromium/default'
-flashver=11.8.800.154
+flashver=11.9.900.117
 
 instructions() {
 
@@ -24,6 +24,7 @@ post_install() {
 
 post_upgrade() {
 	xdg-icon-resource forceupdate --theme hicolor &> /dev/null
+	/usr/bin/kbuildsycoca4 --global --noincremental &> /dev/null
 		
 	if [[ $(cat "$_default") == *ppapi* ]]; then
 	  sed -i "s/ppapi-flash-version=.*[0-9]/ppapi-flash-version=$flashver/g" "$_default"
@@ -34,6 +35,7 @@ post_upgrade() {
 
 post_remove() {
 	xdg-icon-resource forceupdate --theme hicolor &> /dev/null
+	/usr/bin/kbuildsycoca4 --global --noincremental &> /dev/null
 	
 	if [ -f "$_default" ]; then
 	  sed -i 's| --ppapi-flash-path=/usr/lib/PepperFlash/libpepflashplayer.so --ppapi-flash-version=1.*[0-999]||' "$_default"

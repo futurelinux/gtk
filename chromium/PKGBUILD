@@ -3,10 +3,10 @@
 #
 
 pkgname=chromium
-pkgver=30.0.1599.66
-pkgrel=2
+pkgver=30.0.1599.101
+pkgrel=1
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
-_pepperflashver=11.8.800.170
+_pepperflashver=11.9.900.117
 _toolchains_rev=12029
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -36,8 +36,8 @@ noextract=(naclsdk_nacl_linux_x86-$_toolchains_rev.tgz
            naclsdk_pnacl_translator-$_toolchains_rev.tgz
            toolchain_linux_x86-$_toolchains_rev.tar.bz2)
            
-sha1sums=('b6970ad5972906ac9cf482700d54209ffda50ea2'
-          '0b82915c439109f34685dbd404257143b659369c'
+sha1sums=('141c29c614574ec24992c620e7e49c4e89e5b73b'
+          '4c8049b1f68a284e3101e657d7d8149342e73f8b'
           'cdda47faa791d56089f92854957070b1ec135c2e'
           'b8145d737f60b5518bf439cfd8a64ac10b244c6b'
           '3b4526c84f7e585bf3fa719e6e83b117d42b6c34'
