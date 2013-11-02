@@ -3,8 +3,8 @@
 #
 
 pkgname=chromium
-pkgver=30.0.1599.101
-pkgrel=1
+pkgver=30.0.1599.114
+pkgrel=2
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
 _pepperflashver=11.9.900.117
 _toolchains_rev=12029
@@ -12,8 +12,8 @@ pkgdesc="The open-source project behind Google Chrome, an attempt at creating a 
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'v8' 'zlib' 'lib32-gcc-libs' 'filesystem-extra')
-makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion' 'ninja')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'v8' 'zlib' 'filesystem-extra')
+makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'lib32-gcc-libs' 'subversion' 'ninja')
 install=chromium.install
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgname}-${pkgver}.tar.xz                 
         http://dl.google.com/linux/chrome/rpm/stable/${CARCH}/google-chrome-stable-${_verbld}.x86_64.rpm
@@ -36,8 +36,8 @@ noextract=(naclsdk_nacl_linux_x86-$_toolchains_rev.tgz
            naclsdk_pnacl_translator-$_toolchains_rev.tgz
            toolchain_linux_x86-$_toolchains_rev.tar.bz2)
            
-sha1sums=('141c29c614574ec24992c620e7e49c4e89e5b73b'
-          '4c8049b1f68a284e3101e657d7d8149342e73f8b'
+sha1sums=('70477efec5b6fa1b4ca81f3087e40bf7fd377cf4'
+          'fa409c54c023ee56a625069917640529f73937a5'
           'cdda47faa791d56089f92854957070b1ec135c2e'
           'b8145d737f60b5518bf439cfd8a64ac10b244c6b'
           '3b4526c84f7e585bf3fa719e6e83b117d42b6c34'
