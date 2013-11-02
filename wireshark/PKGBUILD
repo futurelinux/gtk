@@ -1,7 +1,7 @@
 # maintainer: AlmAck
 
 pkgname=wireshark
-pkgver=1.10.2
+pkgver=1.10.3
 pkgrel=1
 pkgdesc='A free network protocol analyzer for Unix/Linux and Windows'
 arch=('x86_64')
@@ -9,13 +9,13 @@ license=('GPL2')
 depends=('libpcap' 'libcap' 'krb5' 'glib2' 'desktop-file-utils' 'hicolor-icon-theme' 'lua' 'libgcrypt' 'gtk2' 'filesystem-extra')
 makedepends=('bison' 'flex' 'bash' 'gnutls' 'python' 'portaudio')
 url='http://www.wireshark.org/'
-install=wireshark.install
-options=(!libtool)
-source=(http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('1f8f877f17dea23e1cf2bafeef0f71323df43521')
+install=${pkgname}.install
+options=('!libtool')
+source=("http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('c1641b36aeb0ca2c1a95fb01d2c647888b65e00a215c9a6464b5fc61e0fd498c')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./autogen.sh
   ./configure \
@@ -33,7 +33,7 @@ build() {
 package() {
 
   ### GTK cli ###
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   make DESTDIR="${pkgdir}" install
 
@@ -43,11 +43,11 @@ package() {
   #rm "${pkgdir}/extra/usr/bin/wireshark"
 
   # Headers
-  install -dm755 ${pkgdir}/extra/usr/include/${pkgname}/{epan/{crypt,dfilter,dissectors,ftypes},wiretap,wsutil}
+  install -dm755 "${pkgdir}"/extra/usr/include/${pkgname}/{epan/{crypt,dfilter,dissectors,ftypes},wiretap,wsutil}
 
   install -m644 color.h config.h register.h "${pkgdir}/extra/usr/include/${pkgname}"
   for d in epan epan/crypt epan/dfilter epan/dissectors epan/ftypes wiretap wsutil; do
-    install -m644 ${d}/*.h ${pkgdir}/extra/usr/include/${pkgname}/${d}
+    install -m644 ${d}/*.h "${pkgdir}"/extra/usr/include/${pkgname}/${d}
   done
   
   
