@@ -2,7 +2,7 @@
 
 pkgname=libwebkit-gtk2
 pkgver=1.10.2
-pkgrel=1
+pkgrel=2
 pkgdesc="An opensource web content engine"
 arch=('x86_64')
 url="http://webkitgtk.org/"
@@ -10,7 +10,7 @@ license=('custom')
 depends=('libxt' 'libxslt' 'sqlite3' 'icu' 'gstreamer0.10-base' 'libsoup' 'enchant')
 makedepends=('gperf' 'gobject-introspection' 'python2' 'gtk2' 'ruby' 'filesystem-extra')
 provides=('libwebkit')
-options=('!libtool' '!emptydirs')
+options=('!emptydirs')
 install=libwebkit.install
 source=(http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz)
 sha256sums=('19234f8e4edfaefe91ed06471a2aa8c71d26dd55d33787eede1dcfc9a3a96d9c')
