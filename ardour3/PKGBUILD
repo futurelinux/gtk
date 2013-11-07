@@ -1,29 +1,30 @@
 pkgname=ardour
 _pkgname=Ardour3
-pkgver=3.3
+pkgver=3.5.14
+_pkgver=3.5
 pkgrel=1
 pkgdesc="Professional-grade digital audio workstation"
 arch=('x86_64')
 url="http://ardour.org/"
 license=('GPL')
-depends=('liblrdf' 'liblo' 'libsmf' 'lilv>=0.16.0'
-         'aubio' 'libgnomecanvasmm' 'suil>=0.6.12')
+depends=('liblrdf' 'liblo' 'libsmf' 'lilv'
+         'aubio' 'libgnomecanvasmm' 'suil')
 makedepends=('python2' 'boost' 'cppunit' 'doxygen' 'graphviz')
 install=$pkgname.install
 source=("ftp://ftp.archlinux.org/other/$pkgname/${_pkgname}-$pkgver.tar.bz2"
         "$pkgname.desktop")
-md5sums=('40edf6ab63488d52abf94a2a48d7ac97'
+md5sums=('2e472cb38938a2e1fe3fb5b89d705adc'
          '1c1b9acc4636f87264337151b76ee3cf')
 
 prepare() {
-  cd "$srcdir/$_pkgname-$pkgver"
+  cd "$srcdir/$_pkgname-$_pkgver"
 
   # python2 fix
-  sed -i 's/python ${SRC}/python2 ${SRC}/' libs/pbd/wscript
+  #sed -i 's/python ${SRC}/python2 ${SRC}/' libs/pbd/wscript
 }
 
 build() {
-  cd "$srcdir/$_pkgname-$pkgver"
+  cd "$srcdir/$_pkgname-$_pkgver"
 
   python2 waf configure --prefix=/extra/usr \
                         --configdir=/extra/etc \
@@ -33,7 +34,7 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$_pkgname-$pkgver"
+  cd "$srcdir/$_pkgname-$_pkgver"
 
   python2 waf install --destdir="$pkgdir"
 
