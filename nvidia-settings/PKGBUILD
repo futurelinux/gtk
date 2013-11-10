@@ -4,9 +4,9 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-settings')
 pkgdesc="Gtk Graphical User Interface for nVidia"
-depends=('gtk2' 'pangox-compat' 'filesystem-extra')
+depends=('gtk2' 'pangox-compat')
 pkgver=313.30
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -24,13 +24,13 @@ build() {
 package() {
   cd "${srcdir}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
-  install -D -m755 nvidia-settings "${pkgdir}/extra/usr/bin/nvidia-settings"
-  install -D -m644 nvidia-settings.1.gz "${pkgdir}/extra/usr/share/man/man1/nvidia-settings.1.gz"
-  install -D -m644 nvidia-settings.desktop "${pkgdir}/extra/usr/share/applications/nvidia-settings.desktop"
-  install -D -m644 nvidia-settings.png "${pkgdir}/extra/usr/share/pixmaps/nvidia-settings.png"
-  sed -e 's:__UTILS_PATH__:/extra/usr/bin:' -e 's:__PIXMAP_PATH__:/extra/usr/share/pixmaps:' -i "${pkgdir}/extra/usr/share/applications/nvidia-settings.desktop"
+  install -D -m755 nvidia-settings "${pkgdir}/usr/bin/nvidia-settings"
+  install -D -m644 nvidia-settings.1.gz "${pkgdir}/usr/share/man/man1/nvidia-settings.1.gz"
+  install -D -m644 nvidia-settings.desktop "${pkgdir}/usr/share/applications/nvidia-settings.desktop"
+  install -D -m644 nvidia-settings.png "${pkgdir}/usr/share/pixmaps/nvidia-settings.png"
+  sed -e 's:__UTILS_PATH__:/usr/bin:' -e 's:__PIXMAP_PATH__:/usr/share/pixmaps:' -i "${pkgdir}/usr/share/applications/nvidia-settings.desktop"
 
   # Install the autostart .desktop file, so that parameters saved through nvidia-settings
   # are automatically reloaded at each login
-  install -D -m644 "${srcdir}/nvidia-restore-settings.desktop" "${pkgdir}/extra/etc/xdg/autostart/nvidia-restore-settings.desktop"
+  install -D -m644 "${srcdir}/nvidia-restore-settings.desktop" "${pkgdir}/etc/xdg/autostart/nvidia-restore-settings.desktop"
 }

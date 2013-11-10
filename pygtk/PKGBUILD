@@ -1,6 +1,6 @@
 pkgname=pygtk
 pkgver=2.24.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Python bindings for the GTK widget set"
 arch=('x86_64')
 license=('LGPL')
@@ -20,14 +20,14 @@ build() {
   #https://bugzilla.gnome.org/show_bug.cgi?id=623965
   patch -Np1 -i "${srcdir}/python27.patch"
 
-  PYTHON=/usr/bin/python2 ./configure --prefix=/extra/usr
+  PYTHON=/usr/bin/python2 ./configure --prefix=/usr
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
-  install -m644 gtk/gtk-extrafuncs.defs "${pkgdir}/extra/usr/share/pygtk/2.0/defs/"
+  install -m644 gtk/gtk-extrafuncs.defs "${pkgdir}/usr/share/pygtk/2.0/defs/"
 
-  sed -i -e 's#env python$#env python2#' "${pkgdir}"/extra/usr/lib/pygtk/2.0/{,demos/}*.py
+  sed -i -e 's#env python$#env python2#' "${pkgdir}"/usr/lib/pygtk/2.0/{,demos/}*.py
 }

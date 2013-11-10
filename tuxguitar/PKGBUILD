@@ -1,6 +1,6 @@
 pkgname=tuxguitar
 pkgver=1.2
-pkgrel=2
+pkgrel=3
 _jdk=java-7-openjdk
 pkgdesc="multitrack guitar tablature editor and player"
 arch=('x86_64')
@@ -27,7 +27,7 @@ build() {
   patch -p0 -i ${srcdir}/no-cairo.patch
 
   cd $srcdir/tuxguitar-src-$pkgver
-  export CLASSPATH=/extra/usr/share/java/swt.jar:$CLASSPATH
+  export CLASSPATH=/usr/share/java/swt.jar:$CLASSPATH
 
   (cd TuxGuitar/ && ant)
   (cd TuxGuitar-alsa/ && ant)
@@ -84,57 +84,57 @@ build() {
 package() {
   cd $srcdir/tuxguitar-src-$pkgver
 
-  mkdir -p $pkgdir/extra/usr/share/tuxguitar
-  mkdir -p $pkgdir/extra/usr/bin
+  mkdir -p $pkgdir/usr/share/tuxguitar
+  mkdir -p $pkgdir/usr/bin
 
-  cp -r TuxGuitar/share $pkgdir/extra/usr/share/tuxguitar/
-  find -name \*.jar -exec sh -c 'cp {} '$pkgdir'/extra/usr/share/tuxguitar/share/plugins/`basename {}`' \;
-  mv $pkgdir/extra/usr/share/tuxguitar/share/plugins/tuxguitar.jar $pkgdir/extra/usr/share/tuxguitar/
-  cp TuxGuitar/tuxguitar $pkgdir/extra/usr/share/tuxguitar/
+  cp -r TuxGuitar/share $pkgdir/usr/share/tuxguitar/
+  find -name \*.jar -exec sh -c 'cp {} '$pkgdir'/usr/share/tuxguitar/share/plugins/`basename {}`' \;
+  mv $pkgdir/usr/share/tuxguitar/share/plugins/tuxguitar.jar $pkgdir/usr/share/tuxguitar/
+  cp TuxGuitar/tuxguitar $pkgdir/usr/share/tuxguitar/
 
   # alsa
   pushd TuxGuitar-alsa/jni
-  install -D -m0755 libtuxguitar-alsa-jni.so $pkgdir/extra/usr/lib/tuxguitar/libtuxguitar-alsa-jni.so
-  mkdir -p $pkgdir/extra/usr/share/tuxguitar/lib
-  ln -s /usr/lib/tuxguitar/libtuxguitar-alsa-jni.so $pkgdir/extra/usr/share/tuxguitar/lib/libtuxguitar-alsa-jni.so
+  install -D -m0755 libtuxguitar-alsa-jni.so $pkgdir/usr/lib/tuxguitar/libtuxguitar-alsa-jni.so
+  mkdir -p $pkgdir/usr/share/tuxguitar/lib
+  ln -s /usr/lib/tuxguitar/libtuxguitar-alsa-jni.so $pkgdir/usr/share/tuxguitar/lib/libtuxguitar-alsa-jni.so
   popd
 
   # oss
   pushd TuxGuitar-oss/jni
-  install -D -m0755 libtuxguitar-oss-jni.so $pkgdir/extra/usr/lib/tuxguitar/libtuxguitar-oss-jni.so
-  mkdir -p $pkgdir/extra/usr/share/tuxguitar/lib
-  ln -s /usr/lib/tuxguitar/libtuxguitar-oss-jni.so $pkgdir/extra/usr/share/tuxguitar/lib/libtuxguitar-oss-jni.so
+  install -D -m0755 libtuxguitar-oss-jni.so $pkgdir/usr/lib/tuxguitar/libtuxguitar-oss-jni.so
+  mkdir -p $pkgdir/usr/share/tuxguitar/lib
+  ln -s /usr/lib/tuxguitar/libtuxguitar-oss-jni.so $pkgdir/usr/share/tuxguitar/lib/libtuxguitar-oss-jni.so
   popd
 
   # jack
   pushd TuxGuitar-jack/jni
-  install -D -m0755 libtuxguitar-jack-jni.so $pkgdir/extra/usr/lib/tuxguitar/libtuxguitar-jack-jni.so
-  mkdir -p $pkgdir/extra/usr/share/tuxguitar/lib
-  ln -s /usr/lib/tuxguitar/libtuxguitar-jack-jni.so $pkgdir/extra/usr/share/tuxguitar/lib/libtuxguitar-jack-jni.so
+  install -D -m0755 libtuxguitar-jack-jni.so $pkgdir/usr/lib/tuxguitar/libtuxguitar-jack-jni.so
+  mkdir -p $pkgdir/usr/share/tuxguitar/lib
+  ln -s /usr/lib/tuxguitar/libtuxguitar-jack-jni.so $pkgdir/usr/share/tuxguitar/lib/libtuxguitar-jack-jni.so
   popd
 
   # fluidsynth
   pushd TuxGuitar-fluidsynth/jni
-  install -D -m0755 libtuxguitar-fluidsynth-jni.so $pkgdir/extra/usr/lib/tuxguitar/libtuxguitar-fluidsynth-jni.so
-  mkdir -p $pkgdir/extra/usr/share/tuxguitar/lib
-  ln -s /usr/lib/tuxguitar/libtuxguitar-fluidsynth-jni.so $pkgdir/extra/usr/share/tuxguitar/lib/libtuxguitar-fluidsynth-jni.so
+  install -D -m0755 libtuxguitar-fluidsynth-jni.so $pkgdir/usr/lib/tuxguitar/libtuxguitar-fluidsynth-jni.so
+  mkdir -p $pkgdir/usr/share/tuxguitar/lib
+  ln -s /usr/lib/tuxguitar/libtuxguitar-fluidsynth-jni.so $pkgdir/usr/share/tuxguitar/lib/libtuxguitar-fluidsynth-jni.so
   popd
 
   unset CLASSPATH
-  cd $pkgdir/extra/usr/bin
+  cd $pkgdir/usr/bin
   cat >tuxguitar << EOF
 #!/bin/sh
-export CLASSPATH=/extra/usr/share/java/swt.jar:\$CLASSPATH
-export LD_LIBRARY_PATH=/extra/usr/lib:/extra/usr/lib/tuxguitar:\$LD_LIBRARY_PATH
-cd /extra/usr/share/$pkgname
-exec /extra/usr/share/$pkgname/tuxguitar "\$1" "\$2" "\$3" "\$4" "\$5" "\$6" "\$7" "\$8" "\$9"
+export CLASSPATH=/usr/share/java/swt.jar:\$CLASSPATH
+export LD_LIBRARY_PATH=/usr/lib:/usr/lib/tuxguitar:\$LD_LIBRARY_PATH
+cd /usr/share/$pkgname
+exec /usr/share/$pkgname/tuxguitar "\$1" "\$2" "\$3" "\$4" "\$5" "\$6" "\$7" "\$8" "\$9"
 EOF
 
   chmod 755 tuxguitar
-  install -D -m0644 $srcdir/tuxguitar.xml $pkgdir/extra/usr/share/mime/packages/tuxguitar.xml
-  install -D -m0644 $srcdir/tuxguitar.desktop $pkgdir/extra/usr/share/applications/tuxguitar.desktop
+  install -D -m0644 $srcdir/tuxguitar.xml $pkgdir/usr/share/mime/packages/tuxguitar.xml
+  install -D -m0644 $srcdir/tuxguitar.desktop $pkgdir/usr/share/applications/tuxguitar.desktop
   
   # Oxygen theme
-  cp -rf $srcdir/TuxGuitar-Oxygen $pkgdir/extra/usr/share/tuxguitar/share/skins/
+  cp -rf $srcdir/TuxGuitar-Oxygen $pkgdir/usr/share/tuxguitar/share/skins/
 
 }

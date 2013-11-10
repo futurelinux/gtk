@@ -1,12 +1,12 @@
 pkgname=oxygen-gtk2
 pkgver=1.4.0
-pkgrel=1
+pkgrel=2
 pkgdesc="The Oxygen engine for GTK2, for better Qt/GKT+ integration."
 arch=('x86_64')
 url=("https://projects.kde.org/projects/playground/artwork/oxygen-gtk")
 license=('LGPL3' 'GPL')
 depends=('cairo')
-makedepends=('gcc' 'cmake' 'gtk2' 'filesystem-extra')
+makedepends=('gcc' 'cmake' 'gtk2')
 provides=('oxygen-gtk')
 conflicts=('oxygen-gtk')
 categories=('system')
@@ -21,7 +21,7 @@ build() {
 	mkdir build && cd build
 	cmake -DCMAKE_BUILD_TYPE=Release \
 	      -DCMAKE_SKIP_RPATH=ON \
-	      -DCMAKE_INSTALL_PREFIX=/extra/usr .. 
+	      -DCMAKE_INSTALL_PREFIX=/usr .. 
 	make
 }
 

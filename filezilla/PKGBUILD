@@ -1,11 +1,11 @@
 pkgname=filezilla
 pkgver=3.7.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
 url="http://filezilla-project.org/"
 license=('GPL')
-depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'libsm' 'libxxf86vm' 'hicolor-icon-theme' 'sqlite3' 'filesystem-extra')
+depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'libsm' 'libxxf86vm' 'hicolor-icon-theme' 'sqlite3')
 install=${pkgname}.install
 changelog=${pkgname}.changelog
 source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
@@ -19,7 +19,7 @@ build() {
   cd "${pkgname}-${pkgver}"
   ./autogen.sh
   ./configure \
-    --prefix=/extra/usr \
+    --prefix=/usr \
     --disable-manualupdatecheck \
     --disable-autoupdatecheck \
     --disable-static \
@@ -33,12 +33,12 @@ package() {
 
   make DESTDIR="${pkgdir}" install
 
-  install -dm755 "${pkgdir}/extra/usr/share/filezilla/resources/oxygen"
-  cp -dpr --no-preserve=ownership "${srcdir}/oxygen" "${pkgdir}/extra/usr/share/filezilla/resources/"
+  install -dm755 "${pkgdir}/usr/share/filezilla/resources/oxygen"
+  cp -dpr --no-preserve=ownership "${srcdir}/oxygen" "${pkgdir}/usr/share/filezilla/resources/"
   
   # Install changelog
   install -Dm644 NEWS "${startdir}/${pkgname}.changelog"
   
-  install -dm755 "${pkgdir}/extra/usr/share/doc/${pkgname}"
-  install -Dm644 {AUTHORS,ChangeLog,README} "${pkgdir}/extra/usr/share/doc/${pkgname}/"
+  install -dm755 "${pkgdir}/usr/share/doc/${pkgname}"
+  install -Dm644 {AUTHORS,ChangeLog,README} "${pkgdir}/usr/share/doc/${pkgname}/"
 }

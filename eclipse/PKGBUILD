@@ -1,12 +1,12 @@
 
 pkgname=eclipse
 pkgver=4.3.1
-pkgrel=1
+pkgrel=2
 _date=201309111000
 pkgdesc="An IDE for Java and other languages."
 arch=('x86_64')
 url="http://eclipse.org"
-depends=('java-environment' 'gtk2' 'unzip' 'libwebkit-gtk2' 'libxtst' 'filesystem-extra')
+depends=('java-environment' 'gtk2' 'unzip' 'libwebkit-gtk2' 'libxtst')
 install=${pkgname}.install
 makedepends=('zip')
 license=("EPL/1.0")
@@ -32,29 +32,30 @@ package() {
   cd "${srcdir}/${pkgname}"
 
   # install eclipse
-  install -d -m755 "${pkgdir}/extra/usr/share"
-  cp -ar "${srcdir}/eclipse" "${pkgdir}/extra/usr/share/"
+  install -d -m755 "${pkgdir}/usr/share"
+  cp -ar "${srcdir}/eclipse" "${pkgdir}/usr/share/"
 
   # install misc
-  install -d "${pkgdir}/extra/usr/bin" \
-             "${pkgdir}/extra/usr/share/applications" \
-             "${pkgdir}/extra/usr/share/icons/hicolor"/{16x16,32x32,48x48,256x256}/apps
+  install -d "${pkgdir}/usr/bin" \
+             "${pkgdir}/usr/share/applications" \
+             "${pkgdir}/usr/share/icons/hicolor"/{16x16,32x32,48x48,256x256}/apps
 
   # install bin symlink
-  ln -s "/extra/usr/share/eclipse/eclipse" "$pkgdir/extra/usr/bin/"
-  install -m644 "${srcdir}/eclipse.desktop" "${pkgdir}/extra/usr/share/applications/"
+  ln -s "/usr/share/eclipse/eclipse" "$pkgdir/usr/bin/"
+  install -m644 "${srcdir}/eclipse.desktop" "${pkgdir}/usr/share/applications/"
   
   # install icon
-  ln -s "/extra/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse.png"   "${pkgdir}/extra/usr/share/icons/hicolor/16x16/apps/eclipse.png"
-  ln -s "/extra/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse32.png" "${pkgdir}/extra/usr/share/icons/hicolor/32x32/apps/eclipse.png"
-  ln -s "/extra/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse48.png" "${pkgdir}/extra/usr/share/icons/hicolor/48x48/apps/eclipse.png"
-  ln -s "/extra/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse256.png" "${pkgdir}/extra/usr/share/icons/hicolor/256x256/apps/eclipse.png"
+  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse.png"   "${pkgdir}/usr/share/icons/hicolor/16x16/apps/eclipse.png"
+  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse32.png" "${pkgdir}/usr/share/icons/hicolor/32x32/apps/eclipse.png"
+  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse48.png" "${pkgdir}/usr/share/icons/hicolor/48x48/apps/eclipse.png"
+  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse256.png" "${pkgdir}/usr/share/icons/hicolor/256x256/apps/eclipse.png"
 
 
   install -D -m644 "${srcdir}/eclipse.png" \
-                   "${pkgdir}/extra/usr/share/icons/hicolor/512x512/apps/eclipse.png"
+                   "${pkgdir}/usr/share/icons/hicolor/512x512/apps/eclipse.png"
 
   # license
+  install -d -m755 "${pkgdir}/usr/share/licenses/eclipse/"
   mv $pkgdir/usr/share/eclipse/epl-v10.html "$pkgdir/usr/share/licenses/eclipse/epl-v10.html"
 }
 

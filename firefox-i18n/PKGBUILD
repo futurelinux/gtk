@@ -1,11 +1,11 @@
 pkgname=firefox-i18n
 pkgver=25.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Language pack for Firefox"
 arch=('any')
 url="http://www.mozilla.com/"
 license=('MPL' 'GPL')
-depends=("firefox-kde>=$pkgver" 'filesystem-extra')
+depends=("firefox-kde>=$pkgver")
 
 _languages=(
   'ach    "Acoli"'
@@ -115,7 +115,7 @@ package() {
   for _lang in "${_languages[@]}"; do
     _locale=${_lang%% *}
     install -Dm644 firefox-i18n-$pkgver-${_locale}.xpi \
-      "$pkgdir/extra/usr/lib/firefox/browser/extensions/langpack-${_locale}@firefox.mozilla.org.xpi"
+      "$pkgdir/usr/lib/firefox/browser/extensions/langpack-${_locale}@firefox.mozilla.org.xpi"
   done
 }
 

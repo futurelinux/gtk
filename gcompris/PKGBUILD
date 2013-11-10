@@ -1,12 +1,12 @@
 pkgname=('gcompris')
 pkgver=13.11
-pkgrel=1
+pkgrel=2
 pkgdesc="Educational software suite comprising of numerous activities for children aged 2 to 10"
 arch=('x86_64')
 url="http://gcompris.net/"
 license=('GPL3')
 depends=('pygtk' 'python-pyxml' 'librsvg' 'python-pysqlite'
-           'gstreamer0.10-base-plugins' 'filesystem-extra')
+           'gstreamer0.10-base-plugins')
 makedepends=('texinfo' 'texi2html' 'intltool' 'gettext' 'gnuchess')
 optdepends=('gnucap: for computer simulation within the electricity activity'
             'tuxpaint: for the painting activity'
@@ -17,7 +17,7 @@ md5sums=('7c3396c02e44bbf72424ca12bfff9cf3')
 build() {
   cd "$srcdir/$pkgname-$pkgver"
  
-  ./configure --prefix=/extra/usr
+  ./configure --prefix=/usr
   make
 }
  
@@ -26,5 +26,5 @@ package() {
   make DESTDIR="$pkgdir" install
 
   # Fix path for editor
-  sed -i -e "~s~gcompris -a~gcompris -l /extra/usr/lib/gcompris/ -a~" ${pkgdir}/extra/usr/share/applications/gcompris-edit.desktop
+  sed -i -e "~s~gcompris -a~gcompris -l /usr/lib/gcompris/ -a~" ${pkgdir}/usr/share/applications/gcompris-edit.desktop
 }

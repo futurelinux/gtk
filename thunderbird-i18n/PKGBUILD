@@ -1,11 +1,11 @@
 pkgname=thunderbird-i18n
 pkgver=24.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Language pack for Thunderbird"
 arch=('any')
 url="http://www.mozilla.com/"
 license=('MPL' 'GPL')
-depends=("thunderbird>=$pkgver" 'filesystem-extra')
+depends=("thunderbird>=$pkgver")
 _languages=(
   'ar     "Arabic"'
   'ast    "Asturian"'
@@ -136,7 +136,7 @@ package() {
   for _lang in "${_languages[@]}"; do
     _locale=${_lang%% *}
     install -Dm644 thunderbird-i18n-$pkgver-${_locale}.xpi \
-      "$pkgdir/extra/usr/lib/thunderbird/extensions/langpack-${_locale}@thunderbird.mozilla.org.xpi"
+      "$pkgdir/usr/lib/thunderbird/extensions/langpack-${_locale}@thunderbird.mozilla.org.xpi"
   done
 }
 

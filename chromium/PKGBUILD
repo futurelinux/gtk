@@ -4,7 +4,7 @@
 
 pkgname=chromium
 pkgver=30.0.1599.114
-pkgrel=2
+pkgrel=3
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
 _pepperflashver=11.9.900.117
 _toolchains_rev=12029
@@ -12,7 +12,7 @@ pkgdesc="The open-source project behind Google Chrome, an attempt at creating a 
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'v8' 'zlib' 'filesystem-extra')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'v8' 'zlib')
 makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'lib32-gcc-libs' 'subversion' 'ninja')
 install=chromium.install
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgname}-${pkgver}.tar.xz                 
@@ -44,9 +44,9 @@ sha1sums=('70477efec5b6fa1b4ca81f3087e40bf7fd377cf4'
           '4dba1c5504537a3565cd93345e4c6eabd98d5d05'
           'd9f4b2b624e8580c947ddf2377480122b295460f'
           'b595fda0dc2f18af1723976a9bf9c5725d3ec31c'
-          'd02e7eaaa5de9407d8744a03a1306c117b659098'
-          'fa93e2d3d4d52a1a29a1c446092a158f05751fcc'
-          '3d9663f614113c137016fadb963e150f11f17402'
+          '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
+          '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
+          '11332bcd0318d573bea1aa0744213a5d006aecc4'
           '5cd50202719569cb9bc6624ad0bb3c9cbbc5a828'
           '51065e45d0060374346f3c756a6b1cd0d1fb1323'
           '4ac33284c534b5117741b551cc531589cfa08d75'
@@ -142,49 +142,49 @@ build() {
 package() {
   cd "$srcdir/$pkgname-$pkgver"
 
-  install -D out/Release/chrome ${pkgdir}/extra/usr/lib/chromium/chromium
+  install -D out/Release/chrome ${pkgdir}/usr/lib/chromium/chromium
 
   install -Dm4755 -o root -g root out/Release/chrome_sandbox \
-    "$pkgdir/extra/usr/lib/chromium/chrome-sandbox"
+    "$pkgdir/usr/lib/chromium/chrome-sandbox"
 
   cp out/Release/{*.pak,libffmpegsumo.so,nacl_helper{,_bootstrap}} \
     out/Release/{libppGoogleNaClPluginChrome.so,nacl_irt_*.nexe} \
-    "$pkgdir/extra/usr/lib/chromium/"
+    "$pkgdir/usr/lib/chromium/"
 
   # override command-line options
-  install -Dm644 "$srcdir/chromium.default" "$pkgdir/extra/etc/chromium/default"
+  install -Dm644 "$srcdir/chromium.default" "$pkgdir/etc/chromium/default"
 
-  cp -a out/Release/locales out/Release/resources "$pkgdir/extra/usr/lib/chromium/"
+  cp -a out/Release/locales out/Release/resources "$pkgdir/usr/lib/chromium/"
 
-  find "$pkgdir/extra/usr/lib/chromium/" -name '*.d' -type f -delete
+  find "$pkgdir/usr/lib/chromium/" -name '*.d' -type f -delete
 
-  install -Dm644 out/Release/chrome.1 "$pkgdir/extra/usr/share/man/man1/chromium.1"
+  install -Dm644 out/Release/chrome.1 "$pkgdir/usr/share/man/man1/chromium.1"
 
   install -Dm644 "$srcdir/chromium.desktop" \
-    "$pkgdir/extra/usr/share/applications/chromium.desktop"
+    "$pkgdir/usr/share/applications/chromium.desktop"
 
   for size in 22 24 48 64 128 256; do
     install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
-      "$pkgdir/extra/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
   done
   
   for size in 16 32; do
     install -Dm644 "chrome/app/theme/default_100_percent/chromium/product_logo_$size.png" \
-      "$pkgdir/extra/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
   done
 
-  install -D "$srcdir/chromium.sh" "$pkgdir/extra/usr/bin/chromium"
+  install -D "$srcdir/chromium.sh" "$pkgdir/usr/bin/chromium"
 
-  install -Dm644 LICENSE "$pkgdir/extra/usr/share/licenses/chromium/LICENSE"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/chromium/LICENSE"
   
   #### PepperFlash ####
   cd "$srcdir"
-  install -d "$pkgdir/extra/usr/lib/PepperFlash"
-  install -m644 opt/google/chrome/PepperFlash/* "$pkgdir/extra/usr/lib/PepperFlash"
+  install -d "$pkgdir/usr/lib/PepperFlash"
+  install -m644 opt/google/chrome/PepperFlash/* "$pkgdir/usr/lib/PepperFlash"
   sed -i "s/flashver=.*/flashver=$_pepperflashver/" "$startdir/chromium.install"
-  install -Dm644 "$srcdir/license.html" "$pkgdir/extra/usr/share/licenses/$pkgname/license.html"
+  install -Dm644 "$srcdir/license.html" "$pkgdir/usr/share/licenses/$pkgname/license.html"
   
   #### libpdf ####
-  install -d "${pkgdir}/extra/usr/lib/chromium"
-  install -m644 opt/google/chrome/libpdf.so "${pkgdir}/extra/usr/lib/chromium"
+  install -d "${pkgdir}/usr/lib/chromium"
+  install -m644 opt/google/chrome/libpdf.so "${pkgdir}/usr/lib/chromium"
 }

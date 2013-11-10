@@ -1,11 +1,11 @@
 pkgname=qtcurve-gtk2
 pkgver=1.8.16
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 license=('GPL')
 pkgdesc='QtCurve-Gtk2 Add-on for Gtk-integration.'
 url='http://www.kde-look.org/content/show.php?content=40492'
-depends=('gtk2' 'filesystem-extra')
+depends=('gtk2')
 provides=('gtk-integration-engine-qtcurve')
 conflicts=('gtk-integration-engine-qtcurve')
 replaces=('gtk-integration-engine-qtcurve')
@@ -24,15 +24,11 @@ build() {
 
   cmake "${srcdir}/QtCurve-Gtk2-${pkgver}" \
         -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX=/extra/usr 
+        -DCMAKE_INSTALL_PREFIX=/usr 
   make
 }
 
 package() {
   cd "${srcdir}/build"
   make DESTDIR="${pkgdir}" install
- 
-  # Move engine to /extra
-  cp -rvf ${pkgdir}/usr/* ${pkgdir}/extra/usr
-  rm -rf ${pkgdir}/usr 
 }

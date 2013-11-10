@@ -6,7 +6,7 @@
 pkgbase=gtk2
 pkgname=('gtk2' 'gtk-update-icon-cache')
 pkgver=2.24.17
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.gtk.org/"
 makedepends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
@@ -18,12 +18,19 @@ source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-$pkgver.tar.xz"
 md5sums=('a10cc43fad8d64f8893d779b1f8322ff'
          '22355df723f6ca358e30e6b8f0baace5')
 
+prepare() {
+  cd "${srcdir}/gtk+-${pkgver}"
+
+  patch -Np1 -i "$srcdir/xid-collision-debug.patch"
+}
+
 build() {
     cd "$srcdir/gtk+-$pkgver"
-    patch -Np1 -i "$srcdir/xid-collision-debug.patch"
 
-    CXX=/bin/false ./configure --prefix=/extra/usr \
-        --sysconfdir=/extra/etc \
+    autoreconf -vfi
+    
+    CXX=/bin/false ./configure --prefix=/usr \
+        --sysconfdir=/etc \
         --localstatedir=/var \
         --with-xinput=yes
 
@@ -42,10 +49,10 @@ package_gtk2() {
     cd "$srcdir/gtk+-$pkgver"
 
     make DESTDIR="$pkgdir" install
-    sed -i "s#env python#env python2#" $pkgdir/extra/usr/bin/gtk-builder-convert
-    echo 'gtk-fallback-icon-theme = "gnome"' > "$pkgdir/extra/etc/gtk-2.0/gtkrc"
+    sed -i "s#env python#env python2#" $pkgdir/usr/bin/gtk-builder-convert
+    echo 'gtk-fallback-icon-theme = "gnome"' > "$pkgdir/etc/gtk-2.0/gtkrc"
     #split this out to use with gtk3 too
-    rm $pkgdir/extra/usr/bin/gtk-update-icon-cache
+    rm $pkgdir/usr/bin/gtk-update-icon-cache
 }
 package_gtk-update-icon-cache() {
     pkgdesc="The GTK+ update icon cache tool"
@@ -53,5 +60,5 @@ package_gtk-update-icon-cache() {
 
     cd "$srcdir/gtk+-$pkgver/gtk"
 
-    install -D -m755 gtk-update-icon-cache $pkgdir/extra/usr/bin/gtk-update-icon-cache
+    install -D -m755 gtk-update-icon-cache $pkgdir/usr/bin/gtk-update-icon-cache
 }

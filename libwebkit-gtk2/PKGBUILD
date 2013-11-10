@@ -2,13 +2,13 @@
 
 pkgname=libwebkit-gtk2
 pkgver=1.10.2
-pkgrel=2
+pkgrel=3
 pkgdesc="An opensource web content engine"
 arch=('x86_64')
 url="http://webkitgtk.org/"
 license=('custom')
 depends=('libxt' 'libxslt' 'sqlite3' 'icu' 'gstreamer0.10-base' 'libsoup' 'enchant')
-makedepends=('gperf' 'gobject-introspection' 'python2' 'gtk2' 'ruby' 'filesystem-extra')
+makedepends=('gperf' 'gobject-introspection' 'python2' 'gtk2' 'ruby')
 provides=('libwebkit')
 options=('!emptydirs')
 install=libwebkit.install
@@ -27,7 +27,7 @@ build() {
   sed -i '/generate-gtkdoc --rebase/s:^:# :' GNUmakefile.in
 
 
-  PYTHON=/usr/bin/python2 ./configure --prefix=/extra/usr \
+  PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
     --enable-introspection \
     --disable-geolocation \
     --with-font-backend=freetype --disable-gtk-doc \
@@ -45,5 +45,5 @@ build() {
 
 package() {
   cd "$srcdir/webkitgtk-$pkgver"
-  make -j1 DESTDIR="${pkgdir}" install
+  make DESTDIR="${pkgdir}" install
 }

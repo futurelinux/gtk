@@ -1,6 +1,6 @@
 pkgname=swt-extra
 pkgver=4.2.1
-pkgrel=1
+pkgrel=2
 _date=201209141800
 pkgdesc='An open source widget toolkit for Java'
 arch=('x86_64')
@@ -33,12 +33,12 @@ package() {
   cd ${srcdir}/src
 
   # Shared objects
-  export OUTPUT_DIR=${pkgdir}/extra/usr/lib
+  export OUTPUT_DIR=${pkgdir}/usr/lib
   install -dm755 ${OUTPUT_DIR} 
   make -f make_linux.mak install
 
   # SWT jar
   ant -f ../build-swt.xml jar
-  install -Dm755 ../swt.jar ${pkgdir}/extra/usr/share/java/swt-${pkgver}.jar
-  ln -s swt-${pkgver}.jar ${pkgdir}/extra/usr/share/java/swt.jar
+  install -Dm755 ../swt.jar ${pkgdir}/usr/share/java/swt-${pkgver}.jar
+  ln -s swt-${pkgver}.jar ${pkgdir}/usr/share/java/swt.jar
 }

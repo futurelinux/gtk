@@ -2,7 +2,7 @@
 
 pkgname=gegl
 pkgver=0.2.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Graph based image processing framework."
 arch=('x86_64')
 url="http://www.gegl.org/"
@@ -17,7 +17,7 @@ sha1sums=('764cc66cb3c7b261b8fc18a6268a0e264a91d573' 'c10fd988c634fcf0948cc91a51
 build() {
   cd $srcdir/$pkgname-$pkgver
   patch -Np1 -i $srcdir/gentoo-gegl-0.2.0-ffmpeg-0.11.diff
-  ./configure --prefix=/extra/usr --with-sdl --with-openexr --with-librsvg --with-libavformat --with-jasper --disable-docs || return 1
+  ./configure --prefix=/usr --with-sdl --with-openexr --with-librsvg --with-libavformat --with-jasper --disable-docs || return 1
   make
 }
 

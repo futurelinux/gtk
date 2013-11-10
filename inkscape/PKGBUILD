@@ -1,13 +1,13 @@
 pkgname=inkscape
 pkgver=0.48.4
-pkgrel=3
+pkgrel=4
 pkgdesc='Vector graphics editor using the SVG file format'
 url='http://inkscape.sourceforge.net/'
 license=('GPL' 'LGPL')
 arch=('x86_64')
 makedepends=('boost' 'intltool')
 depends=('gc' 'gsl' 'gtkmm' 'gtkspell' 'imagemagick' 'libxslt' 'poppler-glib' 'popt'
-         'python2' 'desktop-file-utils' 'hicolor-icon-theme' 'libwpg' 'filesystem-extra')
+         'python2' 'desktop-file-utils' 'hicolor-icon-theme' 'libwpg')
 optdepends=('pstoedit: latex formulas'
             'texlive-core: latex formulas'
             'python2-numpy: some extensions'
@@ -35,7 +35,7 @@ prepare() {
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure \
-		--prefix=/extra/usr \
+		--prefix=/usr \
 		--with-python \
 		--with-perl \
 		--enable-lcms \

@@ -1,10 +1,10 @@
 pkgname=libgnomecanvas
 pkgver=2.30.3
-pkgrel=1
+pkgrel=2
 pkgdesc="The GNOME Canvas library"
-arch=(x86_64)
+arch=('x86_64')
 license=('LGPL')
-depends=('libglade>=2.6.4' 'libart-lgpl>=2.3.20' 'filesystem-extra')
+depends=('libglade>=2.6.4' 'libart-lgpl>=2.3.20')
 makedepends=('pkg-config' 'intltool')
 options=('!libtool')
 url="http://www.gnome.org"
@@ -13,7 +13,7 @@ sha256sums=('859b78e08489fce4d5c15c676fec1cd79782f115f516e8ad8bed6abcb8dedd40')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/extra/usr --disable-static \
+  ./configure --prefix=/usr --disable-static \
       --enable-glade 
   make 
 }

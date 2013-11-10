@@ -1,11 +1,11 @@
 pkgname=bluegriffon
 pkgver=1.7.2
-pkgrel=1
+pkgrel=2
 pkgdesc='The next-generation Web Editor'
 url="http://bluegriffon.org/"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
-depends=('libpng' 'libjpeg' 'desktop-file-utils' 'libxt' 'mime-types' 'nss' 'shared-mime-info' 'filesystem-extra' 'gtk2')
+depends=('libpng' 'libjpeg' 'desktop-file-utils' 'libxt' 'mime-types' 'nss' 'shared-mime-info' 'gtk2')
 makedepends=('wget')
 install='bluegriffon.install'
 source=("http://bluegriffon.org/freshmeat/${pkgver}/bluegriffon-${pkgver}.Ubuntu13.04.x86_64.tar.bz2"
@@ -17,11 +17,11 @@ md5sums=('fbae6365980d87dde5e4ce044d55be38'
 
 package() {
 	cd ${srcdir}
-	mkdir -p ${pkgdir}/extra/usr/{bin,lib,share/{applications,pixmaps}}
-	cp -R bluegriffon ${pkgdir}/extra/usr/lib/${pkgname}
+	mkdir -p ${pkgdir}/usr/{bin,lib,share/{applications,pixmaps}}
+	cp -R bluegriffon ${pkgdir}/usr/lib/${pkgname}
 
-        install -m644 ${srcdir}/${pkgname}.desktop ${pkgdir}/extra/usr/share/applications/
-        install -m644 ${srcdir}/bluegriffon/chrome/icons/default/default48.png ${pkgdir}/extra/usr/share/pixmaps/${pkgname}-icon.png
+        install -m644 ${srcdir}/${pkgname}.desktop ${pkgdir}/usr/share/applications/
+        install -m644 ${srcdir}/bluegriffon/chrome/icons/default/default48.png ${pkgdir}/usr/share/pixmaps/${pkgname}-icon.png
 
-        ln -sf /extra/usr/lib/bluegriffon/bluegriffon $pkgdir/extra/usr/bin/
+        ln -sf /usr/lib/bluegriffon/bluegriffon $pkgdir/usr/bin/
 }

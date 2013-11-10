@@ -2,7 +2,7 @@
 
 pkgname=firefox-kde
 pkgver=25.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -10,7 +10,7 @@ _kmozillahelper_pkgver=0.6.4
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
-depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'libevent' 'filesystem-extra' 'kdelibs')
+depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'libevent' 'kdelibs')
 makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4' 'libpulse')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libpulse: PulseAudio audio driver')
@@ -126,7 +126,7 @@ build_firefox() {
   cd "mozilla-release"
  
   export PATH="$srcdir/path:$PATH"
-  export LDFLAGS="$LDFLAGS -Wl,-rpath,/extra/usr/lib/firefox"
+  export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/firefox"
   export PYTHON="/usr/bin/python2"
   
   make -j1 -f client.mk build MOZ_MAKE_FLAGS="${MAKEFLAGS}"
@@ -143,28 +143,28 @@ package() {
   install -Dm644 ../kde.js "obj-ff/dist/bin/defaults/pref/kde.js"
   make -j1 -f client.mk MOZ_PKG_FATAL_WARNINGS=0 package
   #make -j1 -f client.mk DESTDIR="$pkgdir" install
-  mkdir -p $pkgdir/extra/usr/lib/ 
-  tar -C $pkgdir/extra/usr/lib/ -xf obj-ff/dist/firefox-$pkgver.en-US.linux-${CARCH}.tar.bz2
+  mkdir -p $pkgdir/usr/lib/ 
+  tar -C $pkgdir/usr/lib/ -xf obj-ff/dist/firefox-$pkgver.en-US.linux-${CARCH}.tar.bz2
 
-  install -Dm644 ../vendor.js "$pkgdir/extra/usr/lib/firefox/defaults/preferences/vendor.js"
-  install -Dm644 ../kde.js "$pkgdir/extra/usr/lib/firefox/defaults/preferences/kde.js"
-  install -Dm644 ../duckduckgo.xml "$pkgdir/extra/usr/lib/firefox/searchplugins/duckduckgo.xml"
+  install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/defaults/preferences/vendor.js"
+  install -Dm644 ../kde.js "$pkgdir/usr/lib/firefox/defaults/preferences/kde.js"
+  install -Dm644 ../duckduckgo.xml "$pkgdir/usr/lib/firefox/searchplugins/duckduckgo.xml"
 
   for i in 16 22 24 32 48 256; do
       install -Dm644 browser/branding/official/default$i.png \
-        "$pkgdir/extra/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
+        "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
   done
 
   install -Dm644 ../firefox.desktop \
-    "$pkgdir/extra/usr/share/applications/firefox.desktop"
+    "$pkgdir/usr/share/applications/firefox.desktop"
 
-  mkdir -p $pkgdir/extra/usr/bin/ 
-  ln -sf /extra/usr/lib/firefox/firefox $pkgdir/extra/usr/bin/
+  mkdir -p $pkgdir/usr/bin/ 
+  ln -sf /usr/lib/firefox/firefox $pkgdir/usr/bin/
     
   # Use system-provided dictionaries
-  rm -rf "$pkgdir"/extra/usr/lib/firefox/{dictionaries,hyphenation}
-  ln -s /usr/share/hunspell "$pkgdir/extra/usr/lib/firefox/dictionaries"
-  ln -s /usr/share/hyphen "$pkgdir/extra/usr/lib/firefox/hyphenation"
+  rm -rf "$pkgdir"/usr/lib/firefox/{dictionaries,hyphenation}
+  ln -s /usr/share/hunspell "$pkgdir/usr/lib/firefox/dictionaries"
+  ln -s /usr/share/hyphen "$pkgdir/usr/lib/firefox/hyphenation"
 
 }
 

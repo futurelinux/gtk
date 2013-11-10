@@ -1,10 +1,10 @@
 pkgbase=gtkmm
 pkgname=('gtkmm')
 pkgver=2.24.2
-pkgrel=5
+pkgrel=6
 pkgdesc="C++ bindings for gtk2"
 arch=('x86_64')
-depends=('gtk2' 'pangomm' 'atkmm' 'filesystem-extra')
+depends=('gtk2' 'pangomm' 'atkmm')
 license=('LGPL')
 options=('!libtool' '!emptydirs')
 url="http://gtkmm.sourceforge.net/"
@@ -14,7 +14,7 @@ md5sums=('388a63ffc40cc8e208df9a1732a67d2d')
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}"
-  ./configure --prefix=/extra/usr --disable-documentation
+  ./configure --prefix=/usr --disable-documentation
   make
 }
 

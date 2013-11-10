@@ -2,12 +2,12 @@ md5sums=('68099241871f4e47eee06bebc7ce20a1'
          '9c1c06c1f7eaffd5dd383b7e0348b6db')
 pkgname=amule
 pkgver=10808
-pkgrel=2
+pkgrel=3
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
 url="http://www.amule.org"
 license=('GPL')
-depends=('wxgtk' 'gd' 'geoip' 'libupnp' 'crypto++' 'filesystem-extra')
+depends=('wxgtk' 'gd' 'geoip' 'libupnp' 'crypto++')
 makedepends=('ccache')
 source=("http://amule.sourceforge.net/tarballs/aMule-SVN-r${pkgver}.tar.bz2"
 	"http://chakra.sourceforge.net/sources/oxygen-themes/aMule_Oxygen_Skin.zip")
@@ -17,8 +17,8 @@ md5sums=('68099241871f4e47eee06bebc7ce20a1'
 build() {
   cd "${srcdir}/aMule-SVN-r${pkgver}"
 
-  ./configure --prefix=/extra/usr \
-              --mandir=/extra/usr/share/man \
+  ./configure --prefix=/usr \
+              --mandir=/usr/share/man \
               --enable-cas \
               --enable-wxcas \
               --enable-amule-daemon \
@@ -42,5 +42,5 @@ package() {
 
   make DESTDIR=${pkgdir}/ install
 
-  cp -f $srcdir/aMule_Oxygen_Skin.zip $pkgdir/extra/usr/share/amule/skins/
+  cp -f $srcdir/aMule_Oxygen_Skin.zip $pkgdir/usr/share/amule/skins/
 }

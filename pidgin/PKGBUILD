@@ -1,12 +1,12 @@
 pkgname=('pidgin')
 pkgver=2.10.7
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Multi-protocol instant messaging client"
 url="http://pidgin.im/"
 license=('GPL')
 depends=('libpurple' 'startup-notification' 'gtkspell' 'libxss' 'libsm'
-         'hicolor-icon-theme' 'filesystem-extra')
+         'hicolor-icon-theme')
 makedepends=('nss' 'libsasl' 'libidn' 'python2' 'farstream' 'avahi'
              'tk' 'ca-certificates' 'intltool' 'networkmanager')
 optdepends=('aspell: for spelling correction')
@@ -29,8 +29,8 @@ build() {
     libpurple/purple-{remote,notifications-example,url-handler}
 
   ./configure \
-    --prefix=/extra/usr \
-    --sysconfdir=/extra/etc \
+    --prefix=/usr \
+    --sysconfdir=/etc \
     --disable-schemas-install \
     --disable-meanwhile \
     --disable-gnutls \
@@ -54,5 +54,5 @@ package(){
   # Remove files that are packaged in libpurle
   make -C libpurple DESTDIR="$pkgdir" uninstall-libLTLIBRARIES
 
-  install -Dm644 pidgin.desktop "$pkgdir"/extra/usr/share/applications/pidgin.desktop
+  install -Dm644 pidgin.desktop "$pkgdir"/usr/share/applications/pidgin.desktop
 }

@@ -2,7 +2,7 @@ pkgname=ardour
 _pkgname=Ardour3
 pkgver=3.5.14
 _pkgver=3.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Professional-grade digital audio workstation"
 arch=('x86_64')
 url="http://ardour.org/"
@@ -26,8 +26,8 @@ prepare() {
 build() {
   cd "$srcdir/$_pkgname-$_pkgver"
 
-  python2 waf configure --prefix=/extra/usr \
-                        --configdir=/extra/etc \
+  python2 waf configure --prefix=/usr \
+                        --configdir=/etc \
                         --docs
 
   python2 waf build $MAKEFLAGS
@@ -40,5 +40,5 @@ package() {
 
   # install some freedesktop.org compatibility
   install -Dm644 "$srcdir/$pkgname.desktop" \
-    "$pkgdir/extra/usr/share/applications/$pkgname.desktop"
+    "$pkgdir/usr/share/applications/$pkgname.desktop"
 }

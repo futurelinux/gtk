@@ -1,14 +1,14 @@
 pkgname=gtk3
 pkgver=3.6.4
 pkgmin="${pkgver%.*}"
-pkgrel=4
+pkgrel=5
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
 install="gtk3.install"
 depends=('cairo' 'gtk-update-icon-cache' 'libcups' 'libxcursor'
          'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
-         'pango' 'shared-mime-info' 'colord' 'at-spi2-atk' 'filesystem-extra')
+         'pango' 'shared-mime-info' 'colord' 'at-spi2-atk')
 makedepends=('gobject-introspection')
 options=('!libtool' '!docs')
 backup=("etc/gtk-3.0/settings.ini" "extra/etc/gtk-3.0/settings.ini")
@@ -21,8 +21,8 @@ md5sums=('123d3dc6fc659539a308017934235b3e'
 build() {
   cd "${srcdir}/gtk+-${pkgver}"
 
- ./configure --prefix=/extra/usr \
-             --sysconfdir=/extra/etc \
+ ./configure --prefix=/usr \
+             --sysconfdir=/etc \
              --localstatedir=/var \
              --enable-gtk2-dependency \
              --disable-schemas-compile
@@ -38,5 +38,5 @@ package() {
   make DESTDIR="${pkgdir}" install
 
   install -D -m644 "${srcdir}/settings.ini" \
-                   "${pkgdir}/extra/etc/gtk-3.0/settings.ini"
+                   "${pkgdir}/etc/gtk-3.0/settings.ini"
 }
