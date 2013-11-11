@@ -2,7 +2,7 @@
 
 pkgname=hugin
 pkgver=2013.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
@@ -52,34 +52,16 @@ package() {
   rm -v "${pkgdir}/usr/bin/checkpto"
   rm -v "${pkgdir}/usr/bin/autopano-noop.sh"
   rm -v "${pkgdir}/usr/bin/cpclean"
+  rm -v "${pkgdir}/usr/bin/geocpset"
+  rm -v "${pkgdir}/usr/bin/pto_lensstack"
+  rm -v "${pkgdir}/usr/bin/pto_var"
  
-  msg "Creating synlinks to hugin-tools libs"
+  msg "Removing hugin-tools libs"
   cd "${pkgdir}/usr/lib/hugin/"
-
   rm "${pkgdir}/usr/lib/hugin/libhuginbase.so.0.0"
-  ln -sv /usr/lib/hugin/libhuginbase.so.0.0 .
-
   rm "${pkgdir}/usr/lib/hugin/liblocalfeatures.so.0.0"
-  ln -sv /usr/lib/hugin/liblocalfeatures.so.0.0 .
-
   rm "${pkgdir}/usr/lib/hugin/libceleste.so.0.0"
-  ln -sv /usr/lib/hugin/libceleste.so.0.0 .
- 
-  #rm "${pkgdir}/usr/lib/hugin/libflann_cpp.so.0.0"
-  #ln -sv /usr/lib/hugin/libflann_cpp.so.0.0 .
-  
   rm "${pkgdir}/usr/lib/hugin/libmakefilelib.so.0.0"
-  ln -sv /usr/lib/hugin/libmakefilelib.so.0.0 .
-
   rm "${pkgdir}/usr/lib/hugin/libhuginlines.so.0.0"
-  ln -sv /usr/lib/hugin/libhuginlines.so.0.0 .
-
   rm "${pkgdir}/usr/lib/hugin/libhuginvigraimpex.so.0.0"
-  ln -sv /usr/lib/hugin/libhuginvigraimpex.so.0.0 .
-  
-  rm "${pkgdir}/usr/lib/hugin/libhuginbasewx.so.0.0"
-  ln -sv /usr/lib/hugin/libhuginbasewx.so.0.0 .
-  
-  rm "${pkgdir}/usr/lib/hugin/libicpfindlib.so.0.0"
-  ln -sv /usr/lib/hugin/libicpfindlib.so.0.0 .
 }
