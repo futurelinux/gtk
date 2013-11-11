@@ -2,11 +2,10 @@
 
 pkgname=truecrypt
 pkgver=7.1a
-pkgrel=2
-epoch=1
+pkgrel=3
 pkgdesc="Free open-source cross-platform disk encryption software"
 url="http://www.truecrypt.org/"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom') # TrueCrypt License v2.6
 depends=('fuse>=2.8.0' 'wxgtk>=2.8.9' 'libsm' 'device-mapper')
 makedepends=('nasm')
