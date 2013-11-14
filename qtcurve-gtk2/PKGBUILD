@@ -1,34 +1,37 @@
-pkgname=qtcurve-gtk2
-pkgver=1.8.16
-pkgrel=3
+
+pkgbase=qtcurve
+pkgname=('qtcurve-gtk2')
+pkgver=1.8.17
+pkgrel=1
+pkgdesc='A configurable set of widget styles for KDE and Gtk'
 arch=('x86_64')
+url='https://github.com/QtCurve/qtcurve'
 license=('GPL')
-pkgdesc='QtCurve-Gtk2 Add-on for Gtk-integration.'
-url='http://www.kde-look.org/content/show.php?content=40492'
-depends=('gtk2')
-provides=('gtk-integration-engine-qtcurve')
-conflicts=('gtk-integration-engine-qtcurve')
-replaces=('gtk-integration-engine-qtcurve')
-makedepends=('pkgconfig' 'cmake')
-categories=('system')
-options=('!libtool')
-groups=('gtk-integration')
-install=install
-source=("http://craigd.wikispaces.com/file/view/QtCurve-Gtk2-${pkgver}.tar.bz2")
-md5sums=('8923caaa0704f6a30252a5eadb015d76')
+groups=('qtcurve')
+depends=('qtcurve-utils' 'gtk2')
+makedepends=('cmake' 'automoc4' 'qt' 'qt5-svg' 'qt5-x11extras')
+source=("$pkgbase-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz")
+md5sums=('c4f2e9bc296398b42bfc132b88a3b989')
+
+# NOTE
+# Don't remove 'qt' 'qt5-svg' 'qt5-x11extras' from the makedepends
+# and -DENABLE_QT4=true otherwise the pkg will not compile
 
 build() {
-  cd "${srcdir}"
+  cd $pkgbase-$pkgver
 
-  mkdir -p build && cd build
-
-  cmake "${srcdir}/QtCurve-Gtk2-${pkgver}" \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX=/usr 
+  mkdir -p build
+  cd build
+  cmake .. -DCMAKE_BUILD_TYPE=Release \
+           -DCMAKE_INSTALL_PREFIX=/usr \
+           -DQTC_QT4_ENABLE_KDE=false \
+           -DENABLE_QT5=false \
+           -DENABLE_QT4=true
   make
+
 }
 
-package() {
-  cd "${srcdir}/build"
-  make DESTDIR="${pkgdir}" install
+package_qtcurve-gtk2() {
+  cd $pkgbase-$pkgver/build/gtk2
+  make DESTDIR="$pkgdir" install
 }
