@@ -1,8 +1,8 @@
 mk_add_options MOZ_CO_PROJECT=mail
 ac_add_options --enable-application=mail
 
-ac_add_options --prefix=/extra/usr
-ac_add_options --libdir=/extra/usr/lib
+ac_add_options --prefix=/usr
+ac_add_options --libdir=/usr/lib
 
 # System libraries
 ac_add_options --with-system-nspr
