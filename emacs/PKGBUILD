@@ -1,6 +1,6 @@
 pkgname=emacs
 pkgver=24.3
-pkgrel=4
+pkgrel=5
 pkgdesc="The extensible, customizable, self-documenting real-time display editor"
 arch=('x86_64')
 url="http://www.gnu.org/software/emacs/emacs.html"
