@@ -1,15 +1,15 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=25.0
-pkgrel=2
+pkgver=25.0.1
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
 _kmozillahelper_pkgver=0.6.4
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
-license=('MPL' 'GPL' 'LGPL')
+license=('MPL')
 depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'libevent' 'kdelibs')
 makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4' 'libpulse')
 optdepends=('networkmanager: Location detection via available WiFi networks'
@@ -168,8 +168,8 @@ package() {
 
 }
 
-sha1sums=('854722e283659d2b6b2eacd38f757b3c5b63a448'
-          '1ab24e03f04c8641c7bba1ace285b9db98feed23'
+sha1sums=('592ebd242c4839ef0e18707a7e959d8bed2a98f3'
+          'a2b8925bcfc9980c25f2757eefd340cb328d1d11'
           '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
           '28e6c025e1bfa0784648fcf3876c1ffc7a79aeec'
           'e0f399de01da908f474c237bc6c5a15678cd8fcd'
