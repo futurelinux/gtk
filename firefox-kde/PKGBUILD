@@ -2,7 +2,7 @@
 
 pkgname=firefox-kde
 pkgver=25.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -46,7 +46,6 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
 	firefox-20.0.1-fixed-loading-icon.png
 	duckduckgo.xml
 	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
-	move-to-extra.patch
 )
 
 _prepare() {
@@ -72,16 +71,12 @@ _prepare() {
 
   patch -Np1 -i "../firefox-install-dir.patch"
 
-  # modify the patch to make it under extra
-  cp ../mozilla-kde.patch ../mozilla-kde-mod.patch
-  sed -i 's|\(\+\#define KMOZILLAHELPER "\)\(/usr/lib/mozilla/kmozillahelper"\)|\1/extra\2|' ../mozilla-kde-mod.patch
-
   msg "apply mozilla-nongnome-proxies.patch"
-  patch -Np1 -i "../mozilla-nongnome-proxies.patch" || return 1
-  msg "apply mozilla-kde-mod.patch"
-  patch -Np1 -i "../mozilla-kde-mod.patch" || return 1
+  patch -Np1 -i "../mozilla-nongnome-proxies.patch"
+  msg "apply mozilla-kde.patch"
+  patch -Np1 -i "../mozilla-kde.patch"
   msg "apply firefox-kde.patch"
-  patch -Np1 -i "../firefox-kde.patch" || return 1
+  patch -Np1 -i "../firefox-kde.patch"
   
   mkdir -p "$srcdir/path"
 
@@ -98,10 +93,6 @@ _prepare() {
     browser/themes/linux/tabbrowser/loading.png 
   popd
 
-  pushd .
-  cd kmozillahelper
-  patch -Np1 -i ../move-to-extra.patch || return 1
-  popd
 }
 
 build() {
@@ -119,7 +110,7 @@ build_kmozillahelper() {
 	cd kmozillahelper-build
 
 	cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ../kmozillahelper
-	make || return 1
+	make
 }
 
 build_firefox() {
@@ -179,5 +170,4 @@ sha1sums=('592ebd242c4839ef0e18707a7e959d8bed2a98f3'
           '1f7bacd88d1059bc0321adbc1b9b3b8b6695f034'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           'aa3442d291bd77fefa3758291baa9c609a74e5dc'
-          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
-          'a905b224834c8f2d40a2f4e39a3f47ba6b1d2952')
+          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807')
