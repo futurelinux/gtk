@@ -3,7 +3,7 @@
 pkgbase=fcitx-gtk
 pkgname=('fcitx-gtk2' 'fcitx-gtk3')
 pkgver=4.2.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Gtk im module for fcitx"
 arch=('i686' 'x86_64')
 url="http://code.google.com/p/fcitx/"
