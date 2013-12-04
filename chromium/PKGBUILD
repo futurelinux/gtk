@@ -38,7 +38,7 @@ noextract=(naclsdk_nacl_linux_x86-$_toolchains_rev.tgz
            
 sha1sums=('34f9281faf7e94557b77514106e85122e6175c5a'
           'a676c2cbac7a073dac7b41008d45d919bfa2a486'
-          'cdda47faa791d56089f92854957070b1ec135c2e'
+          'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
           'e093e745531bf20b0cccdf4bf51fc91ebe009e6f'
           '4e97f92a9238db5ff37cb9a49873fef405f68aff'
           '12e7639aa528e15102aef491ab141f35b818a379'
