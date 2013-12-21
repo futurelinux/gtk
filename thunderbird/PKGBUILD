@@ -1,5 +1,5 @@
 pkgname=thunderbird
-pkgver=24.1.1
+pkgver=24.2.0
 pkgrel=1
 pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
@@ -18,13 +18,13 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sourc
         thunderbird-install-dir.patch
         vendor.js)
 options=(!emptydirs)
-md5sums=('55540c5a5b5c30fa1002bbaa76c22546'
+md5sums=('53d457a8ff97a305d975c20d1bebff04'
          '41511a6bcdd04cf56706218e4670e631'
          'af3e5b344d2edf1c7d61bb0a5a96de9a'
          '1c6f47b315a5d7830f8e901b1f723cfc'
          '5a53179d14ae9631b7afe5e4d0fc0b25')
 
-build() {
+prepare(){
   cd comm-esr24
   patch -Np1 -i "$srcdir/thunderbird-install-dir.patch"
 
@@ -33,16 +33,33 @@ build() {
   # configure script misdetects the preprocessor without an optimization level
   # https://bugs.archlinux.org/task/34644
   sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' mozilla/configure
-
+}
+         
+build() {
+  cd comm-esr24  
   export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/thunderbird"
   export PYTHON="/usr/bin/python2"
 
-  make -j1 -f client.mk build MOZ_MAKE_FLAGS="$MAKEFLAGS"
+  # Normal Build
+  #make -j1 -f client.mk build MOZ_MAKE_FLAGS="$MAKEFLAGS"
+  
+  # Set up PGO
+  export DISPLAY=:99
+  Xvfb -nolisten tcp -extension GLX -screen 0 1280x1024x24 $DISPLAY &
+
+  # Build
+  if ! make -f client.mk build MOZ_MAKE_FLAGS="$MAKEFLAGS" MOZ_PGO=1; then
+    kill $!
+    return 1
+  fi
+
+  # Kill leftovers
+  kill $! || true
 }
 
 package() {
   cd comm-esr24
-  make -j1 -f client.mk DESTDIR="$pkgdir" install
+  make -f client.mk DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir"/vendor.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/vendor.js"
 
