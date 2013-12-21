@@ -1,8 +1,8 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=25.0.1
-pkgrel=2
+pkgver=26.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -10,7 +10,7 @@ _kmozillahelper_pkgver=0.6.4
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL')
-depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'libevent' 'kdelibs')
+depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'libevent' 'sqlite3' 'kdelibs')
 makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4' 'libpulse')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libpulse: PulseAudio audio driver')
@@ -34,53 +34,81 @@ optdepends=('firefox-i18n: for multilanguage support')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
+_patchrev=afcaf2131b0e
+_patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
         mozconfig
         firefox.desktop
         firefox-install-dir.patch
         vendor.js
         kde.js
-        firefox-kde.patch
-        mozilla-nongnome-proxies.patch
-        mozilla-kde.patch
 	firefox-20.0.1-fixed-loading-icon.png
 	duckduckgo.xml
 	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
+
+	# Firefox patchset
+	$_patchurl/firefox-browser-css.patch
+	#$_patchurl/firefox-kde.patch
+	# manually removed package-manifest.in in firefox-kde.patch to be able to build with PDO
+	firefox-kde.patch
+	$_patchurl/firefox-kde-114.patch
+	$_patchurl/firefox-no-default-ualocale.patch
+	$_patchurl/firefox-branded-icons.patch
+	# Gecko/toolkit patchset
+	$_patchurl/toolkit-download-folder.patch
+	$_patchurl/mozilla-nongnome-proxies.patch
+	$_patchurl/mozilla-prefer_plugin_pref.patch
+	$_patchurl/mozilla-kde.patch
+	$_patchurl/mozilla-preferences.patch
+	$_patchurl/mozilla-language.patch
 )
 
-_prepare() {
-  pushd .
+# Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
+# Note: These are for Chakra Linux use ONLY. For your own distribution, please
+# get your own set of keys.
+_google_api_key=AIzaSyA33sdKPff0x3KBByOhpzc1i7RS2A1mEpY
+
+prepare() {
   cd "mozilla-release"
 
-  cp "../mozconfig" .mozconfig
+  cp "$srcdir/mozconfig" .mozconfig
+  
+  patch -Np1 -i "$srcdir/firefox-install-dir.patch"
+  echo -n "$_google_api_key" > google-api-key
 
   # make makepkg -R easier
-  rm -f browser/components/shell/src/nsKDEShellService.cpp \
-        browser/components/shell/src/nsKDEShellService.h \
-        browser/components/shell/src/nsUnixShellService.cpp \
-        browser/components/shell/src/nsUnixShellService.h \
-        browser/base/content/browser-kde.xul
-  rm -f toolkit/xre/nsKDEUtils.cpp \
-        toolkit/xre/nsKDEUtils.h \
-        uriloader/exthandler/unix/nsCommonRegistry.cpp \
-        uriloader/exthandler/unix/nsCommonRegistry.h \
-        uriloader/exthandler/unix/nsKDERegistry.cpp \
-        uriloader/exthandler/unix/nsKDERegistry.h \
-        toolkit/content/widgets/dialog-kde.xml \
-        toolkit/content/widgets/preferences-kde.xml
+  msg "Patching for KDE"
+  rm -f content/media/gstreamer/nsGStreamerFormatHelper.{h,cpp}
+  rm -f browser/components/shell/src/{nsKDEShellService,nsUnixShellService}.{h,cpp}
+  rm -f browser/base/content/browser-kde.xul
+  rm -f toolkit/xre/nsKDEUtils.{h,cpp}
+  rm -f uriloader/exthandler/unix/{nsCommonRegistry,nsKDERegistry}.{h,cpp}
+  rm -f toolkit/content/widgets/{dialog,preferences}-kde.xml
 
-  patch -Np1 -i "../firefox-install-dir.patch"
+  msg "Gecko/toolkit patchset"
+  #patch -Np1 -i "$srcdir/toolkit-download-folder.patch"
+  patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
+  patch -Np1 -i "$srcdir/mozilla-prefer_plugin_pref.patch"
+  patch -Np1 -i "$srcdir/mozilla-kde.patch"
+  #patch -Np1 -i "$srcdir/mozilla-preferences.patch" #At startup, read and use the OS’s locale. 
+  patch -Np1 -i "$srcdir/mozilla-language.patch"
 
-  msg "apply mozilla-nongnome-proxies.patch"
-  patch -Np1 -i "../mozilla-nongnome-proxies.patch"
-  msg "apply mozilla-kde.patch"
-  patch -Np1 -i "../mozilla-kde.patch"
-  msg "apply firefox-kde.patch"
-  patch -Np1 -i "../firefox-kde.patch"
+  msg "Firefox patchset"
+  patch -Np1 -i "$srcdir/firefox-browser-css.patch"
+  patch -Np1 -i "$srcdir/firefox-kde.patch"
+  patch -Np1 -i "$srcdir/firefox-kde-114.patch"
+  patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
+  patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   
-  mkdir -p "$srcdir/path"
+  # Fix PRE_RELEASE_SUFFIX
+  sed -i '/^PRE_RELEASE_SUFFIX := ""/s/ ""//' browser/base/Makefile.in
+
+  # configure script misdetects the preprocessor without an optimization level
+  # https://bugs.archlinux.org/task/34644
+  sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' configure
 
   # WebRTC build tries to execute "python" and expects Python 2
+  mkdir -p "$srcdir/path"
   ln -sf /usr/bin/python2 "$srcdir/path/python"
 
   # Fix PRE_RELEASE_SUFFIX
@@ -91,51 +119,65 @@ _prepare() {
   # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
   cp "$srcdir/firefox-20.0.1-fixed-loading-icon.png" \
     browser/themes/linux/tabbrowser/loading.png 
-  popd
 
 }
 
 build() {
-	_prepare
-	pushd .
-	build_kmozillahelper
-	popd
-	pushd .
-	build_firefox
-	popd
+  cd  "$srcdir/mozilla-release"
+
+  msg "build_kmozillahelper"
+  build_kmozillahelper
+  msg "build_firefox"
+  build_firefox
 }
 
 build_kmozillahelper() {
-	mkdir -p kmozillahelper-build
-	cd kmozillahelper-build
+  cd $srcdir/
+  mkdir -p kmozillahelper-build
+  cd kmozillahelper-build
 
-	cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ../kmozillahelper
-	make
+  cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ../kmozillahelper
+  make
 }
 
 build_firefox() {
-  cd "mozilla-release"
+  cd  "$srcdir/mozilla-release"
  
   export PATH="$srcdir/path:$PATH"
   export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/firefox"
   export PYTHON="/usr/bin/python2"
   
-  make -j1 -f client.mk build MOZ_MAKE_FLAGS="${MAKEFLAGS}"
+  export MOZ_MAKE_FLAGS="$MAKEFLAGS"
+  unset MAKEFLAGS
+  
+  # Enabled PGO: https://developer.mozilla.org/en-US/docs/Building_with_Profile-Guided_Optimization
+  #make -f client.mk profiledbuild MOZ_MAKE_FLAGS="${MAKEFLAGS}"
+  
+  # Set up PGO
+  export DISPLAY=:99
+  Xvfb -nolisten tcp -extension GLX -screen 0 1280x1024x24 $DISPLAY &
+  
+  # Build
+  if ! make -f client.mk build MOZ_PGO=1; then
+    kill $!
+    return 1
+  fi
+
+  # Kill leftovers
+  kill $! || true
 
 }
 
 package() {
-  pushd .
+  msg "package() kmozillahelper"
   cd $srcdir/kmozillahelper-build
   make DESTDIR=$pkgdir install
-  popd
 
-  cd mozilla-release
-  install -Dm644 ../kde.js "obj-ff/dist/bin/defaults/pref/kde.js"
-  make -j1 -f client.mk MOZ_PKG_FATAL_WARNINGS=0 package
-  #make -j1 -f client.mk DESTDIR="$pkgdir" install
-  mkdir -p $pkgdir/usr/lib/ 
-  tar -C $pkgdir/usr/lib/ -xf obj-ff/dist/firefox-$pkgver.en-US.linux-${CARCH}.tar.bz2
+  msg "package() Firefox"
+  cd "$srcdir/mozilla-release"
+  cp "$srcdir/kde.js" obj-ff/dist/bin/defaults/pref
+  
+  make -f client.mk DESTDIR="$pkgdir" install
 
   install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/defaults/preferences/vendor.js"
   install -Dm644 ../kde.js "$pkgdir/usr/lib/firefox/defaults/preferences/kde.js"
@@ -148,26 +190,39 @@ package() {
 
   install -Dm644 ../firefox.desktop \
     "$pkgdir/usr/share/applications/firefox.desktop"
-
-  mkdir -p $pkgdir/usr/bin/ 
-  ln -sf /usr/lib/firefox/firefox $pkgdir/usr/bin/
     
   # Use system-provided dictionaries
   rm -rf "$pkgdir"/usr/lib/firefox/{dictionaries,hyphenation}
   ln -s /usr/share/hunspell "$pkgdir/usr/lib/firefox/dictionaries"
   ln -s /usr/share/hyphen "$pkgdir/usr/lib/firefox/hyphenation"
-
+  
+  # We don't want the development stuff
+  rm -r "$pkgdir"/usr/{include,lib/firefox-devel,share/idl}
+  
+  #workaround for now
+  #https://bugzilla.mozilla.org/show_bug.cgi?id=658850
+  ln -sf firefox "$pkgdir/usr/lib/firefox/firefox-bin"
+  
 }
 
-sha1sums=('592ebd242c4839ef0e18707a7e959d8bed2a98f3'
-          'a2b8925bcfc9980c25f2757eefd340cb328d1d11'
+sha1sums=('f7c6642d6f62aea8d4eced48dd27aba0634edcd5'
+          '311b020505e3080eb62760a520e23dda1d97e926'
           '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
-          '28e6c025e1bfa0784648fcf3876c1ffc7a79aeec'
+          'db2d93a36184cc8e2edd4149052da382b5b43bfd'
           'e0f399de01da908f474c237bc6c5a15678cd8fcd'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
-          'bf951a3652551ba2697be5734ba63b76d662fae7'
-          'ec793946d5ae5a3e4e8f2a2f78aacb8f1b50ee04'
-          '1f7bacd88d1059bc0321adbc1b9b3b8b6695f034'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           'aa3442d291bd77fefa3758291baa9c609a74e5dc'
-          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807')
+          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
+          '5400573a902cb46f478a5f3577ef8f86790f69e8'
+          'd82359dc7657dd68e56b638a2439bbcbaffff8f0'
+          '84e6e4eb614e86baf1ee565da9c2ac505940492a'
+          '0dc6f7e04abce2f52c0951cf718c803c45e3d04e'
+          '02633df9bcaec095258f8ae02688c7ac96d8ecb7'
+          '2dfca8f76045c089941f3defc89d5f1171efa552'
+          '5a38d441d73647b12e1e13416de3fde822dfed18'
+          '05072b88a7707abca65f84cc6d1c4985c6874f6f'
+          'a30ea0030e8616eb9d262896212d845f00e70c95'
+          '25575fe47b1664d0927614a2c4b1813a9fc35f20'
+          '136fa1ae86e155aa31e087ee1923504aeb61ef86')
+
