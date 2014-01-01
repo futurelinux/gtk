@@ -1,6 +1,6 @@
 pkgname=ardour
 _pkgname=Ardour3
-pkgver=3.5.74
+pkgver=3.5.143
 _pkgver=3.5
 pkgrel=1
 pkgdesc="Professional-grade digital audio workstation"
@@ -13,8 +13,8 @@ makedepends=('python2' 'boost' 'cppunit' 'doxygen' 'graphviz')
 install=$pkgname.install
 source=("ftp://ftp.archlinux.org/other/$pkgname/${_pkgname}-$pkgver.tar.bz2"
         "$pkgname.desktop")
-md5sums=('ef447fa41a7351306e8a6eb42df07572'
-         '1c1b9acc4636f87264337151b76ee3cf')
+md5sums=('52c3b8ea3ab014002e84e377f8a15097'
+         '3755e6f9518fae4c47927cf615998262')
 
 prepare() {
   cd "$srcdir/$_pkgname-$pkgver"
