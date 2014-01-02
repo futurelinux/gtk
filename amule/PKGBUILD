@@ -1,8 +1,8 @@
-md5sums=('68099241871f4e47eee06bebc7ce20a1'
-         '9c1c06c1f7eaffd5dd383b7e0348b6db')
+# Maintainer: Francesco Marinucci <franzmari[at]chakra-project[dot]it>
+
 pkgname=amule
-pkgver=10808
-pkgrel=3
+pkgver=10829
+pkgrel=1
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
 url="http://www.amule.org"
@@ -11,7 +11,7 @@ depends=('wxgtk' 'gd' 'geoip' 'libupnp' 'crypto++')
 makedepends=('ccache')
 source=("http://amule.sourceforge.net/tarballs/aMule-SVN-r${pkgver}.tar.bz2"
 	"http://chakra.sourceforge.net/sources/oxygen-themes/aMule_Oxygen_Skin.zip")
-md5sums=('68099241871f4e47eee06bebc7ce20a1'
+md5sums=('843693d449b81899267d6756ce55a6e0'
          '9c1c06c1f7eaffd5dd383b7e0348b6db')
 
 build() {
