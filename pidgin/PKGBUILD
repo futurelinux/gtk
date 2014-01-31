@@ -1,36 +1,30 @@
 pkgname=('pidgin')
-pkgver=2.10.7
+pkgver=2.10.8
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Multi-protocol instant messaging client"
 url="http://pidgin.im/"
 license=('GPL')
 depends=('libpurple' 'startup-notification' 'gtkspell' 'libxss' 'libsm'
-         'hicolor-icon-theme' 'filesystem-extra')
+         'hicolor-icon-theme')
 makedepends=('nss' 'libsasl' 'libidn' 'python2' 'farstream' 'avahi'
              'tk' 'ca-certificates' 'intltool' 'networkmanager')
 optdepends=('aspell: for spelling correction')
 options=('!libtool')
 install=pidgin.install
-source=(http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2
-        pidgin-2.10.7-link-libirc-to-libsasl2.patch)
-sha256sums=('eba32994eca20d1cf24a4261b059b2de71a1ec2dd0926e904074b0db49f7f192'
-            '063723d5dc5726c43137b4b383c9d07c2c008391f6a626faaf6cedd31a2f1e8f')
+source=(http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2)
+md5sums=('384be5689e62a9d4d42320e4ca90433d')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
-
-  # https://developer.pidgin.im/ticket/15517
-  patch -Np1 -i "$srcdir/pidgin-2.10.7-link-libirc-to-libsasl2.patch"
-  autoreconf -vi
 
   # Use Python 2
   sed -i 's/env python$/&2/' */plugins/*.py \
     libpurple/purple-{remote,notifications-example,url-handler}
 
   ./configure \
-    --prefix=/extra/usr \
-    --sysconfdir=/extra/etc \
+    --prefix=/usr \
+    --sysconfdir=/etc \
     --disable-schemas-install \
     --disable-meanwhile \
     --disable-gnutls \
@@ -54,5 +48,5 @@ package(){
   # Remove files that are packaged in libpurle
   make -C libpurple DESTDIR="$pkgdir" uninstall-libLTLIBRARIES
 
-  install -Dm644 pidgin.desktop "$pkgdir"/extra/usr/share/applications/pidgin.desktop
+  install -Dm644 pidgin.desktop "$pkgdir"/usr/share/applications/pidgin.desktop
 }
