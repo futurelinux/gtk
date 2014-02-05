@@ -3,7 +3,7 @@
 #
 
 pkgname=chromium
-pkgver=32.0.1700.77
+pkgver=32.0.1700.107
 pkgrel=1
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
 _pepperflashver=12.0.0.41
@@ -36,8 +36,8 @@ noextract=(naclsdk_nacl_linux_x86-$_toolchains_rev.tgz
            naclsdk_pnacl_translator-$_toolchains_rev.tgz
            toolchain_linux_x86-$_toolchains_rev.tar.bz2)
            
-sha1sums=('72e6b3738c037386c1a66a4ed98d25938898899c'
-          '79c64dfc62fc0c58ac0510f8b1fb3730a3e733f8'
+sha1sums=('b582b9f06015c503b3aab358ef616c4c4a18ac08'
+          'f2d25e71b66c6c07786d8e37c35ecb9799fd15ef'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
           'e093e745531bf20b0cccdf4bf51fc91ebe009e6f'
           '4e97f92a9238db5ff37cb9a49873fef405f68aff'
