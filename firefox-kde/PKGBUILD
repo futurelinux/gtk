@@ -2,7 +2,7 @@
 
 pkgname=firefox-kde
 pkgver=27.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -181,7 +181,7 @@ package() {
 
   install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/defaults/preferences/vendor.js"
   install -Dm644 ../kde.js "$pkgdir/usr/lib/firefox/defaults/preferences/kde.js"
-  install -Dm644 ../duckduckgo.xml "$pkgdir/usr/lib/firefox/searchplugins/duckduckgo.xml"
+  install -Dm644 ../duckduckgo.xml "$pkgdir/usr/lib/firefox/browser/searchplugins/duckduckgo.xml"
 
   for i in 16 22 24 32 48 256; do
       install -Dm644 browser/branding/official/default$i.png \
@@ -210,7 +210,7 @@ sha1sums=('29dc759e36f2b9381e80ac48ce59635ea25033dc'
           '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
           'db2d93a36184cc8e2edd4149052da382b5b43bfd'
           'e0f399de01da908f474c237bc6c5a15678cd8fcd'
-          'ce48f8e5065319e191a7389539ec663dc8a919d7'
+          'e13d5c19b3d9781ed67acc6c55c18219b0249736'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           'aa3442d291bd77fefa3758291baa9c609a74e5dc'
           '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
