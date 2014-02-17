@@ -1,10 +1,10 @@
-# CCR:  danyf90 <daniele.formichelli@gmail.com>
+# imported from CCR:  danyf90 <daniele.formichelli@gmail.com>
 
 pkgname=gegl
 pkgver=0.2.0
-pkgrel=6
+pkgrel=7
 pkgdesc="Graph based image processing framework"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.gegl.org/"
 license=('GPL3' 'LGPL3')
 depends=('babl' 'gtk2')

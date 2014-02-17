@@ -1,22 +1,24 @@
 pkgname=filezilla
-pkgver=3.7.4.1
+pkgver=3.7.4
 pkgrel=1
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
 url="http://filezilla-project.org/"
 license=('GPL')
-depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'libsm' 'libxxf86vm' 'hicolor-icon-theme' 'sqlite3')
+depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'libsm' 'libxxf86vm' 
+         'hicolor-icon-theme' 'sqlite3')
 install=${pkgname}.install
 changelog=${pkgname}.changelog
 source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
         "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz"
         "${pkgname}.changelog")
-sha256sums=('8be46f472c12d412c58b5a0b1be751c64bc5e7fceaa6b9170f8edbc7dbfa64a9'
+sha256sums=('20a6d5ce737a8cbb38786b53365547e5e71dd9086259bf0b4eb264e8dbbc11ce'
             '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740'
-            '472a267664c0b527fb934ac41c600023c76554add5cfc5e0c87552db742ab967')
+            'abf6d5edbaf532facb2bc1f295680b57b38941a8424b15f7c72e3028d104e1f7')
 
 build() {
   cd "${pkgname}-${pkgver}"
+  
   ./autogen.sh
   ./configure \
     --prefix=/usr \

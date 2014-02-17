@@ -1,7 +1,7 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=27.0
+pkgver=27.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
@@ -205,7 +205,7 @@ package() {
   
 }
 
-sha1sums=('ec2031385237e30be829817ac79caa8e80cc2a14'
+sha1sums=('29dc759e36f2b9381e80ac48ce59635ea25033dc'
           '311b020505e3080eb62760a520e23dda1d97e926'
           '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
           'db2d93a36184cc8e2edd4149052da382b5b43bfd'

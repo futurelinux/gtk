@@ -1,6 +1,6 @@
 pkgname=oxygen-gtk2
-pkgver=1.4.0
-pkgrel=2
+pkgver=1.4.3
+pkgrel=1
 pkgdesc="The Oxygen engine for GTK2, for better Qt/GKT+ integration."
 arch=('x86_64')
 url=("https://projects.kde.org/projects/playground/artwork/oxygen-gtk")
@@ -13,7 +13,7 @@ categories=('system')
 groups=('gtk-integration')
 install=install
 source=("http://download.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('ccc9e468a5ea04159ca2040ee3f434e1')
+md5sums=('822cedb3ae46907fd262487150a195d4')
 
 build() {
 	cd $srcdir/$pkgname-$pkgver
