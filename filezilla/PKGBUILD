@@ -13,7 +13,7 @@ source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${p
         "${pkgname}.changelog")
 sha256sums=('8be46f472c12d412c58b5a0b1be751c64bc5e7fceaa6b9170f8edbc7dbfa64a9'
             '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740'
-            'ce582ba52d59ab6bbdb6ee0c4478b62bbd4221e12877d2be9e97b098b5f2fbf0')
+            '472a267664c0b527fb934ac41c600023c76554add5cfc5e0c87552db742ab967')
 
 build() {
   cd "${pkgname}-${pkgver}"
