@@ -1,11 +1,16 @@
-pkgname=thunderbird
+# Maintainer:  AlmAck <almack@chakra-project.org>
+
+pkgname=thunderbird-kde
 pkgver=24.3.0
-pkgrel=1
+pkgrel=3
+provides=(thunderbird=${pkgver})
+conficts=(thunderbird)
+replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
 license=('MPL' 'GPL')
 url="http://www.mozilla.org/thunderbird/"
-depends=('alsa-lib' 'dbus-glib' 'desktop-file-utils' 'gtk2' 'hicolor-icon-theme' 'hunspell' 'libevent' 'libvpx' 'libxt' 'mime-types' 'mozilla-common' 'nss' 'sqlite3' 'startup-notification' 'nspr')
+depends=('alsa-lib' 'dbus-glib' 'desktop-file-utils' 'gtk2' 'hicolor-icon-theme' 'hunspell' 'libevent' 'libvpx' 'libxt' 'mime-types' 'mozilla-common' 'nss' 'sqlite3' 'startup-notification' 'nspr' 'kdelibs')
 makedepends=('unzip' 'zip' 'pkg-config' 'python2' 'wireless_tools' 'yasm' 'mesa' 'autoconf2.13' 
              'gstreamer0.10-base-plugins')
 optdepends=('thunderbird-i18n: for multilanguage support'
@@ -15,18 +20,29 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sourc
         mozconfig
         thunderbird.desktop
         thunderbird-install-dir.patch
-        vendor.js)
+        mozilla-kde.patch
+        mozilla-nongnome-proxies.patch
+        vendor.js
+        kde.js)
 options=(!emptydirs)
 md5sums=('3093e14a3635123c0c70c8c11c27c7b1'
          '41511a6bcdd04cf56706218e4670e631'
          'af3e5b344d2edf1c7d61bb0a5a96de9a'
          '1c6f47b315a5d7830f8e901b1f723cfc'
-         '5a53179d14ae9631b7afe5e4d0fc0b25')
+         '1aa96187c06a79785c4aec590baa4428'
+         '28f61de31540e20522aefdbe88a83fa8'
+         '5a53179d14ae9631b7afe5e4d0fc0b25'
+         '75df0f88cc7a7fa7d522459e4ff82cc5')
 
 prepare(){
   cd comm-esr24
   patch -Np1 -i "$srcdir/thunderbird-install-dir.patch"
-
+  
+  pushd mozilla
+  patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
+  patch -Np1 -i "$srcdir/mozilla-kde.patch"
+  popd
+  
   cp "$srcdir/mozconfig" .mozconfig
 
   # configure script misdetects the preprocessor without an optimization level
@@ -61,6 +77,7 @@ package() {
   make -f client.mk DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir"/vendor.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/vendor.js"
+  install -Dm644 "$srcdir"/kde.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/kde.js"
 
   for i in 16x16 22x22 24x24 32x32 48x48 256x256; do
       install -Dm644 other-licenses/branding/thunderbird/mailicon${i/x*/}.png \
