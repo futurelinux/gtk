@@ -1,7 +1,7 @@
 pkgname=gtk3
 pkgver=3.10.7
 pkgmin="${pkgver%.*}"
-pkgrel=1
+pkgrel=2
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
@@ -16,7 +16,7 @@ license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgmin}/gtk+-${pkgver}.tar.xz"
         'settings.ini')
 md5sums=('18a81944a8506231529a76bf2b68372b'
-         '085ece008fa3a0b7a72e9fe3dda3631a')
+         '6bbfc6cc58bae5b1be02e60b48fa51f5')
 
 build() {
   cd "${srcdir}/gtk+-${pkgver}"

@@ -6,7 +6,7 @@
 pkgbase=gtk2
 pkgname=('gtk2' 'gtk-update-icon-cache')
 pkgver=2.24.22
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.gtk.org/"
 makedepends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
@@ -48,7 +48,7 @@ package_gtk2() {
 
     make DESTDIR="$pkgdir" install
     sed -i "s#env python#env python2#" $pkgdir/usr/bin/gtk-builder-convert
-    echo 'gtk-fallback-icon-theme = "gnome"' > "$pkgdir/etc/gtk-2.0/gtkrc"
+    echo 'gtk-fallback-icon-theme = "oxygen"' > "$pkgdir/etc/gtk-2.0/gtkrc"
     #split this out to use with gtk3 too
     rm $pkgdir/usr/bin/gtk-update-icon-cache
 }
