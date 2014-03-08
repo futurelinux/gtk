@@ -1,25 +1,16 @@
 pkgbase=qtcurve
 pkgname=('qtcurve-gtk2')
-pkgver=1.8.17
-pkgrel=3
+pkgver=1.8.18
+pkgrel=1
 pkgdesc='A configurable set of widget styles for KDE and Gtk'
 arch=('x86_64')
 url='https://github.com/QtCurve/qtcurve'
-license=('GPL')
+license=('LGPL')
 groups=('qtcurve')
 depends=('qtcurve-utils' 'gtk2')
 makedepends=('cmake' 'automoc4' 'qt')
-source=("$pkgbase-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz"
-	dep_xcb-util-image_removal.patch)
-md5sums=('c4f2e9bc296398b42bfc132b88a3b989'
-	 '40bd1d75a948d69df8c6d83f7383300d')
-
-prepare(){
-  cd $pkgbase-$pkgver
-  
-  # fix remove xcb-util-image dependence
-  patch -Np1 -i ${srcdir}/dep_xcb-util-image_removal.patch
-}
+source=("$pkgbase-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz")
+md5sums=('422d1876d944bb278855f320eda19368')
 
 build() {
   cd $pkgbase-$pkgver

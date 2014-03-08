@@ -1,31 +1,34 @@
 pkgname=gtk3
-pkgver=3.6.4
+pkgver=3.10.7
 pkgmin="${pkgver%.*}"
-pkgrel=5
+pkgrel=1
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
 install="gtk3.install"
-depends=('cairo' 'gtk-update-icon-cache' 'libcups' 'libxcursor'
+depends=('glib2' 'cairo' 'gtk-update-icon-cache' 'libcups' 'libxcursor'
          'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
-         'pango' 'shared-mime-info' 'colord' 'at-spi2-atk')
+         'pango' 'shared-mime-info' 'colord' 'at-spi2-atk' 'wayland' 'libxkbcommon')
 makedepends=('gobject-introspection')
-options=('!libtool' '!docs')
-backup=("etc/gtk-3.0/settings.ini" "extra/etc/gtk-3.0/settings.ini")
+options=('!docs')
+backup=("etc/gtk-3.0/settings.ini")
 license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgmin}/gtk+-${pkgver}.tar.xz"
         'settings.ini')
-md5sums=('123d3dc6fc659539a308017934235b3e'
+md5sums=('18a81944a8506231529a76bf2b68372b'
          '085ece008fa3a0b7a72e9fe3dda3631a')
 
 build() {
   cd "${srcdir}/gtk+-${pkgver}"
 
- ./configure --prefix=/usr \
-             --sysconfdir=/etc \
-             --localstatedir=/var \
-             --enable-gtk2-dependency \
-             --disable-schemas-compile
+  CXX=/bin/false ./configure --prefix=/usr \
+      --sysconfdir=/etc \
+      --localstatedir=/var \
+      --enable-gtk2-dependency \
+      --disable-schemas-compile \
+      --enable-x11-backend \
+      --enable-broadway-backend \
+      --enable-wayland-backend
 
   #https://bugzilla.gnome.org/show_bug.cgi?id=655517
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
