@@ -1,8 +1,8 @@
 
 pkgname=eclipse
-pkgver=4.3.1
-pkgrel=2
-_date=201309111000
+pkgver=4.3.2
+pkgrel=1
+_release=kepler-SR2
 pkgdesc="An IDE for Java and other languages."
 arch=('x86_64')
 url="http://eclipse.org"
@@ -14,19 +14,13 @@ license=("EPL/1.0")
 # The file eclipse.png in this directory was fetched from:
 #
 #   http://download.eclipse.org/eclipse/eclipse/downloads/drops4/R-${pkgver}-${_date}/news/images/icon.png
-#
-# (At the time of this writing, ${pkgver} is '4.2.1' and ${_date} is '201209141800'.)
 
-source=("ftp://ftp.osuosl.org/pub/eclipse/eclipse/downloads/drops4/R-${pkgver}-${_date}/${pkgname}-SDK-${pkgver}-linux-gtk-x86_64.tar.gz"
+source=("http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/${_release/-//}/$pkgname-standard-$_release-linux-gtk-x86_64.tar.gz"
         'eclipse.png'
         'eclipse.desktop')
-md5sums=('61e44d550751d3b176fbe56dd0f75060'
+md5sums=('b72d5a6caae4e2fd86be2f2f134fc8cb'
          '04e05dda343b1b0c521a1e094e69f98b'
          'ba8a37e30a7ebd69774cec87c69e8c44')
-
-build() {
-  cd "${srcdir}/${pkgname}"
-}
 
 package() {
   cd "${srcdir}/${pkgname}"
@@ -37,26 +31,22 @@ package() {
 
   # install misc
   install -d "${pkgdir}/usr/bin" \
-             "${pkgdir}/usr/share/applications" \
-             "${pkgdir}/usr/share/icons/hicolor"/{16x16,32x32,48x48,256x256}/apps
+             "${pkgdir}/usr/share/applications"
 
   # install bin symlink
   ln -s "/usr/share/eclipse/eclipse" "$pkgdir/usr/bin/"
   install -m644 "${srcdir}/eclipse.desktop" "${pkgdir}/usr/share/applications/"
   
   # install icon
-  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse.png"   "${pkgdir}/usr/share/icons/hicolor/16x16/apps/eclipse.png"
-  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse32.png" "${pkgdir}/usr/share/icons/hicolor/32x32/apps/eclipse.png"
-  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse48.png" "${pkgdir}/usr/share/icons/hicolor/48x48/apps/eclipse.png"
-  ln -s "/usr/share/eclipse/plugins/org.eclipse.sdk_${pkgver}.v${_date}/eclipse256.png" "${pkgdir}/usr/share/icons/hicolor/256x256/apps/eclipse.png"
-
+  for _i in 16 32 48 256; do
+    install -Dm644 plugins/org.eclipse.platform_*/eclipse${_i}.png \
+      "$pkgdir/usr/share/icons/hicolor/${_i}x${_i}/apps/eclipse.png"
+  done
 
   install -D -m644 "${srcdir}/eclipse.png" \
                    "${pkgdir}/usr/share/icons/hicolor/512x512/apps/eclipse.png"
 
   # license
   install -d -m755 "${pkgdir}/usr/share/licenses/eclipse/"
-  mv $pkgdir/usr/share/eclipse/epl-v10.html "$pkgdir/usr/share/licenses/eclipse/epl-v10.html"
+  cp -a epl-v10.html "$pkgdir/usr/share/licenses/eclipse/epl-v10.html"
 }
-
-# vim:set ts=2 sw=2 et:
