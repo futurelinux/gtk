@@ -1,7 +1,7 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=27.0.1
+pkgver=28.0
 pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
@@ -34,7 +34,7 @@ optdepends=('firefox-i18n: for multilanguage support')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=52284fd63667
+_patchrev=427ae22e730e
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
         mozconfig
@@ -100,8 +100,6 @@ prepare() {
   patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   
-  # Fix PRE_RELEASE_SUFFIX
-  sed -i '/^PRE_RELEASE_SUFFIX := ""/s/ ""//' browser/base/Makefile.in
 
   # configure script misdetects the preprocessor without an optimization level
   # https://bugs.archlinux.org/task/34644
@@ -110,10 +108,6 @@ prepare() {
   # WebRTC build tries to execute "python" and expects Python 2
   mkdir -p "$srcdir/path"
   ln -sf /usr/bin/python2 "$srcdir/path/python"
-
-  # Fix PRE_RELEASE_SUFFIX
-  sed -i '/^PRE_RELEASE_SUFFIX := ""/s/ ""//' \
-      browser/base/Makefile.in
 
   # Fix tab loading icon (flickers with libpng 1.6)
   # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
@@ -205,7 +199,7 @@ package() {
   
 }
 
-sha1sums=('29dc759e36f2b9381e80ac48ce59635ea25033dc'
+sha1sums=('f78517836ceca0cd2a0d3db1f282985c616e3fae'
           '311b020505e3080eb62760a520e23dda1d97e926'
           '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
           'db2d93a36184cc8e2edd4149052da382b5b43bfd'
@@ -215,13 +209,13 @@ sha1sums=('29dc759e36f2b9381e80ac48ce59635ea25033dc'
           'aa3442d291bd77fefa3758291baa9c609a74e5dc'
           '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
           '5400573a902cb46f478a5f3577ef8f86790f69e8'
-          'c4d63d936a9d72b6985dfca011d36990ed951bf6'
+          '1f7affd939c265c409b34154250b07f94947bbf0'
           '84e6e4eb614e86baf1ee565da9c2ac505940492a'
-          '09a891e1702a5848fc7ba8a79de6c154dc54c5fb'
+          'b911531a18bcfc686267d8e5fdb7cb37769f7c42'
           '02633df9bcaec095258f8ae02688c7ac96d8ecb7'
           '2dfca8f76045c089941f3defc89d5f1171efa552'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
           '05072b88a7707abca65f84cc6d1c4985c6874f6f'
-          'd24bd2e0f9a0bb1b5fd67d004f98cf4928af18d7'
-          '25575fe47b1664d0927614a2c4b1813a9fc35f20'
+          '9b6075843127a1f2a33cfe2c758112bcda8790a0'
+          '18a6e8bf4e173721f3f7d22da2636fc6d0a40b71'
           '136fa1ae86e155aa31e087ee1923504aeb61ef86')
