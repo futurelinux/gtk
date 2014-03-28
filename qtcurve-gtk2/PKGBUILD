@@ -1,7 +1,7 @@
 pkgbase=qtcurve
 pkgname=('qtcurve-gtk2')
 pkgver=1.8.18
-pkgrel=1
+pkgrel=2
 pkgdesc='A configurable set of widget styles for KDE and Gtk'
 arch=('x86_64')
 url='https://github.com/QtCurve/qtcurve'
@@ -27,5 +27,7 @@ build() {
  
 package_qtcurve-gtk2() {
   cd $pkgbase-$pkgver/build/gtk2
+  make DESTDIR="$pkgdir" install
+  cd ../lib/cairo
   make DESTDIR="$pkgdir" install
 }
