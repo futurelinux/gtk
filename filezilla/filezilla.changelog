@@ -10,6 +10,37 @@ Legend:
     *nix: Unix (e.g BSD) and Unix-like systems (e.g. Linux)
     OS X: Apple Mac OS X
 
+3.8.0 (2014-03-28)
+
++ OS X: Implemented the reboot, shutdown and suspend queue completion actions
+- Popup dialogs no longer automatically open if other dialogs are already open. This prevents FileZilla from becoming unresponsive on OS X
+- Fix calculation of current transfer speed. In some situations the transfer speed tooltip over the activity indicators showed negative speeds
+- Fix handling of focus item in local directory listings if connecting to a site with a default local directory
+
+3.8.0-rc1 (2014-03-22)
+
++ MSW: Added suspend as new queue completion action
+- Minor fixes to new updater
+
+3.8.0-beta2 (2014-03-13)
+
++ Use Server Name Indication (SNI) With FTP over TLS and HTTP over TLS
+- Minor updater improvements to further improve reliability
+- Updated translations
+
+3.8.0-beta1 (2014-03-10)
+
+! Updated GnuTLS to latest version to address vulnerabilities in GnuTLS' certificate validation
++ Redesigned update dialog
+- Fix initial state of the 'Enable' item in speed limit menu
+- Date/Time handling routines now carry precision information, this avoids comparisons of timestamps with different accuracy, e.g. 2014-02-01 and 2014-02-01 10:00 now compare as being identical when using the "Overwrite if newer" file exists action
+- MSW: Make handling of FD_CLOSE socket events more robust
+
+3.7.4.1 (2014-02-11)
+
+- Fix detection of modified files
+- Additional fixes for site-specific bookmark handling
+
 3.7.4 (2014-02-09)
 
 + Added SOCKS4 support

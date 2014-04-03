@@ -1,5 +1,5 @@
 pkgname=filezilla
-pkgver=3.7.4
+pkgver=3.8.0
 pkgrel=1
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
@@ -12,7 +12,7 @@ changelog=${pkgname}.changelog
 source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
         "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz"
         "${pkgname}.changelog")
-sha256sums=('20a6d5ce737a8cbb38786b53365547e5e71dd9086259bf0b4eb264e8dbbc11ce'
+sha256sums=('8d9c1c9812f916f83676e1930933683828579b40a9fba331c4757f84a02ec308'
             '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740'
             'abf6d5edbaf532facb2bc1f295680b57b38941a8424b15f7c72e3028d104e1f7')
 
