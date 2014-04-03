@@ -1,18 +1,17 @@
 pkgname=('gcompris')
-pkgver=13.11
-pkgrel=2
+pkgver=14.03
+pkgrel=1
 pkgdesc="Educational software suite comprising of numerous activities for children aged 2 to 10"
 arch=('x86_64')
 url="http://gcompris.net/"
 license=('GPL3')
-depends=('pygtk' 'python-pyxml' 'librsvg' 'python-pysqlite'
-           'gstreamer0.10-base-plugins')
+depends=('pygtk' 'python-pyxml' 'librsvg' 'gstreamer0.10-base-plugins')
 makedepends=('texinfo' 'texi2html' 'intltool' 'gettext' 'gnuchess')
 optdepends=('gnucap: for computer simulation within the electricity activity'
             'tuxpaint: for the painting activity'
             'gnuchess: for the chess activity')
-source=("http://downloads.sourceforge.net/project/$pkgname/$pkgver/$pkgname-$pkgver.tar.bz2")
-md5sums=('7c3396c02e44bbf72424ca12bfff9cf3')
+source=(http://gcompris.net/download/$pkgname-$pkgver.tar.bz2)
+md5sums=('13d453357ca2c6ca52009d585a40170a')
  
 build() {
   cd "$srcdir/$pkgname-$pkgver"
