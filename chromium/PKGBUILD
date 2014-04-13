@@ -3,15 +3,15 @@
 #
 
 pkgname=chromium
-pkgver=33.0.1750.152
+pkgver=34.0.1847.116
 pkgrel=1
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
-_pepperflashver=12.0.0.77
+_pepperflashver=13.0.0.182
 
 # https://build.opensuse.org/package/view_file/network:chromium/chromium/chromium.spec
-_pnacl_version=12534
-_nacl_version=12464
-_glibc_version=12421
+_pnacl_version=12772
+_nacl_version=12761
+_glibc_version=12664
 
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -32,33 +32,35 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         chromium.desktop
         chromium.sh
         chromium.default
-        chromium-gn-r0.patch
+        chromium-gn-r1.patch
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff
-        chromium-system-icu-r0.patch)
+        chromium-system-icu-r0.patch
+        chromium-depot-tools-r0.patch)
         
 noextract=(naclsdk_nacl_linux_x86-$_nacl_version.tgz
            naclsdk_pnacl_linux_x86-$_pnacl_version.tgz
            naclsdk_pnacl_translator-$_pnacl_version.tgz
            toolchain_linux_x86-$_glibc_version.tar.bz2)
            
-sha1sums=('ab4e5a50c545324b1414c9f897afb73c40544db7'
-          '1bb40a1d98ee95549a5a4bafa147d2c8c5e49100'
+sha1sums=('747daf7e1a3c7c66e24da57bbcb357096623d1a9'
+          '3f40384777fa13c72759fd9e492e2aaaf43fc89a'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
-          '375b8f11781828cdc72146f0c18b4d3084d11bd5'
-          '291d90c75de219eb4247208e6553619e4f379564'
-          'f95607febc0f20a49091e469c3eb89f3da1d57a8'
-          'f991c0efcb96881fbc6ca944a1be289186cd6fae'
-          'a9c6beffc24ece6ec993a2a7d3df73fdef3450fc'
+          '1f986bb0f2ee08d75ac0b72eba4034142b7a081a'
+          '552cb19daa5802583209a47c6d9f90ee11c32872'
+          'c7501d3ff8f8c49d6eac45a83eb9bddd0127d7fe'
+          'ec4c6bf93cb03b2dcbbac1bafae37c67f5c5f3f3'
+          '196f1ab274de0a0632b7ccc74ad8aaff4cf942de'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
           '11332bcd0318d573bea1aa0744213a5d006aecc4'
-          'a8c367af2530c74e096bb0258c22907a4d1054f5'
+          '108b34b6b3d0c8b523dc33b18388e2fd014dff63'
           '5cd50202719569cb9bc6624ad0bb3c9cbbc5a828'
           '51065e45d0060374346f3c756a6b1cd0d1fb1323'
           '4ac33284c534b5117741b551cc531589cfa08d75'
-          '88478f33ac3bad1933ca7a5cc7e0d5441d170f1a')
+          '88478f33ac3bad1933ca7a5cc7e0d5441d170f1a'
+          '9dfadb8620ca39c7316d1fb624ab6b4d9093d95c')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -72,15 +74,15 @@ prepare() {
   cd "$srcdir/$pkgname-$pkgver"
 
   # Fix build during "Generating gyp files from GN..."
-  patch -Np0 -i "$srcdir/chromium-gn-r0.patch"
+  patch -Np0 -i "$srcdir/chromium-gn-r1.patch"
+  
+  # Fix build during "ImportError: No module named breakpad"
+  patch -Np0 -i "$srcdir/chromium-depot-tools-r0.patch"
   
   # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
   patch -p1 -i "$srcdir/search_engine_type.diff"
   patch -p1 -i "$srcdir/prepopulated_engines_json.diff"
-  
-  # Fix build with system ICU (patch from Gentoo)
-  #patch -Np0 -i "$srcdir/chromium-system-icu-r0.patch"
 
   # Prepare NaCL toolchain
   mkdir native_client/toolchain/{.tars,pnacl_translator}
@@ -101,7 +103,7 @@ build() {
   cd "$srcdir/$pkgname-$pkgver"
 
   # activate ninja compile method
-  #export GYP_GENERATORS='ninja'
+  export GYP_GENERATORS='ninja'
   
   # CFLAGS are passed through release_extra_cflags below
   export -n CFLAGS CXXFLAGS
@@ -129,11 +131,12 @@ build() {
     -Dlibspeechd_h_prefix=speech-dispatcher/
     -Dffmpeg_branding=Chrome
     -Dproprietary_codecs=1
+    -Dremove_webcore_debug_symbols=1
     -Duse_system_bzip2=1
     -Duse_system_flac=1
     -Duse_system_ffmpeg=0
     -Duse_system_harfbuzz=1
-    -Duse_system_icu=1
+    -Duse_system_icu=0
     -Duse_system_libevent=1
     -Duse_system_libjpeg=1
     -Duse_system_libpng=1
@@ -148,18 +151,22 @@ build() {
     -Duse_gconf=0
     -Dtarget_arch=x64
     -Dffmpeg_target_arch=x64
+    -Ddisable_nacl=0
     -Ddisable_glibc=1
+    -Ddisable_pnacl=0
+    -Ddisable_newlib_untar=0
     -Ddisable_sse2=1)
 
   build/linux/unbundle/replace_gyp_files.py "${_chromium_conf[@]}"
-  build/gyp_chromium -f make --depth=. "${_chromium_conf[@]}"
+  #build/gyp_chromium -f make --depth=. "${_chromium_conf[@]}"
+  build/gyp_chromium build/all.gyp --depth=. "${_chromium_conf[@]}"
   
-  make chrome chrome_sandbox BUILDTYPE=Release
+  #make BUILDTYPE=Release chrome chrome_sandbox
   
   # Build chrome base
-  #ninja -C out/Release chrome
+  ninja -C out/Release chrome
   # Build the required SUID_SANDBOX helper
-  #ninja -C out/Release chrome_sandbox
+  ninja -C out/Release chrome_sandbox
 }
 
 package() {
@@ -177,7 +184,7 @@ package() {
   # override command-line options
   install -Dm644 "$srcdir/chromium.default" "$pkgdir/etc/chromium/default"
 
-  cp -a out/Release/locales out/Release/resources "$pkgdir/usr/lib/chromium/"
+  cp -a out/Release/locales out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
 
   find "$pkgdir/usr/lib/chromium/" -name '*.d' -type f -delete
 
