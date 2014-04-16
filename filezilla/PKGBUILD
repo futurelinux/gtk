@@ -1,24 +1,23 @@
 pkgname=filezilla
 pkgver=3.8.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
 url="http://filezilla-project.org/"
 license=('GPL')
-depends=('dbus-core' 'xdg-utils' 'wxgtk' 'libidn' 'libsm' 'libxxf86vm' 
+depends=('dbus-core' 'xdg-utils' 'wxgtk2.8' 'libidn' 'libsm' 'libxxf86vm' 
          'hicolor-icon-theme' 'sqlite3')
 install=${pkgname}.install
 changelog=${pkgname}.changelog
 source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
-        "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz"
-        "${pkgname}.changelog")
+        "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz")
 sha256sums=('8d9c1c9812f916f83676e1930933683828579b40a9fba331c4757f84a02ec308'
-            '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740'
-            'abf6d5edbaf532facb2bc1f295680b57b38941a8424b15f7c72e3028d104e1f7')
+            '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740')
 
 build() {
   cd "${pkgname}-${pkgver}"
-  
+  export WX_CONFIG_PATH='/usr/bin/wx-config-2.8'
+  export WXRC='/usr/bin/wxrc-2.8'
   ./autogen.sh
   ./configure \
     --prefix=/usr \
@@ -37,9 +36,6 @@ package() {
 
   install -dm755 "${pkgdir}/usr/share/filezilla/resources/oxygen"
   cp -dpr --no-preserve=ownership "${srcdir}/oxygen" "${pkgdir}/usr/share/filezilla/resources/"
-  
-  # Install changelog
-  install -Dm644 NEWS "${startdir}/${pkgname}.changelog"
   
   install -dm755 "${pkgdir}/usr/share/doc/${pkgname}"
   install -Dm644 {AUTHORS,ChangeLog,README} "${pkgdir}/usr/share/doc/${pkgname}/"

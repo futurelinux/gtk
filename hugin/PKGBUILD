@@ -2,7 +2,7 @@
 
 pkgname=hugin
 pkgver=2013.0.0
-pkgrel=5
+pkgrel=6
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
@@ -10,10 +10,17 @@ arch=('x86_64')
 depends=('wxgtk' 'boost-libs' 'enblend-enfuse' 'exiv2' "hugin-tools=${pkgver}"
          'lensfun' 'lapack' 'make' 'perl-exiftool' 'desktop-file-utils')
 makedepends=('cmake' 'boost' 'tclap' 'mesa')
-source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('0e0689cf2ca0c4a2730cffe06380eda976b6772d')
+source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2"
+        hugin-build.patch)
+sha1sums=('0e0689cf2ca0c4a2730cffe06380eda976b6772d'
+          '45a8d8f5ee9b3c013cbc1ae3cfad14a2705c0dd4')
 
 install=install
+
+prepare() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	patch -p1 -i ../hugin-build.patch
+}
 
 build() {
 	cd ${pkgname}-${pkgver}
