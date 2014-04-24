@@ -1,18 +1,17 @@
 # maintainer: AlmAck
 
 pkgname=wireshark
-pkgver=1.11.0
+pkgver=1.11.3
 pkgrel=1
 pkgdesc='A free network protocol analyzer for Unix/Linux and Windows'
 arch=('x86_64')
 license=('GPL2')
-depends=('libpcap' 'libcap' 'krb5' 'glib2' 'desktop-file-utils' 'hicolor-icon-theme' 'lua' 'libgcrypt' 'gtk2' 'filesystem-extra' 'qt')
-makedepends=('bison' 'flex' 'bash' 'gnutls' 'python' 'portaudio' 'gtk3')
+depends=('libpcap' 'libcap' 'krb5' 'glib2' 'desktop-file-utils' 'hicolor-icon-theme' 'lua' 'libgcrypt' 'qt')
+makedepends=('bison' 'flex' 'bash' 'gnutls' 'python' 'portaudio')
 url='http://www.wireshark.org/'
 install=wireshark.install
-options=(!libtool)
 source=(http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('117e7d6ac65bcfda04d97dc4958dfe156d58c323')
+sha1sums=('7e1c6b107c178016d51c9061ef3f40efbc47a040')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -52,9 +51,7 @@ package() {
     install -m644 ${d}/*.h ${pkgdir}/extra/usr/include/${pkgname}/${d}
   done
   
-  
-  ### GTK GUI ###
-  #install -Dm755 .libs/wireshark "${pkgdir}/usr/bin/wireshark"
+
   for d in 16 32 48; do
     install -Dm644 image/hi${d}-app-wireshark.png  \
                    "${pkgdir}/extra/usr/share/icons/hicolor/${d}x${d}/apps/wireshark.png"
