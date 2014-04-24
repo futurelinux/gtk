@@ -3,10 +3,10 @@
 #
 
 pkgname=chromium
-pkgver=34.0.1847.116
+pkgver=34.0.1847.132
 pkgrel=1
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
-_pepperflashver=13.0.0.182
+_pepperflashver=13.0.0.206
 
 # https://build.opensuse.org/package/view_file/network:chromium/chromium/chromium.spec
 _pnacl_version=12772
@@ -36,7 +36,6 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff
-        chromium-system-icu-r0.patch
         chromium-depot-tools-r0.patch)
         
 noextract=(naclsdk_nacl_linux_x86-$_nacl_version.tgz
@@ -44,7 +43,7 @@ noextract=(naclsdk_nacl_linux_x86-$_nacl_version.tgz
            naclsdk_pnacl_translator-$_pnacl_version.tgz
            toolchain_linux_x86-$_glibc_version.tar.bz2)
            
-sha1sums=('747daf7e1a3c7c66e24da57bbcb357096623d1a9'
+sha1sums=('f346a9562cb048a95e76df9860062691af54f370'
           '3f40384777fa13c72759fd9e492e2aaaf43fc89a'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
           '1f986bb0f2ee08d75ac0b72eba4034142b7a081a'
@@ -59,7 +58,6 @@ sha1sums=('747daf7e1a3c7c66e24da57bbcb357096623d1a9'
           '5cd50202719569cb9bc6624ad0bb3c9cbbc5a828'
           '51065e45d0060374346f3c756a6b1cd0d1fb1323'
           '4ac33284c534b5117741b551cc531589cfa08d75'
-          '88478f33ac3bad1933ca7a5cc7e0d5441d170f1a'
           '9dfadb8620ca39c7316d1fb624ab6b4d9093d95c')
 
 
