@@ -1,8 +1,8 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=28.0
-pkgrel=2
+pkgver=29.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -34,21 +34,20 @@ optdepends=('firefox-i18n: for multilanguage support')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=427ae22e730e
+_patchrev=ae78294f6f84
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
         mozconfig
         firefox.desktop
-        firefox-install-dir.patch
         vendor.js
         kde.js
 	firefox-20.0.1-fixed-loading-icon.png
 	duckduckgo.xml
 	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
 
+	firefox-install-dir.patch
 	# Firefox patchset
-	$_patchurl/firefox-browser-css.patch
-	#$_patchurl/firefox-kde.patch
+	# $_patchurl/firefox-kde.patch
 	# manually removed package-manifest.in in firefox-kde.patch to be able to build with PDO
 	firefox-kde.patch
 	$_patchurl/firefox-kde-114.patch
@@ -72,8 +71,8 @@ prepare() {
   cd "mozilla-release"
 
   cp "$srcdir/mozconfig" .mozconfig
-  
-  patch -Np1 -i "$srcdir/firefox-install-dir.patch"
+ 
+  patch -Np1 -i "$srcdir/firefox-install-dir.patch" 
   echo -n "$_google_api_key" > google-api-key
 
   # make makepkg -R easier
@@ -94,7 +93,6 @@ prepare() {
   patch -Np1 -i "$srcdir/mozilla-language.patch"
 
   msg "Firefox patchset"
-  patch -Np1 -i "$srcdir/firefox-browser-css.patch"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
   patch -Np1 -i "$srcdir/firefox-kde-114.patch"
   patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
@@ -199,23 +197,22 @@ package() {
   
 }
 
-sha1sums=('f78517836ceca0cd2a0d3db1f282985c616e3fae'
+sha1sums=('db8fa9a4863bd7427115adec01b7db0e494dffa6'
           '311b020505e3080eb62760a520e23dda1d97e926'
-          '5c54c004a5f6bcf22d1ff0fdc33765c45517288a'
-          'db2d93a36184cc8e2edd4149052da382b5b43bfd'
+          '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'e0f399de01da908f474c237bc6c5a15678cd8fcd'
           'e13d5c19b3d9781ed67acc6c55c18219b0249736'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           'aa3442d291bd77fefa3758291baa9c609a74e5dc'
           '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
-          '5400573a902cb46f478a5f3577ef8f86790f69e8'
-          '1f7affd939c265c409b34154250b07f94947bbf0'
+          'a87a6eb5cb86f63e39249c60eb53594ce225dea0'
+          'bb58b6298071648da213593b049790c182be459a'
           '84e6e4eb614e86baf1ee565da9c2ac505940492a'
-          'b911531a18bcfc686267d8e5fdb7cb37769f7c42'
+          '9037e982ea4ca7c1bab84c56ab112445d1ca52c9'
           '02633df9bcaec095258f8ae02688c7ac96d8ecb7'
-          '2dfca8f76045c089941f3defc89d5f1171efa552'
+          'b76bd52635b417f4fe2b6f866a7f0284d04cfb0b'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
           '05072b88a7707abca65f84cc6d1c4985c6874f6f'
-          '9b6075843127a1f2a33cfe2c758112bcda8790a0'
+          '5d449834679adf283d6441fd656d09bcdb9dd3f9'
           '18a6e8bf4e173721f3f7d22da2636fc6d0a40b71'
           '136fa1ae86e155aa31e087ee1923504aeb61ef86')
