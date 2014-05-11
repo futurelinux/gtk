@@ -1,7 +1,7 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=29.0
+pkgver=29.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
@@ -34,7 +34,7 @@ optdepends=('firefox-i18n: for multilanguage support')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=ae78294f6f84
+_patchrev=3a83cd95580e
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
         mozconfig
@@ -54,11 +54,11 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
 	$_patchurl/firefox-no-default-ualocale.patch
 	$_patchurl/firefox-branded-icons.patch
 	# Gecko/toolkit patchset
-	$_patchurl/toolkit-download-folder.patch
+#	$_patchurl/toolkit-download-folder.patch
 	$_patchurl/mozilla-nongnome-proxies.patch
 	$_patchurl/mozilla-prefer_plugin_pref.patch
 	$_patchurl/mozilla-kde.patch
-	$_patchurl/mozilla-preferences.patch
+#	$_patchurl/mozilla-preferences.patch
 	$_patchurl/mozilla-language.patch
 )
 
@@ -215,4 +215,21 @@ sha1sums=('db8fa9a4863bd7427115adec01b7db0e494dffa6'
           '05072b88a7707abca65f84cc6d1c4985c6874f6f'
           '5d449834679adf283d6441fd656d09bcdb9dd3f9'
           '18a6e8bf4e173721f3f7d22da2636fc6d0a40b71'
+          '136fa1ae86e155aa31e087ee1923504aeb61ef86')
+sha1sums=('2819ef63403de2bcfff5496bd21a3b8cb5dfce82'
+          '311b020505e3080eb62760a520e23dda1d97e926'
+          '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
+          'e0f399de01da908f474c237bc6c5a15678cd8fcd'
+          'e13d5c19b3d9781ed67acc6c55c18219b0249736'
+          '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
+          'aa3442d291bd77fefa3758291baa9c609a74e5dc'
+          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
+          'a87a6eb5cb86f63e39249c60eb53594ce225dea0'
+          'bb58b6298071648da213593b049790c182be459a'
+          '84e6e4eb614e86baf1ee565da9c2ac505940492a'
+          '9037e982ea4ca7c1bab84c56ab112445d1ca52c9'
+          '02633df9bcaec095258f8ae02688c7ac96d8ecb7'
+          '5a38d441d73647b12e1e13416de3fde822dfed18'
+          '05072b88a7707abca65f84cc6d1c4985c6874f6f'
+          '5d449834679adf283d6441fd656d09bcdb9dd3f9'
           '136fa1ae86e155aa31e087ee1923504aeb61ef86')
