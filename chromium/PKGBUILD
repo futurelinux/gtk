@@ -3,10 +3,10 @@
 #
 
 pkgname=chromium
-pkgver=34.0.1847.132
+pkgver=34.0.1847.137
 pkgrel=1
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
-_pepperflashver=13.0.0.206
+_pepperflashver=13.0.0.214
 
 # https://build.opensuse.org/package/view_file/network:chromium/chromium/chromium.spec
 _pnacl_version=12772
@@ -42,8 +42,9 @@ noextract=(naclsdk_nacl_linux_x86-$_nacl_version.tgz
            naclsdk_pnacl_linux_x86-$_pnacl_version.tgz
            naclsdk_pnacl_translator-$_pnacl_version.tgz
            toolchain_linux_x86-$_glibc_version.tar.bz2)
-           
-sha1sums=('f346a9562cb048a95e76df9860062691af54f370'
+
+
+sha1sums=('2754eeb95533e7263f51100ce30cca420d1a42c9'
           '3f40384777fa13c72759fd9e492e2aaaf43fc89a'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
           '1f986bb0f2ee08d75ac0b72eba4034142b7a081a'
