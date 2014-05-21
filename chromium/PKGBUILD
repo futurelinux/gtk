@@ -3,15 +3,15 @@
 #
 
 pkgname=chromium
-pkgver=34.0.1847.137
+pkgver=35.0.1916.114
 pkgrel=1
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
 _pepperflashver=13.0.0.214
 
 # https://build.opensuse.org/package/view_file/network:chromium/chromium/chromium.spec
-_pnacl_version=12772
-_nacl_version=12761
-_glibc_version=12664
+_pnacl_version=12919
+_nacl_version=12790
+_glibc_version=12831
 
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -32,34 +32,31 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         chromium.desktop
         chromium.sh
         chromium.default
-        chromium-gn-r1.patch
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff
-        chromium-depot-tools-r0.patch)
+        chromium-nacl-bootstrap-cflags.patch)
         
 noextract=(naclsdk_nacl_linux_x86-$_nacl_version.tgz
            naclsdk_pnacl_linux_x86-$_pnacl_version.tgz
            naclsdk_pnacl_translator-$_pnacl_version.tgz
            toolchain_linux_x86-$_glibc_version.tar.bz2)
 
-
-sha1sums=('2754eeb95533e7263f51100ce30cca420d1a42c9'
+sha1sums=('4e0b101ebb906decbcc33a9a1c80cbed0b0646d7'
           '3f40384777fa13c72759fd9e492e2aaaf43fc89a'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
-          '1f986bb0f2ee08d75ac0b72eba4034142b7a081a'
-          '552cb19daa5802583209a47c6d9f90ee11c32872'
-          'c7501d3ff8f8c49d6eac45a83eb9bddd0127d7fe'
-          'ec4c6bf93cb03b2dcbbac1bafae37c67f5c5f3f3'
-          '196f1ab274de0a0632b7ccc74ad8aaff4cf942de'
+          '2cc54f1a182155da8f6d410e83a1eeb827e01e98'
+          '717082e1815ffa63b83bf6d3beecd363bffd32a9'
+          'e3828757ebce11e25b76044d7cdee4d35d9fd941'
+          '5a0afc5ae5c8da88ff45fcd8d155e75cb46f2e76'
+          'dde61c04276f61b9ed5198a9f153186f71648de3'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
           '11332bcd0318d573bea1aa0744213a5d006aecc4'
-          '108b34b6b3d0c8b523dc33b18388e2fd014dff63'
-          '5cd50202719569cb9bc6624ad0bb3c9cbbc5a828'
+          'e961181b294a51fb1f6406a9820c372e947d9d82'
           '51065e45d0060374346f3c756a6b1cd0d1fb1323'
           '4ac33284c534b5117741b551cc531589cfa08d75'
-          '9dfadb8620ca39c7316d1fb624ab6b4d9093d95c')
+          'ca2f1c4797987ddf248bd94feb06cad66927355e')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -71,12 +68,10 @@ _google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
 
 prepare() {
   cd "$srcdir/$pkgname-$pkgver"
-
-  # Fix build during "Generating gyp files from GN..."
-  patch -Np0 -i "$srcdir/chromium-gn-r1.patch"
-  
-  # Fix build during "ImportError: No module named breakpad"
-  patch -Np0 -i "$srcdir/chromium-depot-tools-r0.patch"
+ 
+  # Filter out -fstack-protector-strong for nacl_helper_bootstrap
+  # https://code.google.com/p/chromium/issues/detail?id=104569
+  patch -Np0 -i "$srcdir/chromium-nacl-bootstrap-cflags.patch"
   
   # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
@@ -106,9 +101,6 @@ build() {
   
   # CFLAGS are passed through release_extra_cflags below
   export -n CFLAGS CXXFLAGS
-
-  # Silence "typedef 'x' locally defined but not used" warnings
-  CFLAGS+=' -Wno-unused-local-typedefs'
   
   # NOTE
   # -Dremove_webcore_debug_symbols=1  speed up the build by removing debug symbols for webkit
