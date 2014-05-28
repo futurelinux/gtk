@@ -1,6 +1,6 @@
 pkgname=tuxguitar
 pkgver=1.2
-pkgrel=4
+pkgrel=5
 _jdk=java-7-openjdk
 pkgdesc="multitrack guitar tablature editor and player"
 arch=('x86_64')
@@ -17,7 +17,7 @@ source=(tuxguitar-src-$pkgver.tar.gz::http://sourceforge.net/projects/tuxguitar/
         no-cairo.patch)
 md5sums=('f41ed20e77c6c3d8968991a29c71b912'
          '7b2a6ffbf4fc6bcf4ed8e7453dd1bb52'
-         '8d8f813a721ed3979b8e59c71d773e7a'
+         'eea5247daa70ce6fc15e95b1080af486'
          '59ce4eb8dcc0d0dde81e6cf2820aa9b0'
          '90259fd596f5ca9bd321285b02a021c2')
 
