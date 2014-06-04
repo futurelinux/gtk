@@ -1,6 +1,6 @@
 pkgname=filezilla
-pkgver=3.8.0
-pkgrel=2
+pkgver=3.8.1
+pkgrel=1
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
 url="http://filezilla-project.org/"
@@ -11,7 +11,7 @@ install=${pkgname}.install
 changelog=${pkgname}.changelog
 source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
         "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz")
-sha256sums=('8d9c1c9812f916f83676e1930933683828579b40a9fba331c4757f84a02ec308'
+sha256sums=('66bc9c082843ffdcb915c7902900b92bdf921ed7310f2a40ff6b96b03cfa1e4f'
             '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740')
 
 build() {
