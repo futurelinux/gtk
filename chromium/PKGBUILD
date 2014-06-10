@@ -4,7 +4,7 @@
 
 pkgname=chromium
 pkgver=35.0.1916.114
-pkgrel=2
+pkgrel=3
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
 _pepperflashver=13.0.0.214
 
