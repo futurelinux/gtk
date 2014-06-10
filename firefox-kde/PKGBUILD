@@ -170,7 +170,8 @@ package() {
   
   make -f client.mk DESTDIR="$pkgdir" install
 
-  install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/defaults/preferences/vendor.js"
+  install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
+  install -Dm644 ../kde.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/kde.js"
   install -Dm644 ../duckduckgo.xml "$pkgdir/usr/lib/firefox/browser/searchplugins/duckduckgo.xml"
 
   for i in 16 22 24 32 48 256; do
@@ -198,8 +199,8 @@ package() {
 sha1sums=('21dce1a2d4b8085c5f7f66b5f4f60bc37598285d'
           'd08dbb7d2dd4c02aed4a9a259e35d9184acd54f1'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
-          'e0f399de01da908f474c237bc6c5a15678cd8fcd'
-          'e13d5c19b3d9781ed67acc6c55c18219b0249736'
+          'fd32cb22e054086d2cafa98a4aab120cf1f82cc4'
+          'ce48f8e5065319e191a7389539ec663dc8a919d7'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           'aa3442d291bd77fefa3758291baa9c609a74e5dc'
           '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
@@ -211,4 +212,5 @@ sha1sums=('21dce1a2d4b8085c5f7f66b5f4f60bc37598285d'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
           '05072b88a7707abca65f84cc6d1c4985c6874f6f'
           '32f81cc46daa00b645c991bf8aaf51e17c4a937a'
-          '69170917d207096e532f24a83a55dc9d53fa268e')
+          '69170917d207096e532f24a83a55dc9d53fa268e'
+          '88b724543c5482dc8f94f141e4b87704bf60fff9')
