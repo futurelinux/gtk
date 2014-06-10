@@ -1,19 +1,19 @@
 # CCR: Ben R <thebenj88 *AT* gmail *DOT* com>
 
 pkgname=libwebkit-gtk2
-pkgver=1.10.2
-pkgrel=3
+pkgver=2.4.3
+pkgrel=1
 pkgdesc="An opensource web content engine"
 arch=('x86_64')
 url="http://webkitgtk.org/"
 license=('custom')
-depends=('libxt' 'libxslt' 'sqlite3' 'icu' 'gstreamer0.10-base' 'libsoup' 'enchant')
+depends=('libxt' 'libxslt' 'sqlite3' 'icu' 'gst-plugins-base' 'libsoup' 'enchant' 'libwebp')
 makedepends=('gperf' 'gobject-introspection' 'python2' 'gtk2' 'ruby')
 provides=('libwebkit')
 options=('!emptydirs')
 install=libwebkit.install
 source=(http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz)
-sha256sums=('19234f8e4edfaefe91ed06471a2aa8c71d26dd55d33787eede1dcfc9a3a96d9c')
+sha256sums=('9862c3eac1d12cc6e52cc39060a1284163950b304d534529a0dbcc5958a8ceac')
 
 build() {
 
@@ -30,6 +30,8 @@ build() {
   PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
     --enable-introspection \
     --disable-geolocation \
+    --disable-libsecret \
+    --disable-credential_storage \
     --with-font-backend=freetype --disable-gtk-doc \
     --with-unicode-backend=icu \
     --with-gtk=2.0 \
