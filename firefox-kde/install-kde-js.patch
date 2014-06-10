@@ -1,0 +1,21 @@
+--- ./browser/app/Makefile.in.orig	2014-06-10 15:40:47.689024147 -0400
++++ ./browser/app/Makefile.in	2014-06-10 15:44:45.826669522 -0400
+@@ -21,7 +21,7 @@
+   $(NULL)
+ 
+ ifdef LIBXUL_SDK #{
+-PREF_JS_EXPORTS += $(srcdir)/profile/channel-prefs.js
++PREF_JS_EXPORTS += $(srcdir)/profile/channel-prefs.js $(srcdir)/profile/kde.js
+ endif #} LIBXUL_SDK
+ 
+ # Build a binary bootstrapping with XRE_main
+@@ -96,6 +96,9 @@
+ libs:: $(srcdir)/profile/channel-prefs.js
+ 	$(NSINSTALL) -D $(DIST)/bin/defaults/pref
+ 	$(call py_action,preprocessor,$(PREF_PPFLAGS) $(ACDEFINES) $^ -o $(DIST)/bin/defaults/pref/channel-prefs.js)
++
++libs:: $(srcdir)/profile/kde.js
++	$(INSTALL) $(IFLAGS1) $^ $(DIST)/bin/defaults/pref
+ endif
+ 
+ libs:: $(srcdir)/blocklist.xml

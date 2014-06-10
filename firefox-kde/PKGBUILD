@@ -1,7 +1,7 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=29.0.1
+pkgver=30.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
@@ -11,7 +11,7 @@ url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL')
 depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'libevent' 'sqlite3' 'kdelibs' 'nss')
-makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4' 'libpulse')
+makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4' 'libpulse' 'xorg-server')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libpulse: PulseAudio audio driver')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
@@ -34,7 +34,7 @@ optdepends=('firefox-i18n: for multilanguage support')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=3a83cd95580e
+_patchrev=8ce6c378e34d
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
         mozconfig
@@ -47,9 +47,7 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
 
 	firefox-install-dir.patch
 	# Firefox patchset
-	# $_patchurl/firefox-kde.patch
-	# manually removed package-manifest.in in firefox-kde.patch to be able to build with PDO
-	firefox-kde.patch
+	$_patchurl/firefox-kde.patch
 	$_patchurl/firefox-kde-114.patch
 	$_patchurl/firefox-no-default-ualocale.patch
 	$_patchurl/firefox-branded-icons.patch
@@ -60,6 +58,7 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/
 	$_patchurl/mozilla-kde.patch
 #	$_patchurl/mozilla-preferences.patch
 	$_patchurl/mozilla-language.patch
+    install-kde-js.patch
 )
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -97,7 +96,8 @@ prepare() {
   patch -Np1 -i "$srcdir/firefox-kde-114.patch"
   patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
-  
+  patch -Np0 -i "$srcdir/install-kde-js.patch"
+  cp "$srcdir/kde.js" browser/app/profile/
 
   # configure script misdetects the preprocessor without an optimization level
   # https://bugs.archlinux.org/task/34644
@@ -167,12 +167,10 @@ package() {
 
   msg "package() Firefox"
   cd "$srcdir/mozilla-release"
-  cp "$srcdir/kde.js" obj-ff/dist/bin/defaults/pref
   
   make -f client.mk DESTDIR="$pkgdir" install
 
   install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/defaults/preferences/vendor.js"
-  install -Dm644 ../kde.js "$pkgdir/usr/lib/firefox/defaults/preferences/kde.js"
   install -Dm644 ../duckduckgo.xml "$pkgdir/usr/lib/firefox/browser/searchplugins/duckduckgo.xml"
 
   for i in 16 22 24 32 48 256; do
@@ -197,8 +195,8 @@ package() {
   
 }
 
-sha1sums=('2819ef63403de2bcfff5496bd21a3b8cb5dfce82'
-          '311b020505e3080eb62760a520e23dda1d97e926'
+sha1sums=('21dce1a2d4b8085c5f7f66b5f4f60bc37598285d'
+          'd08dbb7d2dd4c02aed4a9a259e35d9184acd54f1'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'e0f399de01da908f474c237bc6c5a15678cd8fcd'
           'e13d5c19b3d9781ed67acc6c55c18219b0249736'
@@ -206,11 +204,11 @@ sha1sums=('2819ef63403de2bcfff5496bd21a3b8cb5dfce82'
           'aa3442d291bd77fefa3758291baa9c609a74e5dc'
           '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
           'a87a6eb5cb86f63e39249c60eb53594ce225dea0'
-          'bb58b6298071648da213593b049790c182be459a'
+          '438fe443a74d4c8294c44ee23e877c878c98b6a9'
           '84e6e4eb614e86baf1ee565da9c2ac505940492a'
           '9037e982ea4ca7c1bab84c56ab112445d1ca52c9'
-          '02633df9bcaec095258f8ae02688c7ac96d8ecb7'
+          'a424c58cbcecf59510eccf28a083818c7ae63c60'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
           '05072b88a7707abca65f84cc6d1c4985c6874f6f'
-          '5d449834679adf283d6441fd656d09bcdb9dd3f9'
-          '136fa1ae86e155aa31e087ee1923504aeb61ef86')
+          '32f81cc46daa00b645c991bf8aaf51e17c4a937a'
+          '69170917d207096e532f24a83a55dc9d53fa268e')
