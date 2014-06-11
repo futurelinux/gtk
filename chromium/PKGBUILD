@@ -3,10 +3,10 @@
 #
 
 pkgname=chromium
-pkgver=35.0.1916.114
-pkgrel=3
+pkgver=35.0.1916.153
+pkgrel=1
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
-_pepperflashver=13.0.0.214
+_pepperflashver=14.0.0.125
 
 # https://build.opensuse.org/package/view_file/network:chromium/chromium/chromium.spec
 _pnacl_version=12919
@@ -42,7 +42,7 @@ noextract=(naclsdk_nacl_linux_x86-$_nacl_version.tgz
            naclsdk_pnacl_translator-$_pnacl_version.tgz
            toolchain_linux_x86-$_glibc_version.tar.bz2)
 
-sha1sums=('4e0b101ebb906decbcc33a9a1c80cbed0b0646d7'
+sha1sums=('b67959f8c2f1e154810e6470825bac2670cf536b'
           '64726324d432af438a9d16e6c7243ce0a56a40e3'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
           '2cc54f1a182155da8f6d410e83a1eeb827e01e98'
@@ -57,7 +57,6 @@ sha1sums=('4e0b101ebb906decbcc33a9a1c80cbed0b0646d7'
           '51065e45d0060374346f3c756a6b1cd0d1fb1323'
           '4ac33284c534b5117741b551cc531589cfa08d75'
           'ca2f1c4797987ddf248bd94feb06cad66927355e')
-
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
