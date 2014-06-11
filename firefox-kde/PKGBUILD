@@ -10,7 +10,7 @@ _kmozillahelper_pkgver=0.6.4
 url='http://www.mozilla.org/projects/firefox'
 arch=('x86_64')
 license=('MPL')
-depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gstreamer0.10-base' 'libxt' 'dbus-glib' 'libevent' 'sqlite3' 'kdelibs' 'nss')
+depends=('gtk2' 'startup-notification' 'libnotify' 'alsa-lib' 'gstreamer0.10' 'gst-plugins-base' 'libxt' 'dbus-glib' 'libevent' 'sqlite3' 'kdelibs' 'nss')
 makedepends=('zip' 'pkg-config' 'diffutils' 'python2' 'wireless_tools' 'unzip' 'autoconf2.13' 'mesa' 'yasm' 'cmake' 'automoc4' 'libpulse' 'xorg-server')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libpulse: PulseAudio audio driver')
@@ -197,9 +197,9 @@ package() {
 }
 
 sha1sums=('21dce1a2d4b8085c5f7f66b5f4f60bc37598285d'
-          'd08dbb7d2dd4c02aed4a9a259e35d9184acd54f1'
+          'c343b926a24020e84bac33c1bf4e604719305464'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
-          'fd32cb22e054086d2cafa98a4aab120cf1f82cc4'
+          'f5a0aa57dfb514da5d7a0eb6d9606e63c4037826'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           'aa3442d291bd77fefa3758291baa9c609a74e5dc'
