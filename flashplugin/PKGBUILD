@@ -1,6 +1,6 @@
 pkgname=flashplugin
 _licensefile='PlatformClients_PC_WWEULA_Combined_20100108_1657.pdf'
-pkgver=11.2.202.359
+pkgver=11.2.202.378
 pkgrel=1
 pkgdesc='Adobe Flash Player'
 url='http://labs.adobe.com/technologies/flashplatformruntimes/flashplayer11/'
@@ -15,7 +15,7 @@ backup=('etc/adobe/mms.cfg')
 source=("flashplugin-${pkgver}::http://fpdownload.macromedia.com/get/flashplayer/pdc/$pkgver/install_flash_player_11_linux.x86_64.tar.gz"
         "http://www.adobe.com/products/eulas/pdfs/${_licensefile}"
         'mms.cfg')
-md5sums=('055baa41ea395b4c20ef4709b3db16f3'
+md5sums=('9cfeb8c86b471e72e8ff3046a11225a9'
          '94ca2aecb409abfe36494d1a7ec7591d'
          'f34aae6279b40e0bd2abfb0d9963d7b8')
 
@@ -32,8 +32,6 @@ package () {
         install -Dm644 usr/share/icons/hicolor/${i}/apps/flash-player-properties.png \
             "${pkgdir}/usr/share/icons/hicolor/${i}/apps/flash-player-properties.png"
     done
-
-
 
     msg 'KCM install in /usr'
     install -Dm755 usr/lib64/kde4/kcm_adobe_flash_player.so "${pkgdir}/usr/lib/kde4/kcm_adobe_flash_player.so"
