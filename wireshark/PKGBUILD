@@ -1,7 +1,7 @@
 # maintainer: AlmAck
 
 pkgname=wireshark
-pkgver=1.10.7
+pkgver=1.10.8
 pkgrel=1
 pkgdesc='A free network protocol analyzer for Unix/Linux and Windows'
 arch=('x86_64')
@@ -12,7 +12,7 @@ url='http://www.wireshark.org/'
 install=${pkgname}.install
 options=('!libtool')
 source=("http://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('d98d263b31dd904a0337ba2db6d1a80bb495b4ac419a304f0f25c551d50cafc6')
+sha256sums=('27d9cf4f0ca1ac436104b7f27caf8ad65f73db09edc8df0742ce9688c7d38763')
 
 build() {
   cd ${pkgname}-${pkgver}
