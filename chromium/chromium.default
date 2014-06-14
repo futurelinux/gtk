@@ -2,4 +2,4 @@
 
 # Options to pass to chromium
 # flash-version updated dynamically with .install file
-CHROMIUM_FLAGS="--ppapi-flash-path=/extra/usr/lib/PepperFlash/libpepflashplayer.so --ppapi-flash-version=1.2.3.4"
+CHROMIUM_FLAGS="--ppapi-flash-path=/usr/lib/PepperFlash/libpepflashplayer.so --ppapi-flash-version=1.2.3.4"

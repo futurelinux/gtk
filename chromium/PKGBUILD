@@ -3,39 +3,60 @@
 #
 
 pkgname=chromium
-pkgver=27.0.1453.110
-pkgrel=1
-_verbld=${pkgver}-202711 # used for libpdf and pepper-flash
-_pepperflashver=11.7.700.203
+pkgver=35.0.1916.153
+pkgrel=3
+_verbld=${pkgver}-1 # used for libpdf and pepper-flash
+_pepperflashver=14.0.0.125
+
+# https://build.opensuse.org/package/view_file/network:chromium/chromium/chromium.spec
+_pnacl_version=12919
+_nacl_version=12790
+_glibc_version=12831
+
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'filesystem-extra')
-makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'subversion' 'ninja')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'zlib' 'harfbuzz' 'glib2')
+makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'lib32-gcc-libs' 'subversion' 'ninja' 'clang')
 install=chromium.install
-source=(http://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz 
-	http://dl.google.com/linux/chrome/rpm/stable/${CARCH}/google-chrome-stable-${_verbld}.${CARCH}.rpm
-	license.html::http://www.google.com/chrome/intl/en/eula_text.html
+source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgname}-${pkgver}.tar.xz                 
+        #http://dl.google.com/linux/chrome/rpm/stable/${CARCH}/google-chrome-stable-${_verbld}.x86_64.rpm
+        https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+        license.html::http://www.google.com/chrome/intl/en/eula_text.html
+        naclsdk_nacl_linux_x86-$_nacl_version.tgz::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_nacl_version/naclsdk_linux_x86.tgz
+        naclsdk_pnacl_linux_x86-$_pnacl_version.tgz::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_pnacl_version/naclsdk_pnacl_linux_x86.tgz
+        naclsdk_pnacl_translator-$_pnacl_version.tgz::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_pnacl_version/naclsdk_pnacl_translator.tgz
+        naclsdk_pnacl_translator-$_pnacl_version.tgz.sha1hash::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_pnacl_version/naclsdk_pnacl_translator.tgz.sha1hash
+        toolchain_linux_x86-$_glibc_version.tar.bz2::https://commondatastorage.googleapis.com/nativeclient-archive2/x86_toolchain/r$_glibc_version/toolchain_linux_x86.tar.bz2
         chromium.desktop
         chromium.sh
         chromium.default
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff
-        system-libpng.patch
-        chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch)
-sha1sums=('12d83cf93658604f01ab996fd6ee5ff70fcfde65'
-          'b80302ac3ca10869836685496ddbb211e02e1786'
-          'cdda47faa791d56089f92854957070b1ec135c2e'
-          'd02e7eaaa5de9407d8744a03a1306c117b659098'
-          'fa93e2d3d4d52a1a29a1c446092a158f05751fcc'
-          '3d9663f614113c137016fadb963e150f11f17402'
-          '90619af5afa000b47ac03ab01b7cba8b6d16daa1'
-          'f7a705d539361d63fa0e3fe0e276341c87d484fc'
+        chromium-nacl-bootstrap-cflags.patch)
+        
+noextract=(naclsdk_nacl_linux_x86-$_nacl_version.tgz
+           naclsdk_pnacl_linux_x86-$_pnacl_version.tgz
+           naclsdk_pnacl_translator-$_pnacl_version.tgz
+           toolchain_linux_x86-$_glibc_version.tar.bz2)
+
+sha1sums=('b67959f8c2f1e154810e6470825bac2670cf536b'
+          '0a39ec5296d90869ea211412c6197c57759f52d7'
+          'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
+          '2cc54f1a182155da8f6d410e83a1eeb827e01e98'
+          '717082e1815ffa63b83bf6d3beecd363bffd32a9'
+          'e3828757ebce11e25b76044d7cdee4d35d9fd941'
+          '5a0afc5ae5c8da88ff45fcd8d155e75cb46f2e76'
+          'dde61c04276f61b9ed5198a9f153186f71648de3'
+          '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
+          '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
+          '11332bcd0318d573bea1aa0744213a5d006aecc4'
+          'e961181b294a51fb1f6406a9820c372e947d9d82'
+          '51065e45d0060374346f3c756a6b1cd0d1fb1323'
           '4ac33284c534b5117741b551cc531589cfa08d75'
-          'bfb59a53456272c901b8e4eb872069ff99a2cbeb'
-          '73fc081513282ae94fe7a050f3636f8d3056b49e')
+          'ca2f1c4797987ddf248bd94feb06cad66927355e')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -44,50 +65,104 @@ _google_api_key=AIzaSyA33sdKPff0x3KBByOhpzc1i7RS2A1mEpY
 _google_default_client_id=3502044743.apps.googleusercontent.com
 _google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
 
-
-build() {
+prepare() {
   cd "$srcdir/$pkgname-$pkgver"
-  
-  #patch -p1 -i "$srcdir/chromium-20.0.1132.57-glib-2.16-use-siginfo_t.patch"
+ 
+  # Filter out -fstack-protector-strong for nacl_helper_bootstrap
+  # https://code.google.com/p/chromium/issues/detail?id=104569
+  patch -Np0 -i "$srcdir/chromium-nacl-bootstrap-cflags.patch"
   
   # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
   patch -p1 -i "$srcdir/search_engine_type.diff"
   patch -p1 -i "$srcdir/prepopulated_engines_json.diff"
 
+  # Prepare NaCL toolchain
+  mkdir native_client/toolchain/{.tars,pnacl_translator}
+  ln -s "$srcdir/naclsdk_nacl_linux_x86-$_nacl_version.tgz" \
+    native_client/toolchain/.tars/naclsdk_linux_x86.tgz
+  ln -s "$srcdir/naclsdk_pnacl_linux_x86-$_pnacl_version.tgz" \
+    native_client/toolchain/.tars/naclsdk_pnacl_linux_x86.tgz
+  ln -s "$srcdir/naclsdk_pnacl_translator-$_pnacl_version.tgz" \
+    native_client/toolchain/.tars/naclsdk_pnacl_translator.tgz
+  ln -s "$srcdir/naclsdk_pnacl_translator-$_pnacl_version.tgz.sha1hash" \
+    native_client/toolchain/pnacl_translator/SOURCE_SHA1
+  ln -s "$srcdir/toolchain_linux_x86-$_glibc_version/.tar.bz2" \
+    native_client/toolchain/.tars/toolchain_linux_x86.tar.bz2
+
+  # Build with clang as a temporary solution to startup crash with GCC 4.9
+  mkdir -p third_party/llvm-build/Release+Asserts/bin
+  ln -s /usr/bin/clang third_party/llvm-build/Release+Asserts/bin/
+  ln -s /usr/bin/clang++ third_party/llvm-build/Release+Asserts/bin/
+  ln -s /usr/bin/llvm-symbolizer third_party/llvm-build/Release+Asserts/bin/
+  # clang 3.4 doesn't support this option
+  sed -i '/-Wno-absolute-value/d' build/common.gypi
+}
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
   # activate ninja compile method
   export GYP_GENERATORS='ninja'
   
-  build/gyp_chromium --depth=. \
-    -Dgoogle_api_key=$_google_api_key \
-    -Dgoogle_default_client_id=$_google_default_client_id \
-    -Dgoogle_default_client_secret=$_google_default_client_secret \
-    -Dwerror= \
-    -Dlinux_sandbox_path=/extra/usr/lib/chromium/chromium-sandbox \
-    -Dlinux_strip_binary=1 \
-    -Dlinux_use_gold_binary=0 \
-    -Dlinux_use_gold_flags=0 \
-    -Dlinux_link_pulseaudio=1 \
-    -Drelease_extra_cflags="$CFLAGS" \
-    -Dffmpeg_branding=Chrome \
-    -Dproprietary_codecs=1 \
-    -Duse_system_bzip2=1 \
-    -Duse_system_flac=1 \
-    -Duse_system_ffmpeg=0 \
-    -Duse_system_libevent=1 \
-    -Duse_system_libjpeg=1 \
-    -Duse_system_libpng=1 \
-    -Duse_system_libxml=1 \
-    -Duse_system_opus=1 \
-    -Duse_system_ssl=0 \
-    -Duse_system_xdg_utils=1 \
-    -Duse_system_yasm=1 \
-    -Duse_system_zlib=0 \
-    -Duse_gconf=0 \
-    -Dtarget_arch=x64 \
-    -Ddisable_nacl=1 
+  # CFLAGS are passed through release_extra_cflags below
+  export -n CFLAGS CXXFLAGS
+  
+  # NOTE
+  # -Dremove_webcore_debug_symbols=1  speed up the build by removing debug symbols for webkit
+  
+  local _chromium_conf=(
+    -Dgoogle_api_key=$_google_api_key
+    -Dgoogle_default_client_id=$_google_default_client_id
+    -Dgoogle_default_client_secret=$_google_default_client_secret
+    -Dwerror=
+    -Dclang=1
+    -Dclang_use_chrome_plugins=0
+    -Dpython_ver=2.7
+    -Dlinux_link_libpci=1
+    -Dlinux_link_libspeechd=1
+    -Dlinux_link_pulseaudio=1
+    -Dlinux_strip_binary=1
+    -Dlinux_use_gold_binary=0
+    -Dlinux_use_gold_flags=0
+    -Dlogging_like_official_build=1
+    -Drelease_extra_cflags="$CFLAGS"
+    -Dlibspeechd_h_prefix=speech-dispatcher/
+    -Dffmpeg_branding=Chrome
+    -Dproprietary_codecs=1
+    -Dremove_webcore_debug_symbols=1
+    -Duse_system_bzip2=1
+    -Duse_system_flac=1
+    -Duse_system_ffmpeg=0
+    -Duse_system_harfbuzz=1
+    -Duse_system_icu=0
+    -Duse_system_libevent=1
+    -Duse_system_libjpeg=1
+    -Duse_system_libpng=1
+    -Duse_system_libxml=1
+    -Duse_system_opus=1
+    -Duse_system_snappy=0
+    -Duse_system_ssl=0
+    -Duse_system_xdg_utils=1
+    -Duse_system_yasm=1
+    -Duse_system_zlib=0
+    -Duse_system_v8=0
+    -Duse_mojo=0
+    -Duse_gconf=0
+    -Dtarget_arch=x64
+    -Dffmpeg_target_arch=x64
+    -Ddisable_nacl=0
+    -Ddisable_glibc=1
+    -Ddisable_pnacl=0
+    -Ddisable_newlib_untar=0
+    -Ddisable_fatal_linker_warnings=1
+    -Ddisable_sse2=1)
 
-  #make chrome chrome_sandbox BUILDTYPE=Release
+  build/linux/unbundle/replace_gyp_files.py "${_chromium_conf[@]}"
+  #build/gyp_chromium -f make --depth=. "${_chromium_conf[@]}"
+  build/gyp_chromium build/all.gyp --depth=. "${_chromium_conf[@]}"
+  
+  #make BUILDTYPE=Release chrome chrome_sandbox
   
   # Build chrome base
   ninja -C out/Release chrome
@@ -98,48 +173,49 @@ build() {
 package() {
   cd "$srcdir/$pkgname-$pkgver"
 
-  install -D out/Release/chrome ${pkgdir}/extra/usr/lib/chromium/chromium
+  install -D out/Release/chrome ${pkgdir}/usr/lib/chromium/chromium
 
   install -Dm4755 -o root -g root out/Release/chrome_sandbox \
-    "$pkgdir/extra/usr/lib/chromium/chromium-sandbox"
+    "$pkgdir/usr/lib/chromium/chrome-sandbox"
 
-  cp out/Release/{*.pak,libffmpegsumo.so} \
-    "$pkgdir/extra/usr/lib/chromium/"
+  cp out/Release/{*.pak,libffmpegsumo.so,nacl_helper{,_bootstrap}} \
+    out/Release/{libppGoogleNaClPluginChrome.so,nacl_irt_*.nexe} \
+    "$pkgdir/usr/lib/chromium/"
 
   # override command-line options
-  install -Dm644 "$srcdir/chromium.default" "$pkgdir/extra/etc/chromium/default"
+  install -Dm644 "$srcdir/chromium.default" "$pkgdir/etc/chromium/default"
 
-  cp -a out/Release/locales out/Release/resources "$pkgdir/extra/usr/lib/chromium/"
+  cp -a out/Release/locales out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
 
-  find "$pkgdir/extra/usr/lib/chromium/" -name '*.d' -type f -delete
+  find "$pkgdir/usr/lib/chromium/" -name '*.d' -type f -delete
 
-  install -Dm644 out/Release/chrome.1 "$pkgdir/extra/usr/share/man/man1/chromium.1"
+  install -Dm644 out/Release/chrome.1 "$pkgdir/usr/share/man/man1/chromium.1"
 
   install -Dm644 "$srcdir/chromium.desktop" \
-    "$pkgdir/extra/usr/share/applications/chromium.desktop"
+    "$pkgdir/usr/share/applications/chromium.desktop"
 
   for size in 22 24 48 64 128 256; do
     install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
-      "$pkgdir/extra/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
   done
   
   for size in 16 32; do
     install -Dm644 "chrome/app/theme/default_100_percent/chromium/product_logo_$size.png" \
-      "$pkgdir/extra/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
   done
 
-  install -D "$srcdir/chromium.sh" "$pkgdir/extra/usr/bin/chromium"
+  install -D "$srcdir/chromium.sh" "$pkgdir/usr/bin/chromium"
 
-  install -Dm644 LICENSE "$pkgdir/extra/usr/share/licenses/chromium/LICENSE"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/chromium/LICENSE"
   
   #### PepperFlash ####
   cd "$srcdir"
-  install -d "$pkgdir/extra/usr/lib/PepperFlash"
-  install -m644 opt/google/chrome/PepperFlash/* "$pkgdir/extra/usr/lib/PepperFlash"
+  install -d "$pkgdir/usr/lib/PepperFlash"
+  install -m644 opt/google/chrome/PepperFlash/* "$pkgdir/usr/lib/PepperFlash"
   sed -i "s/flashver=.*/flashver=$_pepperflashver/" "$startdir/chromium.install"
-  install -Dm644 "$srcdir/license.html" "$pkgdir/extra/usr/share/licenses/$pkgname/license.html"
+  install -Dm644 "$srcdir/license.html" "$pkgdir/usr/share/licenses/$pkgname/license.html"
   
   #### libpdf ####
-  install -d "${pkgdir}/extra/usr/lib/chromium"
-  install -m644 opt/google/chrome/libpdf.so "${pkgdir}/extra/usr/lib/chromium"
+  install -d "${pkgdir}/usr/lib/chromium"
+  install -m644 opt/google/chrome/libpdf.so "${pkgdir}/usr/lib/chromium"
 }
