@@ -1,23 +1,30 @@
 # Maintainer: Weng Xuetian <wengxt@gmail.com>
 
+_pkgbase=fcitx
 pkgbase=fcitx-gtk
 pkgname=('fcitx-gtk2' 'fcitx-gtk3')
-pkgver=4.2.7
-pkgrel=3
+pkgver=4.2.8.4
+pkgrel=1
 pkgdesc="Gtk im module for fcitx"
 arch=('i686' 'x86_64')
-url="http://code.google.com/p/fcitx/"
+url="https://fcitx-im.org/wiki/Fcitx"
 license=('GPL')
-makedepends=('fcitx>=4.2.7' 'gtk2>=2.24.22' 'gtk3' 'cmake')
-source=(http://fcitx.googlecode.com/files/${pkgbase}-${pkgver}.tar.xz)
-md5sums=('c178aeca39bd2e24a907d4540503595d')
+makedepends=('gtk2' 'gtk3' 'cmake' 'icu' 'opencc' 'iso-codes' 'libxkbfile' 'cairo' 'pango' 'dbus-core' 'qt')
+source=(https://github.com/fcitx/fcitx/archive/${pkgver}.tar.gz)
+md5sums=('d915202c5a4437e5e1a70eb7b7e69a41')
 
-build(){
-    rm -rf build
+prepare() {
+    cd ${srcdir}/${_pkgbase}-${pkgver}
+    [[ -e build ]] && rm -rf build
     mkdir build
-    cd build
-
-    cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release "../${pkgbase}-${pkgver}"
+}
+build(){
+    cd ${srcdir}/${_pkgbase}-${pkgver}/build
+    cmake -DENABLE_GTK3_IM_MODULE=ON \
+          -DCMAKE_INSTALL_PREFIX=/usr \
+	  -DENABLE_LUA=On \
+	  -DENABLE_GIR=Off \
+          -DCMAKE_BUILD_TYPE=Release ..
     make
 }
 
@@ -26,7 +33,7 @@ package_fcitx-gtk2 ()
     pkgdesc='GTK2 IM Module for fcitx'
     depends=('gtk2' "fcitx>=$pkgver")
     install="fcitx-gtk2.install"
-    cd "build/gtk2"
+    cd "${srcdir}/${_pkgbase}-${pkgver}/build/src/frontend/gtk2"
     make DESTDIR=${pkgdir} install
 }
 
@@ -35,6 +42,6 @@ package_fcitx-gtk3 ()
     pkgdesc='GTK3 IM Module for fcitx'
     depends=('gtk3' "fcitx>=$pkgver")
     install="fcitx-gtk3.install"
-    cd "build/gtk3"
+    cd "${srcdir}/${_pkgbase}-${pkgver}/build/src/frontend/gtk3"
     make DESTDIR=${pkgdir} install
 }
