@@ -39,8 +39,8 @@
  
  // Belgium
  const PrepopulatedEngine* engines_BE[] =
--    { &google, &bing_nl_BE, &bing_fr_BE, &yahoo_be, &yahoo_fr_be, };
-+    { &duckduckgo, &google, &bing_nl_BE, &bing_fr_BE, &yahoo_be, &yahoo_fr_be, };
+-    { &google, &bing_nl_BE, &bing_fr_BE, &yahoo, &yahoo_fr, };
++    { &duckduckgo, &google, &bing_nl_BE, &bing_fr_BE, &yahoo, &yahoo_fr, };
  
  // Bulgaria
  const PrepopulatedEngine* engines_BG[] =
@@ -99,8 +99,8 @@
  
  // China
  const PrepopulatedEngine* engines_CN[] =
--    { &google, &baidu, &sogou, &soso, };
-+    { &duckduckgo, &google, &baidu, &sogou, &soso, };
+-    { &google, &baidu, &sogou, };
++    { &duckduckgo, &google, &baidu, &sogou, };
  
  // Colombia
  const PrepopulatedEngine* engines_CO[] =
@@ -274,8 +274,8 @@
  
  // South Korea
  const PrepopulatedEngine* engines_KR[] =
--    { &google, &naver, &daum, &nate, };
-+    { &duckduckgo, &google, &naver, &daum, &nate, };
+-    { &google, &naver, &daum, };
++    { &duckduckgo, &google, &naver, &daum, };
  
  // Kazakhstan
  const PrepopulatedEngine* engines_KZ[] =
@@ -534,8 +534,8 @@
  
  // South Africa
  const PrepopulatedEngine* engines_ZA[] =
--    { &google, &bing, &yahoo_za, };
-+    { &duckduckgo, &google, &bing, &yahoo_za, };
+-    { &google, &bing, &yahoo, };
++    { &duckduckgo, &google, &bing, &yahoo, };
  
  // Zimbabwe
  const PrepopulatedEngine* engines_ZW[] =
@@ -544,7 +544,7 @@
  
  // A list of all the engines that we know about.
  const PrepopulatedEngine* kAllEngines[] = {
-@@ -514,6 +514,9 @@ const PrepopulatedEngine* kAllEngines[]
+@@ -513,6 +513,9 @@ const PrepopulatedEngine* kAllEngines[]
    &search_results, &searchnu,   &snapdo,       &softonic,     &sweetim,
    &terra_ar,     &terra_es,     &tut,          &walla,        &wp,
    &zoznam,

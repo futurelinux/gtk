@@ -3,10 +3,10 @@
 #
 
 pkgname=chromium
-pkgver=35.0.1916.153
-pkgrel=4
+pkgver=36.0.1985.125
+pkgrel=1
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
-_pepperflashver=14.0.0.125
+_pepperflashver=14.0.0.145
 
 # https://build.opensuse.org/package/view_file/network:chromium/chromium/chromium.spec
 _pnacl_version=12919
@@ -17,18 +17,13 @@ pkgdesc="The open-source project behind Google Chrome, an attempt at creating a 
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'zlib' 'harfbuzz' 'glib2')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'zlib' 'harfbuzz' 'glib2' 'libexif')
 makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'lib32-gcc-libs' 'subversion' 'ninja' 'clang')
 install=chromium.install
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgname}-${pkgver}.tar.xz                 
         #http://dl.google.com/linux/chrome/rpm/stable/${CARCH}/google-chrome-stable-${_verbld}.x86_64.rpm
         https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
         license.html::http://www.google.com/chrome/intl/en/eula_text.html
-        naclsdk_nacl_linux_x86-$_nacl_version.tgz::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_nacl_version/naclsdk_linux_x86.tgz
-        naclsdk_pnacl_linux_x86-$_pnacl_version.tgz::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_pnacl_version/naclsdk_pnacl_linux_x86.tgz
-        naclsdk_pnacl_translator-$_pnacl_version.tgz::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_pnacl_version/naclsdk_pnacl_translator.tgz
-        naclsdk_pnacl_translator-$_pnacl_version.tgz.sha1hash::https://commondatastorage.googleapis.com/nativeclient-archive2/toolchain/$_pnacl_version/naclsdk_pnacl_translator.tgz.sha1hash
-        toolchain_linux_x86-$_glibc_version.tar.bz2::https://commondatastorage.googleapis.com/nativeclient-archive2/x86_toolchain/r$_glibc_version/toolchain_linux_x86.tar.bz2
         chromium.desktop
         chromium.sh
         chromium.default
@@ -36,24 +31,14 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         search_engine_type.diff
         prepopulated_engines_json.diff
         chromium-nacl-bootstrap-cflags.patch)
-        
-noextract=(naclsdk_nacl_linux_x86-$_nacl_version.tgz
-           naclsdk_pnacl_linux_x86-$_pnacl_version.tgz
-           naclsdk_pnacl_translator-$_pnacl_version.tgz
-           toolchain_linux_x86-$_glibc_version.tar.bz2)
 
-sha1sums=('b67959f8c2f1e154810e6470825bac2670cf536b'
-          '0a39ec5296d90869ea211412c6197c57759f52d7'
+sha1sums=('75bab065560fc18da4dd847c2b4020ae9682c261'
+          '64726324d432af438a9d16e6c7243ce0a56a40e3'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
-          '2cc54f1a182155da8f6d410e83a1eeb827e01e98'
-          '717082e1815ffa63b83bf6d3beecd363bffd32a9'
-          'e3828757ebce11e25b76044d7cdee4d35d9fd941'
-          '5a0afc5ae5c8da88ff45fcd8d155e75cb46f2e76'
-          'dde61c04276f61b9ed5198a9f153186f71648de3'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
           '11332bcd0318d573bea1aa0744213a5d006aecc4'
-          'e961181b294a51fb1f6406a9820c372e947d9d82'
+          '5909b423f8fe672c276af5891d1f1ddf3ae657fd'
           '51065e45d0060374346f3c756a6b1cd0d1fb1323'
           '4ac33284c534b5117741b551cc531589cfa08d75'
           'ca2f1c4797987ddf248bd94feb06cad66927355e')
@@ -77,20 +62,12 @@ prepare() {
   patch -p1 -i "$srcdir/search_engine_type.diff"
   patch -p1 -i "$srcdir/prepopulated_engines_json.diff"
 
-  # Prepare NaCL toolchain
-  mkdir native_client/toolchain/{.tars,pnacl_translator}
-  ln -s "$srcdir/naclsdk_nacl_linux_x86-$_nacl_version.tgz" \
-    native_client/toolchain/.tars/naclsdk_linux_x86.tgz
-  ln -s "$srcdir/naclsdk_pnacl_linux_x86-$_pnacl_version.tgz" \
-    native_client/toolchain/.tars/naclsdk_pnacl_linux_x86.tgz
-  ln -s "$srcdir/naclsdk_pnacl_translator-$_pnacl_version.tgz" \
-    native_client/toolchain/.tars/naclsdk_pnacl_translator.tgz
-  ln -s "$srcdir/naclsdk_pnacl_translator-$_pnacl_version.tgz.sha1hash" \
-    native_client/toolchain/pnacl_translator/SOURCE_SHA1
-  ln -s "$srcdir/toolchain_linux_x86-$_glibc_version/.tar.bz2" \
-    native_client/toolchain/.tars/toolchain_linux_x86.tar.bz2
+  # Download NaCL toolchains
+  python2 build/download_nacl_toolchains.py \
+    --packages nacl_x86_newlib,pnacl_newlib,pnacl_translator
 
   # Build with clang as a temporary solution to startup crash with GCC 4.9
+  [ -d third_party/llvm-build/Release+Asserts/bin ] && rm -r third_party/llvm-build/Release+Asserts/bin
   mkdir -p third_party/llvm-build/Release+Asserts/bin
   ln -s /usr/bin/clang third_party/llvm-build/Release+Asserts/bin/
   ln -s /usr/bin/clang++ third_party/llvm-build/Release+Asserts/bin/
@@ -123,7 +100,8 @@ build() {
     -Dlinux_link_libspeechd=1
     -Dlinux_link_pulseaudio=1
     -Dlinux_strip_binary=1
-    -Dlinux_use_gold_binary=0
+    -Dlinux_use_bundled_binutils=0
+    -Dlinux_use_bundled_gold=0
     -Dlinux_use_gold_flags=0
     -Dlogging_like_official_build=1
     -Drelease_extra_cflags="$CFLAGS"
