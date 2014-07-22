@@ -1,8 +1,8 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=30.0
-pkgrel=4
+pkgver=31.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -34,7 +34,7 @@ optdepends=('firefox-i18n: for multilanguage support')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=8ce6c378e34d
+_patchrev=5cbcc68b9429
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
         mozconfig
@@ -196,8 +196,8 @@ package() {
   
 }
 
-sha1sums=('21dce1a2d4b8085c5f7f66b5f4f60bc37598285d'
-          'c343b926a24020e84bac33c1bf4e604719305464'
+sha1sums=('a6c3e25ee3aeb7da42db2aaeb50a385d63532beb'
+          '139e5a18c3fd49cdb7456fb4ea08312105274cd7'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'ca77a08b296f8673828898d91b20cc6dd8742c2f'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
@@ -205,13 +205,13 @@ sha1sums=('21dce1a2d4b8085c5f7f66b5f4f60bc37598285d'
           'e5c91178bc58f2ddc21bd1e4f35837d670d6a0c2'
           '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
           'a87a6eb5cb86f63e39249c60eb53594ce225dea0'
-          '438fe443a74d4c8294c44ee23e877c878c98b6a9'
+          '2473b53108fe13b6e8242d02e41409e9a9d9e9c8'
           '84e6e4eb614e86baf1ee565da9c2ac505940492a'
           '9037e982ea4ca7c1bab84c56ab112445d1ca52c9'
-          'a424c58cbcecf59510eccf28a083818c7ae63c60'
+          '96fe862a28c5e614462df1f6b7ed88feb8c3820f'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
           '05072b88a7707abca65f84cc6d1c4985c6874f6f'
-          '32f81cc46daa00b645c991bf8aaf51e17c4a937a'
+          '5f3a1c2ba4ffc3079b916af09e25a237244784c2'
           '69170917d207096e532f24a83a55dc9d53fa268e'
           '88b724543c5482dc8f94f141e4b87704bf60fff9')
 
