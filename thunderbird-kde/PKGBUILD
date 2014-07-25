@@ -1,7 +1,7 @@
 # Maintainer:  AlmAck <almack@chakra-project.org>
 
 pkgname=thunderbird-kde
-pkgver=24.6.0
+pkgver=24.7.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 conficts=(thunderbird)
@@ -26,7 +26,7 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sourc
         vendor.js
         kde.js)
 options=(!emptydirs)
-md5sums=('3e5d44c7e716e132601a40e865a13ef8'
+md5sums=('7804283cb4f5c1bbec711b470afe2472'
          '1d674019505aa9ec1654cba08debf61d'
          'af3e5b344d2edf1c7d61bb0a5a96de9a'
          '1c6f47b315a5d7830f8e901b1f723cfc'
