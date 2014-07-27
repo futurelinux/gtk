@@ -1,7 +1,7 @@
 
 pkgname=ibus
 pkgver=1.5.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Next Generation Input Bus for Linux, IBus qt library and IBus qt input method plugin included"
 arch=('x86_64')
 url="http://ibus.googlecode.com"
