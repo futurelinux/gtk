@@ -2,7 +2,7 @@
 
 pkgname=hugin
 pkgver=2013.0.0
-pkgrel=7
+pkgrel=8
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
@@ -11,9 +11,9 @@ depends=('wxgtk' 'boost-libs' 'enblend-enfuse' 'exiv2' "hugin-tools=${pkgver}"
          'lensfun' 'lapack' 'make' 'perl-exiftool' 'desktop-file-utils')
 makedepends=('cmake' 'boost' 'tclap' 'mesa')
 source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2"
-        hugin-build.patch)
-sha1sums=('0e0689cf2ca0c4a2730cffe06380eda976b6772d'
-          '45a8d8f5ee9b3c013cbc1ae3cfad14a2705c0dd4')
+        "hugin-build.patch")
+sha256sums=('484e1ed58fa6fe4bae1f423967101549345bcca2653b992afbc0ed9ec0dbebd5'
+            '47dc99f7addcbf51824c1111888b9b40b15286ab67a03b86b3184dba320e2385')
 
 install=install
 
@@ -34,8 +34,8 @@ build() {
 }
 
 package() {
-	cd ${pkgname}-${pkgver}
-	make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
 
   msg "Removing duplicated binaries in hugin-tools"
   rm -v "${pkgdir}/usr/share/hugin/data/celeste.model"
