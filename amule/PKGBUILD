@@ -14,14 +14,13 @@ source=("http://amule.sourceforge.net/tarballs/aMule-SVN-r${pkgver}.tar.bz2"
         "http://chakra.sourceforge.net/sources/oxygen-themes/aMule_Oxygen_Skin.zip"
         'amuled.systemd'
         'amuleweb.systemd')
-md5sums=('80e6375acbdc287b15cc92131bf9e027'
-         '9c1c06c1f7eaffd5dd383b7e0348b6db'
-         '59772c41860e238f1c822feb8ca8d47f'
-         '05975c5d94bfc41fddb894d98b1115d5')
-
+sha256sums=('dd9170e43a51d3f6dd581d6abb178cf1deca66210eab9799a8eb16fb0c03f09a'
+            'a340cadb86697acde60b94187fe0134d5262635233870e583a766aa1b8aa06ad'
+            '527a2cca6d56b8269722aafc77a89734f59a929f946f342bd0f69b256f9c7522'
+            'f4f43b1154ddccc9036a4291a58c6715f097b171fec62ea7aead0c9d9fa654f2')
 
 build() {
-  cd "${srcdir}/aMule-SVN-r${pkgver}"
+  cd aMule-SVN-r${pkgver}
 
   ./configure --prefix=/usr \
               --mandir=/usr/share/man \
@@ -45,11 +44,11 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/aMule-SVN-r${pkgver}"
+  cd aMule-SVN-r${pkgver}
 
-  make DESTDIR=${pkgdir}/ install
+  make DESTDIR="${pkgdir}" install
 
-  cp -f $srcdir/aMule_Oxygen_Skin.zip $pkgdir/usr/share/amule/skins/
+  cp -f "${srcdir}/aMule_Oxygen_Skin.zip" "${pkgdir}/usr/share/amule/skins/"
 
   install -D -m644 "${srcdir}/amuled.systemd" "${pkgdir}/usr/lib/systemd/system/amuled.service"
   install -D -m644 "${srcdir}/amuleweb.systemd" "${pkgdir}/usr/lib/systemd/system/amuleweb.service"
