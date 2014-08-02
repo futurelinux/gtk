@@ -1,11 +1,12 @@
 pkgname=thunderbird-i18n
-pkgver=24.6.0
+pkgver=31.0
 pkgrel=1
 pkgdesc="Language pack for Thunderbird"
 arch=('any')
 url="http://www.mozilla.com/"
 license=('MPL' 'GPL')
 depends=("thunderbird-kde>=$pkgver")
+
 _languages=(
   'ar     "Arabic"'
   'ast    "Asturian"'
@@ -18,17 +19,17 @@ _languages=(
   'da     "Danish"'
   'de     "German"'
   'el     "Greek"'
-  'en-GB  "English (United Kingdom)"'
-  'en-US  "English (United States)"'
+  'en-GB  "English (British)"'
+  'en-US  "English (US)"'
   'es-AR  "Spanish (Argentina)"'
   'es-ES  "Spanish (Spain)"'
   'et     "Estonian"'
   'eu     "Basque"'
   'fi     "Finnish"'
   'fr     "French"'
-  'fy-NL  "Frisian (Netherlands)"'
+  'fy-NL  "Frisian"'
   'ga-IE  "Irish"'
-  'gd     "Gaelic"'
+  'gd     "Gaelic (Scotland)"'
   'gl     "Galician"'
   'he     "Hebrew"'
   'hr     "Croatian"'
@@ -40,17 +41,17 @@ _languages=(
   'ja     "Japanese"'
   'ko     "Korean"'
   'lt     "Lithuanian"'
-  'nb-NO  "Norwegian (Bokmal)"'
+  'nb-NO  "Norwegian (Bokmål)"'
   'nl     "Dutch"'
   'nn-NO  "Norwegian (Nynorsk)"'
   'pa-IN  "Punjabi"'
   'pl     "Polish"'
-  'pt-BR  "Brazilian Portuguese"'
-  'pt-PT  "Portuguese"'
+  'pt-BR  "Portuguese (Brazilian)"'
+  'pt-PT  "Portuguese (Portugal)"'
   'rm     "Romansh"'
   'ro     "Romanian"'
   'ru     "Russian"'
-  'si     "Sinhalese"'
+  'si     "Sinhala"'
   'sk     "Slovak"'
   'sl     "Slovenian"'
   'sq     "Albanian"'
@@ -60,83 +61,94 @@ _languages=(
   'tr     "Turkish"'
   'uk     "Ukrainian"'
   'vi     "Vietnamese"'
-  'zh-CN  "Chinese (simplified)"'
-  'zh-TW  "Chinese (traditional)"'
+  'zh-CN  "Chinese (Simplified)"'
+  'zh-TW  "Chinese (Traditional)"'
 )
 
-md5sums=('22d08fc8d7c0757fdc0282e9cbc9aa94'
-         '1be8cb1c1a4742597608f412c6586a33'
-         '3a043ba0deb2e06cad504d5cc4052dc7'
-         '47c41062fa9dae8119b9eb0d7cba0533'
-         '0f0e17696a8c83df4d384814eaf8282d'
-         'a0a7880482e6c4b016cf8be3503a554f'
-         'c7bd66290332fa33777743921df1ae04'
-         'fcec46c7e3ac19082cb1cd753ad423f0'
-         '33fe2e1d772858873fc85856b57d6585'
-         'd29fb5d0a1c65216dd7ebaa9527c5eb8'
-         '71f12e69504b13a3923ef9528bac1909'
-         '7acf14bd8696441dd9d2f424151fab53'
-         '26330915701543a62a5eac05d6a506d4'
-         '2b89692a44b29e62dc0ab23ea2b07730'
-         '972f2ea55b2900ef1a10d97de7b3f6b3'
-         '61f760d0d146a005493f7774041fb7f5'
-         'e733851a083d00c80797239a4d4a7fc0'
-         '651ae46d6ffd84feadaa895bfb386362'
-         '23d83d45385cf7c306266ec8729f2fc5'
-         '2241bd8ce56c7d81c73fe84d452cc3d8'
-         'dc957087783db0071d078c90925be301'
-         'd654c648cce57fc8de333a63c44fe5cb'
-         '508ab96006cda5f419742f9e4798d91b'
-         '689a6205ce28a93154264dd4b12ea2cc'
-         'c8e544a7e465014fdfb0f5ef411a7ea3'
-         '483350d07e400108ebfb6e2adbaefde0'
-         '11736e42656e7ac6133e641fb15e586f'
-         '88fab021ca882207030befc1a208f8e2'
-         '3bbe1a56dbf137e35635ae0595f97dac'
-         '8ea81b70dae6bc4bdf55f842be5b2a3b'
-         '22092a11f0ae1a85d6de86bb4a84acbf'
-         '48d86606dd8f5140766de57f6e6281c7'
-         '54b2e562abb4fc0e58fad6a8e2727e88'
-         '09ebb8ac240c0654fa0918e4127b1337'
-         '719f6c7ca6b94460f082f82b746badc8'
-         '8106dc24ca84b77ace301b941fc711bb'
-         'ed5d93e69c66017f32a4a04dccee9ccd'
-         'fd787aab6b7788ab98b9fd245b08a5a6'
-         '90c558c408990bdc64661260a4d1a748'
-         'b9e83631a8b9e4e9a282afbb6b685408'
-         '00b6784a00bb2f4b010b5d783caf2c42'
-         '2f49eaf754160cbcbd1a5d0e5e082d91'
-         '72cf274c6f08779a8e9cfd17e2be163e'
-         '5d99189e9a11072e71485a3db18e011b'
-         '8bf82324e03c7dfdeef556fcee595c5c'
-         '3195bdf99aa9b08f1a97ccc4005482f3'
-         '5148493c2e8cc65f8b3f1571c0d73551'
-         '12339a7ee348129327a911f1a0d8e46c'
-         'b598ddb7bea0a250dc7939b3108c0963'
-         '4a80833c6fe28062cab93f6423a3e303'
-         '5e78681b5117809a826be18c9101b3ee'
-         '73af2a0354efa3d0b6c0fb78d6179635'
-         '1ba1d7724fafda28dd4e975f5d2b2acc'
-         '941463886ed5addb87fcab090a14c238'
-         '2734f58a6203094425122994265f29c7')
+md5sums=('17bde4d1d364775b2ee1703fa2feb229'
+         '8d8b275b316f25be498f2c14abd2ec68'
+         '1763b371dd00f902af7299ea7e9fc574'
+         '3ca9f2b4c3fbe27dc7c1d8f4c0ec5d97'
+         '96db7a319aa8658e0a9a08b11f9dcfe0'
+         'd7644420a4b26e9d64a44d22e22641d0'
+         '15738bb05d4b9b096268a8d3089149d5'
+         '3aa388c8f4fcdc930c9f75f51112dbae'
+         '61de52f1fbf717b575d091b60fc07ff7'
+         '81748e80ca61455060d5db8b89aa314f'
+         '6b0cf80a15ef445cf0e328ab5c9038ca'
+         'b636938b6752939e0f36830867961ec1'
+         'd54841c678657d9725ab6329ddbde2ea'
+         '609b2485ece9f8d4b9d7144ace149c53'
+         'db0585d3f4ec60c7f5f146d22d6842e3'
+         'cff6f7cdf386911c3f3f797ecdf7246e'
+         'e8b1b67732297206e5074293e06c6860'
+         '2ad5b23230fdce0332795e3eda935ee5'
+         '648c8aa11d9943289a18198ab1cb393e'
+         '8f74a8f9ce0d65cfa2671bade57f111b'
+         'a974f9b12eec55335dc6f8c3f77cbce3'
+         '2ee93708f204fe5a99edc5bf7c05d4bd'
+         '6804e24eaf9dcba87b077c67fc4794f0'
+         'e498c260deeec23119d1ff13ade225d3'
+         '575415c3363f2396a0adf83fd7f8e8a7'
+         '735edcdb58f8ee0b18b3c59df2a41784'
+         '2ec4f96840776c27abd1a81fa172d246'
+         '443455edfc731e86f2dc0a51d1234642'
+         '7b91898f93bb12311c15351659c4ebd1'
+         '5c9322ac54bb92bc692ebac08423fd0e'
+         '4a89384448d027d72ecb2909e23ad683'
+         '87aa196d8585285a149ca03b12b9676b'
+         '53be975b7c418860d40c7c92309974af'
+         'c4208b228abb90640d2c49684e8574e0'
+         'f0313dd1abf8fd0a1d06bc0a6a6bf28a'
+         '7a85f4982a8d3940b1d01698fd23dce2'
+         '26b1754fc14cee9cb0e67b0b5bb280d5'
+         '32dfa38695fc20a9ecaeaf35bf5436eb'
+         'b6e4e2f4db2868996bbed4f2cac432b1'
+         'bf9e4757cd6a56ac1576a5d160471f97'
+         '7b0127c1e4f6d038505966871db51392'
+         '61907fcb7ce920a43e6f1d0b370bbb07'
+         '45a57af59c17ae89c9ac02c05cf1f8ec'
+         '1f5ee88343c85d94340b4f06d67f8b79'
+         '4f45b3388a36d86044f199d87fe67070'
+         '939042b9677b0b0b3623374838563fb8'
+         '7c6743e0efb65a7ce5142413f27fb2b3'
+         'ec62353e65c1cabc94327eea096cd350'
+         '28695dbb530fbf4e0ad5052bbb1ee76d'
+         'ea0fdc5cb2bf6e9ebbf61b1558e3d3cf'
+         'cb0ab3f7a7addf9011ddc4e2849d8793'
+         '16c19c21def75316a7e6f279bac1841e'
+         '08064811d0a66e4707cff28c26d55ab8'
+         'a1a03570fe349f1a454fe8388424c15c'
+         'b8f8fa6cce5d3879d3a448b4a42ab12e')
 
+pkgname=()
 source=()
-_url=https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/linux-x86_64/xpi
+_url=https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/linux-i686/xpi
 
 for _lang in "${_languages[@]}"; do
   _locale=${_lang%% *}
+  _pkgname=thunderbird-i18n-${_locale,,}
 
+  pkgname+=($_pkgname)
   source+=("thunderbird-i18n-$pkgver-$_locale.xpi::$_url/$_locale.xpi")
+  eval "package_$_pkgname() {
+    _package $_lang
+  }"
 done
 
 # Don't extract anything
 noextract=(${source[@]%%::*})
 
-package() {
-  for _lang in "${_languages[@]}"; do
-    _locale=${_lang%% *}
-    install -Dm644 thunderbird-i18n-$pkgver-${_locale}.xpi \
-      "$pkgdir/usr/lib/thunderbird/extensions/langpack-${_locale}@thunderbird.mozilla.org.xpi"
-  done
+package_thunderbird-i18n() {
+  pkgdesc="Transition package to split build"
+  depends=("thunderbird-kde=${pkgver}" "thunderbird-langpack=${pkgver}")
+}
+
+_package() {
+  pkgdesc="$2 language pack for Thunderbird"
+  provides=("thunderbird-langpack=${pkgver}")
+  conflicts=("thunderbird-i18n<31.0")
+  install -Dm644 thunderbird-i18n-$pkgver-$1.xpi \
+    "$pkgdir/usr/lib/thunderbird/extensions/langpack-$1@thunderbird.mozilla.org.xpi"
 }
 
