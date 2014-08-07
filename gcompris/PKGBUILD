@@ -1,5 +1,5 @@
 pkgname=gcompris
-pkgver=14.05
+pkgver=14.07
 pkgrel=1
 pkgdesc="Educational software suite comprising of numerous activities for children aged 2 to 10"
 arch=('x86_64')
@@ -10,20 +10,20 @@ makedepends=('texinfo' 'texi2html' 'intltool' 'gettext' 'gnuchess')
 optdepends=('gnucap: for computer simulation within the electricity activity'
             'tuxpaint: for the painting activity'
             'gnuchess: for the chess activity')
-source=(http://gcompris.net/download/$pkgname-$pkgver.tar.bz2)
-md5sums=('5604ff13bc128a1ee951026de52c3def')
+source=("http://gcompris.net/download/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('cfcca5113b2a2222dd4ae66861c2f82345ea667676b72e12943934f8a3a5475e')
  
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
  
   ./configure --prefix=/usr
   make
 }
  
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
 
   # Fix path for editor
-  sed -i -e "~s~gcompris -a~gcompris -l /usr/lib/gcompris/ -a~" ${pkgdir}/usr/share/applications/gcompris-edit.desktop
+  sed -i -e "~s~gcompris -a~gcompris -l /usr/lib/gcompris/ -a~" "${pkgdir}/usr/share/applications/gcompris-edit.desktop"
 }
