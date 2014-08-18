@@ -3,15 +3,10 @@
 #
 
 pkgname=chromium
-pkgver=36.0.1985.125
+pkgver=36.0.1985.143
 pkgrel=1
 _verbld=${pkgver}-1 # used for libpdf and pepper-flash
-_pepperflashver=14.0.0.145
-
-# https://build.opensuse.org/package/view_file/network:chromium/chromium/chromium.spec
-_pnacl_version=12919
-_nacl_version=12790
-_glibc_version=12831
+_pepperflashver=14.0.0.177
 
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -32,7 +27,7 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         prepopulated_engines_json.diff
         chromium-nacl-bootstrap-cflags.patch)
 
-sha1sums=('75bab065560fc18da4dd847c2b4020ae9682c261'
+sha1sums=('6fcd725e2d36f89f0623068e5571907e53115d3e'
           '64726324d432af438a9d16e6c7243ce0a56a40e3'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
