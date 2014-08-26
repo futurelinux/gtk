@@ -1,5 +1,5 @@
---- a/chrome/browser/search_engines/prepopulated_engines.json	2013-02-22 11:04:47.043248397 -0500
-+++ b/chrome/browser/search_engines/prepopulated_engines_new.json	2013-02-22 11:05:02.036900238 -0500
+--- a/components/search_engines/prepopulated_engines.json	2013-02-22 11:04:47.043248397 -0500
++++ b/components/search_engines/prepopulated_engines_new.json	2013-02-22 11:05:02.036900238 -0500
 @@ -788,6 +788,15 @@
        "type": "SEARCH_ENGINE_DELFI",
        "id": 45

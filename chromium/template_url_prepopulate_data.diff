@@ -1,6 +1,6 @@
---- a/chrome/browser/search_engines/template_url_prepopulate_data.cc	2014-05-20 20:08:31.000000000 +0000
-+++ b/chrome/browser/search_engines/template_url_prepopulate_data.cc	2014-05-20 20:20:50.892967521 +0000
-@@ -52,435 +52,435 @@ namespace {
+--- a/chrome/browser/search_engines/template_url_prepopulate_data.cc    2014-08-20 21:02:12.000000000 +0200
++++ b/chrome/browser/search_engines/template_url_prepopulate_data.cc    2014-08-26 22:00:59.059520205 +0200
+@@ -49,435 +49,435 @@ namespace {
  
  // Default (for countries with no better engine set)
  const PrepopulatedEngine* engines_default[] =
@@ -544,7 +544,7 @@
  
  // A list of all the engines that we know about.
  const PrepopulatedEngine* kAllEngines[] = {
-@@ -513,6 +513,9 @@ const PrepopulatedEngine* kAllEngines[]
+@@ -510,6 +510,9 @@ const PrepopulatedEngine* kAllEngines[]
    &search_results, &searchnu,   &snapdo,       &softonic,     &sweetim,
    &terra_ar,     &terra_es,     &tut,          &walla,        &wp,
    &zoznam,
@@ -553,6 +553,4 @@
 +  &duckduckgo,
  };
  
- const struct LogoURLs {
-  
- }
+ // Please refer to ISO 3166-1 for information about the two-character country
