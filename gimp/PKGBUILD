@@ -1,7 +1,7 @@
 pkgname=gimp
-pkgver=2.8.10
+pkgver=2.8.14
 _pkgver=2.8
-pkgrel=2
+pkgrel=1
 pkgdesc="GNU Image Manipulation Program (Development Version)"
 arch=('x86_64')
 url="http://www.gimp.org/"
@@ -16,26 +16,28 @@ optdepends=('gutenprint: for sophisticated printing only as gimp has built-in cu
             'curl: for URI support'
             'ghostscript: for postscript support')
 options=('!makeflags')
-conflicts=('gimp')
-provides=("gimp=${pkgver}")
 install=gimp.install
-source=("http://download.gimp.org/pub/gimp/v${_pkgver}/gimp-${pkgver}.tar.bz2" "linux.gpl"
-	'patch_CVE197.patch'
-	'patch_CVE1913.patch'
-	'freetype_location.patch')
+source=("http://download.gimp.org/pub/gimp/v${_pkgver}/gimp-${pkgver}.tar.bz2" "linux.gpl")
+
+md5sums=('233c948203383fa078434cc3f8f925cb'
+         'bb27bc214261d36484093e857f015f38')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i ../patch_CVE1913.patch
-  patch -p1 -i ../patch_CVE197.patch
-  patch -p1 -i ../freetype_location.patch
 }
 
 build() {
   cd "${srcdir}/gimp-${pkgver}"
   PYTHON=/usr/bin/python2 ./configure --prefix=/usr --sysconfdir=/etc \
-    --enable-mp --enable-gimp-console --enable-python --with-libcurl \
-    --with-gif-compression=lzw --without-aa --without-hal --without-gvfs --without-gnomevfs
+    --enable-mp \
+    --enable-gimp-console \
+    --enable-python \
+    --with-libcurl \
+    --with-gif-compression=lzw \
+    --without-aa \
+    --without-hal \
+    --without-gvfs \
+    --without-gnomevfs
   make
 }
 
@@ -50,14 +52,3 @@ package() {
   ln -sf gimptool-2.0.1.gz "${pkgdir}/usr/share/man/man1/gimptool.1.gz"
   ln -s gimp-${pkgver}.1.gz "${pkgdir}/usr/share/man/man1/gimp.1.gz"
 }
-
-md5sums=('84c964aab7044489af69f7319bb59b47'
-         'bb27bc214261d36484093e857f015f38'
-         'c551e5e799858ea92c56e41ce329b763'
-         '629ec0eebe7ab5c9b68fea2c8d4dfeee'
-         'ca0f32cb329ddad8079f8e2c0fc75b29')
-md5sums=('84c964aab7044489af69f7319bb59b47'
-         'bb27bc214261d36484093e857f015f38'
-         '901643efc82fae57af466d8a0a8991ff'
-         'dcc2acc9f9962a7c83ffb4243c08c469'
-         'ca0f32cb329ddad8079f8e2c0fc75b29')
