@@ -34,9 +34,6 @@ ac_add_options --disable-updater
 ac_add_options --disable-installer
 ac_add_options --disable-debug-symbols
 
-# Optimization
-ac_add_options --enable-optimize
-
 # PGO
 mk_add_options PROFILE_GEN_SCRIPT='EXTRA_TEST_ARGS=10 $(MAKE) -C $(MOZ_OBJDIR) pgo-profile-run'
 
