@@ -1,8 +1,6 @@
 
 update_cache() {
-    /usr/bin/kbuildsycoca4 --global &> /dev/null
-    xdg-icon-resource forceupdate --theme hicolor &> /dev/null
-    sbin/ldconfig -r .
+    update-desktop-database -q
 }
 
 post_install() {
