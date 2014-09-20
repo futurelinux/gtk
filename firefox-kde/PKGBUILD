@@ -1,7 +1,7 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=32.0.1
+pkgver=32.0.2
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
@@ -41,33 +41,52 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=b2ae89c6dea9
+_patchrev=c748af0c7534
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
-source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
-        mozconfig
-        firefox.desktop
-        vendor.js
-        kde.js
-	firefox-20.0.1-fixed-loading-icon.png
-	duckduckgo.xml
-	"kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
+source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2"
+        'mozconfig'
+        'firefox.desktop'
+        'vendor.js'
+        'kde.js'
+        'firefox-20.0.1-fixed-loading-icon.png'
+        'duckduckgo.xml'
+        "kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
 
-	firefox-install-dir.patch
-	rhbz-966424.patch
-	# Firefox patchset
-	$_patchurl/firefox-kde.patch
-	$_patchurl/firefox-kde-114.patch
-	$_patchurl/firefox-no-default-ualocale.patch
-	$_patchurl/firefox-branded-icons.patch
-	# Gecko/toolkit patchset
-#	$_patchurl/toolkit-download-folder.patch
-	$_patchurl/mozilla-nongnome-proxies.patch
-	$_patchurl/mozilla-prefer_plugin_pref.patch
-	$_patchurl/mozilla-kde.patch
-#	$_patchurl/mozilla-preferences.patch
-	$_patchurl/mozilla-language.patch
-        install-kde-js.patch
+        'firefox-install-dir.patch'
+        'rhbz-966424.patch'
+        # Firefox patchset
+        "$_patchurl/firefox-kde.patch"
+        "$_patchurl/firefox-kde-114.patch"
+        "$_patchurl/firefox-no-default-ualocale.patch"
+        "$_patchurl/firefox-branded-icons.patch"
+        # Gecko/toolkit patchset
+        #	"$_patchurl/toolkit-download-folder.patch"
+        "$_patchurl/mozilla-nongnome-proxies.patch"
+        "$_patchurl/mozilla-prefer_plugin_pref.patch"
+        "$_patchurl/mozilla-kde.patch"
+        #	"$_patchurl/mozilla-preferences.patch"
+        "$_patchurl/mozilla-language.patch"
+        'install-kde-js.patch'
 )
+sha256sums=('c6c9e89c2af24a3e0ee994e8a499889d169c986678ee00f62bfee0e216ab21e2'
+            'a46781b46723376c7dde4648ac7d2a7ab64dedb5eee60d8c0d19af22d3b93efc'
+            '3e9fa54f334681d9e04907c1a5ae86a753c7b9902075519e31a011103c928ee8'
+            '1c77d74a93e66f49dae37f5217990d93930d515ea058c1e47ba671bba3564231'
+            '0850a8a8dea9003c67a8ee1fa5eb19a6599eaad9f2ad09db753b74dc5048fdbc'
+            '68e3a5b47c6d175cc95b98b069a15205f027cab83af9e075818d38610feb6213'
+            '3cf9837992828050b534b0edda9bfd53ffeb3e536a731e2b8aecd2c6e7f8a3e1'
+            '121ed258879a8bb1617879866a86884618b8a6336a12ef9a837a440a4fc63ee5'
+            'ea7d67101abdd0a7fbbee5195d65d96d32c5c3975c5f5cf0d9a2c0b8df2cf891'
+            '746cb474c5a2c26fc474256e430e035e604b71b27df1003d4af85018fa263f4a'
+            '259f4add2b2969a821051041ee1eeea9b5310f87d84787daf66aa357a761a3aa'
+            '1fd54e93db3a4d454ece5a6dc788a4ae36805eb497482add82a11ac5cf990562'
+            'd2bd2cbf423dffd0bc665d3a23103fef5b78e74375ddbbfd5ac7222842ef2caf'
+            'd445b6e75938d511eb1bd8e6652ee2966321d72953e8090ef544819accbd2ca5'
+            'e8289ea4c1f8191e1e23661312ceee2128b8e790501b9a589d0d7bfc4384553f'
+            '5f6b0970284d68d5ed18e6bb7ee1e9fc0025ab3c10aaa14c283adb21a4a20ee8'
+            '3f98915394fe1b69f8a38f59da04ad4edede1db2f0b1e334479686f0c9bca198'
+            '15ba009c12b76c20744cbc8d7d1840b979a5962b536f01798bb0c4bf04500bfb'
+            '6bd70410ff132cb0ab71bef8703b2af35dc3ff6e05a6f12bb2c66ce588cca1e2')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -203,42 +222,3 @@ package() {
   #https://bugzilla.mozilla.org/show_bug.cgi?id=658850
   ln -sf firefox "$pkgdir/usr/lib/firefox/firefox-bin"
 }
-
-sha1sums=('346754273e345e20f21b2d22cccb33e807507005'
-          '466e1de3c8419ca3f001f66bf526f2aa7f963900'
-          '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
-          'ca77a08b296f8673828898d91b20cc6dd8742c2f'
-          'ce48f8e5065319e191a7389539ec663dc8a919d7'
-          '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
-          'e5c91178bc58f2ddc21bd1e4f35837d670d6a0c2'
-          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
-          'a87a6eb5cb86f63e39249c60eb53594ce225dea0'
-          'ad1f05abf477dbc5f7e72c06e37c180459eeffd4'
-          'fe71aa0d177931120bfe02f01e1ed594b7fec2cb'
-          '84e6e4eb614e86baf1ee565da9c2ac505940492a'
-          '35e89b7437a4e9d8d05d26b913a12d3219e34c12'
-          'c8db74154e28c8f7ca17ce9bebf3e5c0f66bba43'
-          '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '05072b88a7707abca65f84cc6d1c4985c6874f6f'
-          'abf48083059246420bd24eba906a9dd7fdd0a1d8'
-          '69170917d207096e532f24a83a55dc9d53fa268e'
-          '88b724543c5482dc8f94f141e4b87704bf60fff9')
-sha1sums=('346754273e345e20f21b2d22cccb33e807507005'
-          'f602b57f541393e8f4f631eedb1f76f1af2d98b7'
-          '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
-          'ca77a08b296f8673828898d91b20cc6dd8742c2f'
-          'ce48f8e5065319e191a7389539ec663dc8a919d7'
-          '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
-          'e5c91178bc58f2ddc21bd1e4f35837d670d6a0c2'
-          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
-          'a87a6eb5cb86f63e39249c60eb53594ce225dea0'
-          'ad1f05abf477dbc5f7e72c06e37c180459eeffd4'
-          'fe71aa0d177931120bfe02f01e1ed594b7fec2cb'
-          '84e6e4eb614e86baf1ee565da9c2ac505940492a'
-          '35e89b7437a4e9d8d05d26b913a12d3219e34c12'
-          'c8db74154e28c8f7ca17ce9bebf3e5c0f66bba43'
-          '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '05072b88a7707abca65f84cc6d1c4985c6874f6f'
-          'abf48083059246420bd24eba906a9dd7fdd0a1d8'
-          '69170917d207096e532f24a83a55dc9d53fa268e'
-          '88b724543c5482dc8f94f141e4b87704bf60fff9')
