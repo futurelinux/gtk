@@ -1,6 +1,6 @@
 pkgname=firefox-i18n
 pkgver=32.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Language pack for Firefox"
 arch=('any')
 url="http://www.mozilla.com/"
