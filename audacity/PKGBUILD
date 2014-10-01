@@ -1,24 +1,23 @@
 pkgname=audacity
-pkgver=2.0.5
-pkgrel=5
+pkgver=2.0.6
+pkgrel=1
 pkgdesc="A program that lets you manipulate digital audio waveforms"
 arch=('x86_64')
 url="http://audacity.sourceforge.net/"
 license=('GPL')
 depends=('libvorbis' 'libmad' 'libid3tag' 'wxgtk2.8' 'libsamplerate' 'lame' 
          'hicolor-icon-theme' 'shared-mime-info' 'desktop-file-utils' 'redland' 
-         'jack' 'soundtouch' 'ffmpeg-compat')
+         'jack' 'soundtouch' 'ffmpeg')
 makedepends=('zip' 'python' 'pkgconfig')
 options=('!makeflags')
 install="${pkgname}.install"
-source=("http://audacity.googlecode.com/files/${pkgname}-minsrc-${pkgver}.tar.xz")
-sha256sums=('e287541dd017f523fd9a06d5140b8f72fe9a0450709de7c398baffa106db2b79')
+source=("http://downloads.sourceforge.net/project/audacity/audacity/${pkgver}/${pkgname}-minsrc-${pkgver}.tar.xz")
+sha256sums=('3080c190e678e0d682961a36c6e990c572dacd6b5ce499e5cec7362e9fa37d7b')
 
 build() {
   cd ${pkgname}-src-${pkgver}
   WX_CONFIG=/usr/bin/wx-config-2.8 \
-  PKG_CONFIG_PATH+="/usr/lib/ffmpeg-compat/pkgconfig" \
-  ./configure --prefix=/usr \
+    ./configure --prefix=/usr \
     --enable-unicode 
   make
 }
