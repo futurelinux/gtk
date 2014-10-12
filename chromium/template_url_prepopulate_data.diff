@@ -1,5 +1,5 @@
---- a/chrome/browser/search_engines/template_url_prepopulate_data.cc    2014-08-20 21:02:12.000000000 +0200
-+++ b/chrome/browser/search_engines/template_url_prepopulate_data.cc    2014-08-26 22:00:59.059520205 +0200
+--- a/components/search_engines/template_url_prepopulate_data.cc    2014-08-20 21:02:12.000000000 +0200
++++ b/components/search_engines/template_url_prepopulate_data.cc    2014-08-26 22:00:59.059520205 +0200
 @@ -49,435 +49,435 @@ namespace {
  
  // Default (for countries with no better engine set)

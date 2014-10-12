@@ -3,9 +3,9 @@
 #
 
 pkgname=chromium
-pkgver=37.0.2062.120
-pkgrel=2
-_verbld=${pkgver}-1 # used for libpdf and pepper-flash
+pkgver=38.0.2125.101
+pkgrel=1
+_verbld=${pkgver}-1 # used for pepper-flash
 _pepperflashver=15.0.0.152
 
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
@@ -24,19 +24,17 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         chromium.default
         template_url_prepopulate_data.diff
         search_engine_type.diff
-        prepopulated_engines_json.diff
-        chromium-nacl-bootstrap-cflags.patch)
+        prepopulated_engines_json.diff)
 
-sha1sums=('23795ec3bd1a5d090e3b46a2bf77a701124756c6'
+sha1sums=('2e25563afe153a0598fcfed8f83286d3eabea530'
           '64726324d432af438a9d16e6c7243ce0a56a40e3'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
           '11332bcd0318d573bea1aa0744213a5d006aecc4'
-          'bda4e1c18cc16dbbd7e69980c4408d47686c5c40'
+          '59b34d1e1070c918fbbe4e81875a1bed6a1c40e3'
           'abeb1e424b35bbca954a5afea39418a5e198ac64'
-          '79fc829d740183d85fb147a3a44e572a8f304dbe'
-          'ca2f1c4797987ddf248bd94feb06cad66927355e')
+          '79fc829d740183d85fb147a3a44e572a8f304dbe')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -47,11 +45,7 @@ _google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
 
 prepare() {
   cd "$srcdir/$pkgname-$pkgver"
- 
-  # Filter out -fstack-protector-strong for nacl_helper_bootstrap
-  # https://code.google.com/p/chromium/issues/detail?id=104569
-  patch -Np0 -i "$srcdir/chromium-nacl-bootstrap-cflags.patch"
-  
+
   # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
   patch -p1 -i "$srcdir/search_engine_type.diff"
@@ -60,15 +54,6 @@ prepare() {
   # Download NaCL toolchains
   python2 build/download_nacl_toolchains.py \
     --packages nacl_x86_newlib,pnacl_newlib,pnacl_translator
-
-  # Build with clang as a temporary solution to startup crash with GCC 4.9
-  [ -d third_party/llvm-build/Release+Asserts/bin ] && rm -r third_party/llvm-build/Release+Asserts/bin
-  mkdir -p third_party/llvm-build/Release+Asserts/bin
-  ln -s /usr/bin/clang third_party/llvm-build/Release+Asserts/bin/
-  ln -s /usr/bin/clang++ third_party/llvm-build/Release+Asserts/bin/
-  ln -s /usr/bin/llvm-symbolizer third_party/llvm-build/Release+Asserts/bin/
-  # clang 3.4 doesn't support this option
-  sed -i '/-Wno-absolute-value/d' build/common.gypi
 }
 
 build() {
@@ -79,7 +64,12 @@ build() {
   
   # CFLAGS are passed through release_extra_cflags below
   export -n CFLAGS CXXFLAGS
-  
+
+  # Build with clang as a temporary solution to startup crash with GCC 4.9
+  # https://code.google.com/p/chromium/issues/detail?id=412967
+  export CC=clang
+  export CXX=clang++
+
   # NOTE
   # -Dremove_webcore_debug_symbols=1  speed up the build by removing debug symbols for webkit
   
@@ -152,8 +142,15 @@ package() {
     "$pkgdir/usr/lib/chromium/chrome-sandbox"
 
   cp out/Release/{*.pak,libffmpegsumo.so,nacl_helper{,_bootstrap}} \
-    out/Release/{libppGoogleNaClPluginChrome.so,nacl_irt_*.nexe} \
+    out/Release/nacl_irt_*.nexe \
+    out/Release/libpdf.so \
     "$pkgdir/usr/lib/chromium/"
+
+  # Manually strip binaries so that 'nacl_irt_*.nexe' is left intact
+  strip $STRIP_BINARIES "$pkgdir/usr/lib/chromium/"{chromium,chrome-sandbox} \
+    "$pkgdir/usr/lib/chromium/"nacl_helper{,_bootstrap}
+  strip $STRIP_SHARED "$pkgdir/usr/lib/chromium/libffmpegsumo.so" \
+    "$pkgdir/usr/lib/chromium/libpdf.so"
 
   # override command-line options
   install -Dm644 "$srcdir/chromium.default" "$pkgdir/etc/chromium/default"
@@ -187,8 +184,5 @@ package() {
   install -m644 opt/google/chrome/PepperFlash/* "$pkgdir/usr/lib/PepperFlash"
   sed -i "s/flashver=.*/flashver=$_pepperflashver/" "$startdir/chromium.install"
   install -Dm644 "$srcdir/license.html" "$pkgdir/usr/share/licenses/$pkgname/license.html"
-  
-  #### libpdf ####
-  install -d "${pkgdir}/usr/lib/chromium"
-  install -m644 opt/google/chrome/libpdf.so "${pkgdir}/usr/lib/chromium"
+
 }
