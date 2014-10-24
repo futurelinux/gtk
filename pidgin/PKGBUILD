@@ -1,5 +1,5 @@
 pkgname=('pidgin')
-pkgver=2.10.9
+pkgver=2.10.10
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Multi-protocol instant messaging client"
@@ -12,8 +12,16 @@ makedepends=('nss' 'libsasl' 'libidn' 'python2' 'farstream' 'avahi'
 optdepends=('aspell: for spelling correction')
 options=('!libtool')
 install=pidgin.install
-source=(http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2)
-md5sums=('10a4a69d077893f6dd3438cd8af94e81')
+source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2"
+        'libpurple-gst1.patch')
+md5sums=('5030d4750c73b211c7e82bb67ea3d016'
+         '99164fd9fbca352cae70ae43bae47546')
+
+prepare() {
+   cd "${srcdir}/${pkgname}-${pkgver}"
+   patch -Np1 -i $srcdir/libpurple-gst1.patch
+   autoreconf -vi
+}
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
