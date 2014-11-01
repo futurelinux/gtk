@@ -1,5 +1,5 @@
 pkgname=firefox-i18n
-pkgver=33.0.1
+pkgver=33.0.2
 pkgrel=1
 pkgdesc="Language pack for Firefox"
 arch=('any')
