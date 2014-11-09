@@ -2,7 +2,7 @@
 
 pkgname=hugin
 pkgver=2013.0.0
-pkgrel=10
+pkgrel=11
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
