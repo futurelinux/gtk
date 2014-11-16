@@ -1,5 +1,5 @@
 pkgname=ardour
-pkgver=3.5.380
+pkgver=3.5.403
 pkgrel=1
 pkgdesc="Professional-grade digital audio workstation"
 arch=('x86_64')
