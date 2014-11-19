@@ -3,7 +3,7 @@
 #
 
 pkgname=chromium
-pkgver=38.0.2125.122
+pkgver=39.0.2171.65
 pkgrel=1
 _verbld=${pkgver}-1 # used for pepper-flash
 _pepperflashver=15.0.0.223
@@ -26,8 +26,8 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         search_engine_type.diff
         prepopulated_engines_json.diff)
 
-sha1sums=('6eeca2459b497f365292a8d31e3a9cf384a6a1b5'
-          '64726324d432af438a9d16e6c7243ce0a56a40e3'
+sha1sums=('952f1f38b62fa64b0f8a5a141b2aa61d7b9b2766'
+          'c9e4cb48aefc7d181b30e9144131a126b1c6b8af'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
