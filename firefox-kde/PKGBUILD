@@ -2,7 +2,7 @@
 
 pkgname=firefox-kde
 pkgver=33.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -16,7 +16,7 @@ depends=('gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'kdelibs')
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
              'xorg-server-xvfb' 'libpulse' 'gst-plugins-base'
-             'inetutils' 'clang'
+             'inetutils'
              'cmake' 'automoc4')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'gst-plugins-good: h.264 video'
@@ -151,8 +151,6 @@ prepare() {
 }
 
 build() {
-  export CC=clang
-  export CXX=clang++
   msg "build_kmozillahelper"
   build_kmozillahelper
   msg "build_firefox"
