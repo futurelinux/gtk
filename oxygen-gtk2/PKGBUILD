@@ -1,6 +1,6 @@
 pkgname=oxygen-gtk2
 pkgver=1.4.6
-pkgrel=1
+pkgrel=2
 pkgdesc="The Oxygen engine for GTK2, for better Qt/GTK+ integration."
 arch=('x86_64')
 url=("https://projects.kde.org/projects/playground/artwork/oxygen-gtk")
@@ -22,6 +22,7 @@ build() {
   cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
+    -DOXYGEN_ICON_HACK=0 \
     -DCMAKE_INSTALL_PREFIX=/usr
   make
 }
