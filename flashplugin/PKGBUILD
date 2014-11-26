@@ -1,6 +1,6 @@
 pkgname=flashplugin
 _licensefile='PlatformClients_PC_WWEULA_Combined_20100108_1657.pdf'
-pkgver=11.2.202.418
+pkgver=11.2.202.424
 pkgrel=1
 pkgdesc='Adobe Flash Player'
 url='http://labs.adobe.com/technologies/flashplatformruntimes/flashplayer11/'
@@ -15,7 +15,7 @@ backup=('etc/adobe/mms.cfg')
 source=("flashplugin-${pkgver}::http://fpdownload.macromedia.com/get/flashplayer/pdc/$pkgver/install_flash_player_11_linux.x86_64.tar.gz"
         "http://www.adobe.com/products/eulas/pdfs/${_licensefile}"
         'mms.cfg' 'kcm.patch')
-md5sums=('75947ff53197e1fadd18cf6a285f7b94'
+md5sums=('191d3b5dcec03e7eb4c66750e28af1aa'
          '94ca2aecb409abfe36494d1a7ec7591d'
          'f34aae6279b40e0bd2abfb0d9963d7b8'
          '798f7d43ed8c0a35e984e51f61b6a1e6')
