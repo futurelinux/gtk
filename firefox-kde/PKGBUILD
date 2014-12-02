@@ -1,8 +1,8 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=33.1.1
-pkgrel=2
+pkgver=34.0.5
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -41,7 +41,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=a0aa49fce462
+_patchrev=ab1f6b725947
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2"
         'mozconfig'
@@ -68,7 +68,7 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         "$_patchurl/mozilla-language.patch"
         'install-kde-js.patch'
 )
-sha256sums=('ce67fab494acb56b9dc18896e9ea481b1a1ba61ca88ce3438f96d21cc554b9a9'
+sha256sums=('1680191ff7d4c465c0e6a5d7d6ff7a426f5bfa64f8d6d68a4bdfa9ac4ee459c8'
             'a46781b46723376c7dde4648ac7d2a7ab64dedb5eee60d8c0d19af22d3b93efc'
             '3e9fa54f334681d9e04907c1a5ae86a753c7b9902075519e31a011103c928ee8'
             '1c77d74a93e66f49dae37f5217990d93930d515ea058c1e47ba671bba3564231'
@@ -78,15 +78,15 @@ sha256sums=('ce67fab494acb56b9dc18896e9ea481b1a1ba61ca88ce3438f96d21cc554b9a9'
             '121ed258879a8bb1617879866a86884618b8a6336a12ef9a837a440a4fc63ee5'
             'ea7d67101abdd0a7fbbee5195d65d96d32c5c3975c5f5cf0d9a2c0b8df2cf891'
             '746cb474c5a2c26fc474256e430e035e604b71b27df1003d4af85018fa263f4a'
-            '681eaa30b78aa40ac5cd7c5435d1088344067a90e0c7e698ccdb0b13ffe9e88f'
-            '1fd54e93db3a4d454ece5a6dc788a4ae36805eb497482add82a11ac5cf990562'
+            'ff9e5cff0f755d2b279cea4cf1ca5e09d9bc0ea2e20244793add20744bb27171'
+            '8a4c5a2dd56a80ddb83ece96192e23c1b078dd1a0672b6fd408ae37d1c6712f5'
             '4b4359947813234af46bf1fdc98a85a3f9b78483d5c4dbd840ac783d2fa9182f'
             '9e67a4505deaefca2be253cd4f77f6089af76edd9507c1d54a1570cd51415b39'
             'e8289ea4c1f8191e1e23661312ceee2128b8e790501b9a589d0d7bfc4384553f'
             '5f6b0970284d68d5ed18e6bb7ee1e9fc0025ab3c10aaa14c283adb21a4a20ee8'
-            '6aafb4bc964f6c497676c3cf89cfc09c2b7de2ea1e5fbf0c088089044f16abe2'
-            '15ba009c12b76c20744cbc8d7d1840b979a5962b536f01798bb0c4bf04500bfb'
-            '6bd70410ff132cb0ab71bef8703b2af35dc3ff6e05a6f12bb2c66ce588cca1e2')
+            '6f93cb83a87c245ec2a8b09ed56a6abbcbe388a9ea961b50e2d84d307b71a344'
+            'b9feb66a33dc1644d7d277dc3fc166c655735de7100bc4e93f1fe44567f35345'
+            'd79923725b2454cbf8da63a3f2eb7e48ace0d100f39ec821d59b8eacbbf8155c')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -108,7 +108,7 @@ prepare() {
   # make makepkg -R easier
   msg "Patching for KDE"
   rm -f content/media/gstreamer/nsGStreamerFormatHelper.{h,cpp}
-  rm -f browser/components/shell/src/{nsKDEShellService,nsUnixShellService}.{h,cpp}
+  rm -f browser/components/shell/{nsKDEShellService,nsUnixShellService}.{h,cpp}
   rm -f browser/base/content/browser-kde.xul
   rm -f toolkit/xre/nsKDEUtils.{h,cpp}
   rm -f uriloader/exthandler/unix/{nsCommonRegistry,nsKDERegistry}.{h,cpp}
