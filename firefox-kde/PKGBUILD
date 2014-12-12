@@ -2,7 +2,7 @@
 
 pkgname=firefox-kde
 pkgver=34.0.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -49,7 +49,6 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         'vendor.js'
         'kde.js'
         'firefox-20.0.1-fixed-loading-icon.png'
-        'duckduckgo.xml'
         "kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
 
         'firefox-install-dir.patch'
@@ -67,6 +66,7 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         #	"$_patchurl/mozilla-preferences.patch"
         "$_patchurl/mozilla-language.patch"
         'install-kde-js.patch'
+        'ddg-branding.patch'
 )
 sha256sums=('1680191ff7d4c465c0e6a5d7d6ff7a426f5bfa64f8d6d68a4bdfa9ac4ee459c8'
             'a46781b46723376c7dde4648ac7d2a7ab64dedb5eee60d8c0d19af22d3b93efc'
@@ -74,7 +74,6 @@ sha256sums=('1680191ff7d4c465c0e6a5d7d6ff7a426f5bfa64f8d6d68a4bdfa9ac4ee459c8'
             '1c77d74a93e66f49dae37f5217990d93930d515ea058c1e47ba671bba3564231'
             '0850a8a8dea9003c67a8ee1fa5eb19a6599eaad9f2ad09db753b74dc5048fdbc'
             '68e3a5b47c6d175cc95b98b069a15205f027cab83af9e075818d38610feb6213'
-            '3cf9837992828050b534b0edda9bfd53ffeb3e536a731e2b8aecd2c6e7f8a3e1'
             '121ed258879a8bb1617879866a86884618b8a6336a12ef9a837a440a4fc63ee5'
             'ea7d67101abdd0a7fbbee5195d65d96d32c5c3975c5f5cf0d9a2c0b8df2cf891'
             '746cb474c5a2c26fc474256e430e035e604b71b27df1003d4af85018fa263f4a'
@@ -86,7 +85,8 @@ sha256sums=('1680191ff7d4c465c0e6a5d7d6ff7a426f5bfa64f8d6d68a4bdfa9ac4ee459c8'
             '5f6b0970284d68d5ed18e6bb7ee1e9fc0025ab3c10aaa14c283adb21a4a20ee8'
             '6f93cb83a87c245ec2a8b09ed56a6abbcbe388a9ea961b50e2d84d307b71a344'
             'b9feb66a33dc1644d7d277dc3fc166c655735de7100bc4e93f1fe44567f35345'
-            'd79923725b2454cbf8da63a3f2eb7e48ace0d100f39ec821d59b8eacbbf8155c')
+            'd79923725b2454cbf8da63a3f2eb7e48ace0d100f39ec821d59b8eacbbf8155c'
+            '82c5f83f7e99fd3be6ec9750a3bef8b7826f08b523dab138f8742ea8b60e2749')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -128,6 +128,7 @@ prepare() {
   patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   patch -Np0 -i "$srcdir/install-kde-js.patch"
+  patch -Np1 -i "$srcdir/ddg-branding.patch"
   cp "$srcdir/kde.js" browser/app/profile/
 
   mkdir -p "$srcdir/path"
@@ -190,7 +191,6 @@ package() {
 
   install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
   install -Dm644 ../kde.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/kde.js"
-  install -Dm644 ../duckduckgo.xml "$pkgdir/usr/lib/firefox/browser/searchplugins/duckduckgo.xml"
 
   for i in 16 22 24 32 48 256; do
       install -Dm644 browser/branding/official/default$i.png \
