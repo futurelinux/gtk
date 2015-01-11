@@ -3,7 +3,7 @@
 pkgname=pepperflashplugin
 pkgdesc="Adobe/Google Pepper Flash Player plugin installer"
 pkgver=16.0.0.235
-pkgrel=1
+pkgrel=2
 arch=('any')
 url="http://www.google.com/chrome"
 license=('custom:chrome')

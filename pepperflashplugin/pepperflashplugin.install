@@ -36,7 +36,7 @@ MAKING CHROMIUM USE PEPPER FLASH
 To enable the use of Pepper Flash with Chromium, append the following line
 to /etc/chromium/default:
 
-    . /usr/lib/pepperflashplayer/chromium_pepperflashplayer.sh
+    . /usr/lib/pepperflash/chromium_pepperflashplayer.sh
 
 (I.e. a period, then a space, then the filepath.)
 Restart Chromium, and load the chrome://plugins page to verify that the plugin is active.
