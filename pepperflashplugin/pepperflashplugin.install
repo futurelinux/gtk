@@ -1,0 +1,59 @@
+CHROME_URL=@CHROME_URL@
+CHROME_SHA256=@CHROME_SHA256@
+PEPFLASH_MD5=@PEPFLASH_MD5@
+MANIFEST_MD5=@MANIFEST_MD5@
+
+DIR=/usr/lib/pepperflash
+TMP_DIR=/tmp/pepperflashplugin-installer
+
+pepperflashplugin-installer() {
+  [ -d $TMP_DIR ] && rm -rf $TMP_DIR
+  mkdir $TMP_DIR
+  cd $TMP_DIR
+  
+  # Don't download a new Google Chrome package if the user already has
+  # identical plugin/manifest files installed
+
+  echo "$PEPFLASH_MD5  $DIR/libpepflashplayer.so
+  $MANIFEST_MD5  $DIR/manifest.json" > md5sums.check
+
+  if md5sum -c md5sums.check
+  then
+          echo "nothing to do, you are using already the latest pepperflash plugin provided by Chakra"
+  else
+          wget $CHROME_URL
+          rpm2cpio google-chrome*| bsdtar -xf -
+
+          cp opt/google/chrome/PepperFlash/libpepflashplayer.so $DIR/libpepflashplayer.so
+          cp opt/google/chrome/PepperFlash/manifest.json $DIR/manifest.json
+  fi
+}
+
+instructions() {
+
+  /bin/cat << EOF
+MAKING CHROMIUM USE PEPPER FLASH
+To enable the use of Pepper Flash with Chromium, append the following line
+to /etc/chromium/default:
+
+    . /usr/lib/pepperflashplayer/chromium_pepperflashplayer.sh
+
+(I.e. a period, then a space, then the filepath.)
+Restart Chromium, and load the chrome://plugins page to verify that the plugin is active.
+EOF
+
+}
+
+post_install() {
+    post_upgrade
+    instructions
+}
+
+post_upgrade() {
+    pepperflashplugin-installer
+}
+
+post_remove() {
+    rm $DIR/libpepflashplayer.so
+    rm $DIR/manifest.json
+}

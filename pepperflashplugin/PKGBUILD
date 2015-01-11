@@ -1,0 +1,39 @@
+# Maintainer: AlmAck
+
+pkgname=pepperflashplugin
+pkgdesc="Adobe/Google Pepper Flash Player plugin installer"
+pkgver=16.0.0.235
+pkgrel=1
+arch=('any')
+url="http://www.google.com/chrome"
+license=('custom:chrome')
+install=pepperflashplugin.install
+depends=('rpmextract')
+source=(https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+        license.html::https://www.google.com/chrome/intl/en/eula_text.html
+        chromium_pepperflashplayer.sh)
+sha256sums=('c9040dd16dae059d8181775d2e155f757966527c36fbc466fd8081d84ea1e5e9'
+            'c714679be9b1de35475bfcd58b4d2fa5baf87c00eb049185ec062de276203d13'
+            '7ceecad5cacd9198ddbb93ad8af2be4ba8ab5789fb1d4031848092fbf3032c2c')
+
+package() {
+  # create required directories
+  install -d "${pkgdir}"/usr/lib/pepperflash
+        
+  # copy the script to enable pepperflash con chromium
+  install -m644 "$srcdir/chromium_pepperflashplayer.sh" "$pkgdir/usr/lib/pepperflash/chromium_pepperflashplayer.sh"
+  sed -i "s/\@FLASH_VERSION\@/$pkgver/" "$pkgdir/usr/lib/pepperflash/chromium_pepperflashplayer.sh"
+
+  # copy the script to enable pepperflash con chromium
+  sed -i "s|CHROME_URL=.*|CHROME_URL=${source[0]}|" "$startdir/pepperflashplugin.install"
+  sed -i "s/CHROME_SHA256=.*/CHROME_SHA256=${sha256sums[0]}/" "$startdir/pepperflashplugin.install"
+
+  PEPFLASH_MD5=$(md5sum "$srcdir/opt/google/chrome/PepperFlash/libpepflashplayer.so" | sed -e 's/\s.*//g')
+  MANIFEST_MD5=$(md5sum "$srcdir/opt/google/chrome/PepperFlash/manifest.json" | sed -e 's/\s.*//g')
+  echo $PEPFLASH_MD5
+  sed -i "s/PEPFLASH_MD5=.*/PEPFLASH_MD5=$PEPFLASH_MD5/" "$startdir/pepperflashplugin.install"
+  sed -i "s/MANIFEST_MD5=.*/MANIFEST_MD5=$MANIFEST_MD5/" "$startdir/pepperflashplugin.install"
+    
+  # copy license
+  install -Dm644 "${srcdir}"/license.html "${pkgdir}"/usr/share/licenses/${pkgname}/license.html
+}
