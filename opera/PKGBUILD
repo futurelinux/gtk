@@ -2,7 +2,7 @@
 
 pkgname=opera
 pkgver=26.0.1656.60
-pkgrel=1
+pkgrel=2
 pkgdesc="A fast and secure web browser and Internet suite."
 url="http://www.opera.com/"
 install=${pkgname}.install
@@ -10,7 +10,7 @@ options=(!strip !zipman)
 license=('custom:opera')
 backup=("etc/$pkgname/default")
 arch=('x86_64')
-depends=('gtk2' 'desktop-file-utils' 'shared-mime-info' 'libxtst' 'libxss' 'gcc-libs' 'alsa-lib' 'nss' 'freetype2' 'ttf-font')
+depends=('gtk2' 'desktop-file-utils' 'shared-mime-info' 'libxtst' 'libxss' 'gcc-libs' 'alsa-lib' 'nss' 'freetype2' 'ttf-font' 'gconf')
 optdepends=('pepperflashplugin: Pepper Flash plugin'
             'curl: opera crash reporter and autoupdate checker'
             'ffmpeg: playback of not really open formats')
