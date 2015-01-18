@@ -3,13 +3,13 @@
 pkgname=pepperflashplugin
 pkgdesc="Adobe/Google Pepper Flash Player plugin installer"
 pkgver=16.0.0.257
-pkgrel=2
+pkgrel=3
 arch=('any')
 url="http://www.google.com/chrome"
 license=('custom:chrome')
 install=pepperflashplugin.install
 depends=('rpmextract')
-source=(chrome_pepper-${pkgver}::https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+source=(https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
         license.html::https://www.google.com/chrome/intl/en/eula_text.html
         chromium_pepperflashplayer.sh)
 sha256sums=('940cb6f8cf999e78682be0d7922006ca0a32d8f9cc745a511985a34a5f13a4db'

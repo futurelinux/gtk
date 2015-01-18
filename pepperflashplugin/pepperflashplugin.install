@@ -1,4 +1,4 @@
-CHROME_URL=chrome_pepper-16.0.0.257::https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+CHROME_URL=https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 CHROME_SHA256=940cb6f8cf999e78682be0d7922006ca0a32d8f9cc745a511985a34a5f13a4db
 PEPFLASH_MD5=43dc03a4641d4a039b829703a6d1cc78
 MANIFEST_MD5=b4d5129fb90aaab66da81528f8802acd
