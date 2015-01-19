@@ -19,7 +19,7 @@ pepperflashplugin-installer() {
 
   if md5sum -c md5sums.check
   then
-          echo "nothing to do, you are using already the latest pepperflash plugin provided by Chakra"
+          echo "nothing to do, you are already using the latest pepperflash plugin provided by Chakra"
   else
           wget $CHROME_URL
           rpm2cpio google-chrome*| bsdtar -xf -
