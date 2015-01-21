@@ -2,17 +2,18 @@
 
 pkgname=nvidia-settings
 _pkgbasename=nvidia
-pkgver=343.36
+pkgver=346.35
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Gtk Graphical User Interface for nVidia"
-depends=('gtk2' 'pangox-compat' $_pkgbasename=$pkgver)
+depends=('gtk3' 'pangox-compat' $_pkgbasename=$pkgver)
+optdepends=('gtk2: use gtk2 for interface')
 url="http://www.nvidia.com/"
 license=('custom')
 options=('!strip')
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
         'nvidia-restore-settings.desktop')
-md5sums=('dfdf53ee8787455fe92a760ffa6badcb'
+md5sums=('9ca9f07f91361362f304ca8317ddd453'
          '9237516792da7b6df32f8c7e8a98f475')
 
 build() {
@@ -27,6 +28,8 @@ package() {
   install -D -m644 nvidia-settings.1.gz "${pkgdir}/usr/share/man/man1/nvidia-settings.1.gz"
   install -D -m644 nvidia-settings.desktop "${pkgdir}/usr/share/applications/nvidia-settings.desktop"
   install -D -m644 nvidia-settings.png "${pkgdir}/usr/share/pixmaps/nvidia-settings.png"
+  install -D -m755 "libnvidia-gtk2.so.$pkgver" "$pkgdir/usr/lib/libnvidia-gtk2.so.$pkgver"
+  install -D -m755 "libnvidia-gtk3.so.$pkgver" "$pkgdir/usr/lib/libnvidia-gtk3.so.$pkgver"
   sed -e 's:__UTILS_PATH__:/usr/bin:' -e 's:__PIXMAP_PATH__:/usr/share/pixmaps:' -i "${pkgdir}/usr/share/applications/nvidia-settings.desktop"
 
   # Install the autostart .desktop file, so that parameters saved through nvidia-settings
