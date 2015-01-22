@@ -1,6 +1,6 @@
 pkgname=wxgtk
-pkgver=3.0.1
-pkgrel=2
+pkgver=3.0.2
+pkgrel=1
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
@@ -9,7 +9,7 @@ depends=('gtk2' 'gstreamer0.10-base')
 makedepends=('gstreamer0.10-base-plugins' 'glu')
 options=('!emptydirs')
 source=("http://downloads.sourceforge.net/wxwindows/wxWidgets-${pkgver}.tar.bz2")
-sha256sums=('bd671b79ec56af8fb3844e11cafceac1a4276fb02c79404d06b91b6c19d2c5f5')
+sha256sums=('346879dc554f3ab8d6da2704f651ecb504a22e9d31c17ef5449b129ed711585d')
 
 # makedepends=('webkitgtk2')
 # optdepends=('webkitgtk2: for webview support')
