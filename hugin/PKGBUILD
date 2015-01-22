@@ -1,8 +1,8 @@
 # WARNING: this package should exactly match the hugin-tools platform package
 
 pkgname=hugin
-pkgver=2013.0.0
-pkgrel=11
+pkgver=2014.0.0
+pkgrel=1
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
@@ -10,16 +10,16 @@ arch=('x86_64')
 depends=('wxgtk' 'boost-libs' 'enblend-enfuse' 'exiv2' "hugin-tools=${pkgver}"
          'lensfun' 'lapack' 'make' 'perl-exiftool' 'desktop-file-utils')
 makedepends=('cmake' 'boost' 'tclap' 'mesa')
-source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2"
-        "hugin-build.patch")
-sha256sums=('484e1ed58fa6fe4bae1f423967101549345bcca2653b992afbc0ed9ec0dbebd5'
-            '47dc99f7addcbf51824c1111888b9b40b15286ab67a03b86b3184dba320e2385')
+source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('f098aa0ede44010d3bb2bb38693177533fd776c45063a338c4c483d7e471ec29')
 
 install=install
 
 prepare() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	patch -p1 -i ../hugin-build.patch
+  cd ${pkgname}-${pkgver}
+
+  # Fix compiling against lensfun-0.3.0
+  sed '/LF_DIST_MODEL_FOV1/d' -i src/hugin_base/lensdb/LensDB.cpp
 }
 
 build() {
@@ -52,16 +52,16 @@ package() {
   rm -v "${pkgdir}/usr/bin/tca_correct"
   rm -v "${pkgdir}/usr/bin/pano_trafo"
   rm -v "${pkgdir}/usr/bin/pano_modify"
-  rm -v "${pkgdir}/usr/bin/matchpoint"
   rm -v "${pkgdir}/usr/bin/pto_gen"
   rm -v "${pkgdir}/usr/bin/deghosting_mask"
   rm -v "${pkgdir}/usr/bin/pto_merge"
   rm -v "${pkgdir}/usr/bin/checkpto"
-  rm -v "${pkgdir}/usr/bin/autopano-noop.sh"
   rm -v "${pkgdir}/usr/bin/cpclean"
   rm -v "${pkgdir}/usr/bin/geocpset"
   rm -v "${pkgdir}/usr/bin/pto_lensstack"
   rm -v "${pkgdir}/usr/bin/pto_var"
+  rm -v "${pkgdir}/usr/bin/pto_move"
+  rm -v "${pkgdir}/usr/bin/pto_template"
  
   msg "Removing hugin-tools libs"
   cd "${pkgdir}/usr/lib/hugin/"
