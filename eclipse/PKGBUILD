@@ -1,8 +1,8 @@
 
 pkgname=eclipse
-pkgver=4.4.1
+pkgver=4.4.1.a
 pkgrel=1
-_release=luna-SR1
+_release=luna-SR1a
 pkgdesc="An IDE for Java and other languages."
 arch=('x86_64')
 url="http://eclipse.org"
@@ -17,7 +17,7 @@ license=("EPL/1.0")
 source=("http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/${_release/-//}/${pkgname}-standard-${_release}-linux-gtk-x86_64.tar.gz"
         'eclipse.png'
         'eclipse.desktop')
-sha256sums=('eebf7dd463d6de5c0f4ec8968c00abdfac8183791cc279e648fef582599481cc'
+sha256sums=('5703728518551ea1d614b9f8a9d2f8506a17931142e093bfdbf28e827f6746b7'
             '91eb03b8ff33e2b05b6c0b1fa5ff145666833674ba3bd2aa2732fa0a3651c03d'
             '88daed5095d908a4f4c273aafcd2855899f2516766a8958b9a653e030daa173c')
 
