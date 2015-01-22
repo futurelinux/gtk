@@ -2,3 +2,6 @@
 
 # Options to pass to chromium
 CHROMIUM_FLAGS=""
+
+# Enable the pepperflash plugin if available (pepperflashplugin)
+. /usr/lib/PepperFlash/chromium_pepperflashplayer.sh
