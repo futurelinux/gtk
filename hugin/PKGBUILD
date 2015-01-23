@@ -2,7 +2,7 @@
 
 pkgname=hugin
 pkgver=2014.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
@@ -61,8 +61,12 @@ package() {
   rm -v "${pkgdir}/usr/bin/pto_lensstack"
   rm -v "${pkgdir}/usr/bin/pto_var"
   rm -v "${pkgdir}/usr/bin/pto_move"
+  rm -v "${pkgdir}/usr/bin/pto_mask"
   rm -v "${pkgdir}/usr/bin/pto_template"
  
+  rm -rfv "${pkgdir}/usr/share/appdata"
+  rm -v "${pkgdir}/usr/share/hugin/data/hugin_exiftool_copy.arg"
+
   msg "Removing hugin-tools libs"
   cd "${pkgdir}/usr/lib/hugin/"
   rm "${pkgdir}/usr/lib/hugin/libhuginbase.so.0.0"
