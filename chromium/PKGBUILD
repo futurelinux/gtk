@@ -3,7 +3,7 @@
 #
 
 pkgname=chromium
-pkgver=40.0.2214.93
+pkgver=40.0.2214.94
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -23,7 +23,7 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         search_engine_type.diff
         prepopulated_engines_json.diff)
 
-sha1sums=('1b5569bb12830e73392b2bd4809d4eb9e11cc136'
+sha1sums=('627aec663430f8170041f47f9cfa31c50d08d162'
           'f78c3d5f420d52460b2d59f7c47e32989b3e1780'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
