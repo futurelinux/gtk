@@ -1,0 +1,42 @@
+# Maintainer: AlmAck
+# Contributor:  ahjolinna <ahjolinna@ovi.com>
+
+pkgname=freshplayerplugin
+pkgver=0.2.2
+pkgrel=5
+pkgdesc='PPAPI-host NPAPI-plugin adapter.'
+arch=('x86_64')
+url='https://github.com/i-rinat/freshplayerplugin'
+license=('MIT')
+depends=('pepperflashplugin' 'pango' 'alsa-lib' 'freetype2' 'cairo' 'glib2' 'libpulse' 'libx11' 'libconfig' 'libevent' 'gtk2' 'libgl')
+makedepends=('cmake' 'ragel')
+conflicts=('freshplayerplugin-git' 'flashplugin' 'chromium-pepper-flash')
+source=("$url/archive/v$pkgver.tar.gz"
+        freshwrapper.conf
+        0001-async_network-skip-resolution-of-already-resolved-ad.patch)
+backup=('etc/freshwrapper.conf')
+md5sums=('65ea371b52b693cba2994c0edf8b7216'
+         'f5c37482ff9cb4c0db00e12050ed6539'
+         'ffe1815855103449f0fbd03fe49ba194')
+
+prepare(){
+  cd $pkgname-$pkgver
+  patch -Np1 -i ${srcdir}/0001-async_network-skip-resolution-of-already-resolved-ad.patch
+}
+
+build() {
+  cd $pkgname-$pkgver
+  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  install -Dm644 LICENSE.MIT "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+
+  for lib in libfreshwrapper-*.so; do
+    install -Dm755 $lib "$pkgdir"/usr/lib/mozilla/plugins/$lib
+  done
+
+  install -Dm644 $srcdir/freshwrapper.conf "$pkgdir/etc/freshwrapper.conf"
+}
