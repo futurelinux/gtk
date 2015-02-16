@@ -3,7 +3,7 @@
 
 pkgname=freshplayerplugin
 pkgver=0.2.3
-pkgrel=1
+pkgrel=2
 pkgdesc='PPAPI-host NPAPI-plugin adapter.'
 arch=('x86_64')
 url='https://github.com/i-rinat/freshplayerplugin'
@@ -15,7 +15,7 @@ source=("$url/archive/v$pkgver.tar.gz"
         'freshwrapper.conf')
 backup=('etc/freshwrapper.conf')
 md5sums=('c2b2a4440a1393961f4559e3f9032256'
-         'f5c37482ff9cb4c0db00e12050ed6539')
+         'a0622495f3c0fc2f28cd1ea469a98051')
 
 build() {
   cd $pkgname-$pkgver
