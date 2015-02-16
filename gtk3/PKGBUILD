@@ -1,7 +1,7 @@
 pkgname=gtk3
 pkgver=3.14.8
 pkgmin="${pkgver%.*}"
-pkgrel=1
+pkgrel=2
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
@@ -53,4 +53,6 @@ package() {
 
   install -D -m644 "${srcdir}/settings.ini" \
                    "${pkgdir}/etc/gtk-3.0/settings.ini"
+
+  mv -v ${pkgdir}/usr/bin/gtk-update-icon-cache ${pkgdir}/usr/bin/gtk3-update-icon-cache
 }
