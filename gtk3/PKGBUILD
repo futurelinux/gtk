@@ -1,5 +1,5 @@
 pkgname=gtk3
-pkgver=3.14.5
+pkgver=3.14.8
 pkgmin="${pkgver%.*}"
 pkgrel=1
 pkgdesc="The GTK+ Toolkit (v3)"
@@ -15,7 +15,7 @@ backup=("etc/gtk-3.0/settings.ini")
 license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgmin}/gtk+-${pkgver}.tar.xz"
         'settings.ini')
-md5sums=('c6b72b1cec82061167759b9e6cec9bab'
+md5sums=('e46a12448b348d384b8bb29f0c22718f'
          '6bbfc6cc58bae5b1be02e60b48fa51f5')
 
 #prepare() {
