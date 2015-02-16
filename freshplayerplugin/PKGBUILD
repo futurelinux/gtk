@@ -2,8 +2,8 @@
 # Contributor:  ahjolinna <ahjolinna@ovi.com>
 
 pkgname=freshplayerplugin
-pkgver=0.2.2
-pkgrel=5
+pkgver=0.2.3
+pkgrel=1
 pkgdesc='PPAPI-host NPAPI-plugin adapter.'
 arch=('x86_64')
 url='https://github.com/i-rinat/freshplayerplugin'
@@ -12,17 +12,10 @@ depends=('pepperflashplugin' 'pango' 'alsa-lib' 'freetype2' 'cairo' 'glib2' 'lib
 makedepends=('cmake' 'ragel')
 conflicts=('freshplayerplugin-git' 'flashplugin' 'chromium-pepper-flash')
 source=("$url/archive/v$pkgver.tar.gz"
-        freshwrapper.conf
-        0001-async_network-skip-resolution-of-already-resolved-ad.patch)
+        'freshwrapper.conf')
 backup=('etc/freshwrapper.conf')
-md5sums=('65ea371b52b693cba2994c0edf8b7216'
-         'f5c37482ff9cb4c0db00e12050ed6539'
-         'ffe1815855103449f0fbd03fe49ba194')
-
-prepare(){
-  cd $pkgname-$pkgver
-  patch -Np1 -i ${srcdir}/0001-async_network-skip-resolution-of-already-resolved-ad.patch
-}
+md5sums=('c2b2a4440a1393961f4559e3f9032256'
+         'f5c37482ff9cb4c0db00e12050ed6539')
 
 build() {
   cd $pkgname-$pkgver
