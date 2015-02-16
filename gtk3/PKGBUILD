@@ -1,5 +1,5 @@
 pkgname=gtk3
-pkgver=3.10.9
+pkgver=3.14.5
 pkgmin="${pkgver%.*}"
 pkgrel=1
 pkgdesc="The GTK+ Toolkit (v3)"
@@ -15,8 +15,20 @@ backup=("etc/gtk-3.0/settings.ini")
 license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgmin}/gtk+-${pkgver}.tar.xz"
         'settings.ini')
-md5sums=('0200b7922f472a2bade0327012d9f792'
+md5sums=('c6b72b1cec82061167759b9e6cec9bab'
          '6bbfc6cc58bae5b1be02e60b48fa51f5')
+
+#prepare() {
+#  cd "${srcdir}/gtk+-${pkgver}"
+  # GLib2
+#  sed -e 's|2.43.0|2.42.0|g' -i configure
+  # Cairo
+#  sed -e 's|1.14.0|1.12.0|g' -i configure
+  # Pango
+#  sed -e 's|1.36.7|1.36.0|g' -i configure
+  # Atk
+#  sed -e 's|2.15.1|2.14.0|g' -i configure
+#}
 
 build() {
   cd "${srcdir}/gtk+-${pkgver}"
@@ -24,7 +36,6 @@ build() {
   CXX=/bin/false ./configure --prefix=/usr \
       --sysconfdir=/etc \
       --localstatedir=/var \
-      --enable-gtk2-dependency \
       --disable-schemas-compile \
       --enable-x11-backend \
       --enable-broadway-backend \
