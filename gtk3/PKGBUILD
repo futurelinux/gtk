@@ -1,15 +1,15 @@
 pkgname=gtk3
 pkgver=3.14.8
 pkgmin="${pkgver%.*}"
-pkgrel=2
+pkgrel=3
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
 install="gtk3.install"
-depends=('glib2' 'cairo' 'gtk-update-icon-cache' 'libcups' 'libxcursor'
+depends=('glib2' 'cairo' 'gtk-update-icon-cache' 'libcups' 'libxcursor' 'cairo'
          'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
          'pango' 'shared-mime-info' 'colord' 'at-spi2-atk' 'wayland' 'libxkbcommon')
-makedepends=('gobject-introspection')
+makedepends=('gobject-introspection' 'python2')
 options=('!docs')
 backup=("etc/gtk-3.0/settings.ini")
 license=('LGPL')
@@ -54,5 +54,5 @@ package() {
   install -D -m644 "${srcdir}/settings.ini" \
                    "${pkgdir}/etc/gtk-3.0/settings.ini"
 
-  mv -v ${pkgdir}/usr/bin/gtk-update-icon-cache ${pkgdir}/usr/bin/gtk3-update-icon-cache
+  rm -v ${pkgdir}/usr/bin/gtk-update-icon-cache
 }
