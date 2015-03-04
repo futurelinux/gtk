@@ -1,5 +1,5 @@
 pkgname=filezilla
-pkgver=3.10.0.2
+pkgver=3.10.2
 pkgrel=1
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
@@ -9,10 +9,17 @@ depends=('dbus' 'xdg-utils' 'wxgtk' 'libidn' 'hicolor-icon-theme' 'sqlite3' 'gnu
 install=${pkgname}.install
 changelog=${pkgname}.changelog
 source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
-        "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz")
-sha256sums=('8100b24c648439ae8cb716d3753a8b689af6ea01b7bc743bac816b88c6283f86'
-            '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740')
+        "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz"
+        "fix-missing-include-fz-bug-10280.patch")
+sha256sums=('c08ee3bff4ce35010a5f32610ef699081662c9f8c51c20740f719e653ce9b611'
+            '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740'
+            'e01cbb3e260171bb2f7c73d773e08b751f8cfb48a2152555dffd1981e4a814f7')
 
+prepare() {
+  cd "${pkgname}-${pkgver}"
+  patch -p2 -i "$srcdir/fix-missing-include-fz-bug-10280.patch"
+}            
+            
 build() {
   cd "${pkgname}-${pkgver}"
   ./configure \
