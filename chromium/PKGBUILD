@@ -3,7 +3,7 @@
 #
 
 pkgname=chromium
-pkgver=40.0.2214.115
+pkgver=41.0.2272.76
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -23,12 +23,12 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         search_engine_type.diff
         prepopulated_engines_json.diff)
 
-sha1sums=('b009e6f8ab7e9c1978e0822502f08d83574ad866'
+sha1sums=('106955048896786b96a7eba74405d19840a3346e'
           '4af67a17cc0aead03dd99aef71fb16446c4e7465'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
           '51f172122f83825b64c58365620450865bbb879b'
-          '59b34d1e1070c918fbbe4e81875a1bed6a1c40e3'
+          '76e9844dd1357f75abf617114cc432009d7c6372'
           'abeb1e424b35bbca954a5afea39418a5e198ac64'
           '79fc829d740183d85fb147a3a44e572a8f304dbe')
 
@@ -49,7 +49,8 @@ prepare() {
 
   # Download NaCL toolchains
   python2 build/download_nacl_toolchains.py \
-    --packages nacl_x86_newlib,pnacl_newlib,pnacl_translator
+    --packages nacl_x86_newlib,pnacl_newlib,pnacl_translator \
+    sync --extract
 }
 
 build() {
@@ -137,7 +138,7 @@ package() {
   install -Dm4755 -o root -g root out/Release/chrome_sandbox \
     "$pkgdir/usr/lib/chromium/chrome-sandbox"
 
-  cp out/Release/{*.pak,libffmpegsumo.so,nacl_helper{,_bootstrap}} \
+  cp out/Release/{*.pak,*.bin,libffmpegsumo.so,nacl_helper{,_bootstrap}} \
     out/Release/nacl_irt_*.nexe \
     out/Release/libpdf.so \
     "$pkgdir/usr/lib/chromium/"
