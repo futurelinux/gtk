@@ -1,5 +1,5 @@
 pkgname=gcompris
-pkgver=14.12
+pkgver=15.02
 pkgrel=1
 pkgdesc="Educational software suite comprising of numerous activities for children aged 2 to 10"
 arch=('x86_64')
@@ -11,7 +11,7 @@ optdepends=('gnucap: for computer simulation within the electricity activity'
             'tuxpaint: for the painting activity'
             'gnuchess: for the chess activity')
 source=("http://gcompris.net/download/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('bf0beafb03c0f4ffe05bbfcda54b91a5e8a034b5d813cb4492d6f59a21f9cdcf')
+sha256sums=('c3e2f84f459d747b853b0424e366d0ce7b1f4ef00d660cdde5084712cf5c3ad4')
  
 build() {
   cd ${pkgname}-${pkgver}
