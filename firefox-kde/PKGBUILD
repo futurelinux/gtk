@@ -2,7 +2,7 @@
 
 pkgname=firefox-kde
 pkgver=36.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
@@ -48,7 +48,7 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         'firefox.desktop'
         'vendor.js'
         'kde.js'
-#        'firefox-20.0.1-fixed-loading-icon.png'
+        'firefox-20.0.1-fixed-loading-icon.png'
         "kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
 
         'firefox-install-dir.patch'
@@ -84,6 +84,7 @@ sha256sums=('f468a65a24524b64ebd1e697eb08908d4a4b6fa39055bbbb92df5dcf8d2329ba'
             '3e9fa54f334681d9e04907c1a5ae86a753c7b9902075519e31a011103c928ee8'
             '1c77d74a93e66f49dae37f5217990d93930d515ea058c1e47ba671bba3564231'
             '0850a8a8dea9003c67a8ee1fa5eb19a6599eaad9f2ad09db753b74dc5048fdbc'
+            '68e3a5b47c6d175cc95b98b069a15205f027cab83af9e075818d38610feb6213'
             '121ed258879a8bb1617879866a86884618b8a6336a12ef9a837a440a4fc63ee5'
             'ea7d67101abdd0a7fbbee5195d65d96d32c5c3975c5f5cf0d9a2c0b8df2cf891'
             '746cb474c5a2c26fc474256e430e035e604b71b27df1003d4af85018fa263f4a'
@@ -163,8 +164,8 @@ prepare() {
   # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
   # TODO: Remove this; Firefox 34 might use CSS animations for the loading icon
   # https://bugzilla.mozilla.org/show_bug.cgi?id=759252
-  #cp "$srcdir/firefox-20.0.1-fixed-loading-icon.png" \
-  #  browser/themes/linux/tabbrowser/loading.png
+  cp "$srcdir/firefox-20.0.1-fixed-loading-icon.png" \
+    browser/themes/linux/tabbrowser/loading.png
 }
 
 build() {
