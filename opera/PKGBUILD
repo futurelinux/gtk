@@ -1,7 +1,7 @@
 # Maintainer: AlmAck
 
 pkgname=opera
-pkgver=28.0.1750.40
+pkgver=28.0.1750.48
 pkgrel=1
 pkgdesc="A fast and secure web browser and Internet suite."
 url="http://www.opera.com/"
@@ -17,7 +17,7 @@ optdepends=('pepperflashplugin: Pepper Flash plugin'
 source=("http://get.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/${pkgname}-stable_${pkgver}_amd64.deb"
 	'opera'
 	'default')
-md5sums=('db23b3eb658bb8a6005422d9d1b14132'
+md5sums=('bf3cfcd6a3d8c824eb26ed89dce5d9e5'
          '924d6178b38638303db9fde37c6055fd'
          '50c4f4ec845ad8629ec3f308ab8cd991')
 
