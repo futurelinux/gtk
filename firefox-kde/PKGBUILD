@@ -1,10 +1,10 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=36.0.1
-pkgrel=2
+pkgver=36.0.3
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
-_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
+#_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 _kmozillahelper_pkgname=kmozillahelper
 _kmozillahelper_pkgver=0.6.4
 arch=('x86_64')
@@ -49,14 +49,15 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         'vendor.js'
         'kde.js'
         'firefox-20.0.1-fixed-loading-icon.png'
-        "kmozillahelper-0.6.4.tar.bz2::https://api.opensuse.org/public/source/mozilla:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2?rev=${_kmozillahelper_obsver}"
-
+        "https://build.opensuse.org/source/openSUSE:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2"
         'firefox-install-dir.patch'
         'rhbz-966424.patch'
+
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
         "$_patchurl/firefox-no-default-ualocale.patch"
         "$_patchurl/firefox-branded-icons.patch"
+
         # Gecko/toolkit patchset
 	"$_patchurl/toolkit-download-folder.patch"
         "$_patchurl/mozilla-nongnome-proxies.patch"
@@ -79,7 +80,7 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         #"$_patchurl/toolkit-ui-lockdown.patch"
         #"$_patchurl/mozilla-shared-nss-db.patch"
 )
-sha256sums=('f468a65a24524b64ebd1e697eb08908d4a4b6fa39055bbbb92df5dcf8d2329ba'
+sha256sums=('af4a3318286ea4c8157850f48f11679c17dc7639cbd0458c18d903ea84ffcd19'
             'a46781b46723376c7dde4648ac7d2a7ab64dedb5eee60d8c0d19af22d3b93efc'
             '3e9fa54f334681d9e04907c1a5ae86a753c7b9902075519e31a011103c928ee8'
             '1c77d74a93e66f49dae37f5217990d93930d515ea058c1e47ba671bba3564231'
