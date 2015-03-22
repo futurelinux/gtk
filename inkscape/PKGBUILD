@@ -2,14 +2,14 @@
 
 pkgname=inkscape
 pkgver=0.91
-pkgrel=1
+pkgrel=3
 pkgdesc='Vector graphics editor using the SVG file format'
 url='http://inkscape.sourceforge.net/'
 license=('GPL' 'LGPL')
 arch=('x86_64')
 makedepends=('boost' 'intltool')
-depends=('gc' 'gsl' 'gtkmm' 'gtkspell' 'imagemagick' 'libxslt' 'poppler-glib' 'popt'
-         'python2' 'desktop-file-utils' 'hicolor-icon-theme')
+depends=('gc' 'gsl' 'gtkmm' 'gtkspell' 'imagemagick' 'libxslt' 'poppler' 'poppler-glib' 'popt'
+         'python2' 'desktop-file-utils' 'hicolor-icon-theme' 'fftw')
 optdepends=('pstoedit: latex formulas'
             'texlive-core: latex formulas'
             'python2-numpy: some extensions'
@@ -17,7 +17,7 @@ optdepends=('pstoedit: latex formulas'
             'pyxml: some extensions'
             'uniconvertor: reading/writing to some proprietary formats')
 #source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-source=("https://inkscape.global.ssl.fastly.net/media/resources/file/inkscape-0.91.tar.bz2")
+source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2")
 sha1sums=('9941ee467af570ac71a70f965cd9c48d4993b8f3')
 install=install
 
