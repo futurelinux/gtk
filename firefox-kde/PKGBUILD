@@ -1,7 +1,7 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=36.0.4
+pkgver=37.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 #_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
@@ -41,7 +41,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=6fabac5939cb
+_patchrev=0d861c33ec70
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2"
         'mozconfig'
@@ -59,17 +59,12 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         "$_patchurl/firefox-branded-icons.patch"
 
         # Gecko/toolkit patchset
-	"$_patchurl/toolkit-download-folder.patch"
         "$_patchurl/mozilla-nongnome-proxies.patch"
         "$_patchurl/mozilla-prefer_plugin_pref.patch"
         "$_patchurl/mozilla-kde.patch"
 	"$_patchurl/mozilla-preferences.patch"
         "$_patchurl/mozilla-pkgconfig.patch"
         "$_patchurl/mozilla-language.patch"
-        "$_patchurl/mozilla-openaes-decl.patch"
-        "$_patchurl/mozilla-bmo1088588.patch"
-        "$_patchurl/mozilla-shared-nss-db.patch"
-        "$_patchurl/mozilla-repo.patch"
         'install-kde-js.patch'
         'ddg-branding.patch'
 
@@ -79,8 +74,10 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         #$_patchurl/firefox-ui-lockdown.patch
         #"$_patchurl/toolkit-ui-lockdown.patch"
         #"$_patchurl/mozilla-shared-nss-db.patch"
+        #"$_patchurl/mozilla-bmo1088588.patch" # Specify for ARM and PPC
+        #"$_patchurl/toolkit-download-folder.patch"
 )
-sha256sums=('9143bddc64746bf6471b5ae55b9013586b0ffd6c5515c5566b4015e0bf1e16ab'
+sha256sums=('204b4a0c6478cdb4e57cf0947ce66d3c544a96b4c5eee4f64169deed67fb060d'
             'a46781b46723376c7dde4648ac7d2a7ab64dedb5eee60d8c0d19af22d3b93efc'
             '3e9fa54f334681d9e04907c1a5ae86a753c7b9902075519e31a011103c928ee8'
             '1c77d74a93e66f49dae37f5217990d93930d515ea058c1e47ba671bba3564231'
@@ -89,20 +86,15 @@ sha256sums=('9143bddc64746bf6471b5ae55b9013586b0ffd6c5515c5566b4015e0bf1e16ab'
             '121ed258879a8bb1617879866a86884618b8a6336a12ef9a837a440a4fc63ee5'
             'ea7d67101abdd0a7fbbee5195d65d96d32c5c3975c5f5cf0d9a2c0b8df2cf891'
             '746cb474c5a2c26fc474256e430e035e604b71b27df1003d4af85018fa263f4a'
-            '7934a0d95f8c1a4d4b9acc81a58f9667fca7ce9b250fe78dbc995c7ecc0c3613'
+            '4e892be11314e7ab7c72631be1314711d6b5ecb214f5e1aaa5c405c683092a1f'
             'a5f3a801478e73524a2ac12d376108cb330d5d74652f3466a679d54d3878902e'
             '1f0afb90e47395c5221a89e72950f5eea4bb7b880757158e04bbb634d78f0b3b'
-            '60ace1c57577878850e05976ccf02f7e71512c4d62a8a9a6d270a7941d9625d3'
             'e8289ea4c1f8191e1e23661312ceee2128b8e790501b9a589d0d7bfc4384553f'
             '5f6b0970284d68d5ed18e6bb7ee1e9fc0025ab3c10aaa14c283adb21a4a20ee8'
-            '88cdf436143fcd63340dd896c9028c5482d8afab7573ce905968a3d03239c632'
+            '477dc99ffb6b312a45b5ab1f2938e9410c3d05f3dc6328439647b366adf32e42'
             '59419093f4dec4c9d5bb3a882b719af23646bddff6d8d717a34ce4b312a5fd71'
             'de5e6993334b186d54750f5fe99352e3a5fa7cc3f4134d7781c2956ee348afc0'
             'b9feb66a33dc1644d7d277dc3fc166c655735de7100bc4e93f1fe44567f35345'
-            'ad560d7bdec736dd86881d87e0c7c5ccc1effe5d92610e53254cccba16d8bf6b'
-            '7c64df133a62f80ed458a9b6511d518d1f2bc5439ca3a038b9abf3032c9fbedf'
-            'feadb9fc1913da37b0203cff643af2d87a9bd562bcd6084465b2dc0ce259865c'
-            'f1cb7f7c6a70c8fdb67607e3fac003a9b95d70fc41cee671ed5837c2fd770503'
             'd79923725b2454cbf8da63a3f2eb7e48ace0d100f39ec821d59b8eacbbf8155c'
             '82c5f83f7e99fd3be6ec9750a3bef8b7826f08b523dab138f8742ea8b60e2749')
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -132,14 +124,10 @@ prepare() {
   rm -f toolkit/content/widgets/{dialog,preferences}-kde.xml
 
   msg "Gecko/toolkit patchset"
-  patch -Np1 -i "$srcdir/toolkit-download-folder.patch"
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-prefer_plugin_pref.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch"
   patch -Np1 -i "$srcdir/mozilla-language.patch"
-  patch -Np1 -i "$srcdir/mozilla-repo.patch"
-  patch -Np1 -i "$srcdir/mozilla-bmo1088588.patch"
-  patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
 
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
