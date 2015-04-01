@@ -1,12 +1,12 @@
 pkgname="system-config-printer"
 pkgver=1.5.6
-pkgrel=1
+pkgrel=2
 pkgdesc="A CUPS printer configuration tool and status applet"
 url="http://cyberelk.net/tim/software/system-config-printer/"
 arch=('x86_64')
 license=('GPL')
 depends=('python3-pycups' 'python3-dbus' 'python3-pycurl' 'python3-requests' 'python3-gobject' 'gtk3'
-         'python3-cairo')
+         'python3-cairo' 'libnotify')
 makedepends=('intltool' 'xmlto' 'docbook-xsl' 'desktop-file-utils')
 optdepends=('libgnome-keyring: password management'
             'pysmbc: SMB browser support')
