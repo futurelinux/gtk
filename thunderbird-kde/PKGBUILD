@@ -1,10 +1,9 @@
 # Maintainer:  AlmAck <almack@chakra-project.org>
 
 pkgname=thunderbird-kde
-pkgver=31.5.0
+pkgver=31.6.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
-conficts=(thunderbird)
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
@@ -26,7 +25,7 @@ source=(ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sourc
         vendor.js
         kde.js)
 options=(!emptydirs)
-md5sums=('3345496d6b463be8fd253911b9847ffb'
+md5sums=('692e40f0070de37f3e84ccee4359e799'
          '60580fb138d2bcc7008d20f8207624a1'
          'af3e5b344d2edf1c7d61bb0a5a96de9a'
          '2cc82c1c60f6c97cb5a9d895d85a9ff3'
