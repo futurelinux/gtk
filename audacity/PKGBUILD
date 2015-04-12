@@ -1,5 +1,5 @@
 pkgname=audacity
-pkgver=2.0.6
+pkgver=2.1.0
 pkgrel=1
 pkgdesc="A program that lets you manipulate digital audio waveforms"
 arch=('x86_64')
@@ -11,18 +11,26 @@ depends=('libvorbis' 'libmad' 'libid3tag' 'wxgtk2.8' 'libsamplerate' 'lame'
 makedepends=('zip' 'python' 'pkgconfig')
 options=('!makeflags')
 install="${pkgname}.install"
-source=("http://downloads.sourceforge.net/project/audacity/audacity/${pkgver}/${pkgname}-minsrc-${pkgver}.tar.xz")
-sha256sums=('3080c190e678e0d682961a36c6e990c572dacd6b5ce499e5cec7362e9fa37d7b')
+source=("http://downloads.sourceforge.net/project/audacity/audacity/${pkgver}/${pkgname}-minsrc-${pkgver}.tar.xz"
+	audacity-ffmpeg.patch)
+sha256sums=('b0d98d89b38be233e88af81e1add649732484b6f8feec95dc5977accdde042b3'
+            'ee5ddddee23cd292167d319e0dc61a96fb1477380ffbb225d4103472f7aa69b4')
+
+prepare() {
+  cd ${pkgname}-minsrc-${pkgver}
+  patch -p1 -i "${srcdir}/audacity-ffmpeg.patch"
+}
 
 build() {
-  cd ${pkgname}-src-${pkgver}
+  cd ${pkgname}-minsrc-${pkgver}
   WX_CONFIG=/usr/bin/wx-config-2.8 \
     ./configure --prefix=/usr \
-    --enable-unicode 
+		--enable-unicode \
+		--with-libsamplerate
   make
 }
 
 package() {
-  cd ${pkgname}-src-${pkgver}
+  cd ${pkgname}-minsrc-${pkgver}
   make DESTDIR="${pkgdir}" install
 }
