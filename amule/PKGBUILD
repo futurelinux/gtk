@@ -1,7 +1,7 @@
 # Maintainer: Francesco Marinucci <franzmari[at]chakra-project[dot]it>
 
 pkgname=amule
-pkgver=10852
+pkgver=10866
 pkgrel=1
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
@@ -14,7 +14,7 @@ source=("http://amule.sourceforge.net/tarballs/aMule-SVN-r${pkgver}.tar.bz2"
         "http://chakra.sourceforge.net/sources/oxygen-themes/aMule_Oxygen_Skin.zip"
         'amuled.systemd'
         'amuleweb.systemd')
-sha256sums=('3a97c844235556c18d2344e7e7bd758be6cb603e09f866d0c9d68836021c306d'
+sha256sums=('f3ee4d79b151dc11056e90ed44089bea6e138376e5bb62ce7764e091ac63614f'
             'a340cadb86697acde60b94187fe0134d5262635233870e583a766aa1b8aa06ad'
             '527a2cca6d56b8269722aafc77a89734f59a929f946f342bd0f69b256f9c7522'
             'f4f43b1154ddccc9036a4291a58c6715f097b171fec62ea7aead0c9d9fa654f2')

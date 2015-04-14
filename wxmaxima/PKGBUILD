@@ -1,18 +1,17 @@
 pkgname=wxmaxima
-pkgver=14.12.1
+pkgver=15.04.0
 pkgrel=1
 pkgdesc="A wxWidgets GUI for the computer algebra system Maxima"
 arch=('x86_64')
 url="http://wxmaxima.sourceforge.net/"
 license=('GPL2')
-depends=('maxima' 'libxml2' 'wxgtk2.8' 'shared-mime-info' 'desktop-file-utils')
+depends=('maxima' 'libxml2' 'wxgtk' 'shared-mime-info' 'desktop-file-utils')
 source=(http://downloads.sourceforge.net/$pkgname/${pkgname}-$pkgver.tar.gz)
 install=wxmaxima.install
-sha1sums=('685d77d2480c91b0b7b3960d98a2f6b55fb88e32')
+sha1sums=('3b481713a77e5819939915c81331e490e5c5ad7a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  export WX_CONFIG_PATH=/usr/bin/wx-config-2.8
   ./configure --prefix=/usr
   make
 }
@@ -23,11 +22,11 @@ package() {
   make DESTDIR="${pkgdir}" install 
 
   # Fix category in .desktop file
-  sed -i -e 's/Utility;X-Red-Hat-Base;X-Red-Hat-Base-Only;/Science;Math;/' wxmaxima.desktop
+  sed -i -e 's/Utility;X-Red-Hat-Base;X-Red-Hat-Base-Only;/Science;Math;/' data/wxMaxima.desktop
 
   # Install desktop file and icon
   install -m755 -d "${pkgdir}/usr/share/applications"
   install -m755 -d "${pkgdir}/usr/share/pixmaps"
-  install -m644 wxmaxima.desktop "${pkgdir}/usr/share/applications/" 
+  install -m644 data/wxMaxima.desktop "${pkgdir}/usr/share/applications/" 
   install -m644 data/wxmaxima.png "${pkgdir}/usr/share/pixmaps/" 
 }
