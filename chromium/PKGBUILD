@@ -3,7 +3,7 @@
 #
 
 pkgname=chromium
-pkgver=41.0.2272.118
+pkgver=42.0.2311.90
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -23,7 +23,7 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         search_engine_type.diff
         prepopulated_engines_json.diff)
 
-sha1sums=('96d9ffebbc14bf29ddfb518e30c29a3d0985ac79'
+sha1sums=('ab8c23e7fcde8f0c69d19f3b956a658f40eab0a3'
           '4af67a17cc0aead03dd99aef71fb16446c4e7465'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
@@ -140,14 +140,12 @@ package() {
 
   cp out/Release/{*.pak,*.bin,libffmpegsumo.so,nacl_helper{,_bootstrap}} \
     out/Release/nacl_irt_*.nexe \
-    out/Release/libpdf.so \
     "$pkgdir/usr/lib/chromium/"
 
   # Manually strip binaries so that 'nacl_irt_*.nexe' is left intact
   strip $STRIP_BINARIES "$pkgdir/usr/lib/chromium/"{chromium,chrome-sandbox} \
     "$pkgdir/usr/lib/chromium/"nacl_helper{,_bootstrap}
-  strip $STRIP_SHARED "$pkgdir/usr/lib/chromium/libffmpegsumo.so" \
-    "$pkgdir/usr/lib/chromium/libpdf.so"
+  strip $STRIP_SHARED "$pkgdir/usr/lib/chromium/libffmpegsumo.so"
 
   # override command-line options
   install -Dm644 "$srcdir/chromium.default" "$pkgdir/etc/chromium/default"
