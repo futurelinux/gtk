@@ -1,18 +1,18 @@
 pkgname=ardour
-pkgver=3.5.403
+pkgver=4.0
 pkgrel=1
 pkgdesc="Professional-grade digital audio workstation"
 arch=('x86_64')
 url="http://ardour.org/"
 license=('GPL')
 depends=('liblrdf' 'liblo' 'libsmf' 'lilv'
-         'aubio' 'libgnomecanvasmm' 'suil')
+         'aubio' 'libgnomecanvasmm' 'suil' 'taglib' 'rubberband')
 makedepends=('python2' 'boost' 'cppunit' 'doxygen' 'graphviz')
 install=$pkgname.install
 source=(${pkgname}-${pkgver}::"git://git.ardour.org/${pkgname}/${pkgname}.git#tag=${pkgver}"
         "$pkgname.desktop")
 md5sums=('SKIP'
-         '3755e6f9518fae4c47927cf615998262')
+         'ecbcc930aa8f17e224eef36e16cc64e2')
 
 prepare() {
   cd "$srcdir/$pkgname-$pkgver"
