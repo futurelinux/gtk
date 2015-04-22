@@ -1,14 +1,15 @@
 pkgname=emacs
-pkgver=24.4
-pkgrel=4
+pkgver=24.5
+pkgrel=1
 pkgdesc="The extensible, customizable, self-documenting real-time display editor"
 arch=('x86_64')
 url="http://www.gnu.org/software/emacs/emacs.html"
 license=('GPL3')
 depends=('librsvg' 'gpm' 'giflib' 'libxpm' 'libotf' 'm17n-lib' 'gtk3' 'hicolor-icon-theme' 'desktop-file-utils' 'alsa-lib' 'imagemagick' 'gnutls')
+conflicts=('emacs-nox')
 install=emacs.install
 source=(ftp://ftp.gnu.org/gnu/emacs/$pkgname-$pkgver.tar.xz{,.sig})
-md5sums=('ad487658ad7421ad8d7b5152192eb945'
+md5sums=('50560ee00bac9bb9cf0e822764cd0832'
          'SKIP')
 
 build() {
