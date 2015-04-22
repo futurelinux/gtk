@@ -97,6 +97,8 @@ sha256sums=('17d0258c1b4930d618e17ef64bdc4a919d215bd7460696b9855a152324e37a96'
             'b9feb66a33dc1644d7d277dc3fc166c655735de7100bc4e93f1fe44567f35345'
             'd79923725b2454cbf8da63a3f2eb7e48ace0d100f39ec821d59b8eacbbf8155c'
             '82c5f83f7e99fd3be6ec9750a3bef8b7826f08b523dab138f8742ea8b60e2749')
+
+
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
 # get your own set of keys.
