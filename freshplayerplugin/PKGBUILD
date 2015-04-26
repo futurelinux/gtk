@@ -1,9 +1,6 @@
-# Maintainer: AlmAck
-# Contributor:  ahjolinna <ahjolinna@ovi.com>
-
 pkgname=freshplayerplugin
-pkgver=0.2.3
-pkgrel=2
+pkgver=0.2.4
+pkgrel=1
 pkgdesc='PPAPI-host NPAPI-plugin adapter.'
 arch=('x86_64')
 url='https://github.com/i-rinat/freshplayerplugin'
@@ -14,8 +11,8 @@ conflicts=('freshplayerplugin-git' 'flashplugin' 'chromium-pepper-flash')
 source=("$url/archive/v$pkgver.tar.gz"
         'freshwrapper.conf')
 backup=('etc/freshwrapper.conf')
-md5sums=('c2b2a4440a1393961f4559e3f9032256'
-         'a0622495f3c0fc2f28cd1ea469a98051')
+md5sums=('3c349dee9174fd460ecd9c9e21e2b696'
+         'dc542dce88ecfe34912a270fdf015e53')
 
 build() {
   cd $pkgname-$pkgver
@@ -25,7 +22,7 @@ build() {
 
 package() {
   cd $pkgname-$pkgver
-  install -Dm644 LICENSE.MIT "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 
   for lib in libfreshwrapper-*.so; do
     install -Dm755 $lib "$pkgdir"/usr/lib/mozilla/plugins/$lib
