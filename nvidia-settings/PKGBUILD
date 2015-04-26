@@ -3,7 +3,7 @@
 pkgname=nvidia-settings
 _pkgbasename=nvidia
 pkgver=346.59
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Gtk Graphical User Interface for nVidia"
 depends=('gtk3' 'pangox-compat' $_pkgbasename=$pkgver)

@@ -1,9 +1,9 @@
 # maintainer: AlmAck <gluca86@gmail.com>
 
-pkgname=nvidia-settings
+pkgname=nvidia-settings-304xx
 _pkgbasename=nvidia-304xx
 pkgver=304.125
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Gtk Graphical User Interface for nVidia"
 depends=('gtk3' 'pangox-compat' $_pkgbasename=$pkgver)
