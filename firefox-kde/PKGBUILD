@@ -52,6 +52,7 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         "https://build.opensuse.org/source/openSUSE:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2"
         'firefox-install-dir.patch'
         'rhbz-966424.patch'
+        'pgo-fix-missing-kdejs.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -86,6 +87,7 @@ sha256sums=('0f2877fe4528a91c19e89249c19b13bac846d7b9f9f6528abb7d8387197c31f3'
             '121ed258879a8bb1617879866a86884618b8a6336a12ef9a837a440a4fc63ee5'
             'ea7d67101abdd0a7fbbee5195d65d96d32c5c3975c5f5cf0d9a2c0b8df2cf891'
             '746cb474c5a2c26fc474256e430e035e604b71b27df1003d4af85018fa263f4a'
+            '2c9c97bff07cc71b3f6d35f3edfaddaf8180a1f533ee4682adf18a8f86d29264'
             'e0c45b55d157ea9bfc8a32ae88b89fd93949b69fe19ca0b5c2813930079b6417'
             '1f0afb90e47395c5221a89e72950f5eea4bb7b880757158e04bbb634d78f0b3b'
             'e8289ea4c1f8191e1e23661312ceee2128b8e790501b9a589d0d7bfc4384553f'
@@ -133,7 +135,7 @@ prepare() {
   #patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   patch -Np1 -i "$srcdir/ddg-branding.patch"
-  cp "$srcdir/kde.js" browser/app/profile/
+  patch -Np1 -i "$srcdir"/pgo-fix-missing-kdejs.patch
 
   mkdir -vp "$srcdir/path"
 
