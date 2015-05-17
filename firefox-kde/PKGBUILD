@@ -1,7 +1,7 @@
 # Contributor: Weng Xuetian <wengxt@gmail.com>
 
 pkgname=firefox-kde
-pkgver=38.0
+pkgver=38.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 #_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
@@ -41,7 +41,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=a2bdff616a0e
+_patchrev=e11af0d6cb48
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2"
         'mozconfig'
@@ -56,7 +56,6 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
-        #"$_patchurl/firefox-no-default-ualocale.patch"
         "$_patchurl/firefox-branded-icons.patch"
 
         # Gecko/toolkit patchset
@@ -77,8 +76,10 @@ source=("ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source
         #"$_patchurl/mozilla-shared-nss-db.patch"
         #"$_patchurl/mozilla-bmo1088588.patch" # Specify for ARM and PPC
         #"$_patchurl/toolkit-download-folder.patch"
+        #"$_patchurl/mozilla-language.patch"
+        #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha256sums=('0f2877fe4528a91c19e89249c19b13bac846d7b9f9f6528abb7d8387197c31f3'
+sha256sums=('aeccd6ea6eebb3bd0fd259758aeb8831ec1e1c42a707813e77f8642625491a88'
             'a46781b46723376c7dde4648ac7d2a7ab64dedb5eee60d8c0d19af22d3b93efc'
             '3e9fa54f334681d9e04907c1a5ae86a753c7b9902075519e31a011103c928ee8'
             '1c77d74a93e66f49dae37f5217990d93930d515ea058c1e47ba671bba3564231'
@@ -132,7 +133,6 @@ prepare() {
 
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
-  #patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   patch -Np1 -i "$srcdir/ddg-branding.patch"
   patch -Np1 -i "$srcdir"/pgo-fix-missing-kdejs.patch
