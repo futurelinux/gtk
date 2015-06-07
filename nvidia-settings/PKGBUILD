@@ -2,8 +2,8 @@
 
 pkgname=nvidia-settings
 _pkgbasename=nvidia
-pkgver=346.59
-pkgrel=2
+pkgver=346.72
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Gtk Graphical User Interface for nVidia"
 depends=('gtk3' 'pangox-compat' $_pkgbasename=$pkgver)
@@ -13,7 +13,7 @@ license=('custom')
 options=('!strip')
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
         'nvidia-restore-settings.desktop')
-md5sums=('db1cebc2a78eac85777bb4c7c2c8c70c'
+md5sums=('10bf6f0ac807c828f615640e71c4adbf'
          '9237516792da7b6df32f8c7e8a98f475')
 
 build() {
