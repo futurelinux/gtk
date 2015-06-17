@@ -1,8 +1,6 @@
-# maintainer almack@chakra-project.org
-
 pkgbase=gtk2
 pkgname=('gtk2' 'gtk-update-icon-cache')
-pkgver=2.24.27
+pkgver=2.24.28
 pkgrel=1
 arch=('x86_64')
 url="http://www.gtk.org/"
@@ -12,8 +10,8 @@ options=('docs')
 license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-$pkgver.tar.xz"
         'xid-collision-debug.patch')
-md5sums=('b1e890e15602c5bcb40d85b13fe046fd'
-         '22355df723f6ca358e30e6b8f0baace5')
+sha256sums=('b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656'
+            'd758bb93e59df15a4ea7732cf984d1c3c19dff67c94b957575efea132b8fe558')
 
 prepare() {
   cd "${srcdir}/gtk+-${pkgver}"
@@ -39,7 +37,7 @@ package_gtk2() {
     pkgdesc="GTK+ is a multi-platform toolkit (v2)"
     install=gtk2.install
     depends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage' 'shared-mime-info' 'cairo' 'libcups' 'gtk-update-icon-cache')
-    backup=('etc/gtk-2.0/gtkrc' 'extra/etc/gtk-2.0/gtkrc')
+    backup=('etc/gtk-2.0/gtkrc')
 
     cd "$srcdir/gtk+-$pkgver"
 
