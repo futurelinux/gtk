@@ -1,6 +1,6 @@
 pkgname=veracrypt
 pkgver=1.0f_2
-pkgrel=2
+pkgrel=3
 pkgdesc="Free disk encryption software, TrueCrypt fork."
 arch=('x86_64')
 url="http://veracrypt.codeplex.com/"
