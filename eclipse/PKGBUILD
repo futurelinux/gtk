@@ -1,8 +1,8 @@
 
 pkgname=eclipse
-pkgver=4.4.2
+pkgver=4.5.0
 pkgrel=1
-_release=luna-SR2
+_release=mars
 pkgdesc="An IDE for Java and other languages."
 arch=('x86_64')
 url="http://eclipse.org"
@@ -14,10 +14,12 @@ license=("EPL/1.0")
 #
 #   http://download.eclipse.org/eclipse/eclipse/downloads/drops4/R-${pkgver}-${_date}/news/images/icon.png
 
-source=("http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/${_release/-//}/${pkgname}-standard-${_release}-linux-gtk-x86_64.tar.gz"
+source=("http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/${_release}/R/${pkgname}-java-${_release}-R-linux-gtk-x86_64.tar.gz"
+        'https://www.eclipse.org/legal/epl-v10.html'
         'eclipse.png'
         'eclipse.desktop')
-sha256sums=('835a2aaa7f3c81d4c307c17414bdd4a5b219035777eb42150e1d46f5465db98c'
+sha256sums=('2eeea5e563001f6812bad97e159befe4152bf8ef49124c98e635fd68104a1727'
+            'a40741b59364cc49449255e9b9bfe1fcfe6a2e7ab4d37ca89db3bacbfb14e9d2'
             '91eb03b8ff33e2b05b6c0b1fa5ff145666833674ba3bd2aa2732fa0a3651c03d'
             '88daed5095d908a4f4c273aafcd2855899f2516766a8958b9a653e030daa173c')
 
@@ -44,5 +46,5 @@ package() {
                  "${pkgdir}/usr/share/icons/hicolor/512x512/apps/eclipse.png"
 
   # license
-  cp -a epl-v10.html "${pkgdir}/usr/share/licenses/eclipse/epl-v10.html"
+  cp -a "${srcdir}/epl-v10.html" "${pkgdir}/usr/share/licenses/eclipse/epl-v10.html"
 }
