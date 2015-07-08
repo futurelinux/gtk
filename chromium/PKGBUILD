@@ -1,16 +1,15 @@
-#
-# Chakra Packages for Chakra, part of chakraos.org
-#
-
 pkgname=chromium
-pkgver=43.0.2357.130
+pkgver=43.0.2357.132
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'zlib' 'harfbuzz' 'glib2' 'libexif')
-makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'lib32-gcc-libs' 'subversion' 'ninja' 'clang')
+depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 
+         'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 
+         'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'zlib' 'harfbuzz' 'glib2' 'libexif')
+makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'lib32-gcc-libs' 
+             'subversion' 'ninja' 'clang')
 optdepends=('pepperflashplugin: Pepper Flash plugin')
 install=chromium.install
 #backup=('etc/chromium/default') #not really needed beacuse we want to provide on chromium.default the pepperflash plugin, I keep it here as comment
@@ -21,16 +20,18 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         chromium.default
         template_url_prepopulate_data.diff
         search_engine_type.diff
-        prepopulated_engines_json.diff)
+        prepopulated_engines_json.diff
+        chromium-widevine.patch)
 
-sha1sums=('4c0b33b2f173a55c2b5110a79c1f7e5a1fd64af5'
+sha1sums=('ae498a987b6ce4f72b7381a1abe63a2f1c86c459'
           '1ffba5152cb749300a016efec909b828eba9a64a'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
           '51f172122f83825b64c58365620450865bbb879b'
           '76e9844dd1357f75abf617114cc432009d7c6372'
           'abeb1e424b35bbca954a5afea39418a5e198ac64'
-          '79fc829d740183d85fb147a3a44e572a8f304dbe')
+          '79fc829d740183d85fb147a3a44e572a8f304dbe'
+          '6e9f007005dabd1f254304abccfa39f3b8275eea')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -46,6 +47,9 @@ prepare() {
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
   patch -p1 -i "$srcdir/search_engine_type.diff"
   patch -p1 -i "$srcdir/prepopulated_engines_json.diff"
+  
+  # Add widevine patch.
+  patch -p1 -i "$srcdir/chromium-widevine.patch"
 
   # Download NaCL toolchains
   python2 build/download_nacl_toolchains.py \
