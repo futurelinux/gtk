@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=31.7.0
+pkgver=38.1.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -7,39 +7,47 @@ pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
 license=('MPL' 'GPL')
 url="http://www.mozilla.org/thunderbird/"
-depends=('alsa-lib' 'dbus-glib' 'desktop-file-utils' 'gtk2' 'hicolor-icon-theme' 'hunspell' 'libevent' 'libvpx' 'libxt' 'mime-types' 'mozilla-common' 'nss' 'sqlite3' 'startup-notification' 'nspr' 'kdelibs')
-makedepends=('unzip' 'zip' 'pkg-config' 'python2' 'wireless_tools' 'yasm' 'mesa' 'autoconf2.13' 
-             'gstreamer0.10-base-plugins' 'xorg-server-xvfb')
+depends=('gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
+         'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme' 'kdelibs'
+         'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
+makedepends=('unzip' 'zip' 'python2' 'wireless_tools' 'yasm' 'mesa' 'libpulse'
+             'pkg-config' 'autoconf2.13' 'gst-plugins-base' 'xorg-server-xvfb')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 install=thunderbird.install
 # For patch look here: https://build.opensuse.org/package/show?project=openSUSE:Factory&package=MozillaThunderbird
-source=(ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/source/thunderbird-$pkgver.source.tar.bz2
+_patchrev=646495e9e721
+_patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
+source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/source/thunderbird-$pkgver.source.tar.bz2
         mozconfig
         thunderbird.desktop
         thunderbird-install-dir.patch
         mozilla-kde.patch
+        mozilla-language.patch
         mozilla-nongnome-proxies.patch
         vendor.js
         kde.js)
-options=(!emptydirs)
-md5sums=('dcf14a6d4aaba2f695a1ec30c296e356'
-         '60580fb138d2bcc7008d20f8207624a1'
-         'af3e5b344d2edf1c7d61bb0a5a96de9a'
-         '2cc82c1c60f6c97cb5a9d895d85a9ff3'
-         '2cf60e12551d93c9f028208bb7890564'
+options=('!emptydirs' '!makeflags')
+md5sums=('dd161196c6bd444643d2de54d1222d31'
+         'a99c6bf3dcb1d419bed0285187fe90f9'
+         'c883f4e5cafcd3cde8cf5cb417836737'
+         '3423528b295675ea216282b3f4f919a6'
+         '7f2a43d4af0b860c296187b1c0a95ae7'
+         'c3cfc76e2ba30a7244510f244b6b5748'
          '5b786bc0f2e998d201f53fd307bc573f'
          '5a53179d14ae9631b7afe5e4d0fc0b25'
          '75df0f88cc7a7fa7d522459e4ff82cc5')
 
 prepare(){
-  cd comm-esr*
-  patch -Np1 -i "$srcdir/thunderbird-install-dir.patch"
-  
-  pushd mozilla
+  cd comm-esr${pkgver%%.*}
+  patch -Np1 -i ../thunderbird-install-dir.patch
+
+  msg "Patching for KDE"
+  cd mozilla
+  patch -Np1 -i "$srcdir/mozilla-language.patch"
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch"
-  popd
+  cd ..
   
   cp "$srcdir/mozconfig" .mozconfig
 
@@ -49,46 +57,35 @@ prepare(){
 }
          
 build() {
-  cd comm-esr* 
-  export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/thunderbird"
-  export PYTHON="/usr/bin/python2"
-
-  # Normal Build
-  #make -j1 -f client.mk build MOZ_MAKE_FLAGS="$MAKEFLAGS"
+  cd comm-esr${pkgver%%.*}
   
-  # Set up PGO
-  export DISPLAY=:99
-  Xvfb -nolisten tcp -extension GLX -screen 0 1280x1024x24 $DISPLAY &
-
-  # Build
-  if ! make -f client.mk build MOZ_MAKE_FLAGS="$MAKEFLAGS" MOZ_PGO=1; then
-    kill $!
-    return 1
-  fi
-
-  # Kill leftovers
-  kill $! || true
+  export PYTHON="/usr/bin/python2"
+  export SHELL="/bin/bash"
+  
+  xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
+    make -f client.mk build MOZ_PGO=1
 }
 
 package() {
-  cd comm-esr*
+  cd comm-esr${pkgver%%.*}
   make -f client.mk DESTDIR="$pkgdir" install
 
   install -Dm644 "$srcdir"/vendor.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/vendor.js"
   install -Dm644 "$srcdir"/kde.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/kde.js"
 
-  for i in 16x16 22x22 24x24 32x32 48x48 256x256; do
-      install -Dm644 other-licenses/branding/thunderbird/mailicon${i/x*/}.png \
-          "$pkgdir/usr/share/icons/hicolor/$i/apps/thunderbird.png"
+  for i in 16 22 24 32 48 256; do
+      install -Dm644 other-licenses/branding/thunderbird/mailicon$i.png \
+          "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/thunderbird.png"
   done
 
   install -Dm644 "$srcdir/thunderbird.desktop" \
       "$pkgdir/usr/share/applications/thunderbird.desktop"
 
+  # Use system-provided dictionaries
   rm -rf "$pkgdir"/usr/lib/thunderbird/{dictionaries,hyphenation}
   ln -sf /usr/share/hunspell "$pkgdir/usr/lib/thunderbird/dictionaries"
   ln -sf /usr/share/hyphen "$pkgdir/usr/lib/thunderbird/hyphenation"
   
-  # We don't want the development stuff
+  # Remove development stuff
   rm -r "$pkgdir"/usr/{include,lib/thunderbird-devel-*,share/idl}
 }
