@@ -1,5 +1,5 @@
 pkgname=freshplayerplugin
-pkgver=0.3.0
+pkgver=0.3.1
 pkgrel=1
 pkgdesc='PPAPI-host NPAPI-plugin adapter.'
 arch=('x86_64')
@@ -13,7 +13,7 @@ conflicts=('freshplayerplugin-git' 'flashplugin' 'chromium-pepper-flash')
 source=("$url/archive/v$pkgver.tar.gz"
         'freshwrapper.conf')
 backup=('etc/freshwrapper.conf')
-md5sums=('e8661cf64acbb6872f4b4aed7f2384a4'
+md5sums=('31c0ab73368edc97035dbe72223fa502'
          '7b683b98d1d4bcaa91ce7ee477025ac5')
 
 build() {
