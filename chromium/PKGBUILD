@@ -1,5 +1,5 @@
 pkgname=chromium
-pkgver=43.0.2357.134
+pkgver=44.0.2403.89
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -23,7 +23,7 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         prepopulated_engines_json.diff
         chromium-widevine.patch)
 
-sha1sums=('8cf5a1e246818dbef4af54562d2542423cf912be'
+sha1sums=('f0f8b2fdc3700a4b0886232b796bc37eb2727552'
           '1ffba5152cb749300a016efec909b828eba9a64a'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
@@ -142,14 +142,14 @@ package() {
   install -Dm4755 -o root -g root out/Release/chrome_sandbox \
     "$pkgdir/usr/lib/chromium/chrome-sandbox"
 
-  cp out/Release/{*.pak,*.bin,libffmpegsumo.so,nacl_helper{,_bootstrap}} \
+  cp out/Release/{*.pak,*.bin,nacl_helper{,_bootstrap}} \
     out/Release/nacl_irt_*.nexe \
     "$pkgdir/usr/lib/chromium/"
 
   # Manually strip binaries so that 'nacl_irt_*.nexe' is left intact
   strip $STRIP_BINARIES "$pkgdir/usr/lib/chromium/"{chromium,chrome-sandbox} \
     "$pkgdir/usr/lib/chromium/"nacl_helper{,_bootstrap}
-  strip $STRIP_SHARED "$pkgdir/usr/lib/chromium/libffmpegsumo.so"
+#  strip $STRIP_SHARED "$pkgdir/usr/lib/chromium/libffmpegsumo.so"
 
   # override command-line options
   install -Dm644 "$srcdir/chromium.default" "$pkgdir/etc/chromium/default"
