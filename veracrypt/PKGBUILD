@@ -1,6 +1,6 @@
 pkgname=veracrypt
-pkgver=1.0f_2
-pkgrel=3
+pkgver=1.12
+pkgrel=1
 pkgdesc="Free disk encryption software, TrueCrypt fork."
 arch=('x86_64')
 url="http://veracrypt.codeplex.com/"
@@ -11,19 +11,19 @@ replaces=('truecrypt')
 conflicts=('truecrypt')
 provides=('truecrypt')
 install='veracrypt.install'
-source=('https://github.com/veracrypt/VeraCrypt/archive/VeraCrypt_1.0f-2.tar.gz'
+source=("https://github.com/veracrypt/VeraCrypt/archive/VeraCrypt_${pkgver}.tar.gz"
 	'no_makeself.patch'
         'veracrypt.desktop'
         'veracrypt.install'
         'veracrypt.png')
-sha512sums=('348588edb511cd185b57595cba63f04126966849fb8afe9fa472e815d0902e15a53600b3afce722b37845828f71ef8bc5dd36ba075982eac2b4977f7613b10c0'
+sha512sums=('27133d813170673fdde37ea3ec4b70e9e7984634f44ac4199bc2a8dccc4d66019c4ec23e1bd7f4aef11baa289d099e8d0495d12ba00f9e4a8d6a2e246b5869b4'
 	  'e3972fd239fd83807c5ea9dd9268a0e962b0bd9cb9cf8f6251ac51a44a94f3c57f0b1e6857b42e4296cff531030c8278c543b386ebf463d4e19fe9a536acbcf9'
           '4a684900d471b1f3241463bc3d2ac944938fc93b48e2acd9f6f7dc15b3756964e42f7a7ab4ddcc701b537b0e3f92c54ed95aaa292ea336cf2488da7ce83e03e4'
           '1aed149361129cc2918e8b7548fd6a7a0cf5a13535cfd5aaf403718224b6e004a61cf8ac65ca3fbb90644338842dc0780285ace80b82b071bd39c2a0540a4b1a'
           '424673b2f0abf2830dd16095caa413dfedff7018fca41ef5ce8e62312ec6ebce6cc23c8477bffc768c5d3b1e1d979457531a968886f68720e626be85845e4fb3')
 
 build() {
-  cd ${srcdir}/VeraCrypt-VeraCrypt_1.0f-2/src
+  cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
   # apply patch(es)
   patch -Np1 -i ../../no_makeself.patch  # disable sfx https://github.com/veracrypt/VeraCryptarchive
   # build
@@ -32,7 +32,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/VeraCrypt-VeraCrypt_1.0f-2/src
+  cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
   install -D -m755 Main/${pkgname} "${pkgdir}/usr/bin/${pkgname}"
   install -D -m644 "${srcdir}/${pkgname}.desktop" "${pkgdir}/usr/share/applications/${pkgname}.desktop"
   install -D -m644 ../../veracrypt.png "${pkgdir}/usr/share/pixmaps/veracrypt.png"
