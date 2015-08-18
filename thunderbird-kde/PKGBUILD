@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=38.1.0
+pkgver=38.2.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -16,8 +16,6 @@ optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 install=thunderbird.install
 # For patch look here: https://build.opensuse.org/package/show?project=openSUSE:Factory&package=MozillaThunderbird
-_patchrev=646495e9e721
-_patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/source/thunderbird-$pkgver.source.tar.bz2
         mozconfig
         thunderbird.desktop
@@ -28,7 +26,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         vendor.js
         kde.js)
 options=('!emptydirs' '!makeflags')
-md5sums=('dd161196c6bd444643d2de54d1222d31'
+md5sums=('df97af48b670cdaa5196a90360c952f7'
          'a99c6bf3dcb1d419bed0285187fe90f9'
          'c883f4e5cafcd3cde8cf5cb417836737'
          '3423528b295675ea216282b3f4f919a6'
