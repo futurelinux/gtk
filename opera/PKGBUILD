@@ -1,5 +1,5 @@
 pkgname=opera
-pkgver=31.0.1889.99
+pkgver=31.0.1889.174
 pkgrel=1
 pkgdesc="A fast and secure web browser and Internet suite."
 url="http://www.opera.com/"
@@ -15,7 +15,7 @@ optdepends=('pepperflashplugin: Pepper Flash plugin'
 source=("http://get.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/${pkgname}-stable_${pkgver}_amd64.deb"
 	'opera'
 	'default')
-md5sums=('e3bf4998c35b7800952f68368616e803'
+md5sums=('71d13017ca60bbf4619dc3faf58fd94e'
          '924d6178b38638303db9fde37c6055fd'
          '50c4f4ec845ad8629ec3f308ab8cd991')
 
