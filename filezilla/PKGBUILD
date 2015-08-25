@@ -1,5 +1,5 @@
 pkgname=filezilla
-pkgver=3.12.0.2
+pkgver=3.13.1
 pkgrel=1
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
@@ -10,7 +10,7 @@ install=${pkgname}.install
 changelog=${pkgname}.changelog
 source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
         "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz")
-sha512sums=('163ab37d0b15ffd511c9237727b2a2879c2ff38f264853148633c87ec2d6e07cca1847104eb8c7190a0d27a6978ddb10b10dd8e1ef6e157051567b04d1ec5930'
+sha512sums=('98f78dee88976c506416bc02ea76fbfc57ca77d114f50530c9b4fc017bf0525cd4237da2d91f7587b9b510d59b0ec977529fc33765b8a0f9ec35169b9e7578db'
             'ed54cfd5c90d2482d796f7264dc29cf6cd4b01e2e6f56b56496e80a8261138d22dd9d3b4e71566e278930e3f799ea8f0d5b74349e6092f625eba95bdd1c0094e')            
             
 build() {
@@ -20,7 +20,8 @@ build() {
     --disable-manualupdatecheck \
     --disable-autoupdatecheck \
     --disable-static \
-    --with-tinyxml=builtin
+    --enable-locales \
+    --with-pugixml=builtin
 
   make
 }
