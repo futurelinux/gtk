@@ -1,0 +1,25 @@
+pkgname=ibus-libzhuyin
+pkgver=1.7.4
+pkgrel=1
+pkgdesc="New Zhuyin engine based on libzhuyin for IBus."
+arch=('x86_64')
+license=('GPL')
+url="https://github.com/libzhuyin/ibus-libzhuyin"
+depends=('ibus' 'gettext' 'intltool' 'sqlite3' 'opencc' 'libzhuyin' 'python3')
+source=("http://downloads.sourceforge.net/libzhuyin/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+sha1sums=('c0f9d6b878514b883e59928da264ff857cffa297')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure  --prefix=/usr \
+	       --libexecdir=/usr/lib/ibus \
+	       --disable-static \
+	       --disable-boost \
+               --with-python=python3
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
