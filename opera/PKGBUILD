@@ -1,5 +1,5 @@
 pkgname=opera
-pkgver=32.0.1948.25
+pkgver=32.0.1948.69
 pkgrel=1
 pkgdesc="A fast and secure web browser and Internet suite."
 url="http://www.opera.com/"
@@ -52,3 +52,6 @@ package() {
           "$pkgdir/usr/share/doc/${pkgname}-stable/copyright" \
           "$pkgdir/usr/share/licenses/$pkgname/copyright"
 }
+md5sums=('a13d8b43a74d677ed2b06d09a6e17921'
+         '924d6178b38638303db9fde37c6055fd'
+         '50c4f4ec845ad8629ec3f308ab8cd991')
