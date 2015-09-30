@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=38.2.0
+pkgver=38.3.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -26,11 +26,11 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         vendor.js
         kde.js)
 options=('!emptydirs' '!makeflags')
-md5sums=('df97af48b670cdaa5196a90360c952f7'
+md5sums=('81dd8b5679787fd5fd91b76bc7923951'
          'a99c6bf3dcb1d419bed0285187fe90f9'
          'c883f4e5cafcd3cde8cf5cb417836737'
          '3423528b295675ea216282b3f4f919a6'
-         '7f2a43d4af0b860c296187b1c0a95ae7'
+         'e254c185fb9f637512321c8d35b1acb2'
          'c3cfc76e2ba30a7244510f244b6b5748'
          '5b786bc0f2e998d201f53fd307bc573f'
          '5a53179d14ae9631b7afe5e4d0fc0b25'
