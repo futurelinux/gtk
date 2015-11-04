@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=41.0.2
+pkgver=42.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 #_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
@@ -39,7 +39,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=7aa7715fdc8f
+_patchrev=ee3c462047d5
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         'mozconfig'
@@ -76,7 +76,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha1sums=('5e8243cbbd3ea306bd1e5f1b16079bdcc9af95a4'
+sha1sums=('c207a73fbfde2683aca36417331441d007ceb765'
           '99729f315fd4797f91e38ff74c816f48bc87b89f'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'ca77a08b296f8673828898d91b20cc6dd8742c2f'
@@ -86,10 +86,10 @@ sha1sums=('5e8243cbbd3ea306bd1e5f1b16079bdcc9af95a4'
           'a87a6eb5cb86f63e39249c60eb53594ce225dea0'
           'ad1f05abf477dbc5f7e72c06e37c180459eeffd4'
           '6991d61be593b5ad109174ebc7d60763eb48125b'
-          '9f745a06a55d6b8db68fa5bdde61a088c7a47b12'
+          'bbfd5f1527ae421d02999ccc4868b2200e0ce5cf'
           'b7fa502cf654f9b2d12e89e5a17ae4af90090cc6'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '3d2231257deb0aed0a6ffdc733749dcaea98d74a'
+          'cbdcbbab45dfb17eddb0857f477a8fd4e0ad22f2'
           'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
           'ebd57f47a4a8a156afc8ad32eeceac78162da548'
           'f3b41a0a771d2a94997b953cb3204c688d89afc4')
@@ -101,7 +101,7 @@ sha1sums=('5e8243cbbd3ea306bd1e5f1b16079bdcc9af95a4'
 _google_api_key=AIzaSyA33sdKPff0x3KBByOhpzc1i7RS2A1mEpY
 
 prepare() {
-  cd mozilla-release
+  cd ${srcdir}/firefox-${pkgver}/
 
   cp ../mozconfig .mozconfig
   patch -Np1 -i ../firefox-install-dir.patch
@@ -168,7 +168,7 @@ build_kmozillahelper() {
 }
 
 build_firefox() {
-  cd  "$srcdir/mozilla-release"
+  cd  "$srcdir/firefox-${pkgver}"
  
   export PATH="$srcdir/path:$PATH"
   export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/firefox"
@@ -186,7 +186,7 @@ package() {
   make DESTDIR=$pkgdir install
 
   msg "package() Firefox"
-  cd "$srcdir/mozilla-release"
+  cd "$srcdir/firefox-${pkgver}"
  
   make -f client.mk DESTDIR="$pkgdir" MOZ_PKG_FATAL_WARNINGS=0 install 
 
