@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=42.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 #_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 #_kmozillahelper_pkgname=kmozillahelper
@@ -46,11 +46,12 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'vendor.js'
         'kde.js'
         'firefox-20.0.1-fixed-loading-icon.png'
-#       "https://build.opensuse.org/source/openSUSE:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2"
+        # The KMozillaHelper unofficial Kf5 Port
 	'CMakeLists.txt'
 	'kmozillahelper.notifyrc'
 	'main.cpp'
 	'main.h'
+
         'firefox-install-dir.patch'
         'rhbz-966424.patch'
         'pgo-fix-missing-kdejs.patch'
@@ -74,6 +75,8 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 #	'mozilla-1192243.patch'
 #	'xulrunner-24.0-jemalloc-ppc.patch'
 #	'xulrunner-24.0-s390-inlines.patch'
+	# FIXME: This is not working! THANKS! FEDORA!
+
 
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
