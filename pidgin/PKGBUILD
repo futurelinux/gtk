@@ -1,13 +1,13 @@
 pkgname=('pidgin')
 pkgver=2.10.11
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Multi-protocol instant messaging client"
 url="http://pidgin.im/"
 license=('GPL')
 depends=('libpurple' 'startup-notification' 'gtkspell' 'libxss' 'libsm'
-         'hicolor-icon-theme')
-makedepends=('nss' 'libsasl' 'libidn' 'python2' 'farstream' 'avahi'
+         'hicolor-icon-theme' 'farstream')
+makedepends=('nss' 'libsasl' 'libidn' 'python2' 'avahi'
              'tk' 'ca-certificates' 'intltool' 'networkmanager')
 optdepends=('aspell: for spelling correction')
 install=pidgin.install
