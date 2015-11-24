@@ -206,6 +206,7 @@ package() {
   msg "package() kmozillahelper"
   cd $srcdir/kmozillahelper-build
   make DESTDIR=$pkgdir install
+  install -Dm644 $srcdir/kmozillahelper.notifyrc $pkgdir/usr/share/kmozillahelper/kmozillahelper.notifyrc
 
   msg "package() Firefox"
   cd "$srcdir/firefox-${pkgver}"
