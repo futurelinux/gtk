@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=42.0
-pkgrel=5
+pkgrel=6
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 #_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 #_kmozillahelper_pkgname=kmozillahelper
@@ -108,7 +108,7 @@ sha1sums=('c207a73fbfde2683aca36417331441d007ceb765'
           'cbdcbbab45dfb17eddb0857f477a8fd4e0ad22f2'
           'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
           'ebd57f47a4a8a156afc8ad32eeceac78162da548'
-          'f3b41a0a771d2a94997b953cb3204c688d89afc4')
+          'a169730cda326effbf54e59e9adb9d595f36be41')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
