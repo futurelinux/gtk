@@ -1,17 +1,17 @@
 pkgname=firefox-kde
 pkgver=42.0
-pkgrel=6
+pkgrel=7
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
-#_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
-#_kmozillahelper_pkgname=kmozillahelper
-#_kmozillahelper_pkgver=0.6.4
+_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
+_kmozillahelper_pkgname=kmozillahelper
+_kmozillahelper_pkgver=0.6.4
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=('gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme'
          'libvpx' 'icu' 'libevent' 'nss>=3.19.4' 'hunspell' 'sqlite3>=3.8.9'
-         'kio' 'knotifications' 'nspr>=4.10.10' 'libffi>=3.0.9')
+         'kde-runtime' 'automoc4' 'nspr>=4.10.10' 'libffi>=3.0.9')
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
              'xorg-server-xvfb' 'libpulse' 'gst-plugins-base'
              'inetutils' 'libpng>=1.6.16'
@@ -47,10 +47,12 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'kde.js'
         'firefox-20.0.1-fixed-loading-icon.png'
         # The KMozillaHelper unofficial Kf5 Port
-	'CMakeLists.txt'
-	'kmozillahelper.notifyrc'
-	'main.cpp'
-	'main.h'
+	#'CMakeLists.txt'
+	#'kmozillahelper.notifyrc'
+	#'main.cpp'
+	#'main.h'
+
+         "https://build.opensuse.org/source/openSUSE:Factory/mozilla-kde4-integration/${_kmozillahelper_pkgname}-${_kmozillahelper_pkgver}.tar.bz2"
 
         'firefox-install-dir.patch'
         'rhbz-966424.patch'
@@ -95,10 +97,7 @@ sha1sums=('c207a73fbfde2683aca36417331441d007ceb765'
           'ca77a08b296f8673828898d91b20cc6dd8742c2f'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
-          '72c4cdc6dfadcd89715d642b76a37889e50ee0bd'
-          '9a3731a0a4caa15ffe3e06bc20ef97bd44c04ef4'
-          '43f630cf3f3df24174201ba8f0ec3f067ad32bcc'
-          'e92c4d9b988ca52f5fdf72ae8d11e0112f9f1b54'
+          '5543ea72a07fb6f3af19cfbb6d1683a5fddaa807'
           'a87a6eb5cb86f63e39249c60eb53594ce225dea0'
           'ad1f05abf477dbc5f7e72c06e37c180459eeffd4'
           '6991d61be593b5ad109174ebc7d60763eb48125b'
@@ -185,7 +184,7 @@ build_kmozillahelper() {
   mkdir -p kmozillahelper-build
   cd kmozillahelper-build
 
-  cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release ..
+  cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ../kmozillahelper
   make
 }
 
@@ -206,7 +205,7 @@ package() {
   msg "package() kmozillahelper"
   cd $srcdir/kmozillahelper-build
   make DESTDIR=$pkgdir install
-  install -Dm644 $srcdir/kmozillahelper.notifyrc $pkgdir/usr/share/kmozillahelper/kmozillahelper.notifyrc
+  #install -Dm644 $srcdir/kmozillahelper.notifyrc $pkgdir/usr/share/kmozillahelper/kmozillahelper.notifyrc
 
   msg "package() Firefox"
   cd "$srcdir/firefox-${pkgver}"
