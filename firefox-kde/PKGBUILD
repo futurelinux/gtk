@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=42.0
-pkgrel=6
+pkgrel=8
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 #_kmozillahelper_obsver=b88c72dfdc858f6209feb123227bd7df
 #_kmozillahelper_pkgname=kmozillahelper
@@ -15,7 +15,7 @@ depends=('gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
              'xorg-server-xvfb' 'libpulse' 'gst-plugins-base'
              'inetutils' 'libpng>=1.6.16'
-             'cmake' 'extra-cmake-modules')
+             'cmake' 'extra-cmake-modules' 'clang')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'gst-plugins-good: h.264 video'
             'gst-libav: h.264 video'
@@ -90,7 +90,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
 sha1sums=('c207a73fbfde2683aca36417331441d007ceb765'
-          '394b76e942e2d8a21be55f8cbe3d2ab15be6309b'
+          'f22eeb65e32bcdba913878f209324671600e95b6'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'ca77a08b296f8673828898d91b20cc6dd8742c2f'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
@@ -196,6 +196,8 @@ build_firefox() {
   export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/firefox"
   export PYTHON="/usr/bin/python2"
   export SHELL=/bin/bash
+  export CLANG=clang
+  export CLANG=clang++
 
   # Do PGO
   xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
