@@ -1,6 +1,6 @@
 pkgname=opera
-pkgver=33.0.1990.115
-pkgrel=2
+pkgver=34.0.2036.25
+pkgrel=1
 pkgdesc="A fast and secure web browser and Internet suite."
 url="http://www.opera.com/"
 install=${pkgname}.install
@@ -8,33 +8,39 @@ options=(!strip !zipman)
 license=('custom:opera')
 backup=("etc/$pkgname/default")
 arch=('x86_64')
-depends=('gtk2' 'desktop-file-utils' 'shared-mime-info' 'libxtst' 'libxss' 'gcc-libs' 'alsa-lib' 'nss' 'freetype2' 'gconf' 'libnotify')
+depends=('gtk2' 'desktop-file-utils' 'shared-mime-info' 'libxtst' 'libxss' 'gcc-libs' 'alsa-lib' 'nss' 'freetype2' 'gconf' 'libnotify' 'opera-ffmpeg-codecs')
 optdepends=('pepperflashplugin: Pepper Flash plugin'
-            'curl: opera crash reporter and autoupdate checker'
-            'ffmpeg: playback of not really open formats')
+            'curl: opera crash reporter and autoupdate checker')
 source=("http://get.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/${pkgname}-stable_${pkgver}_amd64.deb"
 	'opera'
 	'default')
-md5sums=('50915e0e7c574cf419e97ae9ffb6f221'
-         '924d6178b38638303db9fde37c6055fd'
-         '50c4f4ec845ad8629ec3f308ab8cd991')
+sha256sums=('ae4933f0df63b920f79ce6063b48ebcd7f3cf2bcdbde13dc410c4fe24bcf1447'
+         '508512464e24126fddfb2c41a1e2e86624bdb0c0748084b6a922573b6cf6b9c5'
+         '4913d97dec0ddc99d1e089b029b9123c2c86b7c88d631c4d1111b119b09da027')
 
 prepare() {
-  sed -e "s/%pkgname%/$pkgname/g" -i "$srcdir/opera"
-  sed -e "s/%operabin%/x86_64-linux-gnu\/$pkgname\/$pkgname/g" \
-          -i "$srcdir/opera"
+    sed -e "s/%pkgname%/$pkgname/g" -i "$srcdir/opera"
+    sed -e "s/%operabin%/$pkgname\/$pkgname/g" \
+        -i "$srcdir/opera"
 }
 
 package() {
 
   tar -xf data.tar.xz --exclude=usr/share/{lintian,menu} -C "$pkgdir/"
+  
+  # get rid of the extra subfolder x86_64-linux-gnu
+    (
+        cd "$pkgdir/usr/lib/"x86_64-linux-gnu/
+        mv "$pkgname" ../
+    )
+    rm -rf "$pkgdir/usr/lib/"x86_64-linux-gnu
 
   # soname fix for libsystemd (udev)
   sed -e 's/libudev.so.0/libudev.so.1/g' \
-      -i "$pkgdir/usr/lib/x86_64-linux-gnu/$pkgname/$pkgname"
+      -i "$pkgdir/usr/lib/$pkgname/$pkgname"
 
   # suid opera_sandbox
-  chmod 4755 "$pkgdir/usr/lib/x86_64-linux-gnu/$pkgname/opera_sandbox"
+  chmod 4755 "$pkgdir/usr/lib/$pkgname/opera_sandbox"
 
   # install default options
   install -Dm644 "$srcdir/default" "$pkgdir/etc/$pkgname/default"
@@ -45,7 +51,7 @@ package() {
 
   # license
   install -Dm644 \
-          "$pkgdir/usr/lib/x86_64-linux-gnu/$pkgname/opera_autoupdate.licenses" \
+          "$pkgdir/usr/lib/$pkgname/opera_autoupdate.licenses" \
           "$pkgdir/usr/share/licenses/$pkgname/opera_autoupdate.licenses"
 
   install -Dm644 \
