@@ -1,6 +1,6 @@
 pkgname=opera
 pkgver=34.0.2036.25
-pkgrel=1
+pkgrel=2
 pkgdesc="A fast and secure web browser and Internet suite."
 url="http://www.opera.com/"
 install=${pkgname}.install
@@ -8,10 +8,11 @@ options=(!strip !zipman)
 license=('custom:opera')
 backup=("etc/$pkgname/default")
 arch=('x86_64')
-depends=('gtk2' 'desktop-file-utils' 'shared-mime-info' 'libxtst' 'libxss' 'gcc-libs' 'alsa-lib' 'nss' 'freetype2' 'gconf' 'libnotify' 'opera-ffmpeg-codecs')
+depends=('gtk2' 'desktop-file-utils' 'shared-mime-info' 'libxtst' 'libxss' 'gcc-libs' 'alsa-lib' 'nss' 'freetype2' 'gconf' 'libnotify')
 optdepends=('pepperflashplugin: Pepper Flash plugin'
-            'curl: opera crash reporter and autoupdate checker')
-source=("http://get.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/${pkgname}-stable_${pkgver}_amd64.deb"
+            'curl: opera crash reporter and autoupdate checker'
+            'opera-ffmpeg-codecs: In some cases, you may need ffmpeg to play streams')
+source=("http://get.geo.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/${pkgname}-stable_${pkgver}_amd64.deb"
 	'opera'
 	'default')
 sha256sums=('ae4933f0df63b920f79ce6063b48ebcd7f3cf2bcdbde13dc410c4fe24bcf1447'
@@ -29,11 +30,12 @@ package() {
   tar -xf data.tar.xz --exclude=usr/share/{lintian,menu} -C "$pkgdir/"
   
   # get rid of the extra subfolder x86_64-linux-gnu
+
     (
-        cd "$pkgdir/usr/lib/"x86_64-linux-gnu/
+        cd "$pkgdir/usr/lib/"*-linux-gnu/
         mv "$pkgname" ../
     )
-    rm -rf "$pkgdir/usr/lib/"x86_64-linux-gnu
+    rm -rf "$pkgdir/usr/lib/"*-linux-gnu
 
   # soname fix for libsystemd (udev)
   sed -e 's/libudev.so.0/libudev.so.1/g' \
