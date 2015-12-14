@@ -1,5 +1,5 @@
 pkgname=opera-ffmpeg-codecs
-pkgver=46.0.2490.86
+pkgver=47.0.2526.80
 _opver=34
 pkgrel=1
 pkgdesc="additional support for proprietary codecs for opera"
@@ -15,7 +15,7 @@ options=('!strip')
 source=(
   "https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz"
 )
-sha256sums=('ee18d28ac80ff958e8a6c770bfc0d7d770b55452ed91a87f731e1b432a7d1d92')
+sha256sums=('b107148323a3b641eae29bfeda298183c0d1c110ef96a04a13f329015d614d05')
 
 
 prepare() {
