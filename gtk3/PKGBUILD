@@ -1,22 +1,22 @@
 pkgname=gtk3
-pkgver=3.14.9
+pkgver=3.18.6
 pkgmin="${pkgver%.*}"
 pkgrel=1
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
 install="gtk3.install"
-depends=('glib2' 'cairo' 'gtk-update-icon-cache' 'libcups' 'libxcursor' 'cairo'
-         'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
-         'pango' 'shared-mime-info' 'colord' 'at-spi2-atk' 'wayland' 'libxkbcommon')
+depends=('glib2>=2.45.8' 'cairo>=1.14.0' 'gtk-update-icon-cache' 'libcups' 'libxcursor'
+         'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage' 'gdk-pixbuf2>=2.30.0'
+         'pango>=1.37.3' 'shared-mime-info' 'colord' 'at-spi2-atk' 'wayland' 'libxkbcommon')
 makedepends=('gobject-introspection' 'python2')
 options=('!docs')
 backup=("etc/gtk-3.0/settings.ini")
 license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgmin}/gtk+-${pkgver}.tar.xz"
         'settings.ini')
-md5sums=('40902a0b035277011095946e1c61290d'
-         '6bbfc6cc58bae5b1be02e60b48fa51f5')
+sha256sums=('78cabf0fd5a662f8723f62d5ac633072c76c557c1d700454c9c3deaa37e441ef'
+            '0dd1d69a8e9ca9fca03b874049e0a7a439c4100cb4aac4dc37d12b595579c9d9')
 
 #prepare() {
 #  cd "${srcdir}/gtk+-${pkgver}"
