@@ -1,12 +1,12 @@
 pkgname=firefox-kde
 pkgver=43.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
-depends=('gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
+depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme'
          'libvpx' 'icu' 'libevent' 'nss>=3.19.4' 'hunspell' 'sqlite3>=3.8.9'
          'kio' 'knotifications' 'nspr>=4.10.10' 'libffi>=3.0.9')
@@ -84,7 +84,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 )
 sha1sums=('65913f9dd61b49b341a66a514c9cac23b602c7c8'
           'SKIP'
-          '469c1f0ea2ece0c1a0b1b02722b4535fe34f5b19'
+          '2dc77dc4096c69e178ac79ea86f8cf184dc40932'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'ca77a08b296f8673828898d91b20cc6dd8742c2f'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
@@ -137,6 +137,9 @@ prepare() {
   patch -Np1 -i "$srcdir/ddg-branding.patch"
   patch -Np1 -i "$srcdir"/pgo-fix-missing-kdejs.patch
 
+  # fix GTK3
+  sed -i 's|parent->group|gtk_window_get_group(const_cast<GtkWindow*>(parent))|g' toolkit/xre/nsKDEUtils.cpp 
+
 #  msg "GTK3 patchset"
 #  patch -p2 -i ../firefox-build.patch
 #  patch -p2 -i ../xulrunner-24.0-jemalloc-ppc.patch
@@ -155,10 +158,8 @@ prepare() {
   # https://bugs.archlinux.org/task/34644
   sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' configure
 
-  # Fix tab loading icon (flickers with libpng 1.6)
+  # Fix tab loading icon (doesn't work with libpng 1.6)
   # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
-  # TODO: Remove this; Firefox 34 might use CSS animations for the loading icon
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=759252
   cp "$srcdir/firefox-20.0.1-fixed-loading-icon.png" \
     browser/themes/linux/tabbrowser/loading.png
 }
@@ -183,15 +184,12 @@ build_firefox() {
   cd  "$srcdir/firefox-${pkgver}"
  
   export PATH="$srcdir/path:$PATH"
-  export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/firefox"
   export PYTHON="/usr/bin/python2"
   export SHELL=/bin/bash
-  export CLANG=clang
-  export CLANG=clang++
 
   # Do PGO
   xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
-    make -f client.mk build MOZ_PGO=1
+    make -j1 -f client.mk build MOZ_PGO=1
 }
 
 package() {
@@ -202,6 +200,7 @@ package() {
   msg "package() Firefox"
   cd "$srcdir/firefox-${pkgver}"
  
+  export SHELL=/bin/bash
   make -f client.mk DESTDIR="$pkgdir" MOZ_PKG_FATAL_WARNINGS=0 install 
 
   install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
@@ -230,7 +229,7 @@ package() {
 
   # We don't want the development stuff
   rm -r "$pkgdir"/usr/{include,lib/firefox-devel,share/idl}
-  
+
   #workaround for now
   #https://bugzilla.mozilla.org/show_bug.cgi?id=658850
   ln -sf firefox "$pkgdir/usr/lib/firefox/firefox-bin"
