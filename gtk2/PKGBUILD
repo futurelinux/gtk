@@ -1,57 +1,46 @@
-pkgbase=gtk2
-pkgname=('gtk2' 'gtk-update-icon-cache')
-pkgver=2.24.28
+pkgname=gtk2
+pkgver=2.24.29
 pkgrel=1
-arch=('x86_64')
+pkgdesc="GObject-based multi-platform GUI toolkit (legacy)"
+arch=(i686 x86_64)
 url="http://www.gtk.org/"
-makedepends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
-             'shared-mime-info' 'cairo' 'libcups' 'gdk-pixbuf2' 'gobject-introspection' 'python2')
-options=('docs')
-license=('LGPL')
-source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-$pkgver.tar.xz"
-        'xid-collision-debug.patch')
-sha256sums=('b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656'
+depends=(atk pango libxcursor libxinerama libxrandr libxi libxcomposite libxdamage 
+         shared-mime-info cairo libcups gtk-update-icon-cache librsvg)
+makedepends=(gobject-introspection python2)
+license=(LGPL)
+install=gtk2.install
+source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-$pkgver.tar.xz
+        xid-collision-debug.patch)
+sha256sums=('0741c59600d3d810a223866453dc2bbb18ce4723828681ba24aa6519c37631b8'
             'd758bb93e59df15a4ea7732cf984d1c3c19dff67c94b957575efea132b8fe558')
 
 prepare() {
-  cd "${srcdir}/gtk+-${pkgver}"
-
-  patch -Np1 -i "$srcdir/xid-collision-debug.patch"
+    cd gtk+-$pkgver
+    patch -Np1 -i ../xid-collision-debug.patch
 }
 
 build() {
-    cd "$srcdir/gtk+-$pkgver"
-    
+    cd gtk+-$pkgver
+
     CXX=/bin/false ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --localstatedir=/var \
         --with-xinput=yes
 
-    #https://bugzilla.gnome.org/show_bug.cgi?id=655517
+    # https://bugzilla.gnome.org/show_bug.cgi?id=655517
     sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
     make
 }
 
-package_gtk2() {
-    pkgdesc="GTK+ is a multi-platform toolkit (v2)"
-    install=gtk2.install
-    depends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage' 'shared-mime-info' 'cairo' 'libcups' 'gtk-update-icon-cache')
-    backup=('etc/gtk-2.0/gtkrc')
-
-    cd "$srcdir/gtk+-$pkgver"
-
+package() {
+    cd gtk+-$pkgver
     make DESTDIR="$pkgdir" install
+
     sed -i "s#env python#env python2#" $pkgdir/usr/bin/gtk-builder-convert
     echo 'gtk-fallback-icon-theme = "oxygen"' > "$pkgdir/etc/gtk-2.0/gtkrc"
-    #split this out to use with gtk3 too
-    rm $pkgdir/usr/bin/gtk-update-icon-cache
-}
-package_gtk-update-icon-cache() {
-    pkgdesc="The GTK+ update icon cache tool"
-    depends=('gdk-pixbuf2')
 
-    cd "$srcdir/gtk+-$pkgver/gtk"
-
-    install -D -m755 gtk-update-icon-cache $pkgdir/usr/bin/gtk-update-icon-cache
+    rm "$pkgdir/usr/bin/gtk-update-icon-cache"
 }
+
+# vim:set noet sw=4:
