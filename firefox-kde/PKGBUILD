@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=43.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
 arch=('x86_64')
@@ -15,12 +15,10 @@ makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
              'inetutils' 'libpng>=1.6.16'
              'cmake' 'extra-cmake-modules' 'clang')
 optdepends=('networkmanager: Location detection via available WiFi networks'
-            'gst-plugins-good: h.264 video'
-            'gst-libav: h.264 video'
             'firefox-i18n: for multilanguage support')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 provides=("firefox=${pkgver}" "kmozillahelper")
-conflicts=('firefox' 'kmozillahelper')
+conflicts=('kmozillahelper')
 replaces=('kmozillahelper')
 install=firefox.install
 #
