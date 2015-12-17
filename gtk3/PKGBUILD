@@ -1,58 +1,61 @@
-pkgname=gtk3
+pkgbase=gtk3
+pkgname=(gtk3 gtk-update-icon-cache)
 pkgver=3.18.6
-pkgmin="${pkgver%.*}"
 pkgrel=1
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
-install="gtk3.install"
-depends=('glib2>=2.45.8' 'cairo>=1.14.0' 'gtk-update-icon-cache' 'libcups' 'libxcursor'
-         'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage' 'gdk-pixbuf2>=2.30.0'
-         'pango>=1.37.3' 'shared-mime-info' 'colord' 'at-spi2-atk' 'wayland' 'libxkbcommon')
-makedepends=('gobject-introspection' 'python2')
-options=('!docs')
-backup=("etc/gtk-3.0/settings.ini")
-license=('LGPL')
-source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgmin}/gtk+-${pkgver}.tar.xz"
-        'settings.ini')
+depends=(atk cairo libcups libxcursor libxinerama libxrandr libxi libepoxy gdk-pixbuf2
+         libxcomposite libxdamage pango shared-mime-info colord at-spi2-atk wayland libxkbcommon
+         json-glib librsvg)
+makedepends=(gobject-introspection libcanberra)
+license=(LGPL)
+source=(https://download.gnome.org/sources/gtk+/${pkgver:0:4}/gtk+-$pkgver.tar.xz
+        settings.ini)
 sha256sums=('78cabf0fd5a662f8723f62d5ac633072c76c557c1d700454c9c3deaa37e441ef'
             '0dd1d69a8e9ca9fca03b874049e0a7a439c4100cb4aac4dc37d12b595579c9d9')
 
-#prepare() {
-#  cd "${srcdir}/gtk+-${pkgver}"
-  # GLib2
-#  sed -e 's|2.43.0|2.42.0|g' -i configure
-  # Cairo
-#  sed -e 's|1.14.0|1.12.0|g' -i configure
-  # Pango
-#  sed -e 's|1.36.7|1.36.0|g' -i configure
-  # Atk
-#  sed -e 's|2.15.1|2.14.0|g' -i configure
-#}
+prepare() {
+    cd gtk+-$pkgver
+}
 
 build() {
-  cd "${srcdir}/gtk+-${pkgver}"
+    cd "gtk+-$pkgver"
 
-  CXX=/bin/false ./configure --prefix=/usr \
-      --sysconfdir=/etc \
-      --localstatedir=/var \
-      --disable-schemas-compile \
-      --enable-x11-backend \
-      --enable-broadway-backend \
-      --enable-wayland-backend
+    CXX=/bin/false ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --disable-schemas-compile \
+        --enable-x11-backend \
+        --enable-broadway-backend \
+        --enable-wayland-backend
 
-  #https://bugzilla.gnome.org/show_bug.cgi?id=655517
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make
+    #https://bugzilla.gnome.org/show_bug.cgi?id=655517
+    sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+    make
 }
 
-package() {
-  cd "${srcdir}/gtk+-${pkgver}"
+package_gtk3() {
+    depends+=(gtk-update-icon-cache)
+    optdepends=('libcanberra: gtk3-widget-factory demo')
+    install=gtk3.install
 
-  make DESTDIR="${pkgdir}" install
+    cd "gtk+-$pkgver"
+    make DESTDIR="$pkgdir" install
+    install -Dm644 ../settings.ini "$pkgdir/usr/share/gtk-3.0/settings.ini"
 
-  install -D -m644 "${srcdir}/settings.ini" \
-                   "${pkgdir}/etc/gtk-3.0/settings.ini"
-
-  rm -v ${pkgdir}/usr/bin/gtk-update-icon-cache
+    # split this out to use with gtk2 too
+    rm "$pkgdir/usr/bin/gtk-update-icon-cache"
 }
+
+package_gtk-update-icon-cache() {
+    pkgdesc="GTK+ icon cache updater"
+    depends=(gdk-pixbuf2 hicolor-icon-theme)
+    install=gtk-update-icon-cache.install
+
+    cd gtk+-$pkgver/gtk
+    install -Dm755 gtk-update-icon-cache "$pkgdir/usr/bin/gtk-update-icon-cache"
+}
+
+# vim:set et sw=4:
