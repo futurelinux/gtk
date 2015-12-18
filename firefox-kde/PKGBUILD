@@ -189,7 +189,7 @@ build_firefox() {
 
   # Do PGO
   xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
-    make -j1 -f client.mk build MOZ_PGO=1
+    make -f client.mk build MOZ_PGO=1
 }
 
 package() {
