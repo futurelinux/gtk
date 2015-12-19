@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=43.0
+pkgver=43.0.1
 pkgrel=5
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
@@ -62,15 +62,6 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #'install-kde-js.patch'
         'ddg-branding.patch'
 
-
-	# GTK3 patchset
-#	'firefox-build.patch'
-#	'mozilla-1192243.patch'
-#	'xulrunner-24.0-jemalloc-ppc.patch'
-#	'xulrunner-24.0-s390-inlines.patch'
-	# FIXME: This is not working! THANKS! FEDORA!
-
-
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
         #"$_patchurl/mozilla-idldir.patch"
@@ -82,7 +73,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha1sums=('65913f9dd61b49b341a66a514c9cac23b602c7c8'
+sha1sums=('abbcab2dd1c4b41ca5b751542b6854de9fbc7136'
           'SKIP'
           '2dc77dc4096c69e178ac79ea86f8cf184dc40932'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
@@ -140,12 +131,6 @@ prepare() {
   # fix GTK3
   sed -i 's|parent->group|gtk_window_get_group(const_cast<GtkWindow*>(parent))|g' toolkit/xre/nsKDEUtils.cpp 
 
-#  msg "GTK3 patchset"
-#  patch -p2 -i ../firefox-build.patch
-#  patch -p2 -i ../xulrunner-24.0-jemalloc-ppc.patch
-#  patch -p2 -i ../xulrunner-24.0-s390-inlines.patch
-#  patch -p1 -i ../mozilla-1192243.patch
-
   mkdir -vp "$srcdir/path"
 
   # WebRTC build tries to execute "python" and expects Python 2
@@ -186,6 +171,8 @@ build_firefox() {
   export PATH="$srcdir/path:$PATH"
   export PYTHON="/usr/bin/python2"
   export SHELL=/bin/bash
+  export CLANG=clang
+  export CLANG=clang++
 
   # Do PGO
   xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
