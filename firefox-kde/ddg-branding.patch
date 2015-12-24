@@ -9,7 +9,7 @@
 -    <MozParam name="t" condition="purpose" purpose="searchbar"   value="ffsb"/>
 -    <MozParam name="t" condition="purpose" purpose="homepage"    value="ffhp"/>
 -    <MozParam name="t" condition="purpose" purpose="newtab"      value="ffnt"/>
-+    <MozParam name="t" value="chakra"/>
++    <Param name="t" value="chakra"/>
    </Url>
    <Url type="application/x-suggestions+json" template="https://ac.duckduckgo.com/ac/">
      <Param name="q" value="{searchTerms}"/>
