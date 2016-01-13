@@ -1,5 +1,5 @@
 pkgname=ardour
-pkgver=4.4
+pkgver=4.6
 pkgrel=1
 pkgdesc="Professional-grade digital audio workstation"
 arch=('x86_64')
@@ -10,8 +10,8 @@ makedepends=('git' 'python2' 'boost' 'cppunit' 'doxygen' 'graphviz')
 install=$pkgname.install
 source=(${pkgname}-${pkgver}::"git://git.ardour.org/${pkgname}/${pkgname}.git#tag=${pkgver}"
         "$pkgname.desktop")
-md5sums=('SKIP'
-         'ecbcc930aa8f17e224eef36e16cc64e2')
+sha256sums=('SKIP'
+         '985b80c65c122be924eefcc6e4dc13498ace9da6151f79c860c794a0c02ead7b')
 
 prepare() {
   cd "$srcdir/$pkgname-$pkgver"
