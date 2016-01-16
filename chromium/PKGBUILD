@@ -1,5 +1,5 @@
 pkgname=chromium
-pkgver=47.0.2526.106
+pkgver=47.0.2526.111
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -24,7 +24,7 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         chromium-widevine.patch
         0001-Add-FPDFAPIJPEG_-prefix-to-more-libjpeg-functions.patch)
 
-sha1sums=('b646acc18bb7e0fea05aae0108abea5660dfde14'
+sha1sums=('8c0ae52db8258e98164e9ab7ce4c4240f64766d4'
           '1ffba5152cb749300a016efec909b828eba9a64a'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
