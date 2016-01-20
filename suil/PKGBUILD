@@ -1,13 +1,12 @@
 pkgname=suil
 pkgver=0.8.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A lightweight C library for loading and wrapping LV2 plugin UIs"
 arch=('x86_64')
 url="http://drobilla.net/software/suil/"
 license=('custom:ISC')
-depends=('lv2')
-makedepends=('python2' 'qt')
-optdepends=('qt: Qt 4.x UI wrapping support')
+depends=('lv2' 'qt4')
+makedepends=('python2')
 source=("http://download.drobilla.net/$pkgname-$pkgver.tar.bz2")
 md5sums=('1b06947b1fc028f9ffcbc16d30065aa5')
 
