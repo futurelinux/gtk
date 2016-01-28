@@ -1,6 +1,6 @@
---- a/components/search_engines/template_url_prepopulate_data.cc    2015-03-03 22:54:08.000000000 +0100
-+++ b/components/search_engines/template_url_prepopulate_data.cc    2015-03-07 22:19:32.721403537 +0100
-@@ -49,435 +49,435 @@ namespace {
+--- a/components/search_engines/template_url_prepopulate_data.cc    2016-01-20 21:01:21.000000000 +0100
++++ b/components/search_engines/template_url_prepopulate_data.cc    2016-01-26 22:47:20.932375372 +0100
+@@ -48,435 +48,435 @@ namespace {
  
  // Default (for countries with no better engine set)
  const PrepopulatedEngine* engines_default[] =
@@ -74,8 +74,8 @@
  
  // Belarus
  const PrepopulatedEngine* engines_BY[] =
--    { &google, &yahoo_ru, &bing, };
-+    { &duckduckgo, &google, &yahoo_ru, &bing, };
+-    { &google, &yandex_by, &mail_ru, };
++    { &duckduckgo, &google, &yandex_by, &mail_ru, };
  
  // Belize
  const PrepopulatedEngine* engines_BZ[] =
@@ -279,8 +279,8 @@
  
  // Kazakhstan
  const PrepopulatedEngine* engines_KZ[] =
--    { &google, &bing, &yahoo, };
-+    { &duckduckgo, &google, &bing, &yahoo, };
+-    { &google, &mail_ru, &yandex_kz, };
++    { &duckduckgo, &google, &mail_ru, &yandex_kz, };
  
  // Lebanon
  const PrepopulatedEngine* engines_LB[] =
@@ -544,12 +544,12 @@
  
  // A list of all the engines that we know about.
  const PrepopulatedEngine* kAllEngines[] = {
-@@ -503,6 +503,9 @@ const PrepopulatedEngine* kAllEngines[]
+@@ -502,6 +502,9 @@ const PrepopulatedEngine* kAllEngines[]
    &search_results, &searchnu,   &snapdo,       &softonic,     &sweetim,
    &terra_ar,     &terra_es,     &tut,          &walla,        &wp,
    &zoznam,
-+
-+  // Chakra custom engine:
++  
++  // Chakra specific
 +  &duckduckgo,
  };
  
