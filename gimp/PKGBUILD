@@ -1,7 +1,7 @@
 pkgname=gimp
 pkgver=2.8.16
 _pkgver=2.8
-pkgrel=1
+pkgrel=2
 pkgdesc="GNU Image Manipulation Program (Development Version)"
 arch=('x86_64')
 url="http://www.gimp.org/"
@@ -31,7 +31,6 @@ build() {
     --enable-mp \
     --enable-gimp-console \
     --enable-python \
-    --enable-profile \
     --with-libcurl \
     --with-gif-compression=lzw \
     --with-gimpdir=.config/gimp \
