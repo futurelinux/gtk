@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=44.0.1
+pkgver=44.0.2
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
@@ -34,7 +34,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=eb9ebe3e2e6a
+_patchrev=11475705ab0f
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -43,8 +43,6 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'vendor.js'
         'kde.js'
         'firefox-20.0.1-fixed-loading-icon.png'
-        # The KMozillaHelper unofficial Kf5 Port
-
         'firefox-install-dir.patch'
         'rhbz-966424.patch'
         'pgo-fix-missing-kdejs.patch'
@@ -73,7 +71,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha1sums=('1415f2140ed9e746eafeeb972cb7d31c766b2a71'
+sha1sums=('949a9aa5fe21aa3a192277cec2bab05bd01e8bd4'
           'SKIP'
           '2dc77dc4096c69e178ac79ea86f8cf184dc40932'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
