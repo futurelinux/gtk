@@ -1,6 +1,6 @@
 pkgname=thunderbird-kde
-pkgver=38.5.0
-pkgrel=2
+pkgver=38.6.0
+pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
@@ -26,7 +26,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         vendor.js
         kde.js)
 options=('!emptydirs' '!makeflags')
-sha512sums=('fed8376375c3ad7df8b773ced7944fb07edbd28e82c907dc6451ad538b8944d6f2a1d5632399f255ab1c7f74a40a9170912fefdbb2fdf423d7dc35108d1baa65'
+sha512sums=('9f6cb6b7c9b4935603333366a21cbb3e142fbdbded61adea44c39d45327207e1478d268fb721ee914ae1b0e762507f3665e40e1c315bd454fe1d019bd7972a08'
             '5258d965d172411de04c47b8a230a9ced4905875066b26229dc03d56f5c691240e802b4cfaaf2e05e3a3ec8116122659b2c45a4128f6f2b948af206868b84b6a'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             'c6f92f5cb0efeaa59a4c73cdd37543c91740cb74bf43d216c0ed8a7d6d759687af221fc9775247b00d9da7b754c9c9c9ad8c52b3b9d9f084619d7680d76ab4ec'
