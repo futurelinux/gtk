@@ -1,50 +1,114 @@
-
-pkgname=eclipse
+pkgbase=eclipse
+pkgname=(eclipse-{java,cpp,php})
 pkgver=4.5.0
-pkgrel=1
+pkgrel=2
 _release=mars
-pkgdesc="An IDE for Java and other languages."
+pkgdesc="Highly extensible IDE"
 arch=('x86_64')
 url="http://eclipse.org"
-depends=('java-environment' 'gtk2' 'unzip' 'libwebkit-gtk2' 'libxtst')
-install=${pkgname}.install
+depends=('java-environment' 'gtk2' 'unzip' 'libxtst')
+optdepends=('libwebkit-gtk2: for in app manual')
+install=${pkgbase}.install
 license=("EPL/1.0")
-
-# The file eclipse.png in this directory was fetched from:
-#
-#   http://download.eclipse.org/eclipse/eclipse/downloads/drops4/R-${pkgver}-${_date}/news/images/icon.png
-
-source=("http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/${_release}/R/${pkgname}-java-${_release}-R-linux-gtk-x86_64.tar.gz"
-        'https://www.eclipse.org/legal/epl-v10.html'
+source=("http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/$_release/R/eclipse-java-$_release-R-linux-gtk-x86_64.tar.gz"
+        "http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/$_release/R/eclipse-cpp-$_release-R-linux-gtk-x86_64.tar.gz"
+        "http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/$_release/R/eclipse-php-$_release-R-linux-gtk-x86_64.tar.gz"
+        'eclipse.sh'
+        'eclipse-java.desktop'
+        'eclipse-cpp.desktop'
+        'eclipse-php.desktop'
         'eclipse.png'
-        'eclipse.desktop')
-sha256sums=('2eeea5e563001f6812bad97e159befe4152bf8ef49124c98e635fd68104a1727'
-            'a40741b59364cc49449255e9b9bfe1fcfe6a2e7ab4d37ca89db3bacbfb14e9d2'
-            '91eb03b8ff33e2b05b6c0b1fa5ff145666833674ba3bd2aa2732fa0a3651c03d'
-            '88daed5095d908a4f4c273aafcd2855899f2516766a8958b9a653e030daa173c')
+        'epl-v10.html')
+noextract=("eclipse-java-$_release-R-linux-gtk-x86_64.tar.gz"
+           "eclipse-cpp-$_release-R-linux-gtk-x86_64.tar.gz"
+           "eclipse-php-$_release-R-linux-gtk-x86_64.tar.gz")
+sha1sums=('8100e4a60325005c20335d031f3622888c5250f0'
+          '11f9583e23ae68eb675107e6c9acc48e0a2520ae'
+          'a6ab769a59db54de208b9694292f7065fdab8067'
+          '05d119f25c30f6703f624ae836a3f1d9cd8fa800'
+          '8272587b38fb823aed510a75dfe1d91d249ae74f'
+          '67dc0d49a668e61087d24c89999c5f88eccb2e71'
+          '838df3cbc1ece133f81a0677636fe2b793cb9b02'
+          'd08cd9a8e5f4f87af4f4e61e4744e273917d0309'
+          '35666c54f2406125707e63edab12f2914d85ca76')
 
-package() {
-  cd ${pkgname}
+
+prepare() {
+   bsdtar -xf eclipse-java-$_release-R-linux-gtk-x86_64.tar.gz
+   mv eclipse eclipse-java
+   bsdtar -xf eclipse-cpp-$_release-R-linux-gtk-x86_64.tar.gz
+   mv eclipse eclipse-cpp
+   bsdtar -xf eclipse-php-$_release-R-linux-gtk-x86_64.tar.gz
+   mv eclipse eclipse-php
+}            
+            
+package_eclipse-java() {
+  conflicts=('eclipse')
+  provides=('eclipse')
+  replaces=('eclipse')
+  cd ${srcdir}
 
   # create directories
-  install -dm755 "${pkgdir}"/usr/{share/{applications,licenses/eclipse},bin}
+  install -dm755 "${pkgdir}"/usr/{share/{applications,eclipse-java,licenses/eclipse-java},bin}
+  
+  # install bin symlink
+  install -D eclipse.sh ${pkgdir}/usr/bin/eclipse-java
+  sed -i s!'/usr/share/eclipse'!'/usr/share/eclipse-java'! \
+  ${pkgdir}/usr/bin/eclipse-java
+  
+  # install .desktop and png
+  install -Dm644 "${srcdir}/eclipse-java.desktop" "${pkgdir}/usr/share/applications/eclipse-java.desktop"
+  install -Dm644 "${srcdir}/eclipse.png" "${pkgdir}/usr/share/pixmaps/eclipse-java.png"
   
   # install eclipse
-  cp -ar "${srcdir}/eclipse" "${pkgdir}/usr/share/"
-
-  # install bin symlink
-  ln -s "/usr/share/eclipse/eclipse" "$pkgdir/usr/bin/"
-  install -m644 "${srcdir}/eclipse.desktop" "${pkgdir}/usr/share/applications/"
-  
-  # install icon
-  for _i in 16 32 48 256; do
-    install -Dm644 plugins/org.eclipse.platform_*/eclipse${_i}.png \
-      "${pkgdir}/usr/share/icons/hicolor/${_i}x${_i}/apps/eclipse.png"
-  done
-
-  install -Dm644 "${srcdir}/eclipse.png" \
-                 "${pkgdir}/usr/share/icons/hicolor/512x512/apps/eclipse.png"
+  cp -ar "${srcdir}/eclipse-java" "${pkgdir}/usr/share/"
 
   # license
-  cp -a "${srcdir}/epl-v10.html" "${pkgdir}/usr/share/licenses/eclipse/epl-v10.html"
+  cp -a "${srcdir}/epl-v10.html" "${pkgdir}/usr/share/licenses/eclipse-java/epl-v10.html"
+}
+
+package_eclipse-cpp() {
+  pkgdesc+=" - C/C++"
+  cd ${srcdir}
+
+  # create directories
+  install -dm755 "${pkgdir}"/usr/{share/{applications,eclipse-cpp,licenses/eclipse-cpp},bin}
+  
+  # install bin symlink
+  install -D eclipse.sh ${pkgdir}/usr/bin/eclipse-cpp
+  sed -i s!'/usr/share/eclipse'!'/usr/share/eclipse-cpp'! \
+  ${pkgdir}/usr/bin/eclipse-cpp
+  
+  # install .desktop and png
+  install -Dm644 "${srcdir}/eclipse-cpp.desktop" "${pkgdir}/usr/share/applications/eclipse-cpp.desktop"
+  install -Dm644 "${srcdir}/eclipse.png" "${pkgdir}/usr/share/pixmaps/eclipse-cpp.png"
+  
+  # install eclipse
+  cp -ar "${srcdir}/eclipse-cpp" "${pkgdir}/usr/share/"
+
+  # license
+  cp -a "${srcdir}/epl-v10.html" "${pkgdir}/usr/share/licenses/eclipse-cpp/epl-v10.html"
+}
+
+package_eclipse-php() {
+  pkgdesc+=" - PHP"
+  cd ${srcdir}
+
+  # create directories
+  install -dm755 "${pkgdir}"/usr/{share/{applications,eclipse-php,licenses/eclipse-php},bin}
+  
+  # install bin symlink
+  install -D eclipse.sh ${pkgdir}/usr/bin/eclipse-php
+  sed -i s!'/usr/share/eclipse'!'/usr/share/eclipse-php'! \
+  ${pkgdir}/usr/bin/eclipse-php
+  
+  # install .desktop and png
+  install -Dm644 "${srcdir}/eclipse-php.desktop" "${pkgdir}/usr/share/applications/eclipse-php.desktop"
+  install -Dm644 "${srcdir}/eclipse.png" "${pkgdir}/usr/share/pixmaps/eclipse-php.png"
+  
+  # install eclipse
+  cp -ar "${srcdir}/eclipse-php" "${pkgdir}/usr/share/"
+
+  # license
+  cp -a "${srcdir}/epl-v10.html" "${pkgdir}/usr/share/licenses/eclipse-php/epl-v10.html"
 }
