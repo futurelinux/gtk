@@ -1,29 +1,30 @@
 pkgname=ibus
-pkgver=1.5.11
-pkgrel=2
+pkgver=1.5.13
+pkgrel=1
 pkgdesc="Next Generation Input Bus for Linux, IBus qt library and IBus qt input method plugin included"
 arch=('x86_64')
-url="http://ibus.googlecode.com"
+url="https://github.com/ibus/ibus"
 license=('LGPL')
 depends=('dconf' 'gtk2' 'gtk3' 'hicolor-icon-theme' 'libnotify' 'python3-dbus' 'python3-gobject' 
          'iso-codes' 'python2-gobject2' 'python2-dbus' 'python2-gobject' 'librsvg')
-makedepends=('gobject-introspection' 'vala' 'iso-codes' 'intltool')
+makedepends=('gobject-introspection' 'vala' 'intltool' 'gnome-common' 'gtk-doc' 'qt5-base')
 install=ibus.install
 source=(https://github.com/${pkgname}/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz)
-sha1sums=('b8dbc12cc90c3e7ec036d7098bc661b26630242a')
+sha1sums=('054a5a884329f2d3295d8f992566e7db72cf283b')
 
 build() {
   cd ${pkgname}-${pkgver}
-  export PYTHON=python2
-  ./configure \
+  ./autogen.sh \
     --prefix=/usr \
     --libexecdir=/usr/lib/ibus \
     --sysconfdir=/etc \
     --disable-gconf \
     --disable-memconf \
+    --enable-gtk-doc \
     --enable-ui \
+    --enable-wayland \
     --enable-python-library \
-    --enable-wayland
+    --with-python=python3 
   make
 }
 
