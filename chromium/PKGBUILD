@@ -1,15 +1,16 @@
 pkgname=chromium
-pkgver=48.0.2564.116
+pkgver=49.0.2623.75
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
 url="http://www.chromium.org/"
 license=('BSD')
-depends=('gtk2' 'dbus-glib' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 
+depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'libgcrypt' 
          'ttf-dejavu' 'dbus' 'desktop-file-utils' 'hicolor-icon-theme' 'systemd' 'speech-dispatcher' 
-         'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'zlib' 'harfbuzz' 'glib2' 'libexif' 'libxslt')
-makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'lib32-gcc-libs' 
-             'subversion' 'ninja' 'clang')
+         'flac' 'opus' 'libxml2' 'libpulse' 'icu' 'zlib' 'harfbuzz' 'glib2' 'libexif' 'libxslt'
+         'libvpx' 'snappy' 'perl')
+makedepends=('python2' 'gperf' 'yasm' 'mesa' 'libgnome-keyring' 'elfutils' 'lib32-gcc-libs' 
+             'ninja' 'lib32-zlib')
 optdepends=('pepperflashplugin: Pepper Flash plugin')
 install=chromium.install
 #backup=('etc/chromium/default') #not really needed beacuse we want to provide on chromium.default the pepperflash plugin, I keep it here as comment
@@ -23,7 +24,7 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         prepopulated_engines_json.diff
         chromium-widevine.patch)
 
-sha1sums=('8c3bc85212c20ce70af4972cd7e9f8e9dcb3d1dc'
+sha1sums=('38efdabcad285b27bda629844562dd35298a3897'
           '1ffba5152cb749300a016efec909b828eba9a64a'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
@@ -46,6 +47,9 @@ prepare() {
   # https://groups.google.com/a/chromium.org/d/topic/chromium-packagers/9JX1N2nf4PU/discussion
   touch chrome/test/data/webui/i18n_process_css_test.html
   
+  # https://code.google.com/p/chromium/issues/detail?id=541273
+  sed -i "/'target_name': 'libvpx'/s/libvpx/&_new/" build/linux/unbundle/libvpx.gyp
+  
   # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
   patch -p1 -i "$srcdir/search_engine_type.diff"
@@ -67,17 +71,9 @@ prepare() {
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
-
-  # activate ninja compile method
-  export GYP_GENERATORS='ninja'
   
   # CFLAGS are passed through release_extra_cflags below
   export -n CFLAGS CXXFLAGS
-
-  # Build with clang as a temporary solution to startup crash with GCC 4.9
-  # https://code.google.com/p/chromium/issues/detail?id=412967
-  export CC=clang
-  export CXX=clang++
 
   # NOTE
   # -Dremove_webcore_debug_symbols=1  speed up the build by removing debug symbols for webkit
@@ -87,7 +83,7 @@ build() {
     -Dgoogle_default_client_id=$_google_default_client_id
     -Dgoogle_default_client_secret=$_google_default_client_secret
     -Dwerror=
-    -Dclang=1
+    -Dclang=0
     -Dclang_use_chrome_plugins=0
     -Dpython_ver=2.7
     -Dlinux_link_libpci=1
@@ -113,10 +109,10 @@ build() {
     -Duse_system_libevent=1
     -Duse_system_libjpeg=1
     -Duse_system_libpng=1
-    -Duse_system_libvpx=0
+    -Duse_system_libvpx=1
     -Duse_system_libxml=1
     -Duse_system_opus=1
-    -Duse_system_snappy=0
+    -Duse_system_snappy=1
     -Duse_system_ssl=0
     -Duse_system_xdg_utils=1
     -Duse_system_yasm=1
@@ -124,8 +120,11 @@ build() {
     -Duse_system_v8=0
     -Duse_mojo=0
     -Duse_gconf=0
+    -Duse_sysroot=0
     -Dtarget_arch=x64
     -Dffmpeg_target_arch=x64
+    -Denable_hangout_services_extension=1
+    -Denable_widevine=1
     -Ddisable_nacl=0
     -Ddisable_glibc=1
     -Ddisable_pnacl=0
@@ -134,15 +133,9 @@ build() {
     -Ddisable_sse2=1)
 
   build/linux/unbundle/replace_gyp_files.py "${_chromium_conf[@]}"
-  #build/gyp_chromium -f make --depth=. "${_chromium_conf[@]}"
   build/gyp_chromium build/all.gyp --depth=. "${_chromium_conf[@]}"
   
-  #make BUILDTYPE=Release chrome chrome_sandbox
-  
-  # Build chrome base
-  ninja -C out/Release chrome
-  # Build the required SUID_SANDBOX helper
-  ninja -C out/Release chrome_sandbox
+  ninja -C out/Release chrome chrome_sandbox chromedriver
 }
 
 package() {
@@ -152,6 +145,8 @@ package() {
 
   install -Dm4755 -o root -g root out/Release/chrome_sandbox \
     "$pkgdir/usr/lib/chromium/chrome-sandbox"
+  
+  install -D out/Release/chromedriver "$pkgdir/usr/lib/chromium/chromedriver"
 
   cp out/Release/{*.pak,*.bin,nacl_helper{,_bootstrap}} \
     out/Release/nacl_irt_*.nexe \
@@ -159,8 +154,9 @@ package() {
 
   # Manually strip binaries so that 'nacl_irt_*.nexe' is left intact
   strip $STRIP_BINARIES "$pkgdir/usr/lib/chromium/"{chromium,chrome-sandbox} \
+    "$pkgdir/usr/lib/chromium/chromedriver" \
     "$pkgdir/usr/lib/chromium/"nacl_helper{,_bootstrap}
-#  strip $STRIP_SHARED "$pkgdir/usr/lib/chromium/libffmpegsumo.so"
+  strip $STRIP_SHARED "$pkgdir/usr/lib/chromium/libwidevinecdmadapter.so"
 
   # override command-line options
   install -Dm644 "$srcdir/chromium.default" "$pkgdir/etc/chromium/default"
@@ -185,6 +181,8 @@ package() {
   done
 
   install -D "$srcdir/chromium.sh" "$pkgdir/usr/bin/chromium"
-
+  
+  ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
+  
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/chromium/LICENSE"
 }
