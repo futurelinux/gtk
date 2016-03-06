@@ -1,8 +1,9 @@
 pkgbase=eclipse
 pkgname=(eclipse-{java,cpp,php,jee})
-pkgver=4.5.0
-pkgrel=3
+pkgver=4.5.2
+pkgrel=1
 _release=mars
+_rel=2
 pkgdesc="Highly extensible IDE"
 arch=('x86_64')
 url="http://eclipse.org"
@@ -10,41 +11,42 @@ depends=('java-environment' 'gtk2' 'unzip' 'libxtst')
 optdepends=('libwebkit-gtk2: for in app manual')
 install=${pkgbase}.install
 license=("EPL/1.0")
-source=("http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/$_release/R/eclipse-java-$_release-R-linux-gtk-x86_64.tar.gz"
-        "http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/$_release/R/eclipse-cpp-$_release-R-linux-gtk-x86_64.tar.gz"
-        "http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/$_release/R/eclipse-php-$_release-R-linux-gtk-x86_64.tar.gz"
-        "http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/$_release/R/eclipse-jee-$_release-R-linux-gtk-x86_64.tar.gz"
-        'eclipse.sh'
+source=("http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/$_release/$_rel/eclipse-java-$_release-$_rel-linux-gtk-x86_64.tar.gz"
+        "http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/$_release/$_rel/eclipse-cpp-$_release-$_rel-linux-gtk-x86_64.tar.gz"
+        "http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/$_release/$_rel/eclipse-php-$_release-$_rel-linux-gtk-x86_64.tar.gz"
+        "http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/$_release/$_rel/eclipse-jee-$_release-$_rel-linux-gtk-x86_64.tar.gz"
         'eclipse-java.desktop'
         'eclipse-cpp.desktop'
         'eclipse-php.desktop'
         'eclipse-jee.desktop'
         'eclipse.png'
-        'epl-v10.html')
-noextract=("eclipse-java-$_release-R-linux-gtk-x86_64.tar.gz"
-           "eclipse-cpp-$_release-R-linux-gtk-x86_64.tar.gz"
-           "eclipse-php-$_release-R-linux-gtk-x86_64.tar.gz")
-sha1sums=('8100e4a60325005c20335d031f3622888c5250f0'
-          '11f9583e23ae68eb675107e6c9acc48e0a2520ae'
-          'a6ab769a59db54de208b9694292f7065fdab8067'
-          '0b857ab8d4b6899fb7907c784dd075f489a45d0f'
-          '05d119f25c30f6703f624ae836a3f1d9cd8fa800'
+        'epl-v10.html'
+        'eclipse.sh')
+noextract=("eclipse-java-$_release-$_rel-linux-gtk-x86_64.tar.gz"
+           "eclipse-cpp-$_release-$_rel-linux-gtk-x86_64.tar.gz"
+           "eclipse-php-$_release-$_rel-linux-gtk-x86_64.tar.gz"
+           "eclipse-jee-$_release-$_rel-linux-gtk-x86_64.tar.gz")
+sha1sums=('7fdeda6a8c4db221539d67e0599f8104440f6675'
+          '365a30ed0cdd3e833233d742e61fb065319a3cc5'
+          '7dd96dcb6f10685c682cf8b0b04d42b313149ff8'
+          '53e6f8dcc1f0fdd59eb72dc4726c8092fe5001e8'
           '8272587b38fb823aed510a75dfe1d91d249ae74f'
           '67dc0d49a668e61087d24c89999c5f88eccb2e71'
           '838df3cbc1ece133f81a0677636fe2b793cb9b02'
           'adeb6355fa963102126bf653e87b6fed5c18a1a0'
           'd08cd9a8e5f4f87af4f4e61e4744e273917d0309'
-          '35666c54f2406125707e63edab12f2914d85ca76')
+          '35666c54f2406125707e63edab12f2914d85ca76'
+          '05d119f25c30f6703f624ae836a3f1d9cd8fa800')
 
 
 prepare() {
-   bsdtar -xf eclipse-java-$_release-R-linux-gtk-x86_64.tar.gz
+   bsdtar -xf eclipse-java-$_release-$_rel-linux-gtk-x86_64.tar.gz
    mv eclipse eclipse-java
-   bsdtar -xf eclipse-cpp-$_release-R-linux-gtk-x86_64.tar.gz
+   bsdtar -xf eclipse-cpp-$_release-$_rel-linux-gtk-x86_64.tar.gz
    mv eclipse eclipse-cpp
-   bsdtar -xf eclipse-php-$_release-R-linux-gtk-x86_64.tar.gz
+   bsdtar -xf eclipse-php-$_release-$_rel-linux-gtk-x86_64.tar.gz
    mv eclipse eclipse-php
-   bsdtar -xf eclipse-jee-$_release-R-linux-gtk-x86_64.tar.gz
+   bsdtar -xf eclipse-jee-$_release-$_rel-linux-gtk-x86_64.tar.gz
    mv eclipse eclipse-jee
 }            
             
