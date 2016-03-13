@@ -1,5 +1,5 @@
 pkgname=gtk2
-pkgver=2.24.29
+pkgver=2.24.30
 pkgrel=1
 pkgdesc="GObject-based multi-platform GUI toolkit (legacy)"
 arch=(i686 x86_64)
@@ -11,7 +11,7 @@ license=(LGPL)
 install=gtk2.install
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-$pkgver.tar.xz
         xid-collision-debug.patch)
-sha256sums=('0741c59600d3d810a223866453dc2bbb18ce4723828681ba24aa6519c37631b8'
+sha256sums=('0d15cec3b6d55c60eac205b1f3ba81a1ed4eadd9d0f8e7c508bc7065d0c4ca50'
             'd758bb93e59df15a4ea7732cf984d1c3c19dff67c94b957575efea132b8fe558')
 
 prepare() {
@@ -41,6 +41,5 @@ package() {
     echo 'gtk-fallback-icon-theme = "oxygen"' > "$pkgdir/etc/gtk-2.0/gtkrc"
 
     rm "$pkgdir/usr/bin/gtk-update-icon-cache"
+    rm -r "$pkgdir/usr/share/gtk-doc"
 }
-
-# vim:set noet sw=4:
