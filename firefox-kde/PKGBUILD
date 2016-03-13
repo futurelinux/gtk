@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=44.0.2
+pkgver=45.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
@@ -34,7 +34,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=11475705ab0f
+_patchrev=6a889427cd4f
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -71,20 +71,20 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha1sums=('949a9aa5fe21aa3a192277cec2bab05bd01e8bd4'
+sha1sums=('ee76dac9564b59ce6c5680dd472870ecba61bcc7'
           'SKIP'
           '2dc77dc4096c69e178ac79ea86f8cf184dc40932'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'ca77a08b296f8673828898d91b20cc6dd8742c2f'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
-          'a87a6eb5cb86f63e39249c60eb53594ce225dea0'
+          '693b54b9206ad854e4d75cbbf393029b77e82153'
           'ad1f05abf477dbc5f7e72c06e37c180459eeffd4'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
-          'd1fd5bcd67e0ed552ac113a4489ef391617fc729'
-          '0d355f22105fc8a207274d203935d88fc4523029'
+          'ca45133e89acf314fa3be659d004af6c30279baf'
+          '8cb2c74a00a57ec2e00da2cbbb5b30f70de400ed'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '2a123ebca655cc65fb3fd6a8a00704b611ca47eb'
+          '09f71045a8ab4341b08c1d7d2c27718636173965'
           'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
           'ebd57f47a4a8a156afc8ad32eeceac78162da548'
           'f3b41a0a771d2a94997b953cb3204c688d89afc4')
@@ -112,7 +112,7 @@ prepare() {
   rm -f content/media/gstreamer/nsGStreamerFormatHelper.{h,cpp}
   rm -f browser/components/shell/{nsKDEShellService,nsUnixShellService}.{h,cpp}
   rm -f browser/base/content/browser-kde.xul
-  rm -f toolkit/xre/nsKDEUtils.{h,cpp}
+  # rm -f toolkit/xre/nsKDEUtils.{h,cpp} # remove this, and what does below fix GTK3 for
   rm -f uriloader/exthandler/unix/{nsCommonRegistry,nsKDERegistry}.{h,cpp}
   rm -f toolkit/content/widgets/{dialog,preferences}-kde.xml
 

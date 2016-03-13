@@ -12,6 +12,6 @@
 +idldir = $(datadir)/idl/$(MOZ_APP_NAME)
 +installdir = $(libdir)/$(MOZ_APP_NAME)
 +sdkdir = $(libdir)/$(MOZ_APP_NAME)-devel
- ifndef TOP_DIST
- TOP_DIST = dist
- endif
+ ifeq (.,$(DEPTH))
+ DIST = dist
+ else
