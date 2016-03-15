@@ -1,5 +1,5 @@
 CHROME_URL=https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-CHROME_SHA256=e23ac95948c6b6adbc938244b66e733cffcf4af00c4e9be51b8e23106cd0e698
+CHROME_SHA256=cfae871bc9224509d672bcb4e5e6cb57fb44231c02b6ee474dce83263dcfdfca
 PEPFLASH_MD5=c92d8043cda40f67fd932c37a2a8219e
 MANIFEST_MD5=66d5ada543b5df03a779e05395e4a3b3
 
