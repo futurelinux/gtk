@@ -1,17 +1,17 @@
 # WARNING: this package should exactly match the hugin-tools platform package
 
 pkgname=hugin
-pkgver=2014.0.0
-pkgrel=2
+pkgver=2015.0.0
+pkgrel=1
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
 arch=('x86_64')
 depends=('wxgtk' 'boost-libs' 'enblend-enfuse' 'exiv2' "hugin-tools=${pkgver}"
          'lensfun' 'lapack' 'make' 'perl-exiftool' 'desktop-file-utils')
-makedepends=('cmake' 'boost' 'tclap' 'mesa')
+makedepends=('cmake' 'boost' 'tclap' 'mesa' 'zip')
 source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('f098aa0ede44010d3bb2bb38693177533fd776c45063a338c4c483d7e471ec29')
+sha256sums=('2cd93c110be95d439f9e68653f3738d059a26f5c28973f75475ef59cbaa2cbbd')
 
 install=install
 
@@ -25,12 +25,13 @@ prepare() {
 build() {
 	cd ${pkgname}-${pkgver}
 	
-	cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DENABLE_LAPACK=yes \
-		-DBUILD_HSI=no
-	make
+        cmake "${srcdir}/${pkgname}-${pkgver}" \
+           -DCMAKE_BUILD_TYPE=Release \
+           -DCMAKE_INSTALL_PREFIX=/usr \
+           -DCMAKE_EXE_LINKER_FLAGS="-lpthread" \
+           -DENABLE_LAPACK=yes \
+           -DBUILD_HSI=no
+         make
 }
 
 package() {
@@ -41,7 +42,6 @@ package() {
   rm -v "${pkgdir}/usr/share/hugin/data/celeste.model"
   rm -v "${pkgdir}/usr/bin/autooptimiser"
   rm -v "${pkgdir}/usr/bin/hugin_hdrmerge"
-  rm -v "${pkgdir}/usr/bin/pto2mk"
   rm -v "${pkgdir}/usr/bin/linefind"
   rm -v "${pkgdir}/usr/bin/nona"
   rm -v "${pkgdir}/usr/bin/fulla"
@@ -72,7 +72,5 @@ package() {
   rm "${pkgdir}/usr/lib/hugin/libhuginbase.so.0.0"
   rm "${pkgdir}/usr/lib/hugin/liblocalfeatures.so.0.0"
   rm "${pkgdir}/usr/lib/hugin/libceleste.so.0.0"
-  rm "${pkgdir}/usr/lib/hugin/libmakefilelib.so.0.0"
   rm "${pkgdir}/usr/lib/hugin/libhuginlines.so.0.0"
-  rm "${pkgdir}/usr/lib/hugin/libhuginvigraimpex.so.0.0"
 }
