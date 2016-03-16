@@ -3,7 +3,7 @@
 
 pkgname=libwebkit-gtk2
 pkgver=2.4.9
-pkgrel=1
+pkgrel=2
 pkgdesc="An opensource web content engine"
 arch=('x86_64')
 url="http://webkitgtk.org/"
