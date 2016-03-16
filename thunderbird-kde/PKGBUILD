@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=38.6.0
+pkgver=38.7.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -26,7 +26,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         vendor.js
         kde.js)
 options=('!emptydirs' '!makeflags')
-sha512sums=('9f6cb6b7c9b4935603333366a21cbb3e142fbdbded61adea44c39d45327207e1478d268fb721ee914ae1b0e762507f3665e40e1c315bd454fe1d019bd7972a08'
+sha512sums=('35d3c4ffc2d78947c93a167256e814aed84236cdc95f4576da33d7c0c655990d99b17e42a1d57f35967674e8805a40efb1ca640847531d2d991c8c0e2c336d2a'
             '5258d965d172411de04c47b8a230a9ced4905875066b26229dc03d56f5c691240e802b4cfaaf2e05e3a3ec8116122659b2c45a4128f6f2b948af206868b84b6a'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             'c6f92f5cb0efeaa59a4c73cdd37543c91740cb74bf43d216c0ed8a7d6d759687af221fc9775247b00d9da7b754c9c9c9ad8c52b3b9d9f084619d7680d76ab4ec'
@@ -35,7 +35,6 @@ sha512sums=('9f6cb6b7c9b4935603333366a21cbb3e142fbdbded61adea44c39d45327207e1478
             '2b7b03697e3bf68681fd45eb06235c5f9145ad7f549a3291e0e62fa95e8b3de02a118b0562d50387ff174fbe23a9060f1c749a21cdd2ccb0f20680424f70587b'
             'aeb444784732267f1b1e87e6084a776f82a1912c4c2637d2cf1de1c135dd9d41d2ef66d2bd3f9cbd3a79fad32d17ea6e2968ba644d5f887cb66ba6c09a2098f5'
             '06696c5b3216fd38d546d743f61a2ac0bb215a01192e53da75b069095565c602ec5730b3f317de08e4bd3318c4e5642560e9bc25153a69e4b5442772edef8cd8')
-
 prepare(){
   cd comm-esr${pkgver%%.*}
   patch -Np1 -i ../thunderbird-install-dir.patch
