@@ -2,7 +2,7 @@
 
 pkgname=hugin
 pkgver=2015.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
@@ -63,6 +63,8 @@ package() {
   rm -v "${pkgdir}/usr/bin/pto_move"
   rm -v "${pkgdir}/usr/bin/pto_mask"
   rm -v "${pkgdir}/usr/bin/pto_template"
+  rm -v "${pkgdir}/usr/bin/hugin_lensdb"
+  rm -v "${pkgdir}/usr/bin/verdandi"
  
   rm -rfv "${pkgdir}/usr/share/appdata"
   rm -v "${pkgdir}/usr/share/hugin/data/hugin_exiftool_copy.arg"
