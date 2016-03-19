@@ -73,7 +73,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 )
 sha1sums=('14081166adc1a18e1150ac264d810d6539818d67'
           'SKIP'
-          '7f37cf6f87ea00ddab3f3952c73e5ac67745c785'
+          '2dc77dc4096c69e178ac79ea86f8cf184dc40932'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'ca77a08b296f8673828898d91b20cc6dd8742c2f'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
