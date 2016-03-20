@@ -1,5 +1,5 @@
---- build-linux.xml	2009-10-31 15:32:53.000000000 +0100
-+++ build-linux.xml	2013-05-03 23:06:55.627098692 +0200
+--- build.xml	2009-10-31 15:32:53.000000000 +0100
++++ build.xml	2013-05-03 23:06:55.627098692 +0200
 @@ -77,7 +77,7 @@
  		<echo file="${file.script}" append="true">export LD_LIBRARY_PATH${line.separator}</echo>
  		<echo file="${file.script}" append="true">export MOZILLA_FIVE_HOME${line.separator}</echo>
