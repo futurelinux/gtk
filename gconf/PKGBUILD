@@ -1,9 +1,6 @@
-# $Id$
-# Maintainer:  whoami <pace_a_te@libero.it>
-
 pkgname=gconf
 pkgver=3.2.6
-pkgrel=4
+pkgrel=5
 pkgdesc="A configuration database system"
 arch=('x86_64')
 license=('LGPL')
