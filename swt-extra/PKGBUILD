@@ -1,7 +1,7 @@
 pkgname=swt-extra
-pkgver=4.4.1
+pkgver=4.5
 pkgrel=1
-_date=201409250400
+_date=201506032000
 pkgdesc='An open source widget toolkit for Java'
 arch=('x86_64')
 url='http://www.eclipse.org/swt/'
@@ -11,7 +11,7 @@ optdepends=('mesa' 'glu' 'libwebkit-gtk2')
 makedepends=('java-environment' 'libxtst' 'mesa' 'glu' 'unzip' 'pkgconfig' 'libwebkit-gtk2' 'apache-ant')
 source=(http://archive.eclipse.org/eclipse/downloads/drops4/R-${pkgver}-${_date}/swt-${pkgver}-gtk-linux-x86_64.zip
         build-swt.xml)
-sha256sums=('a74de85f84ed9eb77a9742b4ccbcfef19fcf913bdec821f12df71a7ba05d1deb'
+sha256sums=('ce89cb9dea5bef927873cbc377a81b5d9f1995622e42402bd9600043a9bc00e3'
             '6bb48007a95e3d8c6b577cc9cc4b61a51ce928b04f4fcd393cf72f8f727fe923')
 
 build() {
