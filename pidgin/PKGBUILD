@@ -1,29 +1,25 @@
 pkgname=('pidgin')
-pkgver=2.10.11
-pkgrel=2
+pkgver=2.10.12
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Multi-protocol instant messaging client"
 url="http://pidgin.im/"
 license=('GPL')
 depends=('libpurple' 'startup-notification' 'gtkspell' 'libxss' 'libsm'
          'hicolor-icon-theme' 'farstream')
-makedepends=('nss' 'libsasl' 'libidn' 'python2' 'avahi'
+makedepends=('nss' 'libsasl' 'libidn' 'python3' 'avahi'
              'tk' 'ca-certificates' 'intltool' 'networkmanager')
 optdepends=('aspell: for spelling correction')
 install=pidgin.install
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2"
-        'libpurple-gst1.patch')
-md5sums=('7c8bb6f997e05e7929104439872c2844'
-         '99164fd9fbca352cae70ae43bae47546')
+        'pidgin-2.10.12-py3-fixes.patch')
+md5sums=('14e0f5cfb2ed065e4dc80391a806ac76'
+         '3fd406b4847cee10cf3d158c36cbd184')
 
 prepare() {
    cd "${srcdir}/${pkgname}-${pkgver}"
-   patch -Np1 -i $srcdir/libpurple-gst1.patch
+   patch -Np1 -i ../pidgin-2.10.12-py3-fixes.patch
    autoreconf -vi
-   
-   # Use Python 2
-   sed -i 's/env python$/&2/' */plugins/*.py \
-     libpurple/purple-{remote,notifications-example,url-handler}
 }
 
 build() {
@@ -38,7 +34,7 @@ build() {
     --enable-cyrus-sasl \
     --disable-doxygen \
     --enable-nm \
-    --with-python=/usr/bin/python2 \
+    --with-python=/usr/bin/python3 \
     --with-system-ssl-certs=/etc/ssl/certs
     make
 }
