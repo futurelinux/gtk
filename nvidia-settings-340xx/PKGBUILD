@@ -2,7 +2,7 @@
 
 pkgname=nvidia-settings-340xx
 _pkgbasename=nvidia-340xx
-pkgver=340.93
+pkgver=340.96
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Gtk Graphical User Interface for nVidia"
@@ -13,7 +13,7 @@ license=('custom')
 options=('!strip')
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
         'nvidia-restore-settings.desktop')
-md5sums=('cb80e3f1cb6f2fb6e6eab35fad0884e4'
+md5sums=('7bdbcee13bade63227933d9217571882'
          '9237516792da7b6df32f8c7e8a98f475')
 
 build() {
