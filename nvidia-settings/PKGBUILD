@@ -2,7 +2,7 @@
 
 pkgname=nvidia-settings
 _pkgbasename=nvidia
-pkgver=361.42
+pkgver=364.16
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Gtk Graphical User Interface for nVidia"
@@ -11,18 +11,22 @@ optdepends=('gtk2: use gtk2 for interface')
 url="http://www.nvidia.com/"
 license=('custom')
 options=('!strip')
-source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
-        'nvidia-restore-settings.desktop')
-md5sums=('e70ece47407c53ebb527fa684ca759e7'
+#source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
+source+=("NVIDIA-Linux-x86_64-${pkgver}.run::https://developer.nvidia.com/linux64bit")
+
+#_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+_pkg="NVIDIA-Linux-x86_64-${pkgver}"
+
+source+=('nvidia-restore-settings.desktop')
+md5sums=('5d954bfb0be8532779a4ca1741851493'
          '9237516792da7b6df32f8c7e8a98f475')
 
 build() {
-  cd "${srcdir}"
-  sh "NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run" --extract-only
+  sh "${_pkg}.run" --extract-only
 }
 
 package() {
-  cd "${srcdir}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+  cd "${srcdir}/${_pkg}"
 
   install -D -m755 nvidia-settings "${pkgdir}/usr/bin/nvidia-settings"
   install -D -m644 nvidia-settings.1.gz "${pkgdir}/usr/share/man/man1/nvidia-settings.1.gz"
