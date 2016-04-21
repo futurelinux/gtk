@@ -1,6 +1,6 @@
 pkgname=thunderbird-kde
 pkgver=45.0
-pkgrel=1
+pkgrel=2
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
@@ -11,7 +11,7 @@ depends=('gtk2' 'gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-typ
          'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
 makedepends=('unzip' 'zip' 'python2' 'wireless_tools' 'yasm' 'mesa' 'libpulse'
-             'pkg-config' 'autoconf2.13' 'gst-plugins-base' 'xorg-server-xvfb')
+             'pkg-config' 'autoconf2.13' 'xorg-server-xvfb')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 install=thunderbird.install
@@ -25,11 +25,10 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         mozilla-nongnome-proxies.patch
         vendor.js
         kde.js)
-options=('!emptydirs' '!makeflags')
 sha512sums=('12aeceacf8aa60bb04c810fd189390f45bc64dc2b30cee465470a0d12947633681ee0dc74266306af0712e4f0443c403f2515388164a98332f791d53114d8b2a'
-            'a34f588c5770d9d06525fc77542377546009415c2a7f4788b3d49d2a8542edb670d1a4752982695f27d70dbfed0ec4d52a34389d00b0f71662de459f88387552'
+            '2bdc103f36b949e26b0c76c7399f3cd50400c7e01c7841882fdd3cfbf740dfad88a5373c7162b06f80176015bdeb508127d7b945061b31bddbed70f7e69c8e0d'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
-            'c6f92f5cb0efeaa59a4c73cdd37543c91740cb74bf43d216c0ed8a7d6d759687af221fc9775247b00d9da7b754c9c9c9ad8c52b3b9d9f084619d7680d76ab4ec'
+            '1eecdc7942ac189a67d4d57bca305937ae8d5986944738139bad4baa47e5a9c904797db6a26840d559740178fb6e1904a2d5377c86a7d0f8a6b721471ef37d75'
             'cf381cb6bfd1eb1fc7ec1a919cec48070c1e3daf14923884e53fb704742275e73dde8a72fc67c56b1660a9e65e67cee9a71638df4cb80105f368c5fb840c0a7d'
             '61411fa057442fe532e671984e03c2be42b5bad9e0db7b8c1a6065750224707309d9fb944edd850ddd27d3f9f36474f62c734c3007c5e86c6822fa68aca75c55'
             '2b7b03697e3bf68681fd45eb06235c5f9145ad7f549a3291e0e62fa95e8b3de02a118b0562d50387ff174fbe23a9060f1c749a21cdd2ccb0f20680424f70587b'
@@ -44,7 +43,7 @@ _google_api_key=AIzaSyA33sdKPff0x3KBByOhpzc1i7RS2A1mEpY
 prepare(){
   cd thunderbird-${pkgver}
   cp "$srcdir/mozconfig" .mozconfig
-  patch -Np1 -i ../thunderbird-install-dir.patch
+  patch -Np2 -i ../thunderbird-install-dir.patch
 
   msg "Patching for KDE"
   cd mozilla
@@ -79,7 +78,7 @@ build() {
 
 package() {
   cd thunderbird-${pkgver}
-  make -f client.mk DESTDIR="$pkgdir" install
+  make -f client.mk DESTDIR="$pkgdir" INSTALL_SDK= install
 
   install -Dm644 "$srcdir"/vendor.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/vendor.js"
   install -Dm644 "$srcdir"/kde.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/kde.js"
@@ -96,4 +95,6 @@ package() {
   rm -rf "$pkgdir"/usr/lib/thunderbird/{dictionaries,hyphenation}
   ln -s /usr/share/hunspell "$pkgdir/usr/lib/thunderbird/dictionaries"
   ln -s /usr/share/hyphen "$pkgdir/usr/lib/thunderbird/hyphenation"
+
+  ln -sf thunderbird "$pkgdir/usr/lib/thunderbird/thunderbird-bin"
 }
