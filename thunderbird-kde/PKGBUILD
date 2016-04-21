@@ -1,6 +1,6 @@
 pkgname=thunderbird-kde
 pkgver=45.0
-pkgrel=2
+pkgrel=3
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
@@ -11,7 +11,7 @@ depends=('gtk2' 'gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-typ
          'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
 makedepends=('unzip' 'zip' 'python2' 'wireless_tools' 'yasm' 'mesa' 'libpulse'
-             'pkg-config' 'autoconf2.13' 'xorg-server-xvfb')
+             'pkg-config' 'gconf' 'xorg-server-xvfb')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 install=thunderbird.install
@@ -26,7 +26,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         vendor.js
         kde.js)
 sha512sums=('12aeceacf8aa60bb04c810fd189390f45bc64dc2b30cee465470a0d12947633681ee0dc74266306af0712e4f0443c403f2515388164a98332f791d53114d8b2a'
-            '2bdc103f36b949e26b0c76c7399f3cd50400c7e01c7841882fdd3cfbf740dfad88a5373c7162b06f80176015bdeb508127d7b945061b31bddbed70f7e69c8e0d'
+            '6e911fa8eefed00b204b661740defba7bc177eb844410bc8fc278bbd51c67533418778f804186ca0397f21fd7e344959e02f810a1b4a6da29e30dc47f7c7711a'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '1eecdc7942ac189a67d4d57bca305937ae8d5986944738139bad4baa47e5a9c904797db6a26840d559740178fb6e1904a2d5377c86a7d0f8a6b721471ef37d75'
             'cf381cb6bfd1eb1fc7ec1a919cec48070c1e3daf14923884e53fb704742275e73dde8a72fc67c56b1660a9e65e67cee9a71638df4cb80105f368c5fb840c0a7d'

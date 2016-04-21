@@ -34,7 +34,7 @@ ac_add_options --enable-pulseaudio
 ac_add_options --enable-calender
 
 ac_add_options --disable-gnomevfs
-ac_add_options --disable-gconf
+#ac_add_options --disable-gconf
 ac_add_options --disable-crashreporter
 ac_add_options --disable-updater
 ac_add_options --disable-tests
