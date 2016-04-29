@@ -34,7 +34,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=a3615665211f
+_patchrev=c6717354928b
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -72,7 +72,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 )
 sha1sums=('95c5673b4449e8d694c50aea23d8160509d6a85b'
           'SKIP'
-          '925e9aa1bdbc83a208b6f038de303273d23a9fc2'
+          '1a5437481dee11ce6efdd6c83a8c297412f18be1'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'ca77a08b296f8673828898d91b20cc6dd8742c2f'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
@@ -80,7 +80,7 @@ sha1sums=('95c5673b4449e8d694c50aea23d8160509d6a85b'
           'ad1f05abf477dbc5f7e72c06e37c180459eeffd4'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           'e1c86029c1356fe55e55be68652f5f4d6fd81471'
-          '3c3a88b64cee71f5824c18e1539b220a79d878fe'
+          'd7166c3531d956b94bf6de44e735894e8ab97734'
           '6b755294ec843f4d93294cdfb33fc67a3499cdd6'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
           'ac7705a0b902f4629b40445ab977265d86ffa4a6'
@@ -127,13 +127,13 @@ prepare() {
   patch -Np1 -i "$srcdir/ddg-branding.patch"
   patch -Np1 -i "$srcdir"/pgo-fix-missing-kdejs.patch
 
-  # fix GTK3
-  sed -i 's|parent->group|gtk_window_get_group(const_cast<GtkWindow*>(parent))|g' toolkit/xre/nsKDEUtils.cpp 
-
   mkdir -vp "$srcdir/path"
 
   # WebRTC build tries to execute "python" and expects Python 2
   ln -sf /usr/bin/python2 "$srcdir/path/python"
+
+  # fix GTK3
+  sed -i 's|parent->group|gtk_window_get_group(const_cast<GtkWindow*>(parent))|g' toolkit/xre/nsKDEUtils.cpp 
 }
 
 build() {
@@ -158,11 +158,11 @@ build_firefox() {
   export PATH="$srcdir/path:$PATH"
   export PYTHON="/usr/bin/python2"
   export SHELL=/bin/bash
-  CPPFLAGS+=" -O2"
+  CPPFLAGS+=" -O2 -mno-avx"
 
   # Do PGO
   xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
-    make -f client.mk build MOZ_PGO=1 -j1
+    make -f client.mk build
 }
 
 package() {
