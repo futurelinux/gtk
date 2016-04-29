@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=45.0.2
+pkgver=46.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
@@ -8,7 +8,7 @@ license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme'
-         'libvpx' 'icu' 'libevent' 'nss>=3.19.4' 'hunspell' 'sqlite3>=3.8.9'
+         'icu' 'libevent' 'nss>=3.19.4' 'hunspell' 'sqlite3>=3.8.9'
          'kio' 'knotifications' 'nspr>=4.10.10' 'libffi>=3.0.9')
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
              'xorg-server-xvfb' 'libpulse' 'ffmpeg'
@@ -34,7 +34,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=6a889427cd4f
+_patchrev=a3615665211f
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -42,10 +42,10 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'firefox.desktop'
         'vendor.js'
         'kde.js'
-        'firefox-20.0.1-fixed-loading-icon.png'
         'firefox-install-dir.patch'
         'rhbz-966424.patch'
         'pgo-fix-missing-kdejs.patch'
+        'no-libnotify.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -55,8 +55,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         "$_patchurl/mozilla-nongnome-proxies.patch"
         # "$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         "$_patchurl/mozilla-kde.patch"
-	"$_patchurl/mozilla-preferences.patch"
-        "$_patchurl/mozilla-pkgconfig.patch"
+	#"$_patchurl/mozilla-preferences.patch"
         #'install-kde-js.patch'
         'ddg-branding.patch'
 
@@ -71,22 +70,20 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha1sums=('a4ca00cba9e351534b9c15b091deb10ed011fd30'
+sha1sums=('95c5673b4449e8d694c50aea23d8160509d6a85b'
           'SKIP'
-          '2dc77dc4096c69e178ac79ea86f8cf184dc40932'
+          'bc8796898da344d2f8d858fcb4c1f74802f09f7d'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           'ca77a08b296f8673828898d91b20cc6dd8742c2f'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
-          '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           'ad1f05abf477dbc5f7e72c06e37c180459eeffd4'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
-          'ca45133e89acf314fa3be659d004af6c30279baf'
-          '8cb2c74a00a57ec2e00da2cbbb5b30f70de400ed'
+          'e1c86029c1356fe55e55be68652f5f4d6fd81471'
+          '3c3a88b64cee71f5824c18e1539b220a79d878fe'
+          '6b755294ec843f4d93294cdfb33fc67a3499cdd6'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '09f71045a8ab4341b08c1d7d2c27718636173965'
-          'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
-          'ebd57f47a4a8a156afc8ad32eeceac78162da548'
+          'ac7705a0b902f4629b40445ab977265d86ffa4a6'
           'f3b41a0a771d2a94997b953cb3204c688d89afc4')
 
 
@@ -107,18 +104,22 @@ prepare() {
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
 
+  # Notifications with libnotify are broken
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1236150
+  patch -Np1 -i ../no-libnotify.patch
+
   # make makepkg -R easier
   msg "Patching for KDE"
   rm -f content/media/gstreamer/nsGStreamerFormatHelper.{h,cpp}
   rm -f browser/components/shell/{nsKDEShellService,nsUnixShellService}.{h,cpp}
   rm -f browser/base/content/browser-kde.xul
-  # rm -f toolkit/xre/nsKDEUtils.{h,cpp} # remove this, and what does below fix GTK3 for
+  rm -f toolkit/xre/nsKDEUtils.{h,cpp}
   rm -f uriloader/exthandler/unix/{nsCommonRegistry,nsKDERegistry}.{h,cpp}
   rm -f toolkit/content/widgets/{dialog,preferences}-kde.xml
 
   msg "Gecko/toolkit patchset"
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
-  patch -Np1 -i "$srcdir/mozilla-kde.patch"
+  patch -Np1 -i "$srcdir/mozilla-kde.patch" 
 
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
@@ -133,18 +134,6 @@ prepare() {
 
   # WebRTC build tries to execute "python" and expects Python 2
   ln -sf /usr/bin/python2 "$srcdir/path/python"
-
-  # Use gold, as Mozilla can use some of its features, such as safe ICF
-  #ln -s /usr/bin/ld.gold "$srcdir/path/ld"
-
-  # configure script misdetects the preprocessor without an optimization level
-  # https://bugs.archlinux.org/task/34644
-  sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' configure
-
-  # Fix tab loading icon (doesn't work with libpng 1.6)
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
-  cp "$srcdir/firefox-20.0.1-fixed-loading-icon.png" \
-    browser/themes/linux/tabbrowser/loading.png
 }
 
 build() {
@@ -169,8 +158,7 @@ build_firefox() {
   export PATH="$srcdir/path:$PATH"
   export PYTHON="/usr/bin/python2"
   export SHELL=/bin/bash
-  export CLANG=clang
-  export CLANG=clang++
+  CPPFLAGS+=" -O2"
 
   # Do PGO
   xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
