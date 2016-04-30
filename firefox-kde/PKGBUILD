@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=46.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
 arch=('x86_64')
@@ -46,7 +46,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'rhbz-966424.patch'
         'pgo-fix-missing-kdejs.patch'
         'firefox-44.0-pgo.patch'
-        #'no-libnotify.patch' # I disable this patch just because the notify looks ugly
+        'no-libnotify.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -81,6 +81,7 @@ sha1sums=('95c5673b4449e8d694c50aea23d8160509d6a85b'
           'ad1f05abf477dbc5f7e72c06e37c180459eeffd4'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '3b7673f241f3ae1af48be4457a936ae6458266b7'
+          'e1c86029c1356fe55e55be68652f5f4d6fd81471'
           '61a33bd02c33420757794d01ac8fcd21b03ee292'
           '6b755294ec843f4d93294cdfb33fc67a3499cdd6'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
@@ -107,7 +108,7 @@ prepare() {
 
   # Notifications with libnotify are broken
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1236150
-
+  patch -Np1 -i ../no-libnotify.patch
 
   patch -Np0 -i ../firefox-44.0-pgo.patch 
 
