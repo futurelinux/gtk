@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=46.0
-pkgrel=4
+pkgrel=6
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
 arch=('x86_64')
@@ -9,7 +9,7 @@ url="https://www.mozilla.org/firefox/"
 depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme'
          'icu' 'libevent' 'nss>=3.19.4' 'hunspell' 'sqlite3>=3.8.9'
-         'kio' 'knotifications' 'nspr>=4.10.10' 'libffi>=3.0.9')
+         'kio' 'knotifications' 'nspr>=4.10.10' 'libffi>=3.0.9' 'kwindowsystem' 'ki18n')
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
              'xorg-server-xvfb' 'libpulse' 'ffmpeg'
              'inetutils' 'libpng>=1.6.16'
@@ -47,6 +47,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'pgo-fix-missing-kdejs.patch'
         'firefox-44.0-pgo.patch'
         'no-libnotify.patch'
+        'firefox-20.0.1-fixed-loading-icon.png'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -82,6 +83,7 @@ sha1sums=('95c5673b4449e8d694c50aea23d8160509d6a85b'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '3b7673f241f3ae1af48be4457a936ae6458266b7'
           'e1c86029c1356fe55e55be68652f5f4d6fd81471'
+          '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           '61a33bd02c33420757794d01ac8fcd21b03ee292'
           '6b755294ec843f4d93294cdfb33fc67a3499cdd6'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
@@ -138,6 +140,11 @@ prepare() {
 
   # fix GTK3
   sed -i 's|parent->group|gtk_window_get_group(const_cast<GtkWindow*>(parent))|g' toolkit/xre/nsKDEUtils.cpp 
+
+  # Fix tab loading icon (doesn't work with libpng 1.6)
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
+  cp "$srcdir/firefox-20.0.1-fixed-loading-icon.png" \
+    browser/themes/linux/tabbrowser/loading.png
 }
 
 build() {
