@@ -1,5 +1,5 @@
 pkgname=chromium
-pkgver=50.0.2661.102
+pkgver=51.0.2704.63
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -22,9 +22,10 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff
-        chromium-widevine.patch)
+        chromium-widevine.patch
+	PNGImageDecoder.patch)
 
-sha1sums=('b21f42e08727c8d381227e8a425b8866a145bd5d'
+sha1sums=('90aff30a69895ffb52dd53d0bb1aee0739da77a2'
           '1ffba5152cb749300a016efec909b828eba9a64a'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
@@ -32,7 +33,8 @@ sha1sums=('b21f42e08727c8d381227e8a425b8866a145bd5d'
           '4732e8b6b75ba10981ee6fa338960ce862dd8b1f'
           'abeb1e424b35bbca954a5afea39418a5e198ac64'
           '79fc829d740183d85fb147a3a44e572a8f304dbe'
-          'bd551908281eede1c52e94cd9813fc156f78ba66')
+          'bd551908281eede1c52e94cd9813fc156f78ba66'
+          '6f7073f1c4a91bd3751444ba0e39323b7ff66295')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -47,9 +49,6 @@ prepare() {
   # https://groups.google.com/a/chromium.org/d/topic/chromium-packagers/9JX1N2nf4PU/discussion
   touch chrome/test/data/webui/i18n_process_css_test.html
   
-  # https://code.google.com/p/chromium/issues/detail?id=541273
-  sed -i "/'target_name': 'libvpx'/s/libvpx/&_new/" build/linux/unbundle/libvpx.gyp
-  
   # Set DDG as default search
   patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
   patch -p1 -i "$srcdir/search_engine_type.diff"
@@ -62,6 +61,9 @@ prepare() {
   # (Version string doesn't seem to matter so let's go with "Pinkie Pie")
   sed "s/@WIDEVINE_VERSION@/Pinkie Pie/" ../chromium-widevine.patch |
     patch -Np1
+
+  # Chromium 51 won't build without this patch. Not reported upstream yet AFAIK.
+  patch -p1 -i "$srcdir"/PNGImageDecoder.patch
 
   # Download NaCL toolchains
   python2 build/download_nacl_toolchains.py \
