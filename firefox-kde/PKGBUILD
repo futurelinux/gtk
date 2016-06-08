@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=46.0.1
+pkgver=47.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
@@ -11,7 +11,7 @@ depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-typ
          'icu' 'libevent' 'nss>=3.19.4' 'hunspell' 'sqlite3>=3.8.9'
          'kio' 'knotifications' 'nspr>=4.10.10' 'libffi>=3.0.9' 'kwindowsystem' 'ki18n')
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
-             'xorg-server-xvfb' 'libpulse' 'ffmpeg'
+             'xorg-server-xvfb' 'libpulse' 'ffmpeg' 'autoconf2.13'
              'inetutils' 'libpng>=1.6.16'
              'cmake' 'extra-cmake-modules')
 optdepends=('networkmanager: Location detection via available WiFi networks'
@@ -34,7 +34,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=32eafb4c7b34
+_patchrev=2f9f2e040647
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -72,7 +72,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha1sums=('6705d7d1561dfa156ddd3277dc4a901c4c982d82'
+sha1sums=('439dac5e9815ba5df6d509ebef8e29aa105b9708'
           'SKIP'
           '6933372c3f11231796b6fd883b3830a02eb9b537'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
@@ -84,10 +84,10 @@ sha1sums=('6705d7d1561dfa156ddd3277dc4a901c4c982d82'
           '3b7673f241f3ae1af48be4457a936ae6458266b7'
           'e1c86029c1356fe55e55be68652f5f4d6fd81471'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
-          '61a33bd02c33420757794d01ac8fcd21b03ee292'
+          'a762b6475c5f262eb9e1562ae2a7e8e7221a3cdb'
           '6b755294ec843f4d93294cdfb33fc67a3499cdd6'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          'ac7705a0b902f4629b40445ab977265d86ffa4a6'
+          'f1c2968382bb57d650f3f179855f8c29cb5c4d8b'
           'f3b41a0a771d2a94997b953cb3204c688d89afc4')
 
 
