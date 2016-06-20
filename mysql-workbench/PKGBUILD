@@ -1,5 +1,5 @@
 pkgname=mysql-workbench
-pkgver=6.3.6
+pkgver=6.3.7
 pkgrel=1
 pkgdesc='A cross-platform, visual database design tool developed by MySQL'
 arch=('x86_64')
@@ -22,7 +22,7 @@ source=("http://cdn.mysql.com/Downloads/MySQLGUITools/mysql-workbench-community-
 	'0010-mysql-workbench-object.patch'
 	'0013-mysql-workbench-no-json.patch'
 	'arch_linux_profile.xml')
-sha256sums=('c51fce1a3fd9425dd9adf4d16e24e84f92e2f8374b43a956f580fd84d03afe62'
+sha256sums=('84941f6dc33674a245d53a21bc14c5f0c192e370940147ddc7c236a61c0193ec'
             '9d3e866b610460664522520f73b81777b5626fb0a282a5952b9800b751550bf7'
             'b189e15c6b6f5a707357d9a9297f39ee3a33264fd28b44d5de6f537f851f82cf'
             'b49d4ea352d2c2013b9c5834668c44521a0a2c5f9c7e3fe746ad94ce0d2bb865'
