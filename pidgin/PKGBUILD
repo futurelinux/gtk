@@ -1,5 +1,5 @@
 pkgname=('pidgin')
-pkgver=2.10.12
+pkgver=2.11.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Multi-protocol instant messaging client"
@@ -13,7 +13,7 @@ optdepends=('aspell: for spelling correction')
 install=pidgin.install
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2"
         'pidgin-2.10.12-py3-fixes.patch')
-md5sums=('14e0f5cfb2ed065e4dc80391a806ac76'
+md5sums=('7b167474db669aab2f71fa46835fb83f'
          '3fd406b4847cee10cf3d158c36cbd184')
 
 prepare() {
@@ -51,3 +51,4 @@ package(){
   # Remove files that are packaged in libpurle
   make -C libpurple DESTDIR="$pkgdir" uninstall-libLTLIBRARIES
 }
+
