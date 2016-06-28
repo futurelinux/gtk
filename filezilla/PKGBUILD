@@ -1,5 +1,5 @@
 pkgname=filezilla
-pkgver=3.18.0
+pkgver=3.19.0
 pkgrel=1
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
@@ -8,10 +8,8 @@ license=('GPL')
 depends=('dbus' 'xdg-utils' 'wxgtk' 'libidn' 'hicolor-icon-theme' 'sqlite3' 'gnutls' 'libfilezilla>=0.5.2')
 install=${pkgname}.install
 screenshot="https://filezilla-project.org/images/screenshots/fz3_linux_main.png"
-source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2"
-        "http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz")
-sha256sums=('37646c7198b9a98806069a32d785c58f51695589cec0d86812251364445fd7e2'
-            '3943d1f650e6d1bece2ba1fdd84d013b9f8fabdcfc6845f9d62e5d4673a21740')
+source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2")
+sha256sums=('82a68742a02726d5559e3193e5c7d96f0f9105f4053e7959fef3225b65f84720')
 
 build() {
   cd "${pkgname}-${pkgver}"
@@ -31,9 +29,6 @@ package() {
   cd "${pkgname}-${pkgver}"
 
   make DESTDIR="${pkgdir}" install
-
-  install -dm755 "${pkgdir}/usr/share/filezilla/resources/oxygen"
-  cp -dpr --no-preserve=ownership "${srcdir}/oxygen" "${pkgdir}/usr/share/filezilla/resources/"
   
   install -dm755 "${pkgdir}/usr/share/doc/${pkgname}"
   install -Dm644 {AUTHORS,ChangeLog,README} "${pkgdir}/usr/share/doc/${pkgname}/"
