@@ -3,7 +3,7 @@
 # Contributor: Martchus <martchus@gmx.net>
 
 pkgname=libfilezilla
-pkgver=0.5.2
+pkgver=0.5.3
 pkgrel=1
 pkgdesc="Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs"
 arch=('x86_64')
@@ -11,7 +11,7 @@ url="https://lib.filezilla-project.org/"
 license=('GPL')
 depends=('gcc-libs')
 source=("http://downloads.sourceforge.net/project/filezilla/libfilezilla/${pkgver}/libfilezilla-${pkgver}.tar.bz2")
-md5sums=('be50726969cabda0f1b1c9ee432c1f4e')
+md5sums=('6192fd89318c1107b5b8095fd43dc3a5')
 
 build() {
   cd "${srcdir}/$pkgname-$pkgver"
