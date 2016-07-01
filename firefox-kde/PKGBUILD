@@ -1,6 +1,6 @@
 pkgname=firefox-kde
-pkgver=47.0
-pkgrel=2
+pkgver=47.0.1
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
 arch=('x86_64')
@@ -72,7 +72,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha1sums=('439dac5e9815ba5df6d509ebef8e29aa105b9708'
+sha1sums=('54dfac4e3610edbfcb0d19aa7a37dfbdd17434b1'
           'SKIP'
           '6933372c3f11231796b6fd883b3830a02eb9b537'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
