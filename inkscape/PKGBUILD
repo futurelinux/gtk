@@ -2,7 +2,7 @@
 
 pkgname=inkscape
 pkgver=0.91
-pkgrel=4
+pkgrel=5
 pkgdesc='Vector graphics editor using the SVG file format'
 url='http://inkscape.sourceforge.net/'
 license=('GPL' 'LGPL')
@@ -17,8 +17,9 @@ optdepends=('pstoedit: latex formulas'
             'pyxml: some extensions'
             'uniconvertor: reading/writing to some proprietary formats')
 #source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2")
-sha1sums=('9941ee467af570ac71a70f965cd9c48d4993b8f3')
+source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2" inkscape_zh_TW.mo)
+sha1sums=('9941ee467af570ac71a70f965cd9c48d4993b8f3'
+          '78f10b7afa35a888fd31ed00997d355c3c019882')
 install=install
 
 prepare() {
@@ -45,4 +46,7 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
+
+	# Workaround for 0.91 Taiwanese mo bug
+	install -Dm644 ${srcdir}/inkscape_zh_TW.mo ${pkgdir}/usr/share/locale/zh_TW/LC_MESSAGES/inkscape.mo
 }
