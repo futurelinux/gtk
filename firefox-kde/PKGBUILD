@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=47.0.1
+pkgver=48.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
@@ -7,15 +7,16 @@ arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
-         'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme'
-         'icu' 'libevent' 'nss>=3.19.4' 'hunspell' 'sqlite3>=3.8.9'
+         'dbus-glib' 'alsa-lib' 'ffmpeg' 'libvpx' 'libevent' 'nss' 'hunspell'
+         'sqlite3>=3.8.9' 'icu'
          'kio' 'knotifications' 'nspr>=4.10.10' 'libffi>=3.0.9' 'kwindowsystem' 'ki18n')
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
-             'xorg-server-xvfb' 'libpulse' 'ffmpeg' 'autoconf2.13'
-             'inetutils' 'libpng>=1.6.16'
+             'libpulse' 'inetutils' 'xorg-server-xvfb' 'autoconf2.13' 'rust'
              'cmake' 'extra-cmake-modules')
 optdepends=('networkmanager: Location detection via available WiFi networks'
+            'upower: Battery API'
             'firefox-i18n: for multilanguage support')
+options=('!emptydirs' '!makeflags')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 provides=("firefox=${pkgver}" "kmozillahelper")
 conflicts=('kmozillahelper')
@@ -34,16 +35,16 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=4e5807284ef0
+_patchrev=199d5cf40e86
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
         'mozconfig'
         'firefox.desktop'
-        'vendor.js'
-        'kde.js'
         'firefox-install-dir.patch'
-        'rhbz-966424.patch'
+        'vendor.js'
+        firefox-gtk3-20.patch
+        'kde.js'
         'pgo-fix-missing-kdejs.patch'
         'firefox-44.0-pgo.patch'
         'no-libnotify.patch'
@@ -72,22 +73,22 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha1sums=('54dfac4e3610edbfcb0d19aa7a37dfbdd17434b1'
+sha1sums=('2b73cfc996861fe895ad7564d485bf9e35190767'
           'SKIP'
-          '6933372c3f11231796b6fd883b3830a02eb9b537'
+          '476d9ab20fe03bab2ee802b6f72a705ed2c300d0'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
-          'ca77a08b296f8673828898d91b20cc6dd8742c2f'
-          'ce48f8e5065319e191a7389539ec663dc8a919d7'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
-          'ad1f05abf477dbc5f7e72c06e37c180459eeffd4'
+          'ca77a08b296f8673828898d91b20cc6dd8742c2f'
+          'be89e0c01fecb4c2dd429659e6ab549be4c32628'
+          'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '3b7673f241f3ae1af48be4457a936ae6458266b7'
           'e1c86029c1356fe55e55be68652f5f4d6fd81471'
           '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
-          'a762b6475c5f262eb9e1562ae2a7e8e7221a3cdb'
-          '6b755294ec843f4d93294cdfb33fc67a3499cdd6'
+          '042611759653c39200507b26c2977241c8748852'
+          '255d7465aa5ace5efb4f4cde14fa631872447aa3'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          'e59d280ea6cc74b25c9f15dd79210dfcf73259c7'
+          'f347251ff1275d974aae39a5e18eb4637ef83027'
           'f3b41a0a771d2a94997b953cb3204c688d89afc4')
 
 
@@ -165,15 +166,24 @@ build_kmozillahelper() {
 
 build_firefox() {
   cd  "$srcdir/firefox-${pkgver}"
- 
+
+  # _FORTIFY_SOURCE causes configure failures
+  CPPFLAGS+=" -O2"
+
+  # Hardening
+  LDFLAGS+=" -Wl,-z,now"
+
+  # GCC 6
+  # CXXFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
+
   export PATH="$srcdir/path:$PATH"
   export PYTHON="/usr/bin/python2"
   export SHELL=/bin/bash
-  CPPFLAGS+=" -O2 -mno-avx"
 
   # Do PGO
-  xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
-    make -f client.mk build MOZ_PGO=1
+  #xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
+  #  make -f client.mk build MOZ_PGO=1
+  make -f client.mk build
 }
 
 package() {
