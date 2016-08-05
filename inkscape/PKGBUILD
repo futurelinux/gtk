@@ -2,7 +2,7 @@
 
 pkgname=inkscape
 pkgver=0.91
-pkgrel=5
+pkgrel=6
 pkgdesc='Vector graphics editor using the SVG file format'
 url='http://inkscape.sourceforge.net/'
 license=('GPL' 'LGPL')
@@ -17,9 +17,9 @@ optdepends=('pstoedit: latex formulas'
             'pyxml: some extensions'
             'uniconvertor: reading/writing to some proprietary formats')
 #source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2" inkscape_zh_TW.mo)
+source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2" 'inkscape-zh_TW.po')
 sha1sums=('9941ee467af570ac71a70f965cd9c48d4993b8f3'
-          '78f10b7afa35a888fd31ed00997d355c3c019882')
+          '3f3dd38d5a54c99be84100d52111f6fdab692e54')
 install=install
 
 prepare() {
@@ -29,6 +29,9 @@ prepare() {
 	sed -i 's|"python" },|"python2" },|g' src/extension/implementation/script.cpp
 	sed -i 's|python -c|python2 -c|g' configure share/extensions/uniconv*.py
 	sed -i 's|"python"|"python2"|g' src/main.cpp
+
+	# Fix for Taiwanese locale bug, is upstreamed, but not released
+        mv -f ${srcdir}/inkscape-zh_TW.po ${srcdir}/${pkgname}-${pkgver}/po/zh_TW.po
 }
 
 build() {
@@ -46,7 +49,4 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
-
-	# Workaround for 0.91 Taiwanese mo bug
-	install -Dm644 ${srcdir}/inkscape_zh_TW.mo ${pkgdir}/usr/share/locale/zh_TW/LC_MESSAGES/inkscape.mo
 }
