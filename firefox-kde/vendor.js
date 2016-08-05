@@ -10,3 +10,6 @@ pref("browser.search.selectedEngine", "DuckDuckGo");
 // Don't disable our bundled extensions in the application directory
 pref("extensions.autoDisableScopes", 11);
 pref("extensions.shownSelectionUI", true);
+
+// Default e10s support to be enabled
+pref("browser.tabs.remote.autostart", true);
