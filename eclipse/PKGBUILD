@@ -1,9 +1,9 @@
 pkgbase=eclipse
 pkgname=(eclipse-{java,cpp,php,jee})
-pkgver=4.5.2
-pkgrel=2
+pkgver=4.6.0
+pkgrel=1
 _release=mars
-_rel=2
+_rel=1
 pkgdesc="Highly extensible IDE"
 arch=('x86_64')
 url="http://eclipse.org"
@@ -19,22 +19,22 @@ source=("http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads
         'eclipse-cpp.desktop'
         'eclipse-php.desktop'
         'eclipse-jee.desktop'
-        'eclipse.png'
+        'eclipse.svg'
         'epl-v10.html'
         'eclipse.sh')
 noextract=("eclipse-java-$_release-$_rel-linux-gtk-x86_64.tar.gz"
            "eclipse-cpp-$_release-$_rel-linux-gtk-x86_64.tar.gz"
            "eclipse-php-$_release-$_rel-linux-gtk-x86_64.tar.gz"
            "eclipse-jee-$_release-$_rel-linux-gtk-x86_64.tar.gz")
-sha1sums=('7fdeda6a8c4db221539d67e0599f8104440f6675'
-          '365a30ed0cdd3e833233d742e61fb065319a3cc5'
-          '7dd96dcb6f10685c682cf8b0b04d42b313149ff8'
-          '53e6f8dcc1f0fdd59eb72dc4726c8092fe5001e8'
+sha1sums=('74cbc500a4ade717e115afb13b3a633f8a4db786'
+          'acb089bac953232ac1004fee4d7f3b7b84aad68f'
+          'ad3a07f4b2ebd29fc4a4f2bf5314cef59bdd075c'
+          '503bdce0ec918265821b94949880fd26bd783e68'
           '8272587b38fb823aed510a75dfe1d91d249ae74f'
           '67dc0d49a668e61087d24c89999c5f88eccb2e71'
           '838df3cbc1ece133f81a0677636fe2b793cb9b02'
           'adeb6355fa963102126bf653e87b6fed5c18a1a0'
-          'd08cd9a8e5f4f87af4f4e61e4744e273917d0309'
+          '91206140df8c2039bb29fc9e67f067f1b07003a4'
           '35666c54f2406125707e63edab12f2914d85ca76'
           '05d119f25c30f6703f624ae836a3f1d9cd8fa800')
 
@@ -63,9 +63,9 @@ package_eclipse-java() {
   sed -i s!'/usr/share/eclipse'!'/usr/share/eclipse-java'! \
   ${pkgdir}/usr/bin/eclipse-java
   
-  # install .desktop and png
+  # install .desktop and svg
   install -Dm644 "${srcdir}/eclipse-java.desktop" "${pkgdir}/usr/share/applications/eclipse-java.desktop"
-  install -Dm644 "${srcdir}/eclipse.png" "${pkgdir}/usr/share/pixmaps/eclipse-java.png"
+  install -Dm644 "${srcdir}/eclipse.svg" "${pkgdir}/usr/share/pixmaps/eclipse-java.svg"
   
   # install eclipse
   cp -ar "${srcdir}/eclipse-java" "${pkgdir}/usr/share/"
@@ -88,9 +88,9 @@ package_eclipse-cpp() {
   sed -i s!'/usr/share/eclipse'!'/usr/share/eclipse-cpp'! \
   ${pkgdir}/usr/bin/eclipse-cpp
   
-  # install .desktop and png
+  # install .desktop and svg
   install -Dm644 "${srcdir}/eclipse-cpp.desktop" "${pkgdir}/usr/share/applications/eclipse-cpp.desktop"
-  install -Dm644 "${srcdir}/eclipse.png" "${pkgdir}/usr/share/pixmaps/eclipse-cpp.png"
+  install -Dm644 "${srcdir}/eclipse.svg" "${pkgdir}/usr/share/pixmaps/eclipse-cpp.svg"
   
   # install eclipse
   cp -ar "${srcdir}/eclipse-cpp" "${pkgdir}/usr/share/"
@@ -103,6 +103,7 @@ package_eclipse-php() {
   conflicts=('eclipse')
   provides=('eclipse')
   pkgdesc+=" - PHP"
+  depends+=('php')
   cd ${srcdir}
 
   # create directories
@@ -113,9 +114,9 @@ package_eclipse-php() {
   sed -i s!'/usr/share/eclipse'!'/usr/share/eclipse-php'! \
   ${pkgdir}/usr/bin/eclipse-php
   
-  # install .desktop and png
+  # install .desktop and svg
   install -Dm644 "${srcdir}/eclipse-php.desktop" "${pkgdir}/usr/share/applications/eclipse-php.desktop"
-  install -Dm644 "${srcdir}/eclipse.png" "${pkgdir}/usr/share/pixmaps/eclipse-php.png"
+  install -Dm644 "${srcdir}/eclipse.svg" "${pkgdir}/usr/share/pixmaps/eclipse-php.svg"
   
   # install eclipse
   cp -ar "${srcdir}/eclipse-php" "${pkgdir}/usr/share/"
@@ -138,9 +139,9 @@ package_eclipse-jee() {
   sed -i s!'/usr/share/eclipse'!'/usr/share/eclipse-jee'! \
   ${pkgdir}/usr/bin/eclipse-jee
   
-  # install .desktop and png
+  # install .desktop and svg
   install -Dm644 "${srcdir}/eclipse-jee.desktop" "${pkgdir}/usr/share/applications/eclipse-jee.desktop"
-  install -Dm644 "${srcdir}/eclipse.png" "${pkgdir}/usr/share/pixmaps/eclipse-jee.png"
+  install -Dm644 "${srcdir}/eclipse.svg" "${pkgdir}/usr/share/pixmaps/eclipse-jee.svg"
   
   # install eclipse
   cp -ar "${srcdir}/eclipse-jee" "${pkgdir}/usr/share/"
