@@ -1,6 +1,6 @@
 pkgname=firefox-kde
-pkgver=48.0
-pkgrel=2
+pkgver=48.0.1
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=83cd08e0c917fda16b30d91f929779304c46d273
 arch=('x86_64')
@@ -34,7 +34,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=199d5cf40e86
+_patchrev=6ab8b16f232c
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -42,7 +42,6 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'firefox.desktop'
         'firefox-install-dir.patch'
         'vendor.js'
-        firefox-gtk3-20.patch
         'kde.js'
         'pgo-fix-missing-kdejs.patch'
         'firefox-44.0-pgo.patch'
@@ -60,6 +59,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 	#"$_patchurl/mozilla-preferences.patch"
         #'install-kde-js.patch'
         'ddg-branding.patch'
+        "$_patchurl/mozilla-gtk3_20.patch"
 
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
@@ -72,13 +72,12 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
 )
-sha1sums=('2b73cfc996861fe895ad7564d485bf9e35190767'
+sha1sums=('95714df71633aac57219c88a0f799652da53901d'
           'SKIP'
           '7f4d6c9f715abf945c37328dedda728de5327220'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           'b871102748f98865c4cf6a757e267419ab0e44b1'
-          'be89e0c01fecb4c2dd429659e6ab549be4c32628'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '3b7673f241f3ae1af48be4457a936ae6458266b7'
@@ -88,7 +87,8 @@ sha1sums=('2b73cfc996861fe895ad7564d485bf9e35190767'
           '255d7465aa5ace5efb4f4cde14fa631872447aa3'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
           'f347251ff1275d974aae39a5e18eb4637ef83027'
-          'f3b41a0a771d2a94997b953cb3204c688d89afc4')
+          'f3b41a0a771d2a94997b953cb3204c688d89afc4'
+          'ca04b9c7e67645603bf7cc08db621c7817af0f5c')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -126,13 +126,13 @@ prepare() {
   msg "Gecko/toolkit patchset"
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch" 
+  patch -Np1 -i "$srcdir/mozilla-gtk3_20.patch"
 
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   patch -Np1 -i "$srcdir/ddg-branding.patch"
   patch -Np1 -i "$srcdir"/pgo-fix-missing-kdejs.patch
-  patch -Np1 -i "$srcdir"/firefox-gtk3-20.patch
 
   mkdir -vp "$srcdir/path"
 
