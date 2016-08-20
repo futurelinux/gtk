@@ -1,7 +1,7 @@
 pkgbase=gtk3
 pkgname=(gtk3 gtk-update-icon-cache)
 pkgver=3.20.6
-pkgrel=1
+pkgrel=2
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
