@@ -1,11 +1,11 @@
 pkgname=amule
 pkgver=10922
-pkgrel=2
+pkgrel=3
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
 url="http://www.amule.org"
 license=('GPL')
-depends=('wxgtk' 'wxgtk2.8' 'gd' 'geoip' 'libupnp' 'crypto++' 'libsm' 'kdelibs')
+depends=('wxgtk' 'wxgtk2.8' 'gd' 'geoip' 'libupnp' 'crypto++' 'libsm')
 makedepends=('ccache')
 install=amule.install
 source=("http://amule.sourceforge.net/tarballs/aMule-SVN-r${pkgver}.tar.bz2"
@@ -36,7 +36,6 @@ build() {
               --enable-mmap \
               --enable-ccache \
               --enable-geoip \
-              --enable-plasmamule \
               --enable-upnp \
               --with-wxversion=2.8
 
