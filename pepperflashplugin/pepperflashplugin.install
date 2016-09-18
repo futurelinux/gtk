@@ -1,7 +1,7 @@
 CHROME_URL=https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-CHROME_SHA256=111d8cf43999249ac7195bd7bf26307ed49ae749fd363525fdce32a80e0a78ce
-PEPFLASH_MD5=bde6701cf25d747d2cfe82277674c8d9
-MANIFEST_MD5=a7800937cb6f06f26e254d1cc43a129e
+CHROME_SHA256=2441cda02f8ece745b660941bcf2bf510bf068bc24cc72dbaef42573a98400bf
+PEPFLASH_MD5=b305dcc9dfffde110f99810348420ae4
+MANIFEST_MD5=c08ca6fe08a0a07d937d6ea9fe732bbb
 
 DIR=/usr/lib/PepperFlash
 TMP_DIR=/tmp/pepperflashplugin-installer
