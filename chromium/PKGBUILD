@@ -1,5 +1,5 @@
 pkgname=chromium
-pkgver=53.0.2785.101
+pkgver=53.0.2785.116
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins"
 arch=('x86_64')
@@ -24,7 +24,7 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/${pkgn
         prepopulated_engines_json.diff
         chromium-widevine.patch)
 
-sha1sums=('010476f0d5c9e6b37108036e4299d318668414cd'
+sha1sums=('9f20ac0a5d1720bc932ed85779112d164390327f'
           '9839044035b56b5dbeb9377e27a4ea0f5a1b94e2'
           '3ab45403f3e8ddfeeba6a5aee9f683d57883fb90'
           '19eff765ec1316f4ae057d48919b2fdd6b3a5bea'
