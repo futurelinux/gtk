@@ -1,24 +1,24 @@
 pkgname=amule
-pkgver=10922
-pkgrel=4
+pkgver=10958
+pkgrel=1
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
 url="http://www.amule.org"
 license=('GPL')
-depends=('wxgtk' 'wxgtk2.8' 'gd' 'geoip' 'libupnp' 'crypto++' 'libsm' 'kdelibs')
+depends=('wxgtk' 'wxgtk2.8' 'gd' 'geoip' 'libupnp' 'crypto++' 'libsm')
 makedepends=('ccache')
 install=amule.install
-source=("http://amule.sourceforge.net/tarballs/aMule-SVN-r${pkgver}.tar.bz2"
+source=("$pkgname-$pkgver.tar.gz::http://repo.or.cz/w/amule.git/snapshot/e539f94e3cdee138cd0248df131c13b2d49d7c45.tar.gz"
         "http://chakra.sourceforge.net/sources/oxygen-themes/aMule_Oxygen_Skin.zip"
         'amuled.systemd'
         'amuleweb.systemd')
-sha256sums=('a8a36ca019c321e9df289c96e078bcc16b6c7d6a13a7384364eacfca4ba545cd'
+sha256sums=('f9eda6c0ede1d76f1d9c7c5564e94a156e68a4ad6c1362408583ed4cc0687221'
             'a340cadb86697acde60b94187fe0134d5262635233870e583a766aa1b8aa06ad'
             '527a2cca6d56b8269722aafc77a89734f59a929f946f342bd0f69b256f9c7522'
             'f4f43b1154ddccc9036a4291a58c6715f097b171fec62ea7aead0c9d9fa654f2')
 
 build() {
-  cd aMule-SVN-r${pkgver}
+  cd $pkgname-e539f94
 
   ./configure --prefix=/usr \
               --mandir=/usr/share/man \
@@ -36,7 +36,6 @@ build() {
               --enable-mmap \
               --enable-ccache \
               --enable-geoip \
-              --enable-plasmamule \
               --enable-upnp \
               --with-wxversion=2.8
 
@@ -44,12 +43,12 @@ build() {
 }
 
 package() {
-  cd aMule-SVN-r${pkgver}
+  cd $pkgname-e539f94
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=$pkgdir install
 
-  cp -f "${srcdir}/aMule_Oxygen_Skin.zip" "${pkgdir}/usr/share/amule/skins/"
+  cp -f ../aMule_Oxygen_Skin.zip $pkgdir/usr/share/amule/skins/
 
-  install -D -m644 "${srcdir}/amuled.systemd" "${pkgdir}/usr/lib/systemd/system/amuled.service"
-  install -D -m644 "${srcdir}/amuleweb.systemd" "${pkgdir}/usr/lib/systemd/system/amuleweb.service"
+  install -D -m644 ../amuled.systemd $pkgdir/usr/lib/systemd/system/amuled.service
+  install -D -m644 ../amuleweb.systemd $pkgdir/usr/lib/systemd/system/amuleweb.service
 }
