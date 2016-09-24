@@ -1,17 +1,17 @@
-# WARNING: this package should exactly match the hugin-tools [core] package
+# WARNING: this package should exactly match the hugin-tools platform package
 
 pkgname=hugin
-pkgver=2016.0.0
-pkgrel=2
+pkgver=2016.2.0
+pkgrel=1
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
 arch=('x86_64')
 depends=('wxgtk' 'boost-libs' 'enblend-enfuse' 'exiv2' "hugin-tools=${pkgver}"
-         'lensfun' 'lapack' 'make' 'perl-exiftool' 'desktop-file-utils' 'gsl')
+         'lensfun' 'lapack' 'make' 'perl-exiftool' 'desktop-file-utils' 'glew')
 makedepends=('cmake' 'boost' 'tclap' 'mesa' 'zip')
 source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('6811e19f1c10da163e1c4228779beb4c12448db9')
+sha1sums=('9d28609d973fa72b95b1e2506cf1de7d24578e67')
 
 install=install
 
