@@ -1,12 +1,12 @@
 pkgname=firefox-kde
 pkgver=49.0.1
-pkgrel=1
+pkgrel=5
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=0219317ccd59d0fb8dc3d39ca351234c7ca7499e
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
-depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
+depends=('gtk2' 'gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'alsa-lib' 'ffmpeg' 'libvpx' 'libevent' 'nss' 'hunspell'
          'sqlite3>=3.8.9' 'icu'
          'kio' 'knotifications' 'nspr>=4.10.10' 'libffi>=3.0.9' 'kwindowsystem' 'ki18n')
@@ -45,8 +45,6 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'kde.js'
         'pgo-fix-missing-kdejs.patch'
         'firefox-44.0-pgo.patch'
-        'no-libnotify.patch'
-        'firefox-20.0.1-fixed-loading-icon.png'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -63,6 +61,9 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         "$_patchurl/mozilla-shared-nss-db.patch"
         "$_patchurl/mozilla-skia-overflow.patch"
 
+        # mozilla-central theme fix
+        tip.tar.gz::'http://hg.mozilla.org/mozilla-central/archive/tip.tar.gz/toolkit/themes/'
+
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
         #"$_patchurl/mozilla-idldir.patch"
@@ -78,15 +79,13 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 )
 sha1sums=('1e267ca9b6b0d19a7b6e0acfbf11e545d55eb830'
           'SKIP'
-          '7f4d6c9f715abf945c37328dedda728de5327220'
+          '2fc7e894d7399a9bec19367d963bad47a1a250b8'
           '86d6c2fe4ec2b3072a132e2afbc0ac798fd51e8f'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           'b871102748f98865c4cf6a757e267419ab0e44b1'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '3b7673f241f3ae1af48be4457a936ae6458266b7'
-          'e1c86029c1356fe55e55be68652f5f4d6fd81471'
-          '0c3900ffe21bfc3d96b80ade334613bc7e76fe27'
           '5ea4bc9e5b7608c24daa2f2a5093d9032b26d63f'
           '255d7465aa5ace5efb4f4cde14fa631872447aa3'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
@@ -97,7 +96,8 @@ sha1sums=('1e267ca9b6b0d19a7b6e0acfbf11e545d55eb830'
           '9bb77ff9821061d8c2dd6e18ce1998d9681c2297'
           'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
           'dd5c8303937b5430149c3fd3d7d520e92d9e7969'
-          'b6ee769618637eae4c202daf2762c14ba4ca05c7')
+          'b6ee769618637eae4c202daf2762c14ba4ca05c7'
+          'a057acaf88b7754470a7d5363f635b28b86fa06e')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -116,10 +116,6 @@ prepare() {
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
-
-  # Notifications with libnotify are broken
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1236150
-  patch -Np1 -i ../no-libnotify.patch
 
   patch -Np0 -i ../firefox-44.0-pgo.patch 
 
@@ -158,8 +154,8 @@ prepare() {
 
   # Fix tab loading icon (doesn't work with libpng 1.6)
   # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
-  cp "$srcdir/firefox-20.0.1-fixed-loading-icon.png" \
-    browser/themes/linux/tabbrowser/loading.png
+  rm -rf toolkit/themes
+  cp -r ${srcdir}/mozilla-central-c55bcb7c777e/toolkit/themes toolkit/
 }
 
 build() {
