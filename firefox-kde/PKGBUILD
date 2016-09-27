@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=49.0.1
-pkgrel=5
+pkgrel=6
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=0219317ccd59d0fb8dc3d39ca351234c7ca7499e
 arch=('x86_64')
@@ -105,6 +105,12 @@ sha1sums=('1e267ca9b6b0d19a7b6e0acfbf11e545d55eb830'
 # get your own set of keys.
 _google_api_key=AIzaSyA33sdKPff0x3KBByOhpzc1i7RS2A1mEpY
 
+# Mozilla API keys (see https://location.services.mozilla.com/api)
+# Note: These are for Chakra Linux use ONLY. For your own distribution, please
+# get your own set of keys. Feel free to contact totte@chakralinux.org for
+# more information.
+_mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
+
 prepare() {
   cd ${srcdir}/firefox-${pkgver}/
 
@@ -116,6 +122,9 @@ prepare() {
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
+
+  echo -n "$_mozilla_api_key" > mozilla-api-key
+  echo "ac_add_options --with-mozilla-api-keyfile=\"$PWD/mozilla-api-key\"" >>.mozconfig
 
   patch -Np0 -i ../firefox-44.0-pgo.patch 
 
