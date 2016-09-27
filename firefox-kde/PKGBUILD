@@ -97,7 +97,7 @@ sha1sums=('1e267ca9b6b0d19a7b6e0acfbf11e545d55eb830'
           'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
           'dd5c8303937b5430149c3fd3d7d520e92d9e7969'
           'b6ee769618637eae4c202daf2762c14ba4ca05c7'
-          'a057acaf88b7754470a7d5363f635b28b86fa06e')
+          'bdd39a28da9026b50afff589a8e1ecc554c13706')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -164,7 +164,7 @@ prepare() {
   # Fix tab loading icon (doesn't work with libpng 1.6)
   # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
   rm -rf toolkit/themes
-  cp -r ${srcdir}/mozilla-central-c55bcb7c777e/toolkit/themes toolkit/
+  cp -r ${srcdir}/mozilla-central-66a77b9bfe5d/toolkit/themes toolkit/
 }
 
 build() {
