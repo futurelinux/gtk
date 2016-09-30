@@ -13,3 +13,6 @@ pref("extensions.shownSelectionUI", true);
 
 // Default e10s support to be enabled
 pref("browser.tabs.remote.autostart", true);
+
+// Use mozilla location service by default
+pref("geo.wifi.uri", "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%");
