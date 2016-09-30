@@ -102,8 +102,9 @@ sha1sums=('1e267ca9b6b0d19a7b6e0acfbf11e545d55eb830'
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
-# get your own set of keys.
-_google_api_key=AIzaSyA33sdKPff0x3KBByOhpzc1i7RS2A1mEpY
+# get your own set of keys. Feel free to contact totte@chakralinux.org for
+# more information.
+_google_api_key=AIzaSyDjyg8EmaRUIsewzdjZXFZ0O8N5ARDUDGU
 
 # Mozilla API keys (see https://location.services.mozilla.com/api)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
