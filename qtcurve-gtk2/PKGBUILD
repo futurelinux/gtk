@@ -1,22 +1,32 @@
 pkgbase=qtcurve
 pkgname=('qtcurve-gtk2')
-pkgver=1.8.18
-pkgrel=2
+pkgver=1.8.18.r247.d126bd5
+pkgrel=1
 pkgdesc='A configurable set of widget styles for KDE and Gtk'
 arch=('x86_64')
 url='https://github.com/QtCurve/qtcurve'
 license=('LGPL')
 groups=('qtcurve')
 depends=('qtcurve-utils' 'gtk2')
-makedepends=('cmake' 'automoc4' 'qt')
-source=("$pkgbase-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz")
-md5sums=('422d1876d944bb278855f320eda19368')
+makedepends=('extra-cmake-modules' 'cmake' 'qt5-x11extras')
+source=("git://anongit.kde.org/qtcurve.git#commit=d126bd5")
+md5sums=('SKIP')
+
+pkgver() {
+  cd $srcdir/$pkgbase 
+  printf "%s" "$(git describe --long | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
+}
+
+prepare() {
+  cd $srcdir/$pkgbase
+
+  # prepare for build
+  [[ -e build ]] && rm -rf build
+  mkdir build
+}
 
 build() {
-  cd $pkgbase-$pkgver
- 
-  mkdir -p build
-  cd build
+  cd $srcdir/$pkgbase/build
   cmake .. -DCMAKE_BUILD_TYPE=Release \
            -DCMAKE_INSTALL_PREFIX=/usr \
            -DQTC_QT4_ENABLE_KDE=false \
@@ -26,8 +36,8 @@ build() {
 }
  
 package_qtcurve-gtk2() {
-  cd $pkgbase-$pkgver/build/gtk2
-  make DESTDIR="$pkgdir" install
-  cd ../lib/cairo
+  cd $srcdir/$pkgbase/build/
+  make DESTDIR="$pkgdir" -C gtk2 install
+  cd $srcdir/$pkgbase/build/lib/cairo
   make DESTDIR="$pkgdir" install
 }
