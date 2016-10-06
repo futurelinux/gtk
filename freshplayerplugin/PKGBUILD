@@ -1,5 +1,5 @@
 pkgname=freshplayerplugin
-pkgver=0.3.5
+pkgver=0.3.6
 pkgrel=1
 pkgdesc='PPAPI-host NPAPI-plugin adapter.'
 arch=('x86_64')
@@ -7,13 +7,13 @@ url='https://github.com/i-rinat/freshplayerplugin'
 license=('MIT')
 depends=('pepperflashplugin' 'pango' 'alsa-lib' 'freetype2' 'cairo' 'glib2' 'libpulse' 
          'libx11' 'libevent' 'gtk2' 'libgl' 'openssl' 'ffmpeg' 'libxrandr'
-         'libxrender' 'libxcursor' 'v4l-utils' 'libva' 'jack2')
+         'libxrender' 'libxcursor' 'v4l-utils' 'libva' 'jack2' 'icu')
 makedepends=('cmake' 'ragel')
 conflicts=('freshplayerplugin-git' 'flashplugin' 'chromium-pepper-flash')
 source=("$url/archive/v$pkgver.tar.gz"
         'freshwrapper.conf')
 backup=('etc/freshwrapper.conf')
-md5sums=('a1dfa71caba60c13c54ff5c743ef50bc'
+md5sums=('692db06829706f99d21e2b817788f310'
          'f3575ad86d10bb361c3530027cacc84e')
 
 build() {
