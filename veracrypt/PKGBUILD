@@ -1,5 +1,5 @@
 pkgname=veracrypt
-pkgver=1.18a
+pkgver=1.19
 pkgrel=1
 pkgdesc="Free disk encryption software, TrueCrypt fork."
 arch=('x86_64')
@@ -11,7 +11,7 @@ replaces=('truecrypt')
 install='veracrypt.install'
 source=("https://github.com/veracrypt/VeraCrypt/archive/VeraCrypt_${pkgver}.tar.gz"
 	'no_makeself.patch')
-sha256sums=('45ed134944bd147a149a64f05871c4ae13bb53fe2e173a73dd2a9a3657f6e5e7'
+sha256sums=('7d3fa5007b8e9dc93691c2da78dee497954b0596763a50e21724ec0564eb761b'
             '76c78498703d806d80707e65b253c2f2fa7f328fdae29efdca64b6d4a0ef2816')
 
 build() {
