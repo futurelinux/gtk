@@ -28,14 +28,15 @@ arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libexif' 'libgcrypt'
-         'ttf-font' 'systemd' 'dbus' 'libpulse' 'perl' 'perl-file-basedir'
-         'pciutils' 'desktop-file-utils' 'hicolor-icon-theme')
+         'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme')
 depends+=(${_system_libs[@]})
-makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja')
-optdepends=('kwallet: for storing passwords in KWallet')
+makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'gtk2')
+optdepends=('kwallet: for storing passwords in KWallet'
+            'gtk2: for pepper-flash plugin')
 #install=chromium.install # Do we really need this?
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
         chromium.desktop
+        chromium.sh
         chromium-52.0.2743.116-unset-madv_free.patch
         chromium-53.0.2785.92-last-commit-position.patch
         chromium-widevine.patch
@@ -44,10 +45,11 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         prepopulated_engines_json.diff)
 sha256sums=('d202d3eb0b3a979ad0e6d0d0c4faa93222c5e5b664d88b9f3a0343899fe7dd7d'
             '1a748951cd48c549f64740b2568158a60f8675002ceb2635d98059abadc5b8d1'
+            '3fd1c3fe7a3a5c5504f40aed4371071f4f482dc1ced640f6ce0eff5a03808584'
             '3b3aa9e28f29e6f539ed1c7832e79463b13128863a02e9c6fecd16c30d61c227'
             'd3dc397956a26ec045e76c25c57a1fac5fc0acff94306b2a670daee7ba15709e'
             'd6fdcb922e5a7fbe15759d39ccc8ea4225821c44d98054ce0f23f9d1f00c9808'
-            'ec932dc7d0d1ea5678d0eae19cfd0f27eeb69d6a8b776e7b56a3b0567feb4d80'
+            'a62135bb6aa8269a1b7e9ce2afe6ca9c24d6b85e9880e3694370efa21e4739d6'
             '7783404b2123a1c3c301ba9ba84d48294f7658efe71c10ab3e254e2da5220dbf'
             '2b78e36cf1c45c2d5256f47af44cc00e67eeac1e7673a95f02d9468516ef7757')
 
@@ -140,7 +142,6 @@ build() {
     'use_gold=false'
     'use_gtk3=true'
     'use_kerberos=true'
-    'use_mojo=false'
     'use_pulseaudio=true'
     'use_sysroot=false'
     'enable_hangout_services_extension=true'
