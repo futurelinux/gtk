@@ -1,18 +1,14 @@
 pkgname=pepperflashplugin
 pkgdesc="Adobe/Google Pepper Flash Player plugin installer"
-pkgver=23.0.0.162
+pkgver=23.0.0.205
 pkgrel=1
 arch=('any')
-url="http://www.google.com/chrome"
-license=('custom:chrome')
+url="http://www.adobe.com/downloads.html"
+license=('LGPL')
 install=pepperflashplugin.install
-depends=('rpmextract')
-source=(chrome_pepper-${pkgver}::https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-        license.html::https://www.google.com/chrome/intl/en/eula_text.html
-        chromium_pepperflashplayer.sh)
-sha256sums=('2441cda02f8ece745b660941bcf2bf510bf068bc24cc72dbaef42573a98400bf'
-            'e93c01576427cad9099f2cf0df0be70d0a2cc0a3a66c743318b2138aa7c4ed93'
-            '747c53cba599662ccbce48b7961ca8bf64474a7cf7d751a49b4d063a31269d6a')
+source=("https://fpdownload.adobe.com/pub/flashplayer/pdc/$pkgver/flash_player_ppapi_linux.x86_64.tar.gz"
+        'chromium_pepperflashplayer.sh')
+
 
 package() {
   # create required directories
@@ -22,16 +18,13 @@ package() {
   install -m644 "$srcdir/chromium_pepperflashplayer.sh" "$pkgdir/usr/lib/PepperFlash/chromium_pepperflashplayer.sh"
   sed -i "s/\@FLASH_VERSION\@/$pkgver/" "$pkgdir/usr/lib/PepperFlash/chromium_pepperflashplayer.sh"
 
-  # copy the script to enable pepperflash con chromium
-  sed -i "s|CHROME_URL=.*|CHROME_URL=${source[0]#*::}|" "$startdir/pepperflashplugin.install"
-  sed -i "s/CHROME_SHA256=.*/CHROME_SHA256=${sha256sums[0]}/" "$startdir/pepperflashplugin.install"
+  # install flashplayer plugin
+  install -Dm644 $srcdir/libpepflashplayer.so $pkgdir/usr/lib/PepperFlash/libpepflashplayer.so
+  install -Dm644 $srcdir/manifest.json $pkgdir/usr/lib/PepperFlash/manifest.json
 
-  PEPFLASH_MD5=$(md5sum "$srcdir/opt/google/chrome/PepperFlash/libpepflashplayer.so" | sed -e 's/\s.*//g')
-  MANIFEST_MD5=$(md5sum "$srcdir/opt/google/chrome/PepperFlash/manifest.json" | sed -e 's/\s.*//g')
-  echo $PEPFLASH_MD5
-  sed -i "s/PEPFLASH_MD5=.*/PEPFLASH_MD5=$PEPFLASH_MD5/" "$startdir/pepperflashplugin.install"
-  sed -i "s/MANIFEST_MD5=.*/MANIFEST_MD5=$MANIFEST_MD5/" "$startdir/pepperflashplugin.install"
-    
   # copy license
-  install -Dm644 "${srcdir}"/license.html "${pkgdir}"/usr/share/licenses/${pkgname}/license.html
+  install -Dm644 "${srcdir}"/README "${pkgdir}"/usr/share/licenses/${pkgname}/README
+  install -Dm644 $srcdir/LGPL/LGPL.txt $pkgdir/usr/share/licenses/$pkgname/LPGL.txt
 }
+md5sums=('1ed9c0d030bb6e167acfb0d0e2a08d8a'
+         '05ebdcb3406a95180fa912ab3cf398cc')

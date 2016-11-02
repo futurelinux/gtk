@@ -1,34 +1,3 @@
-CHROME_URL=https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-CHROME_SHA256=2441cda02f8ece745b660941bcf2bf510bf068bc24cc72dbaef42573a98400bf
-PEPFLASH_MD5=b305dcc9dfffde110f99810348420ae4
-MANIFEST_MD5=c08ca6fe08a0a07d937d6ea9fe732bbb
-
-DIR=/usr/lib/PepperFlash
-TMP_DIR=/tmp/pepperflashplugin-installer
-
-pepperflashplugin-installer() {
-  [ -d $TMP_DIR ] && rm -rf $TMP_DIR
-  mkdir $TMP_DIR
-  cd $TMP_DIR
-  
-  # Don't download a new Google Chrome package if the user already has
-  # identical plugin/manifest files installed
-
-  echo "$PEPFLASH_MD5  $DIR/libpepflashplayer.so
-  $MANIFEST_MD5  $DIR/manifest.json" > md5sums.check
-
-  if md5sum -c md5sums.check
-  then
-          echo "nothing to do, you are already using the latest pepperflash plugin provided by Chakra"
-  else
-          wget $CHROME_URL
-          rpm2cpio google-chrome*| bsdtar -xf -
-
-          cp opt/google/chrome/PepperFlash/libpepflashplayer.so $DIR/libpepflashplayer.so
-          cp opt/google/chrome/PepperFlash/manifest.json $DIR/manifest.json
-  fi
-}
-
 instructions() {
 
   /bin/cat << EOF
@@ -45,15 +14,9 @@ EOF
 }
 
 post_install() {
-    post_upgrade
     instructions
 }
 
 post_upgrade() {
-    pepperflashplugin-installer
-}
-
-pre_remove() {
-    rm $DIR/libpepflashplayer.so
-    rm $DIR/manifest.json
+    post_install
 }
