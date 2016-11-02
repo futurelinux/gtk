@@ -1,6 +1,6 @@
 [ -f etc/chromium-browser/default ] && _default='etc/chromium-browser/default'
 [ -f etc/chromium/default ] && _default='etc/chromium/default'
-flashver=15.0.0.223
+flashver=23.0.0.162
 
 instructions() {
 

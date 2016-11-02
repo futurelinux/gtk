@@ -21,7 +21,7 @@ declare -rgA _system_libs=(
 )
 
 pkgname=chromium
-pkgver=54.0.2840.71
+pkgver=54.0.2840.90
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
 arch=('x86_64')
@@ -33,7 +33,7 @@ depends+=(${_system_libs[@]})
 makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'gtk2')
 optdepends=('kwallet: for storing passwords in KWallet'
             'gtk2: for pepper-flash plugin')
-#install=chromium.install # Do we really need this?
+install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
         chromium.desktop
         chromium.sh
@@ -43,7 +43,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff)
-sha256sums=('d202d3eb0b3a979ad0e6d0d0c4faa93222c5e5b664d88b9f3a0343899fe7dd7d'
+sha256sums=('942b3aa498a5482b7a9b977f2a10902885a7e022ee2edf82f9fcb6c2dbc40106'
             '1a748951cd48c549f64740b2568158a60f8675002ceb2635d98059abadc5b8d1'
             '3fd1c3fe7a3a5c5504f40aed4371071f4f482dc1ced640f6ce0eff5a03808584'
             '3b3aa9e28f29e6f539ed1c7832e79463b13128863a02e9c6fecd16c30d61c227'
