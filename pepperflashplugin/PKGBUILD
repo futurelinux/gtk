@@ -1,30 +1,22 @@
 pkgname=pepperflashplugin
 pkgdesc="Adobe/Google Pepper Flash Player plugin installer"
 pkgver=23.0.0.205
-pkgrel=1
-arch=('any')
+pkgrel=2
+arch=('x86_64')
 url="http://www.adobe.com/downloads.html"
-license=('LGPL')
-install=pepperflashplugin.install
+license=('custom')
 source=("https://fpdownload.adobe.com/pub/flashplayer/pdc/$pkgver/flash_player_ppapi_linux.x86_64.tar.gz"
-        'chromium_pepperflashplayer.sh')
+        "http://wwwimages.adobe.com/content/dam/acom/en/legal/licenses-terms/pdf/Flash_Player_${pkgver%%.*}_0.pdf")
+md5sums=('1ed9c0d030bb6e167acfb0d0e2a08d8a'
+         '0208c2cf0629c79f2cd2d30016e0264f')
 
 
 package() {
-  # create required directories
-  install -d "${pkgdir}"/usr/lib/PepperFlash
-        
-  # copy the script to enable pepperflash con chromium
-  install -m644 "$srcdir/chromium_pepperflashplayer.sh" "$pkgdir/usr/lib/PepperFlash/chromium_pepperflashplayer.sh"
-  sed -i "s/\@FLASH_VERSION\@/$pkgver/" "$pkgdir/usr/lib/PepperFlash/chromium_pepperflashplayer.sh"
-
   # install flashplayer plugin
-  install -Dm644 $srcdir/libpepflashplayer.so $pkgdir/usr/lib/PepperFlash/libpepflashplayer.so
-  install -Dm644 $srcdir/manifest.json $pkgdir/usr/lib/PepperFlash/manifest.json
+  install -Dm644 libpepflashplayer.so manifest.json -t $pkgdir/usr/lib/PepperFlash/
 
   # copy license
   install -Dm644 "${srcdir}"/README "${pkgdir}"/usr/share/licenses/${pkgname}/README
   install -Dm644 $srcdir/LGPL/LGPL.txt $pkgdir/usr/share/licenses/$pkgname/LPGL.txt
+  install -Dm644 Flash_Player_${pkgver%%.*}_0.pdf -t "$pkgdir/usr/share/licenses/$pkgname/"
 }
-md5sums=('1ed9c0d030bb6e167acfb0d0e2a08d8a'
-         '05ebdcb3406a95180fa912ab3cf398cc')
