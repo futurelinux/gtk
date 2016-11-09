@@ -1,13 +1,13 @@
 pkgname=thunderbird-kde
 pkgver=45.4.0
-pkgrel=1
+pkgrel=2
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
 license=('MPL' 'GPL')
 url="http://www.mozilla.org/thunderbird/"
-depends=('gtk2' 'gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
+depends=('gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
 makedepends=('unzip' 'zip' 'python2' 'wireless_tools' 'yasm' 'mesa' 'libpulse'
@@ -26,7 +26,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         vendor.js
         kde.js)
 sha512sums=('9c601d9625b43103b64e111da3a88fccdc30d4a52aa8a66ee02120bc13f3c5600d24fa1cfd3817975a0e58be9078d192334dd3099aa462468d8ab0cd05a3bcd5'
-            'bce7e261b7184747a7ffc43a446df58513410aeb7945dfd0f506a8d18ec0e9f81cca6c48e3e96ab3e40ff7bc9be64ca0133b84f795fccca1f8d2632746d2c97b'
+            'b1ce9468e0635686a60b0db920cbde784e1998d7a401c4f1ea97e0a5f10984d18f6d64def3cf86759706d3841e414b01d66f61b4a85df02edb753917d17e56a6'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '1eecdc7942ac189a67d4d57bca305937ae8d5986944738139bad4baa47e5a9c904797db6a26840d559740178fb6e1904a2d5377c86a7d0f8a6b721471ef37d75'
             'cf381cb6bfd1eb1fc7ec1a919cec48070c1e3daf14923884e53fb704742275e73dde8a72fc67c56b1660a9e65e67cee9a71638df4cb80105f368c5fb840c0a7d'
