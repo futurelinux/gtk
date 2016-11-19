@@ -1,6 +1,6 @@
 pkgname=thunderbird-kde
-pkgver=45.4.0
-pkgrel=2
+pkgver=45.5.0
+pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
@@ -25,7 +25,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         mozilla-nongnome-proxies.patch
         vendor.js
         kde.js)
-sha512sums=('9c601d9625b43103b64e111da3a88fccdc30d4a52aa8a66ee02120bc13f3c5600d24fa1cfd3817975a0e58be9078d192334dd3099aa462468d8ab0cd05a3bcd5'
+sha512sums=('719469c4f66a9e4b09c360056c63ef2e1803334901dd4a23f12e455fe8ae4d0aba0a6273b3cf2796c925dc93f0add3df011ffe40148ef0b3f226d0b1a1c37b6a'
             'b1ce9468e0635686a60b0db920cbde784e1998d7a401c4f1ea97e0a5f10984d18f6d64def3cf86759706d3841e414b01d66f61b4a85df02edb753917d17e56a6'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '1eecdc7942ac189a67d4d57bca305937ae8d5986944738139bad4baa47e5a9c904797db6a26840d559740178fb6e1904a2d5377c86a7d0f8a6b721471ef37d75'
