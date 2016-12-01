@@ -1,5 +1,5 @@
 pkgname=ardour
-pkgver=5.4
+pkgver=5.5
 pkgrel=1
 pkgdesc="Professional-grade digital audio workstation"
 arch=('x86_64')
@@ -11,7 +11,7 @@ install=$pkgname.install
 source=(${pkgname}-${pkgver}::"git://git.ardour.org/${pkgname}/${pkgname}.git#tag=${pkgver}"
         "$pkgname.desktop")
 sha256sums=('SKIP'
-         '985b80c65c122be924eefcc6e4dc13498ace9da6151f79c860c794a0c02ead7b')
+            '985b80c65c122be924eefcc6e4dc13498ace9da6151f79c860c794a0c02ead7b')
 
 prepare() {
   cd "$srcdir/$pkgname-$pkgver"
