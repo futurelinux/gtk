@@ -21,7 +21,7 @@ declare -rgA _system_libs=(
 )
 
 pkgname=chromium
-pkgver=54.0.2840.99
+pkgver=55.0.2883.75
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
 arch=('x86_64')
@@ -30,7 +30,7 @@ license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libexif' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme')
 depends+=(${_system_libs[@]})
-makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'gtk2')
+makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'gtk2' 'git')
 optdepends=('kwallet: for storing passwords in KWallet'
             'gtk2: for pepper-flash plugin')
 #install=chromium.install # We should drop it now.
@@ -38,16 +38,16 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         chromium.desktop
         chromium.sh
         chromium-52.0.2743.116-unset-madv_free.patch
-        chromium-53.0.2785.92-last-commit-position.patch
+        chromium-system-ffmpeg-r4.patch
         chromium-widevine.patch
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff)
-sha256sums=('313baed99b3f41275c923e18e4a645422b75da276189a4987d457403f33211bd'
+sha256sums=('5bcf7180935bebc7648f7e2577f612da681f7846127f79dac22630ded9984e55'
             '1a748951cd48c549f64740b2568158a60f8675002ceb2635d98059abadc5b8d1'
             '3fd1c3fe7a3a5c5504f40aed4371071f4f482dc1ced640f6ce0eff5a03808584'
             '3b3aa9e28f29e6f539ed1c7832e79463b13128863a02e9c6fecd16c30d61c227'
-            'd3dc397956a26ec045e76c25c57a1fac5fc0acff94306b2a670daee7ba15709e'
+            'e3c474dbf3822a0be50695683bd8a2c9dfc82d41c1524a20b4581883c0c88986'
             'd6fdcb922e5a7fbe15759d39ccc8ea4225821c44d98054ce0f23f9d1f00c9808'
             'a62135bb6aa8269a1b7e9ce2afe6ca9c24d6b85e9880e3694370efa21e4739d6'
             '7783404b2123a1c3c301ba9ba84d48294f7658efe71c10ab3e254e2da5220dbf'
@@ -81,8 +81,8 @@ prepare() {
   # https://bugzilla.redhat.com/show_bug.cgi?id=1361157
   patch -Np1 -i ../chromium-52.0.2743.116-unset-madv_free.patch
 
-  # Disable last_commit_position as we don't build from git repository
-  patch -Np1 -i ../chromium-53.0.2785.92-last-commit-position.patch
+  # Build fixes from Gentoo
+  patch -Np1 -i ../chromium-system-ffmpeg-r4.patch
 
   # Work around bug in blink in which GCC 6 optimizes away null pointer checks
   # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=833524
