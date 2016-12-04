@@ -1,6 +1,6 @@
 pkgname=tuxguitar
 pkgver=1.3.2
-pkgrel=1
+pkgrel=2
 _jdk=java-8-openjdk
 pkgdesc="multitrack guitar tablature editor and player"
 arch=('x86_64')
@@ -15,7 +15,7 @@ source=("http://downloads.sourceforge.net/project/$pkgname/TuxGuitar/TuxGuitar-$
 	"$pkgname.xml")
 md5sums=('ba436b4558dc3ca054b395d8d7e38c50'
          '7b2a6ffbf4fc6bcf4ed8e7453dd1bb52'
-         '8aa65287c132eeccd464eb5ddf2e6f8b'
+         'fa9d98c32f4dae2f80ade4aa1e22c3a3'
          '59ce4eb8dcc0d0dde81e6cf2820aa9b0')
 
 prepare() {
@@ -25,6 +25,8 @@ prepare() {
 echo "/usr/lib/jvm/java-8-openjdk/include -I/usr/lib/jvm/java-8-openjdk/include/linux"
 EOF
   chmod 0755 gcj
+sed -i 's|https://swt-repo.googlecode.com/svn/repo/|http://maven-eclipse.github.io/maven|' tuxguitar-$pkgver-src/pom.xml
+
 }
 
 build() {
