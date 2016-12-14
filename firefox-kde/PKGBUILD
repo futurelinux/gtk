@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=50.0.2
+pkgver=50.1.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=0219317ccd59d0fb8dc3d39ca351234c7ca7499e
@@ -34,7 +34,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=a58cc7936ce7
+_patchrev=7f60766aae16
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -77,7 +77,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/firefox-no-default-ualocale.patch"
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
 )
-sha1sums=('083b9a803b25064b2d7d43e289797a9f2a2e9e5d'
+sha1sums=('6024dc49a566ed6296ad6cd707a199d41f090176'
           'SKIP'
           '17a2c317e0e50d514596ee14bafa2a1f71e10617'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
