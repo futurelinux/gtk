@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=50.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=0219317ccd59d0fb8dc3d39ca351234c7ca7499e
 arch=('x86_64')
