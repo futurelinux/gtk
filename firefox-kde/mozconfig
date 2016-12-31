@@ -12,6 +12,8 @@ ac_add_options --enable-skia
 
 # Release branding
 ac_add_options --enable-official-branding
+# gtk2 avoid crash on select file to open
+ac_add_options --enable-default-toolkit=cairo-gtk2
 ac_add_options MOZ_ADDON_SIGNING=1
 ac_add_options MOZ_REQUIRE_SIGNING=1
 
