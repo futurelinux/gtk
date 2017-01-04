@@ -1,8 +1,8 @@
 pkgname=inkscape
-pkgver=0.91
-pkgrel=9
+pkgver=0.92.0
+pkgrel=1
 pkgdesc='Vector graphics editor using the SVG file format'
-url='http://inkscape.sourceforge.net/'
+url='https://inkscape.org/'
 license=('GPL' 'LGPL')
 arch=('x86_64')
 makedepends=('boost' 'intltool')
@@ -14,22 +14,20 @@ optdepends=('pstoedit: latex formulas'
             'python2-lxml: some extensions and filters'
             'pyxml: some extensions'
             'uniconvertor: reading/writing to some proprietary formats')
-#source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2" 'inkscape-zh_TW.po')
-sha1sums=('9941ee467af570ac71a70f965cd9c48d4993b8f3'
-          '3f3dd38d5a54c99be84100d52111f6fdab692e54')
+source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2")
+sha1sums=('8f576bc828138e9c3c835a458c3cefd5801a907a')
 install=install
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	./autogen.sh
+
 	sed -i 's|/usr/bin/python\>|/usr/bin/python2|g' cxxtest/*.py
 	sed -i 's|/usr/bin/env python\>|/usr/bin/env python2|g' share/*/{test/,}*.py
 	sed -i 's|"python" },|"python2" },|g' src/extension/implementation/script.cpp
 	sed -i 's|python -c|python2 -c|g' configure share/extensions/uniconv*.py
 	sed -i 's|"python"|"python2"|g' src/main.cpp
-
-	# Fix for Taiwanese locale bug, is upstreamed, but not released
-        mv -f ${srcdir}/inkscape-zh_TW.po ${srcdir}/${pkgname}-${pkgver}/po/zh_TW.po
 }
 
 build() {
