@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=50.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=0219317ccd59d0fb8dc3d39ca351234c7ca7499e
 arch=('x86_64')
@@ -79,7 +79,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 )
 sha1sums=('6024dc49a566ed6296ad6cd707a199d41f090176'
           'SKIP'
-          '24b734ae99cef96983d6b09b5f7c64e70a70376a'
+          '90177c956236eb832a4d19eac7f0835150a889f6'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           '6762b62baa202e944fdacb9b7ac85ed3a30c8562'
