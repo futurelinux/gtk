@@ -1,30 +1,36 @@
-. $topsrcdir/browser/config/mozconfig
+# There multiple default mozconfigs in the soruce tree with references across directories
+# $topsrcdir/build/unix/mozconfig.gtk
+# $topsrcdir/build/unix/mozconfig.linux
+# $topsrcdir/build/mozconfig.common
+# $topsrcdir/browser/config/mozconfigs/linux64/release
+# $topsrcdir/browser/config/mozconfigs/linux64/common-opt
+# $topsrcdir/browser/config/mozconfig
+# $topsrcdir/build/mozconfig.rust
+# But we intend to mantain our own mozconfig without reference to any of the mozilla upstream configuration to keep it simple
+# This mozconfig would inlcude most of the configurations listed above into one file
 
 ac_add_options --prefix=/usr
 ac_add_options --enable-release
-ac_add_options --enable-gold
 ac_add_options --enable-pie
 
-# Rust
+# Backported features
 ac_add_options --enable-rust
-# Skia engine
 ac_add_options --enable-skia
 
 # Release branding
+ac_add_options --enable-application=browser
 ac_add_options --enable-official-branding
-ac_add_options --enable-update-channel=release
+ac_add_options --enable-verify-mar
+# gtk2 avoid crash on select file to open
+ac_add_options --enable-default-toolkit=cairo-gtk2
 MOZ_ADDON_SIGNING=1
 MOZ_REQUIRE_SIGNING=1
-
-# Use gtk2 to avoid crash on select file to open
-ac_add_options --enable-default-toolkit=cairo-gtk2
 
 # System libraries
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-icu
 ac_add_options --with-system-jpeg
-ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
 ac_add_options --with-system-libevent
@@ -39,14 +45,11 @@ ac_add_options --disable-libproxy
 
 # Features
 ac_add_options --enable-startup-notification
-ac_add_options --enable-pulseaudio
-ac_add_options --enable-ffmpeg
 ac_add_options --disable-gconf
 ac_add_options --disable-updater
 ac_add_options --disable-crashreporter
 
 # PGO
-
 mk_add_options PROFILE_GEN_SCRIPT='EXTRA_TEST_ARGS=10 $(MAKE) -C $(MOZ_OBJDIR) pgo-profile-run'
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-ff
 STRIP_FLAGS="--strip-debug"

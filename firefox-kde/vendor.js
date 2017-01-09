@@ -1,8 +1,8 @@
 // Use LANG environment variable to choose locale
 pref("intl.locale.matchOS", true);
 
-// Enable default browser checking.
-pref("browser.shell.checkDefaultBrowser", true);
+// Disable default browser checking.
+pref("browser.shell.checkDefaultBrowser", false);
 pref("browser.search.defaultenginename", "DuckDuckGo");
 pref("browser.search.order.extra.duckduckgo", "DuckDuckGo");
 pref("browser.search.selectedEngine", "DuckDuckGo");
@@ -14,5 +14,5 @@ pref("extensions.shownSelectionUI", true);
 // Default e10s support to be enabled
 pref("browser.tabs.remote.autostart", true);
 
-// Use mozilla location service by default
-pref("geo.wifi.uri", "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%");
+// Skip builtinCert check for addon update request
+pref("extensions.update.requireBuiltInCerts", false);
