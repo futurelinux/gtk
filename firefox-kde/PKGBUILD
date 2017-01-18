@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=50.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=0219317ccd59d0fb8dc3d39ca351234c7ca7499e
 arch=('x86_64')
@@ -48,6 +48,8 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
+        "$_patchurl/firefox-branded-icons.patch"
+        "$_patchurl/firefox-no-default-ualocale.patch"
 
         # Gecko/toolkit patchset
         "$_patchurl/mozilla-nongnome-proxies.patch"
@@ -56,6 +58,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         "$_patchurl/mozilla-flex_buffer_overrun.patch"
         "$_patchurl/mozilla-openaes-decl.patch"
         "$_patchurl/mozilla-preferences.patch"
+        "$_patchurl/mozilla-shared-nss-db.patch"
         "$_patchurl/mozilla-skia-overflow.patch"
 
         # mozilla-central theme fix
@@ -135,14 +138,17 @@ prepare() {
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch" 
   patch -Np1 -i "$srcdir/mozilla-preferences.patch" 
+  patch -Np1 -i "$srcdir/mozilla-shared-nss-db.patch"
   patch -Np1 -i "$srcdir/mozilla-flex_buffer_overrun.patch" 
   patch -Np1 -i "$srcdir/mozilla-skia-overflow.patch"
   patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
 
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
+  patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   patch -Np1 -i "$srcdir/ddg-branding.patch"
   patch -Np1 -i "$srcdir"/pgo-fix-missing-kdejs.patch
+  patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
 
   mkdir -vp "$srcdir/path"
 
