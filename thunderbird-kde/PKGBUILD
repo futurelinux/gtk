@@ -1,6 +1,6 @@
 pkgname=thunderbird-kde
 pkgver=45.6.0
-pkgrel=1
+pkgrel=2
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
