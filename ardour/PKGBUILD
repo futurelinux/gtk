@@ -1,12 +1,12 @@
 pkgname=ardour
 pkgver=5.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Professional-grade digital audio workstation"
 arch=('x86_64')
 url="http://ardour.org/"
 license=('GPL')
 depends=('liblrdf' 'liblo' 'lilv' 'gtkmm' 'aubio' 'suil' 'taglib' 'rubberband')
-makedepends=('git' 'python2' 'boost' 'cppunit' 'doxygen' 'graphviz')
+makedepends=('git' 'python2' 'boost' 'cppunit' 'doxygen' 'graphviz' 'itstool')
 install=$pkgname.install
 source=(${pkgname}-${pkgver}::"git://git.ardour.org/${pkgname}/${pkgname}.git#tag=${pkgver}"
         "$pkgname.desktop")
@@ -28,7 +28,9 @@ build() {
                         --with-backends="jack,alsa" \
                         --libjack=weak \
                         --optimize \
-                        --docs
+                        --docs \
+                        --versioned \
+                        --freedesktop
 
   python2 waf build $MAKEFLAGS
 }
@@ -39,6 +41,21 @@ package() {
   python2 waf install --destdir="$pkgdir"
 
   # install some freedesktop.org compatibility
-  install -Dm644 "$srcdir/$pkgname.desktop" \
-    "$pkgdir/usr/share/applications/$pkgname.desktop"
+  install -Dm644 "build/gtk2_ardour/${pkgname}5.desktop" \
+    "$pkgdir/usr/share/applications/${pkgname}5.desktop"
+  # install mime type
+  install -Dm644 "build/gtk2_ardour/${pkgname}.xml" \
+    "$pkgdir/usr/share/mime/application/${pkgname}.xml"
+  # the upstream install icons to bundled place, we need it system-wide
+  for px in 16 22 32 48; do
+  install -dm755 $pkgdir/usr/share/icons/hicolor/${px}x${px}/mimetypes
+  mv $pkgdir/usr/share/${pkgname}5/icons/application-x-ardour_${px}px.png \
+    $pkgdir/usr/share/icons/hicolor/${px}x${px}/mimetypes/application-x-ardour.png
+  done
+  # the main icon
+  for px in 16 22 32 48 256 512; do
+  install -dm755 $pkgdir/usr/share/icons/hicolor/${px}x${px}/apps
+  mv $pkgdir/usr/share/${pkgname}5/resources/Ardour-icon_${px}px.png \
+    $pkgdir/usr/share/icons/hicolor/${px}x${px}/apps/ardour5.png
+  done
 }
