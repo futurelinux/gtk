@@ -1,18 +1,18 @@
 pkgname=firefox-kde
-pkgver=50.1.0
-pkgrel=7
+pkgver=51.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
-_kmozillahelper_commit=0219317ccd59d0fb8dc3d39ca351234c7ca7499e
+_kmozillahelper_commit=5aeee92
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=('gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
-         'dbus-glib' 'alsa-lib' 'ffmpeg' 'libvpx' 'libevent' 'nss' 'hunspell'
-         'sqlite3>=3.8.9' 'icu'
-         'kio' 'knotifications' 'nspr>=4.10.10' 'libffi>=3.0.9' 'kwindowsystem' 'ki18n')
-makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
+         'dbus-glib' 'alsa-lib' 'ffmpeg' 'libvpx' 'libevent' 'nss>=3.28.1' 'hunspell'
+         'sqlite3>=3.14.1' 'icu'
+         'kio' 'knotifications' 'nspr>=4.13.1' 'libffi>=3.0.9' 'kwindowsystem' 'ki18n')
+makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake' 'ffmpeg' 'flac'
              'libpulse' 'inetutils' 'xorg-server-xvfb' 'autoconf2.13' 'rust'
-             'cmake' 'extra-cmake-modules')
+             'cmake' 'extra-cmake-modules' 'cargo')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'upower: Battery API'
             'firefox-i18n: for multilanguage support')
@@ -34,7 +34,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=7f60766aae16
+_patchrev=a888b9636517
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -55,7 +55,6 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         "$_patchurl/mozilla-nongnome-proxies.patch"
         "$_patchurl/mozilla-kde.patch"
 	'ddg-branding.patch'
-        "$_patchurl/mozilla-flex_buffer_overrun.patch"
         "$_patchurl/mozilla-openaes-decl.patch"
         "$_patchurl/mozilla-preferences.patch"
         "$_patchurl/mozilla-shared-nss-db.patch"
@@ -77,25 +76,24 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/firefox-no-default-ualocale.patch"
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
 )
-sha1sums=('6024dc49a566ed6296ad6cd707a199d41f090176'
+sha1sums=('e7219a81b16d34d92872b4604051ce5ddb818126'
           'SKIP'
-          '190a2236d115d0a9ad1e29556495839f51879503'
+          '37179e5fcd1500fa4b898868aec3768bba7f8b15'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           '6e11169300c266d7058725697e241fc021e81a1b'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '9ed341bb7b147da7ebba420110dcf5a5a8e8d887'
-          'cfb63132d6cfd29b2116d7e35d1456be1f732edb'
+          'd07e51f6f02c0d8fe6a0aa6fc2ba82fbafed207d'
           '255d7465aa5ace5efb4f4cde14fa631872447aa3'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '2e3ef5d6560d8dc08c5701ff9ff6ba9db63ed750'
+          '18339e252d7c148f17545e323febd69a1d7633f1'
           'f3b41a0a771d2a94997b953cb3204c688d89afc4'
-          'b4b5a4c120d65b7743f732519b70fbc35a63b352'
-          '9bb77ff9821061d8c2dd6e18ce1998d9681c2297'
+          '5978fb0131d31b0e91459a90edc918f66eec3155'
           'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
-          'dd5c8303937b5430149c3fd3d7d520e92d9e7969'
+          'efd2e4fab5ea174f5f84db17265cd1d070e414c8'
           'b6ee769618637eae4c202daf2762c14ba4ca05c7'
           '1b9c01c2258d9fef80fc09d1f4dbf41bafae8440')
 
@@ -142,7 +140,6 @@ prepare() {
   patch -Np1 -i "$srcdir/mozilla-kde.patch" 
   patch -Np1 -i "$srcdir/mozilla-preferences.patch" 
   patch -Np1 -i "$srcdir/mozilla-shared-nss-db.patch"
-  patch -Np1 -i "$srcdir/mozilla-flex_buffer_overrun.patch" 
   patch -Np1 -i "$srcdir/mozilla-skia-overflow.patch"
   patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
 
