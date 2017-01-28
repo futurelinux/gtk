@@ -21,7 +21,7 @@ declare -rgA _system_libs=(
 )
 
 pkgname=chromium
-pkgver=55.0.2883.87
+pkgver=56.0.2924.76
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
 arch=('x86_64')
@@ -32,21 +32,22 @@ depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libexif' 'libgcrypt'
 depends+=(${_system_libs[@]})
 makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'gtk2' 'git')
 optdepends=('kwallet: for storing passwords in KWallet'
+            'kdialog: needed for file dialogs in KDE'
             'gtk2: for pepper-flash plugin')
 #install=chromium.install # We should drop it now.
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
         chromium.desktop
         chromium.sh
-        chromium-52.0.2743.116-unset-madv_free.patch
+        chromium-glibc-2.24.patch
         chromium-system-ffmpeg-r4.patch
         chromium-widevine.patch
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff)
-sha256sums=('e81bd3140d9c84dfee04d9a94686dfe6a20ae79475d84f17154c5536dcb81a58'
+sha256sums=('cfb08e226b9c16ad887eb96d715a9cc4ab097d1a79e2e68c8749a7a4164b3c38'
             '1a748951cd48c549f64740b2568158a60f8675002ceb2635d98059abadc5b8d1'
             '3fd1c3fe7a3a5c5504f40aed4371071f4f482dc1ced640f6ce0eff5a03808584'
-            '3b3aa9e28f29e6f539ed1c7832e79463b13128863a02e9c6fecd16c30d61c227'
+            '6953651c002efe7fca8cda3143e963037ed38a0a4bc7ccb79304637c45340047'
             'e3c474dbf3822a0be50695683bd8a2c9dfc82d41c1524a20b4581883c0c88986'
             'd6fdcb922e5a7fbe15759d39ccc8ea4225821c44d98054ce0f23f9d1f00c9808'
             'a62135bb6aa8269a1b7e9ce2afe6ca9c24d6b85e9880e3694370efa21e4739d6'
@@ -77,12 +78,9 @@ prepare() {
   sed "s/@WIDEVINE_VERSION@/Pinkie Pie/" ../chromium-widevine.patch |
     patch -Np1
 
-  # Disable MADV_FREE (if set by glibc)
-  # https://bugzilla.redhat.com/show_bug.cgi?id=1361157
-  patch -Np1 -i ../chromium-52.0.2743.116-unset-madv_free.patch
-
   # Build fixes from Gentoo
   patch -Np1 -i ../chromium-system-ffmpeg-r4.patch
+  patch -Np1 -i ../chromium-glibc-2.24.patch
 
   # Work around bug in blink in which GCC 6 optimizes away null pointer checks
   # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=833524
