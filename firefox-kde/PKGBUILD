@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=51.0
+pkgver=51.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 _kmozillahelper_commit=5aeee92
@@ -59,6 +59,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         "$_patchurl/mozilla-preferences.patch"
         "$_patchurl/mozilla-shared-nss-db.patch"
         "$_patchurl/mozilla-skia-overflow.patch"
+        "$_patchurl/mozilla-language.patch"
 
         # mozilla-central theme fix
         firefox-loading.png::"http://hg.mozilla.org/mozilla-central/raw-file/9baec74b3db1/toolkit/themes/shared/icons/loading.png"
@@ -71,12 +72,11 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-shared-nss-db.patch"
         #"$_patchurl/mozilla-bmo1088588.patch" # Specify for ARM and PPC
         #"$_patchurl/toolkit-download-folder.patch"
-        #"$_patchurl/mozilla-language.patch"
         #"$_patchurl/mozilla-preferences.patch"
         #"$_patchurl/firefox-no-default-ualocale.patch"
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
 )
-sha1sums=('e7219a81b16d34d92872b4604051ce5ddb818126'
+sha1sums=('b73255fd4f90fd0c1b107b566679da2df3f31cf1'
           'SKIP'
           '37179e5fcd1500fa4b898868aec3768bba7f8b15'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
@@ -95,6 +95,7 @@ sha1sums=('e7219a81b16d34d92872b4604051ce5ddb818126'
           'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
           'efd2e4fab5ea174f5f84db17265cd1d070e414c8'
           'b6ee769618637eae4c202daf2762c14ba4ca05c7'
+          'c26a447967af089d44286b98fa51a372ad0b2ee3'
           '1b9c01c2258d9fef80fc09d1f4dbf41bafae8440')
 
 
@@ -142,6 +143,7 @@ prepare() {
   patch -Np1 -i "$srcdir/mozilla-shared-nss-db.patch"
   patch -Np1 -i "$srcdir/mozilla-skia-overflow.patch"
   patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
+  patch -Np1 -i "$srcdir/mozilla-language.patch"
 
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
