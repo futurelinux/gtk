@@ -1,5 +1,5 @@
 pkgname=gimp
-pkgver=2.8.18
+pkgver=2.8.20
 _pkgver=2.8
 pkgrel=1
 pkgdesc="GNU Image Manipulation Program (Development Version)"
@@ -18,7 +18,7 @@ optdepends=('gutenprint: for sophisticated printing only as gimp has built-in cu
 options=('!makeflags')
 install=gimp.install
 source=("http://download.gimp.org/pub/gimp/v${_pkgver}/gimp-${pkgver}.tar.bz2" "linux.gpl")
-md5sums=('5adaa11a68bc8a42bb2c778fee4d389c'
+md5sums=('d405640c426b234d6efc36fb4f5bae57'
          'bb27bc214261d36484093e857f015f38')
 
 prepare() {
