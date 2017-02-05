@@ -21,7 +21,7 @@ declare -rgA _system_libs=(
 )
 
 pkgname=chromium
-pkgver=56.0.2924.76
+pkgver=56.0.2924.87
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
 arch=('x86_64')
@@ -44,7 +44,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         template_url_prepopulate_data.diff
         search_engine_type.diff
         prepopulated_engines_json.diff)
-sha256sums=('cfb08e226b9c16ad887eb96d715a9cc4ab097d1a79e2e68c8749a7a4164b3c38'
+sha256sums=('9aac081ffccaae6497068100477a4e6ac7086bd15ad3c3cd009b9a760b7a53e0'
             '1a748951cd48c549f64740b2568158a60f8675002ceb2635d98059abadc5b8d1'
             '3fd1c3fe7a3a5c5504f40aed4371071f4f482dc1ced640f6ce0eff5a03808584'
             '6953651c002efe7fca8cda3143e963037ed38a0a4bc7ccb79304637c45340047'
