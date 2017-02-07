@@ -13,27 +13,25 @@ declare -rgA _system_libs=(
   [libpng]=libpng
   [libvpx]=libvpx
   [libwebp]=libwebp
-  #[libxml]=libxml2    # https://bugs.archlinux.org/task/29939
+  [libxml]=libxml2    # https://bugs.archlinux.org/task/29939
   [libxslt]=libxslt
   [snappy]=snappy
   [yasm]=
-  #[zlib]=zlib         # Error during build
 )
 
 pkgname=chromium
 pkgver=56.0.2924.87
-pkgrel=1
+pkgrel=2
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
-depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libexif' 'libgcrypt'
+depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libexif' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme')
 depends+=(${_system_libs[@]})
-makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'gtk2' 'git')
+makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'git' 'gtk3')
 optdepends=('kwallet: for storing passwords in KWallet'
-            'kdialog: needed for file dialogs in KDE'
-            'gtk2: for pepper-flash plugin')
+            'kdialog: needed for file dialogs in KDE')
 #install=chromium.install # We should drop it now.
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
         chromium.desktop
@@ -132,13 +130,13 @@ build() {
     'ffmpeg_branding="Chrome"'
     'proprietary_codecs=true'
     'link_pulseaudio=true'
-    'linux_use_bundled_binutils=false'
+    'linux_use_bundled_binutils=true'
     'use_allocator="none"'
     'use_cups=true'
     'use_gconf=false'
     'use_gnome_keyring=false'
     'use_gold=false'
-    'use_gtk3=true'
+    'use_gtk3=false'
     'use_kerberos=true'
     'use_pulseaudio=true'
     'use_sysroot=false'
