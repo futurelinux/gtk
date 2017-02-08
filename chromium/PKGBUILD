@@ -8,12 +8,11 @@
 # Keys are the names in the above script; values are the dependencies in Chakra
 declare -rgA _system_libs=(
   [flac]=flac
-  [harfbuzz-ng]=harfbuzz-icu
   [libjpeg]=libjpeg
   [libpng]=libpng
   [libvpx]=libvpx
   [libwebp]=libwebp
-  [libxml]=libxml2    # https://bugs.archlinux.org/task/29939
+  #[libxml]=libxml2    # https://bugs.archlinux.org/task/29939
   [libxslt]=libxslt
   [snappy]=snappy
   [yasm]=
@@ -121,8 +120,8 @@ build() {
   local _flags=(
     'is_clang=false'
     'clang_use_chrome_plugins=false'
-    'symbol_level=0'
-    'is_debug=false'
+    'symbol_level=1'
+    'is_debug=true'
     'fatal_linker_warnings=false'
     'treat_warnings_as_errors=false'
     'fieldtrial_testing_like_official_build=true'
@@ -130,7 +129,7 @@ build() {
     'ffmpeg_branding="Chrome"'
     'proprietary_codecs=true'
     'link_pulseaudio=true'
-    'linux_use_bundled_binutils=true'
+    'linux_use_bundled_binutils=false'
     'use_allocator="none"'
     'use_cups=true'
     'use_gconf=false'
