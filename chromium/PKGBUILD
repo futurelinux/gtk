@@ -20,7 +20,7 @@ declare -rgA _system_libs=(
 
 pkgname=chromium
 pkgver=56.0.2924.87
-pkgrel=3
+pkgrel=5
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -28,7 +28,7 @@ license=('BSD')
 depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libexif' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme')
 depends+=(${_system_libs[@]})
-makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'git' 'gtk3')
+makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'git' 'gtk3' 'clang')
 optdepends=('kwallet: for storing passwords in KWallet'
             'kdialog: needed for file dialogs in KDE')
 #install=chromium.install # We should drop it now.
@@ -115,12 +115,15 @@ build() {
 
   export PATH="$srcdir/python2-path:$PATH"
   export TMPDIR="$srcdir/temp"
+  export CC='/usr/bin/clang'
+  export CXX='/usr/bin/clang++'
   mkdir -p "$TMPDIR"
 
   local _flags=(
-    'is_clang=false'
+    'is_clang=true'
+    'clang_base_path="/usr/"'
+    'symbol_level=1'
     'clang_use_chrome_plugins=false'
-    'symbol_level=0'
     'is_debug=false'
     'fatal_linker_warnings=false'
     'treat_warnings_as_errors=false'
