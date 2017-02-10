@@ -20,7 +20,7 @@ declare -rgA _system_libs=(
 
 pkgname=chromium
 pkgver=56.0.2924.87
-pkgrel=2
+pkgrel=3
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -120,8 +120,8 @@ build() {
   local _flags=(
     'is_clang=false'
     'clang_use_chrome_plugins=false'
-    'symbol_level=1'
-    'is_debug=true'
+    'symbol_level=0'
+    'is_debug=false'
     'fatal_linker_warnings=false'
     'treat_warnings_as_errors=false'
     'fieldtrial_testing_like_official_build=true'
