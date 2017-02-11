@@ -1,25 +1,30 @@
 pkgname=amule
-pkgver=2.3.2
-pkgrel=2
+pkgver=2.3.2+35+047a55c
+pkgrel=1
 epoch=1
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
 url="http://www.amule.org"
 license=('GPL')
-depends=('wxgtk' 'wxgtk2.8' 'gd' 'geoip' 'libupnp' 'crypto++' 'libsm')
+depends=('wxgtk' 'gd' 'geoip' 'libupnp' 'crypto++' 'libsm')
 makedepends=('ccache')
 install=amule.install
-source=("https://github.com/amule-project/$pkgname/archive/$pkgver.tar.gz"
+source=("git+https://github.com/amule-project/amule.git#commit=047a55c"
         "http://chakra.sourceforge.net/sources/oxygen-themes/aMule_Oxygen_Skin.zip"
         'amuled.systemd'
         'amuleweb.systemd')
-sha256sums=('62fe4993bd53cfc829a823cec52194589feb78339777c1caef03fc9e2c906cf3'
+sha256sums=('SKIP'
             'a340cadb86697acde60b94187fe0134d5262635233870e583a766aa1b8aa06ad'
             '527a2cca6d56b8269722aafc77a89734f59a929f946f342bd0f69b256f9c7522'
             'f4f43b1154ddccc9036a4291a58c6715f097b171fec62ea7aead0c9d9fa654f2')
 
+pkgver(){
+  cd $pkgname
+  git describe --long | sed 's/\([^-]*-\)g/\1/;s/-/+/g'
+}
+
 build() {
-  cd $pkgname-$pkgver
+  cd $pkgname
   ./autogen.sh
   ./configure --prefix=/usr \
               --mandir=/usr/share/man \
@@ -37,14 +42,13 @@ build() {
               --enable-mmap \
               --enable-ccache \
               --enable-geoip \
-              --enable-upnp \
-              --with-wxversion=2.8
+              --enable-upnp
 
   make
 }
 
 package() {
-  cd $pkgname-$pkgver
+  cd $pkgname
 
   make DESTDIR=$pkgdir install
 
