@@ -1,18 +1,22 @@
 pkgname=wxgtk
 pkgver=3.0.2
-pkgrel=3
+pkgrel=4
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
 license=('custom:wxWindows')
-depends=('gtk2' 'gstreamer0.10-base')
-makedepends=('gstreamer0.10-base-plugins' 'glu' 'libwebkit-gtk2')
+depends=('gtk2' 'gst-plugins-base-libs')
+makedepends=('gst-plugins-base' 'glu' 'libwebkit-gtk2')
 optdepends=('libwebkit-gtk2: for webview support')
 options=('!emptydirs')
 source=("http://downloads.sourceforge.net/wxwindows/wxWidgets-${pkgver}.tar.bz2"
-        'make-abicheck-non-fatal.patch')
+        'make-abicheck-non-fatal.patch'
+        'wxgtk-gcc6.patch'
+        'gst1.0.patch')
 sha256sums=('346879dc554f3ab8d6da2704f651ecb504a22e9d31c17ef5449b129ed711585d'
-            '46a1bb97d69163547da13d5e23a4c73e68de27ee601da5d2fb5bc5c417931453') 
+            '46a1bb97d69163547da13d5e23a4c73e68de27ee601da5d2fb5bc5c417931453'
+            '6e659eb4f1cfbfe31e0da0c8719e496e16efa5be36265388a639964e4b39cf78'
+            'b85e5d5fdcd2b4774825d2855272c77e0c54024d7c687d4740c91bb24d246d8d')
 
 prepare() {
   cd wxWidgets-${pkgver}
@@ -20,6 +24,13 @@ prepare() {
   # C++ ABI check is too strict and breaks with GCC 5.1
   # https://bugzilla.redhat.com/show_bug.cgi?id=1200611
   patch -Np1 -i ../make-abicheck-non-fatal.patch
+
+  # Fix build with GCC 6
+  patch -p1 -i ../wxgtk-gcc6.patch
+
+  # Gstreamer 0.10 -> 1.0 patch
+  patch -Np1 -i ../gst1.0.patch
+  ./autogen.sh
 }
 
 build() {
@@ -32,6 +43,7 @@ build() {
     --enable-unicode \
     --enable-graphics_ctx \
     --enable-mediactrl \
+    --enable-stl \
     --enable-webview \
     --with-regex=builtin \
     --with-libpng=sys \
