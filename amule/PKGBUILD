@@ -1,13 +1,13 @@
 pkgname=amule
 pkgver=2.3.2+35+047a55c
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
 url="http://www.amule.org"
 license=('GPL')
 depends=('wxgtk' 'gd' 'geoip' 'libupnp' 'crypto++' 'libsm')
-makedepends=('ccache')
+makedepends=('ccache' 'git' 'boost')
 install=amule.install
 source=("git+https://github.com/amule-project/amule.git#commit=047a55c"
         "http://chakra.sourceforge.net/sources/oxygen-themes/aMule_Oxygen_Skin.zip"
@@ -42,8 +42,8 @@ build() {
               --enable-mmap \
               --enable-ccache \
               --enable-geoip \
-              --enable-upnp
-
+              --enable-upnp \
+              --with-boost
   make
 }
 
