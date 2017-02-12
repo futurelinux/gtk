@@ -1,6 +1,6 @@
 pkgname=ardour
-pkgver=5.5
-pkgrel=3
+pkgver=5.6
+pkgrel=1
 pkgdesc="Professional-grade digital audio workstation"
 arch=('x86_64')
 url="http://ardour.org/"
