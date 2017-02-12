@@ -1,36 +1,34 @@
 pkgname=audacity
-pkgver=2.1.1
-pkgrel=1
+pkgver=2.1.2
+pkgrel=2
 pkgdesc="A program that lets you manipulate digital audio waveforms"
 arch=('x86_64')
 url="http://audacity.sourceforge.net/"
 license=('GPL')
-depends=('libvorbis' 'libmad' 'libid3tag' 'wxgtk2.8' 'libsamplerate' 'lame' 
-         'hicolor-icon-theme' 'shared-mime-info' 'desktop-file-utils' 'redland' 
-         'jack' 'soundtouch' 'ffmpeg')
-makedepends=('zip' 'python' 'pkgconfig' 'cmake')
+depends=('libmad' 'libid3tag' 'wxgtk' 'lame' 'lilv' 'soundtouch' 'libsamplerate'
+         'ffmpeg' 'vamp-plugin-sdk' 'sbsms' 'portsmf' 'desktop-file-utils' 'jack')
+makedepends=('python2' 'cmake' 'portaudio')
 options=('!makeflags')
 install="${pkgname}.install"
-source=("https://github.com/${pkgname}/${pkgname}/archive/Audacity-${pkgver}.tar.gz"
+source=($pkgname::git+https://github.com/audacity/audacity.git#commit=cf68891
 	audacity-ffmpeg.patch)
-sha256sums=('15c5ff7ac1c0b19b08f4bdcb0f4988743da2f9ed3fab41d6f07600e67cb9ddb6'
+sha256sums=('SKIP'
             'ee5ddddee23cd292167d319e0dc61a96fb1477380ffbb225d4103472f7aa69b4')
 
 prepare() {
-  cd ${pkgname}-Audacity-${pkgver}
+  cd ${pkgname}
   patch -p1 -i "${srcdir}/audacity-ffmpeg.patch"
 }
 
 build() {
-  cd ${pkgname}-Audacity-${pkgver}
-  WX_CONFIG=/usr/bin/wx-config-2.8 \
-    ./configure --prefix=/usr \
-		--enable-unicode \
-		--with-libsamplerate
+  cd ${pkgname}
+  ./configure --prefix=/usr \
+              --with-libsamplerate \
+              --enable-shared
   make
 }
 
 package() {
-  cd ${pkgname}-Audacity-${pkgver}
+  cd ${pkgname}
   make DESTDIR="${pkgdir}" install
 }
