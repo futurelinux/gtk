@@ -1,6 +1,6 @@
 pkgname=wxgtk
 pkgver=3.0.2
-pkgrel=4
+pkgrel=5
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
@@ -43,7 +43,6 @@ build() {
     --enable-unicode \
     --enable-graphics_ctx \
     --enable-mediactrl \
-    --enable-stl \
     --enable-webview \
     --with-regex=builtin \
     --with-libpng=sys \
