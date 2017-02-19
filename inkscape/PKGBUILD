@@ -1,6 +1,6 @@
 pkgname=inkscape
-pkgver=0.92.0
-pkgrel=3
+pkgver=0.92.1
+pkgrel=1
 pkgdesc='Vector graphics editor using the SVG file format'
 url='https://inkscape.org/'
 license=('GPL' 'LGPL')
@@ -15,7 +15,7 @@ optdepends=('pstoedit: latex formulas'
             'pyxml: some extensions'
             'uniconvertor: reading/writing to some proprietary formats')
 source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2")
-sha1sums=('8f576bc828138e9c3c835a458c3cefd5801a907a')
+sha1sums=('bede1252b344dc08abb6736084364d8125a6dffc')
 install=install
 
 prepare() {
