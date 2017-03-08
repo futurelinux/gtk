@@ -1,14 +1,13 @@
 pkgname=firefox-kde
-pkgver=51.0.1
-pkgrel=3
+pkgver=52.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
-_kmozillahelper_commit=5aeee92
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=('gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
-         'dbus-glib' 'alsa-lib' 'ffmpeg' 'libvpx' 'libevent' 'nss>=3.28.1' 'hunspell'
-         'sqlite3>=3.14.1' 'icu'
+         'dbus-glib' 'alsa-lib' 'ffmpeg' 'libvpx' 'libevent' 'nss>=3.28.3' 'hunspell'
+         'sqlite3>=3.17.0' # 'icu>=58.1'
          'kio' 'knotifications' 'nspr>=4.13.1' 'libffi>=3.0.9' 'kwindowsystem' 'ki18n')
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake' 'ffmpeg' 'flac'
              'libpulse' 'inetutils' 'xorg-server-xvfb' 'autoconf2.13' 'rust'
@@ -34,7 +33,8 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=a888b9636517
+_patchrev=ce8a98f8d8d7
+_kmozillahelper_commit=21af64b
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -58,10 +58,6 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         "$_patchurl/mozilla-openaes-decl.patch"
         "$_patchurl/mozilla-preferences.patch"  # try to check OS's locale and use it first rather than stick to general.useragent.locale
         "$_patchurl/mozilla-shared-nss-db.patch"
-        "$_patchurl/mozilla-skia-overflow.patch"
-
-        # mozilla-central theme fix
-        firefox-loading.png::"http://hg.mozilla.org/mozilla-central/raw-file/9baec74b3db1/toolkit/themes/shared/icons/loading.png"
 
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
@@ -73,26 +69,24 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch" # making use of LANGUAGE= env var which isn't part of our standard
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
 )
-sha1sums=('b73255fd4f90fd0c1b107b566679da2df3f31cf1'
+sha1sums=('991aea082084438e08f2da59bbebf47b8e9b1741'
           'SKIP'
-          '37179e5fcd1500fa4b898868aec3768bba7f8b15'
+          'a1657d677eca90eeef4c7384c1375b8279845254'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           '6e11169300c266d7058725697e241fc021e81a1b'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '9ed341bb7b147da7ebba420110dcf5a5a8e8d887'
-          'd07e51f6f02c0d8fe6a0aa6fc2ba82fbafed207d'
+          '28b26ceb95fdea9939940a5c5c7e7fc5dca9ea1b'
           '255d7465aa5ace5efb4f4cde14fa631872447aa3'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '18339e252d7c148f17545e323febd69a1d7633f1'
-          'f3b41a0a771d2a94997b953cb3204c688d89afc4'
+          '5defe0a718fb2cf631441464049073bd2a5e6697'
+          '9cf8c5a03bcc97b66d97d62d72c325ddb14102cb'
           '5978fb0131d31b0e91459a90edc918f66eec3155'
           'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
-          'efd2e4fab5ea174f5f84db17265cd1d070e414c8'
-          'b6ee769618637eae4c202daf2762c14ba4ca05c7'
-          '1b9c01c2258d9fef80fc09d1f4dbf41bafae8440')
+          'efd2e4fab5ea174f5f84db17265cd1d070e414c8')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -137,7 +131,6 @@ prepare() {
   patch -Np1 -i "$srcdir/mozilla-kde.patch" 
   patch -Np1 -i "$srcdir/mozilla-preferences.patch" 
   patch -Np1 -i "$srcdir/mozilla-shared-nss-db.patch"
-  patch -Np1 -i "$srcdir/mozilla-skia-overflow.patch"
   patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
 
   msg "Firefox patchset"
@@ -154,10 +147,6 @@ prepare() {
 
   # fix GTK3
   # sed -i 's|parent->group|gtk_window_get_group(const_cast<GtkWindow*>(parent))|g' toolkit/xre/nsKDEUtils.cpp 
-
-  # Fix tab loading icon (doesn't work with libpng 1.6)
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
-  install -Dm655 "$srcdir/firefox-loading.png" toolkit/themes/linux/global/icons/loading.png
 }
 
 build() {
@@ -193,9 +182,9 @@ build_firefox() {
   export SHELL=/bin/bash
 
   # Do PGO
-  xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
-    make -f client.mk build MOZ_PGO=1
-  #make -f client.mk build
+  #xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
+  #  make -f client.mk build MOZ_PGO=1
+  make -f client.mk build
 }
 
 package() {
