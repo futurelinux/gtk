@@ -1,5 +1,5 @@
 pkgname=('pidgin')
-pkgver=2.11.0
+pkgver=2.12.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Multi-protocol instant messaging client"
@@ -13,8 +13,8 @@ optdepends=('aspell: for spelling correction')
 install=pidgin.install
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2"
         'pidgin-2.10.12-py3-fixes.patch')
-md5sums=('7b167474db669aab2f71fa46835fb83f'
-         '3fd406b4847cee10cf3d158c36cbd184')
+md5sums=('8287400c4e5663e0e7844e868d5152af'
+         '83509c89a24a9c675ea6d876ef693bd5')
 
 prepare() {
    cd "${srcdir}/${pkgname}-${pkgver}"
