@@ -11,18 +11,13 @@
 
 ac_add_options --prefix=/usr
 ac_add_options --enable-release
+ac_add_options --enable-gold
 ac_add_options --enable-pie
-ac_add_options --enable-jemalloc
-ac_add_options --disable-maintenance-service
-
-# Backported features
 ac_add_options --enable-rust
-ac_add_options --enable-skia
 
 # Release branding
-ac_add_options --enable-application=browser
 ac_add_options --enable-official-branding
-ac_add_options --enable-verify-mar
+ac_add_options --enable-update-channel=release
 # gtk2 avoid crash on select file to open
 ac_add_options --enable-default-toolkit=cairo-gtk2
 MOZ_ADDON_SIGNING=1
@@ -47,6 +42,7 @@ ac_add_options --disable-libproxy
 
 # Features
 ac_add_options --enable-startup-notification
+ac_add_options --enable-alsa
 ac_add_options --disable-gconf
 ac_add_options --disable-updater
 ac_add_options --disable-crashreporter

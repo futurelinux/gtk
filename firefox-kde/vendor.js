@@ -13,6 +13,3 @@ pref("extensions.shownSelectionUI", true);
 
 // Default e10s support to be enabled
 pref("browser.tabs.remote.autostart", true);
-
-// Skip builtinCert check for addon update request
-pref("extensions.update.requireBuiltInCerts", false);
