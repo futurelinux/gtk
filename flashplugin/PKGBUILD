@@ -1,5 +1,5 @@
 pkgname=flashplugin
-pkgver=24.0.0.221
+pkgver=25.0.0.127
 pkgrel=1
 pkgdesc='Adobe Flash Player'
 url='https://get.adobe.com/flashplayer/'
@@ -14,7 +14,7 @@ install='flashplugin.install'
 backup=('etc/adobe/mms.cfg')
 source=("flash_player_npapi_linux_$pkgver.x86_64.tar.gz::https://fpdownload.adobe.com/get/flashplayer/pdc/$pkgver/flash_player_npapi_linux.x86_64.tar.gz"
         'mms.cfg' 'kcm.patch')
-md5sums=('7c5ae399e70be3c28f4a867cb66f35f0'
+md5sums=('dd8a19ea0aaa0e532d5c72f4309a67ae'
          'f34aae6279b40e0bd2abfb0d9963d7b8'
          '798f7d43ed8c0a35e984e51f61b6a1e6')
 
