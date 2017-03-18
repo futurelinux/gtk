@@ -7,49 +7,48 @@
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Chakra
 declare -rgA _system_libs=(
+  [ffmpeg]=ffmpeg
   [flac]=flac
+  [harfbuzz-ng]=harfbuzz-icu
+  [icu]=icu
   [libjpeg]=libjpeg
   [libpng]=libpng
   [libvpx]=libvpx
   [libwebp]=libwebp
   #[libxml]=libxml2    # https://bugs.archlinux.org/task/29939
   [libxslt]=libxslt
+  [re2]=re2
   [snappy]=snappy
   [yasm]=
+  [zlib]=minizip
 )
 
 pkgname=chromium
-pkgver=56.0.2924.87
-pkgrel=5
+pkgver=57.0.2987.110
+pkgrel=1
+_launcher_ver=3
 pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
 depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libexif' 'libgcrypt'
-         'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme')
+         'ttf-font' 'systemd' 'dbus' 'libpulse' 'perl' 'perl-file-basedir'
+         'pciutils' 'desktop-file-utils' 'hicolor-icon-theme')
 depends+=(${_system_libs[@]})
-makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'git' 'gtk3' 'clang')
+makedepends=('gtk3' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'git')
 optdepends=('kwallet: for storing passwords in KWallet'
             'kdialog: needed for file dialogs in KDE')
-#install=chromium.install # We should drop it now.
+install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
+        chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
         chromium.desktop
-        chromium.sh
-        chromium-glibc-2.24.patch
         chromium-system-ffmpeg-r4.patch
-        chromium-widevine.patch
-        template_url_prepopulate_data.diff
-        search_engine_type.diff
-        prepopulated_engines_json.diff)
-sha256sums=('9aac081ffccaae6497068100477a4e6ac7086bd15ad3c3cd009b9a760b7a53e0'
-            '1a748951cd48c549f64740b2568158a60f8675002ceb2635d98059abadc5b8d1'
-            '3fd1c3fe7a3a5c5504f40aed4371071f4f482dc1ced640f6ce0eff5a03808584'
-            '6953651c002efe7fca8cda3143e963037ed38a0a4bc7ccb79304637c45340047'
+        chromium-widevine.patch)
+sha256sums=('6a03a290b313c5d8bb89891bfc816c61c798e6c96eaa62fb254d77ce9c2b89e4'
+            '8b01fb4efe58146279858a754d90b49e5a38c9a0b36a1f84cbb7d12f92b84c28'
+            'b241f9736e6d45e887a8be6e6a07e85be3e4f7411618437b9cbab45820fe9331'
             'e3c474dbf3822a0be50695683bd8a2c9dfc82d41c1524a20b4581883c0c88986'
-            'd6fdcb922e5a7fbe15759d39ccc8ea4225821c44d98054ce0f23f9d1f00c9808'
-            'a62135bb6aa8269a1b7e9ce2afe6ca9c24d6b85e9880e3694370efa21e4739d6'
-            '7783404b2123a1c3c301ba9ba84d48294f7658efe71c10ab3e254e2da5220dbf'
-            '2b78e36cf1c45c2d5256f47af44cc00e67eeac1e7673a95f02d9468516ef7757')
+            'd6fdcb922e5a7fbe15759d39ccc8ea4225821c44d98054ce0f23f9d1f00c9808')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -61,23 +60,14 @@ _google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
 prepare() {
   cd "$srcdir/$pkgname-$pkgver"
 
-  # https://groups.google.com/a/chromium.org/d/topic/chromium-packagers/9JX1N2nf4PU/discussion
-  touch chrome/test/data/webui/i18n_process_css_test.html
-  
-  # Set DDG as default search
-  patch -p1 -i "$srcdir/template_url_prepopulate_data.diff"
-  patch -p1 -i "$srcdir/search_engine_type.diff"
-  patch -p1 -i "$srcdir/prepopulated_engines_json.diff"
-  
   # Enable support for the Widevine CDM plugin
   # libwidevinecdm.so is not included, but can be copied over from Chrome
   # (Version string doesn't seem to matter so let's go with "Pinkie Pie")
   sed "s/@WIDEVINE_VERSION@/Pinkie Pie/" ../chromium-widevine.patch |
     patch -Np1
 
-  # Build fixes from Gentoo
+  # Fixes from Gentoo
   patch -Np1 -i ../chromium-system-ffmpeg-r4.patch
-  patch -Np1 -i ../chromium-glibc-2.24.patch
 
   # Work around bug in blink in which GCC 6 optimizes away null pointer checks
   # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=833524
@@ -100,6 +90,7 @@ prepare() {
     find -type f -path "*third_party/$_lib/*" \
       \! -path "*third_party/$_lib/chromium/*" \
       \! -path "*third_party/$_lib/google/*" \
+      \! -path "*base/third_party/icu/*" \
       \! -regex '.*\.\(gn\|gni\|isolate\|py\)' \
       -delete
   done
@@ -111,19 +102,18 @@ prepare() {
 }
 
 build() {
+  make -C "$srcdir/chromium-launcher-$_launcher_ver" PREFIX=/usr
+
   cd "$srcdir/$pkgname-$pkgver"
 
   export PATH="$srcdir/python2-path:$PATH"
   export TMPDIR="$srcdir/temp"
-  export CC='/usr/bin/clang'
-  export CXX='/usr/bin/clang++'
   mkdir -p "$TMPDIR"
 
   local _flags=(
-    'is_clang=true'
-    'clang_base_path="/usr/"'
-    'symbol_level=1'
+    'is_clang=false'
     'clang_use_chrome_plugins=false'
+    'symbol_level=0'
     'is_debug=false'
     'fatal_linker_warnings=false'
     'treat_warnings_as_errors=false'
@@ -133,7 +123,6 @@ build() {
     'proprietary_codecs=true'
     'link_pulseaudio=true'
     'linux_use_bundled_binutils=false'
-    'use_allocator="none"'
     'use_cups=true'
     'use_gconf=false'
     'use_gnome_keyring=false'
@@ -159,6 +148,12 @@ build() {
 }
 
 package() {
+  cd "$srcdir/chromium-launcher-$_launcher_ver"
+
+  make PREFIX=/usr DESTDIR="$pkgdir" install-strip
+  install -Dm644 LICENSE \
+    "$pkgdir/usr/share/licenses/chromium/LICENSE.launcher"
+
   cd "$srcdir/$pkgname-$pkgver"
 
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
@@ -169,12 +164,10 @@ package() {
   install -Dm4755 out/Release/chrome_sandbox \
     "$pkgdir/usr/lib/chromium/chrome-sandbox"
 
-  cp -a out/Release/{*.pak,*.bin,chromedriver,libwidevinecdmadapter.so,icudtl.dat} \
+  cp -a out/Release/{*.pak,*.bin,chromedriver,libwidevinecdmadapter.so} \
     out/Release/locales \
     out/Release/gen/content/content_resources.pak \
     "$pkgdir/usr/lib/chromium/"
-
-  install -D "$srcdir/chromium.sh" "$pkgdir/usr/bin/chromium"
 
   ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
 
@@ -190,3 +183,5 @@ package() {
 
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/chromium/LICENSE"
 }
+
+# vim:set ts=2 sw=2 et:
