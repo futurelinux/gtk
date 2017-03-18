@@ -18,8 +18,7 @@ ac_add_options --enable-rust
 # Release branding
 ac_add_options --enable-official-branding
 ac_add_options --enable-update-channel=release
-# gtk2 avoid crash on select file to open
-ac_add_options --enable-default-toolkit=cairo-gtk2
+ac_add_options --enable-default-toolkit=cairo-gtk3
 MOZ_ADDON_SIGNING=1
 MOZ_REQUIRE_SIGNING=1
 

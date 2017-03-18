@@ -1,16 +1,16 @@
 pkgname=firefox-kde
-pkgver=52.0
-pkgrel=2
+pkgver=52.0.1
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
-depends=(gtk2 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
+depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
          libvpx libevent nss hunspell
          "sqlite3>=3.17.0" # icu>=58.1
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
-             autoconf2.13 cargo
+             autoconf2.13 cargo gtk2 gobject-introspection
              cmake extra-cmake-modules)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
@@ -35,7 +35,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=ce8a98f8d8d7
+_patchrev=34bd1eb1cbd7
 _kmozillahelper_commit=21af64b
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
@@ -71,9 +71,9 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-language.patch" # making use of LANGUAGE= env var which isn't part of our standard
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
 )
-sha1sums=('991aea082084438e08f2da59bbebf47b8e9b1741'
+sha1sums=('1d0871889fd57a51ffa38c3ec9e7a2125b38e6bf'
           'SKIP'
-          '5570de14d3146c152c8d29ebf0d540eafe0a08f6'
+          'c2d4e8c39bc1b33339eb2778b59dac9c90e7ec03'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           '05b3a893e422ff579663c351f275f71010fa9dca'
