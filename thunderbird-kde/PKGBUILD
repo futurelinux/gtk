@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=45.8.0
+pkgver=52.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -7,11 +7,11 @@ pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
 license=('MPL' 'GPL')
 url="http://www.mozilla.org/thunderbird/"
-depends=('gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
-         'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
+depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
+         'dbus-glib' 'libpulse' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
 makedepends=('unzip' 'zip' 'python2' 'wireless_tools' 'yasm' 'mesa' 'libpulse'
-             'pkg-config' 'gconf' 'xorg-server-xvfb')
+             'pkg-config' 'gconf' 'xorg-server-xvfb' 'autoconf2.13' 'cargo')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 install=thunderbird.install
@@ -23,15 +23,17 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         mozilla-kde.patch
         mozilla-language.patch
         mozilla-nongnome-proxies.patch
+        fix-wifi-scanner.diff
         vendor.js
         kde.js)
-sha512sums=('f8ba08d874fb1a09ac9ba5d4d1f46cefe801783ba4bf82eee682ac2ecc4e231d07033a80e036ad04bda7780c093fb7bc3122a23dc6e19c12f18fb7168dc78deb'
-            'b1ce9468e0635686a60b0db920cbde784e1998d7a401c4f1ea97e0a5f10984d18f6d64def3cf86759706d3841e414b01d66f61b4a85df02edb753917d17e56a6'
+sha512sums=('215de8ae386f6f12d7a4338bb03bac956410be0dd4de5cca218e12241e3948c8c2540756e149bfde597cd10e399b4cb4db86619a2aa50a368ba323b413c1f93c'
+            '391a574b2a682b8c92daa45358e2718089e2c5a24f4613e69eb5b035b1cf051906537e3665d1d60a27cdaaa63a0a9b8d5adb3965b03f49da4f63eddeb375007a'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '1eecdc7942ac189a67d4d57bca305937ae8d5986944738139bad4baa47e5a9c904797db6a26840d559740178fb6e1904a2d5377c86a7d0f8a6b721471ef37d75'
-            'cf381cb6bfd1eb1fc7ec1a919cec48070c1e3daf14923884e53fb704742275e73dde8a72fc67c56b1660a9e65e67cee9a71638df4cb80105f368c5fb840c0a7d'
+            '04bc673d5cd0c9b3b28ac7f5cb463a8da9d4f527df1518862dca61cfba76f1afc51946d21a8aafa0d1d7ad81a30819df0c949ac849bf09ae28dec17a44a353bd'
             '61411fa057442fe532e671984e03c2be42b5bad9e0db7b8c1a6065750224707309d9fb944edd850ddd27d3f9f36474f62c734c3007c5e86c6822fa68aca75c55'
             '2b7b03697e3bf68681fd45eb06235c5f9145ad7f549a3291e0e62fa95e8b3de02a118b0562d50387ff174fbe23a9060f1c749a21cdd2ccb0f20680424f70587b'
+            '1bd2804bea1fe8c85b602f8c5f8777f4ba470c9e767ad284cb3d0287c6d6e1b126e760738d7c671f38933ee3ec6b8931186df8e978995b5109797ae86dfdd85a'
             'aeb444784732267f1b1e87e6084a776f82a1912c4c2637d2cf1de1c135dd9d41d2ef66d2bd3f9cbd3a79fad32d17ea6e2968ba644d5f887cb66ba6c09a2098f5'
             '06696c5b3216fd38d546d743f61a2ac0bb215a01192e53da75b069095565c602ec5730b3f317de08e4bd3318c4e5642560e9bc25153a69e4b5442772edef8cd8')
 
@@ -51,6 +53,9 @@ prepare(){
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch"
   cd ..
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
+  patch -d mozilla -Np1 < ../fix-wifi-scanner.diff
 
   # fix GTK3
   sed -i 's|parent->group|gtk_window_get_group(const_cast<GtkWindow*>(parent))|g' mozilla/toolkit/xre/nsKDEUtils.cpp
@@ -72,8 +77,8 @@ build() {
   export PYTHON="/usr/bin/python2"
   export SHELL="/bin/bash"
   
-  xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
-    make -f client.mk profiledbuild
+  #xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
+  #  make -f client.mk profiledbuild
 }
 
 package() {
