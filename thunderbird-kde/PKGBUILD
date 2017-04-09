@@ -1,6 +1,6 @@
 pkgname=thunderbird-kde
 pkgver=52.0
-pkgrel=1
+pkgrel=2
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
@@ -102,7 +102,7 @@ package() {
   install -Dm644 "$srcdir"/vendor.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/vendor.js"
   install -Dm644 "$srcdir"/kde.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/kde.js"
 
-  _distini="$pkgdir/usr/lib/firefox/distribution/distribution.ini"
+  _distini="$pkgdir/usr/lib/thunderbird/distribution/distribution.ini"
   install -Dm644 /dev/stdin "$_distini" <<END
 [Global]
 id=chakralinux
