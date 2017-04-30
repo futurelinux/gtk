@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=53.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -35,7 +35,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=4665fe34fbce
+_patchrev=188c3f40f0da
 _kmozillahelper_commit=21af64b
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
@@ -47,6 +47,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'kde.js'
         'pgo-fix-missing-kdejs.patch'
 	'fix-wifi-scanner.diff'
+        'mp4parse-cargo.patch::https://hg.mozilla.org/mozilla-central/raw-rev/acfa7cfcb32b'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -58,7 +59,6 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         "$_patchurl/mozilla-kde.patch"
 	'ddg-branding.patch'
         "$_patchurl/mozilla-openaes-decl.patch"
-        "$_patchurl/mozilla-preferences.patch"  # try to check OS's locale and use it first rather than stick to general.useragent.locale
         "$_patchurl/mozilla-shared-nss-db.patch"
 
         # Useless patchset
@@ -80,14 +80,14 @@ sha1sums=('5a617605f60da87f33bc82eaa46710666f134d84'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '9ed341bb7b147da7ebba420110dcf5a5a8e8d887'
+          'b28a856289a98d01dc3fb395ac321218151f6fc8'
           'da3112c3587ad48e63e22e4772d8077e7eec1a05'
           '7ea7b3b8d3bc0e91d73481ca24f8702bbe0fe8f7'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '7b121110cd35ee3cfdae39506d2fbc9ff4c0b2e6'
+          '33624cd297b4abc98c4c8b930109f8ccd21403ab'
           '9cf8c5a03bcc97b66d97d62d72c325ddb14102cb'
           '5978fb0131d31b0e91459a90edc918f66eec3155'
-          'bcf0f111eadcf4e7d3316659af2f210c583ad9ff'
           'efd2e4fab5ea174f5f84db17265cd1d070e414c8')
 
 
@@ -112,6 +112,8 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
   patch -Np1 -i ../fix-wifi-scanner.diff
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1338655 fixed in 54
+  patch -Np1 -i ../mp4parse-cargo.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
@@ -123,7 +125,6 @@ prepare() {
   msg "Gecko/toolkit patchset"
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch" 
-  patch -Np1 -i "$srcdir/mozilla-preferences.patch" 
   patch -Np1 -i "$srcdir/mozilla-shared-nss-db.patch"
   patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
 
