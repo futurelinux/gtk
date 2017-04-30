@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=52.0.1
+pkgver=52.1.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -26,8 +26,9 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         mozilla-nongnome-proxies.patch
         fix-wifi-scanner.diff
         vendor.js
-        kde.js)
-sha512sums=('7b8324a230a10b738b9a28c31b195bfb149b1f47eec6662d93a7d0c424d56303dbc2bca6645b30323c6da86628d6e49de359e1067081a5d0bd66541174a8be48'
+        kde.js
+        0001-Bug-1338655-Don-t-try-to-build-mp4parse-bindings.-r-.patch)
+sha512sums=('08016334a0cc8af96d5c5b9aad0b8bf1ca3c105ff4a412abbeaeefefda1301cb149eafb4e78314f710567b952267d1d3c999dc8e5534a4a8d06abdcb11ee98c8'
             'e67c9bf97d73b95dbe31a2bba2dd8ae3d7413a8d3cd728f2b321cf222e4b1490d1ccf804634e4549911603e23850b0db52f524450b487a151c4ab2e992c7e350'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '1eecdc7942ac189a67d4d57bca305937ae8d5986944738139bad4baa47e5a9c904797db6a26840d559740178fb6e1904a2d5377c86a7d0f8a6b721471ef37d75'
@@ -36,7 +37,8 @@ sha512sums=('7b8324a230a10b738b9a28c31b195bfb149b1f47eec6662d93a7d0c424d56303dbc
             '2b7b03697e3bf68681fd45eb06235c5f9145ad7f549a3291e0e62fa95e8b3de02a118b0562d50387ff174fbe23a9060f1c749a21cdd2ccb0f20680424f70587b'
             '1bd2804bea1fe8c85b602f8c5f8777f4ba470c9e767ad284cb3d0287c6d6e1b126e760738d7c671f38933ee3ec6b8931186df8e978995b5109797ae86dfdd85a'
             'aeb444784732267f1b1e87e6084a776f82a1912c4c2637d2cf1de1c135dd9d41d2ef66d2bd3f9cbd3a79fad32d17ea6e2968ba644d5f887cb66ba6c09a2098f5'
-            '06696c5b3216fd38d546d743f61a2ac0bb215a01192e53da75b069095565c602ec5730b3f317de08e4bd3318c4e5642560e9bc25153a69e4b5442772edef8cd8')
+            '06696c5b3216fd38d546d743f61a2ac0bb215a01192e53da75b069095565c602ec5730b3f317de08e4bd3318c4e5642560e9bc25153a69e4b5442772edef8cd8'
+            '9a02d89603ad2928e38d7350d5d71ec904815958c65cc13323f5d4cd9392b823264fae812ea658d83728839372b412fd185653ef65b7ab8dd0595158b3bdc2e2')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -64,6 +66,9 @@ prepare(){
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
   patch -d mozilla -Np1 < ../fix-wifi-scanner.diff
+
+  # https://bugs.archlinux.org/task/53890
+  patch -d mozilla -Np1 < ../0001-Bug-1338655-Don-t-try-to-build-mp4parse-bindings.-r-.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
