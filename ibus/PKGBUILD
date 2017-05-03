@@ -1,5 +1,5 @@
 pkgname=ibus
-pkgver=1.5.14
+pkgver=1.5.15
 pkgrel=1
 pkgdesc="Next Generation Input Bus for Linux, IBus qt library and IBus qt input method plugin included"
 arch=('x86_64')
@@ -7,11 +7,16 @@ url="https://github.com/ibus/ibus"
 license=('LGPL')
 depends=('dconf' 'gtk2' 'gtk3' 'hicolor-icon-theme' 'libnotify' 'python3-dbus' 'python3-gobject' 
          'iso-codes' 'python2-gobject2' 'python2-dbus' 'python2-gobject' 'librsvg')
-makedepends=('gobject-introspection' 'vala' 'intltool' 'gnome-common' 'gtk-doc' 'qt5-base' 'nodejs-emojione')
+makedepends=('gobject-introspection' 'vala' 'intltool' 'gnome-common' 'gtk-doc' 'qt5-base'
+             'nodejs-emojione' 'cldr-emoji-annotation')
 options=('!emptydirs')
 install=ibus.install
 source=(https://github.com/${pkgname}/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz)
-sha1sums=('0b88a8738b2e5b39042637e6e3356dc918c90b07')
+sha1sums=('950461e310efd9f77b34c4315fee7a2b2d8c1de1')
+
+prepare() {
+  sed -i 's|$(libibus) $(libibus_emoji_dialog)|$(libibus_emoji_dialog) $(libibus)|' ibus-$pkgver/ui/gtk3/Makefile.am
+}
 
 build() {
   cd ${pkgname}-${pkgver}
