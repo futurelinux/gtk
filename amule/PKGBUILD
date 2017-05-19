@@ -1,6 +1,6 @@
 pkgname=amule
 pkgver=2.3.2+35+047a55c
-pkgrel=3
+pkgrel=4
 epoch=1
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
