@@ -1,0 +1,71 @@
+pkgname=atom
+pkgver=1.17.0
+pkgrel=1
+pkgdesc='A hackable text editor for the 21st Century'
+arch=('x86_64')
+url='https://github.com/atom/atom'
+license=('MIT' 'custom')
+depends=('libxkbfile' 'gtk2')
+makedepends=('git' 'npm' 'libgnome-keyring' 'gconf' 'python2')
+options=(!emptydirs)
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
+        'fix-license-path.patch'
+        'fix-restart.patch'
+        '0001-do-not-check-node-version.patch')
+sha256sums=('f9ccf2aa45b82bbf42a6a7fbbe5a3b7fdda99d76e77af8dee949fbcc419e94c6'
+            'b7a325867a16fe1eece589ff5d70e642e7387557865c6d6c566b760cbe93f4e2'
+            '83b6a85c8f3d38fcb13682bc8d948137448ae5cd9f616f20f76b5f504f4caa52'
+            'e42a03465a3944c3f79c67d34f340384d65df742e8aec16491a4c8c265017257')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  patch -Np1 -i "${srcdir}"/fix-license-path.patch
+  patch -Np1 -i "${srcdir}"/fix-restart.patch
+  cd script/lib
+  patch -Np1 -i "${srcdir}"/0001-do-not-check-node-version.patch
+
+}
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  export PYTHON=/usr/bin/python2
+  export ATOM_RESOURCE_PATH="$srcdir/atom-$pkgver"
+  # If unset, ~/.atom/.node-gyp/.atom/.npm is used
+  export NPM_CONFIG_CACHE="${HOME}/.atom/.npm"
+
+  cd script
+  npm install
+  ./build
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  install -d -m 755 "${pkgdir}"/usr/share/atom
+  cp -r out/atom-$pkgver-amd64/* "${pkgdir}"/usr/share/atom
+
+  msg "installing .desktop"
+  install -d -m 755 "${pkgdir}/usr/share/applications"
+  sed -e "s|<%= appName %>|Atom|" \
+      -e "s/<%= description %>/${pkgdesc}/" \
+      -e "s|<%= installDir %>/share/<%= appFileName %>/atom|/usr/bin/atom|" \
+      -e "s|<%= iconPath %>|atom|" \
+      resources/linux/atom.desktop.in > "${pkgdir}/usr/share/applications/atom.desktop"
+
+  msg "installing icons"
+  for size in 16 24 32 48 64 128 256 512 1024; do
+    install -D -m 644 resources/app-icons/stable/png/${size}.png \
+            "${pkgdir}"/usr/share/icons/hicolor/${size}x${size}/apps/atom.png
+  done
+  ln -sf ../../../share/icons/hicolor/1024x1024/apps/atom.png \
+      "${pkgdir}"/usr/share/atom/resources/atom.png
+
+  msg "installing atom.sh"
+  install -D -m 755 atom.sh "${pkgdir}/usr/bin/atom"
+
+  msg "installing license"
+  install -d -m 755 "${pkgdir}/usr/share/licenses/${pkgname}"
+  node -e "require('./script/lib/get-license-text')().then((licenseText) => require('fs').writeFileSync('${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md', licenseText))"
+}
