@@ -1,32 +1,28 @@
 pkgname=wxmaxima
-pkgver=15.08.2
+pkgver=17.05.0
 pkgrel=1
 pkgdesc="A wxWidgets GUI for the computer algebra system Maxima"
 arch=('x86_64')
-url="http://wxmaxima.sourceforge.net/"
+url="http://andrejv.github.io/wxmaxima/index.html"
 license=('GPL2')
-depends=('maxima' 'libxml2' 'wxgtk' 'shared-mime-info' 'desktop-file-utils')
-source=(http://downloads.sourceforge.net/$pkgname/${pkgname}-$pkgver.tar.gz)
+depends=('maxima' 'libxml2' 'wxgtk')
+makedepends=('cmake' 'doxygen')
+source=($pkgname-$pkgver.tar.gz::"https://github.com/andrejv/wxmaxima/archive/Version-$pkgver.tar.gz")
 install=wxmaxima.install
-sha1sums=('e365334527759a8e483f886bd85112d42791f9c2')
+sha1sums=('b5494a55b9e10153af4ef36bec4a345b576723a6')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr
+  cd "${srcdir}/${pkgname}-Version-${pkgver}"
+  cmake . \
+        -DCMAKE_INSTALL_PREFIX=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-Version-${pkgver}"
 
   make DESTDIR="${pkgdir}" install 
 
   # Fix category in .desktop file
-  sed -i -e 's/Utility;X-Red-Hat-Base;X-Red-Hat-Base-Only;/Science;Math;/' data/wxMaxima.desktop
-
-  # Install desktop file and icon
-  install -m755 -d "${pkgdir}/usr/share/applications"
-  install -m755 -d "${pkgdir}/usr/share/pixmaps"
-  install -m644 data/wxMaxima.desktop "${pkgdir}/usr/share/applications/" 
-  install -m644 data/wxmaxima.png "${pkgdir}/usr/share/pixmaps/" 
+  sed -i '/Categories=/c\Categories=Science;Math;' data/wxMaxima.desktop
 }
