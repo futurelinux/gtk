@@ -1,12 +1,12 @@
 pkgname=firefox-kde
-pkgver=53.0.3
-pkgrel=2
+pkgver=54.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
-         libvpx libevent nss hunspell
+         libvpx libevent nss hunspell 'nspr>=4.14'
          "sqlite3>=3.17.0" # icu>=58.1
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
@@ -35,8 +35,8 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=188c3f40f0da
-_kmozillahelper_commit=21af64b
+_patchrev=f82a374a310d
+_kmozillahelper_commit=47e708e
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -47,7 +47,6 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'kde.js'
         'pgo-fix-missing-kdejs.patch'
 	'fix-wifi-scanner.diff'
-        'mp4parse-cargo.patch::https://hg.mozilla.org/mozilla-central/raw-rev/acfa7cfcb32b'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -59,7 +58,6 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         "$_patchurl/mozilla-kde.patch"
 	'ddg-branding.patch'
         "$_patchurl/mozilla-openaes-decl.patch"
-        "$_patchurl/mozilla-shared-nss-db.patch"
 
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
@@ -70,25 +68,24 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/toolkit-download-folder.patch"
         #"$_patchurl/mozilla-language.patch" # making use of LANGUAGE= env var which isn't part of our standard
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
+        #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha1sums=('c185c345207597480ad169d10e9a770cf241f2da'
+sha1sums=('44e40c77f58e3b203dc60f51c5a02993f6c38ee5'
           'SKIP'
-          'c87a74fb86990ba0860a6f5bd68c80d2d13a7a21'
+          '128bdf1fd198fdfa618f3f40ecc576968bc7aeae'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           '05b3a893e422ff579663c351f275f71010fa9dca'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '9ed341bb7b147da7ebba420110dcf5a5a8e8d887'
-          'b28a856289a98d01dc3fb395ac321218151f6fc8'
-          'da3112c3587ad48e63e22e4772d8077e7eec1a05'
+          'c43beb2bcd017b3ca19b998646d2d075c3589359'
           '7ea7b3b8d3bc0e91d73481ca24f8702bbe0fe8f7'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '33624cd297b4abc98c4c8b930109f8ccd21403ab'
+          'df9e33adbbb25993d2d6b7f1f6d290092a64c79a'
           '9cf8c5a03bcc97b66d97d62d72c325ddb14102cb'
-          '5978fb0131d31b0e91459a90edc918f66eec3155'
-          'efd2e4fab5ea174f5f84db17265cd1d070e414c8')
+          '5978fb0131d31b0e91459a90edc918f66eec3155')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -112,8 +109,6 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
   patch -Np1 -i ../fix-wifi-scanner.diff
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1338655 fixed in 54
-  patch -Np1 -i ../mp4parse-cargo.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
@@ -125,7 +120,6 @@ prepare() {
   msg "Gecko/toolkit patchset"
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch" 
-  patch -Np1 -i "$srcdir/mozilla-shared-nss-db.patch"
   patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
 
   msg "Firefox patchset"
