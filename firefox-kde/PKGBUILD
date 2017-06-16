@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=54.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -47,6 +47,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'kde.js'
         'pgo-fix-missing-kdejs.patch'
 	'fix-wifi-scanner.diff'
+        'no-crmf.diff'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -72,13 +73,14 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 )
 sha1sums=('44e40c77f58e3b203dc60f51c5a02993f6c38ee5'
           'SKIP'
-          '128bdf1fd198fdfa618f3f40ecc576968bc7aeae'
+          '3d159613256792f59f58e25ce6160154419755ca'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           '05b3a893e422ff579663c351f275f71010fa9dca'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '9ed341bb7b147da7ebba420110dcf5a5a8e8d887'
+          '1842e9c213e2289cc7fa49b22e2a1809a687ace9'
           'c43beb2bcd017b3ca19b998646d2d075c3589359'
           '7ea7b3b8d3bc0e91d73481ca24f8702bbe0fe8f7'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
@@ -106,6 +108,9 @@ prepare() {
 
   cp ../mozconfig .mozconfig
   patch -Np1 -i ../firefox-install-dir.patch
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1371991
+  patch -Np1 -i ../no-crmf.diff
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
   patch -Np1 -i ../fix-wifi-scanner.diff

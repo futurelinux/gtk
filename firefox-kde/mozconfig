@@ -14,6 +14,8 @@ ac_add_options --enable-release
 ac_add_options --enable-gold
 ac_add_options --enable-pie
 ac_add_options --enable-skia
+ac_add_options --enable-optimize="-O2"
+ac_add_options --enable-webrender
 
 # Release branding
 ac_add_options --enable-application=browser
