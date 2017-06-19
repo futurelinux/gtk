@@ -24,18 +24,17 @@ declare -rgA _system_libs=(
 )
 
 pkgname=chromium
-pkgver=59.0.3071.86
+pkgver=59.0.3071.104
 pkgrel=1
-_launcher_ver=3
+_launcher_ver=4
 pkgdesc="A web browser built for speed, simplicity, and security"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libexif' 'libgcrypt'
-         'ttf-font' 'systemd' 'dbus' 'libpulse' 'perl' 'perl-file-basedir'
-         'pciutils' 'desktop-file-utils' 'hicolor-icon-theme')
+         'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme')
 depends+=(${_system_libs[@]})
-makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'nodejs' 'git')
+makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'nodejs' 'git' 'go')
 optdepends=('kwallet: for storing passwords in KWallet'
             'kdialog: needed for file dialogs in KDE')
 install=chromium.install
@@ -46,8 +45,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         chromium-system-ffmpeg-r6.patch
         0001-ClientNativePixmapFactoryDmabuf-uses-ioctl-instead-o.patch
         0001-Fix-kernel-version-condition-for-including-dma-buf.h.patch)
-sha256sums=('c31431aa9f4ae521d784bee89792e7fa05793cb822bfb8d3fbacaf414b29ace7'
-            '8b01fb4efe58146279858a754d90b49e5a38c9a0b36a1f84cbb7d12f92b84c28'
+sha256sums=('a949fa166cdcdbd8419fbdb4583804613d9845130f0c851e4c647d79a4c300d0'
+            '328c5065fd10cec0e31674c6784bc90715053aec023e4278dfc416029e090b2a'
             'b241f9736e6d45e887a8be6e6a07e85be3e4f7411618437b9cbab45820fe9331'
             'd6fdcb922e5a7fbe15759d39ccc8ea4225821c44d98054ce0f23f9d1f00c9808'
             '2fc21f48b95f9f2c2bd8576742fcf8028a8877c6b6e96c04d88184915982234e'
@@ -62,6 +61,9 @@ _google_default_client_id=3502044743.apps.googleusercontent.com
 _google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
 
 prepare() {
+  cd "$srcdir/chromium-launcher-$_launcher_ver"
+  git submodule update --init
+
   cd "$srcdir/$pkgname-$pkgver"
 
   # Enable support for the Widevine CDM plugin
@@ -95,7 +97,6 @@ prepare() {
     find -type f -path "*third_party/$_lib/*" \
       \! -path "*third_party/$_lib/chromium/*" \
       \! -path "*third_party/$_lib/google/*" \
-      \! -path "*base/third_party/icu/*" \
       \! -regex '.*\.\(gn\|gni\|isolate\|py\)' \
       -delete
   done
@@ -107,7 +108,7 @@ prepare() {
 }
 
 build() {
-  make -C "$srcdir/chromium-launcher-$_launcher_ver" PREFIX=/usr GTK=3
+  make -C "$srcdir/chromium-launcher-$_launcher_ver"
 
   cd "$srcdir/$pkgname-$pkgver"
 
