@@ -7,7 +7,7 @@
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Chakra
 declare -rgA _system_libs=(
-  #[ffmpeg]=ffmpeg     # https://crbug.com/723537
+  #[ffmpeg]=ffmpeg     # https://crbug.com/731766
   [flac]=flac
   #[harfbuzz-ng]=harfbuzz-icu
   #[icu]=icu           # Our icu is too old.
@@ -39,14 +39,14 @@ optdepends=('kwallet: for storing passwords in KWallet'
             'kdialog: needed for file dialogs in KDE')
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
-        chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
+        git+https://github.com/foutrelis/chromium-launcher.git#tag=v$_launcher_ver
         chromium.desktop
         chromium-widevine.patch
         chromium-system-ffmpeg-r6.patch
         0001-ClientNativePixmapFactoryDmabuf-uses-ioctl-instead-o.patch
         0001-Fix-kernel-version-condition-for-including-dma-buf.h.patch)
 sha256sums=('a949fa166cdcdbd8419fbdb4583804613d9845130f0c851e4c647d79a4c300d0'
-            '328c5065fd10cec0e31674c6784bc90715053aec023e4278dfc416029e090b2a'
+            'SKIP'
             'b241f9736e6d45e887a8be6e6a07e85be3e4f7411618437b9cbab45820fe9331'
             'd6fdcb922e5a7fbe15759d39ccc8ea4225821c44d98054ce0f23f9d1f00c9808'
             '2fc21f48b95f9f2c2bd8576742fcf8028a8877c6b6e96c04d88184915982234e'
@@ -61,7 +61,7 @@ _google_default_client_id=3502044743.apps.googleusercontent.com
 _google_default_client_secret=TPvjII_2SwZn_9Ic0kRKqjtG
 
 prepare() {
-  cd "$srcdir/chromium-launcher-$_launcher_ver"
+  cd chromium-launcher
   git submodule update --init
 
   cd "$srcdir/$pkgname-$pkgver"
@@ -103,12 +103,10 @@ prepare() {
 
   python2 build/linux/unbundle/replace_gn_files.py \
     --system-libraries "${!_system_libs[@]}"
-
-  python2 third_party/libaddressinput/chromium/tools/update-strings.py
 }
 
 build() {
-  make -C "$srcdir/chromium-launcher-$_launcher_ver"
+  make -C chromium-launcher
 
   cd "$srcdir/$pkgname-$pkgver"
 
@@ -151,7 +149,7 @@ build() {
 }
 
 package() {
-  cd "$srcdir/chromium-launcher-$_launcher_ver"
+  cd chromium-launcher
 
   make PREFIX=/usr DESTDIR="$pkgdir" install
   install -Dm644 LICENSE \
