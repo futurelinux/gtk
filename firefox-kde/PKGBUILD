@@ -1,6 +1,6 @@
 pkgname=firefox-kde
-pkgver=54.0
-pkgrel=3
+pkgver=54.0.1
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -35,7 +35,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=f82a374a310d
+_patchrev=53443ffb496a
 _kmozillahelper_commit=47e708e
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
@@ -71,7 +71,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha1sums=('44e40c77f58e3b203dc60f51c5a02993f6c38ee5'
+sha1sums=('1378f3e4f481fb3d6fcc67e20390d932bdff67ae'
           'SKIP'
           'f49d160315d13af8b904d41dc70c9769373a6540'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
@@ -81,11 +81,11 @@ sha1sums=('44e40c77f58e3b203dc60f51c5a02993f6c38ee5'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '9ed341bb7b147da7ebba420110dcf5a5a8e8d887'
           '1842e9c213e2289cc7fa49b22e2a1809a687ace9'
-          'c43beb2bcd017b3ca19b998646d2d075c3589359'
+          '00e5afb9c6e428f6a3c637bfb6729799ed0466f1'
           '7ea7b3b8d3bc0e91d73481ca24f8702bbe0fe8f7'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          'df9e33adbbb25993d2d6b7f1f6d290092a64c79a'
+          '6b4457c0f9d808a8a221c87c4ea6b1bf27d41bdb'
           '9cf8c5a03bcc97b66d97d62d72c325ddb14102cb'
           '5978fb0131d31b0e91459a90edc918f66eec3155')
 
