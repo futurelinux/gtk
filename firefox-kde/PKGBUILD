@@ -1,12 +1,12 @@
 pkgname=firefox-kde
-pkgver=54.0.1
+pkgver=55.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
-         libvpx libevent nss hunspell 'nspr>=4.14'
+         libvpx libevent nss hunspell 'nspr>=4.14' 'libproxy'
          "sqlite3>=3.17.0" # icu>=58.1
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
@@ -35,7 +35,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=53443ffb496a
+_patchrev=038d048a3940
 _kmozillahelper_commit=47e708e
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
@@ -48,6 +48,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'pgo-fix-missing-kdejs.patch'
 	'fix-wifi-scanner.diff'
         'no-crmf.diff'
+	'firefox-55.0-system-jpeg-libvpx.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -71,21 +72,22 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha1sums=('1378f3e4f481fb3d6fcc67e20390d932bdff67ae'
+sha1sums=('b22a4b66fc7af4706d0838ef2a1d0639bc184055'
           'SKIP'
-          'f49d160315d13af8b904d41dc70c9769373a6540'
+          'f547a835dde60d82aeeee89358a4b647a30bc51a'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
-          '05b3a893e422ff579663c351f275f71010fa9dca'
+          '89f906832e1279159530b51ab7b93b2879fc6198'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '9ed341bb7b147da7ebba420110dcf5a5a8e8d887'
           '1842e9c213e2289cc7fa49b22e2a1809a687ace9'
-          '00e5afb9c6e428f6a3c637bfb6729799ed0466f1'
+          '28bb523f38933dc8422ca013a1ff7f385c06fb3f'
+          '02d513e2867d1badedb7c77bf12172a7075f0009'
           '7ea7b3b8d3bc0e91d73481ca24f8702bbe0fe8f7'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
           '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '6b4457c0f9d808a8a221c87c4ea6b1bf27d41bdb'
+          '5b1ba01b6cb5a473b0e352e641d392d83497a723'
           '9cf8c5a03bcc97b66d97d62d72c325ddb14102cb'
           '5978fb0131d31b0e91459a90edc918f66eec3155')
 
@@ -114,6 +116,9 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
   patch -Np1 -i ../fix-wifi-scanner.diff
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1373988
+  patch -Np1 -i ../firefox-55.0-system-jpeg-libvpx.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
@@ -174,8 +179,8 @@ build_firefox() {
 
   # Do PGO
   #xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
-  #  make -f client.mk build MOZ_PGO=1
-  make -f client.mk build
+  make -f client.mk build MOZ_PGO=1
+  # make -f client.mk build
 }
 
 package() {
@@ -223,8 +228,6 @@ END
 
   # Use system-provided dictionaries
   rm -r "$pkgdir"/usr/lib/firefox/dictionaries
-  ln -Ts /usr/share/hunspell "$pkgdir/usr/lib/firefox/dictionaries"
-  ln -Ts /usr/share/hyphen "$pkgdir/usr/lib/firefox/hyphenation"
 
   # Install a wrapper to avoid confusion about binary path
   install -Dm755 /dev/stdin "$pkgdir/usr/bin/firefox" <<END

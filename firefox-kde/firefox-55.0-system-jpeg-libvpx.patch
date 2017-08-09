@@ -1,0 +1,40 @@
+# HG changeset patch
+# User Dan Minor <dminor@mozilla.com>
+# Date 1497876979 14400
+#      Mon Jun 19 08:56:19 2017 -0400
+# Node ID b709728620c4612887f421a686a6cb1b10069786
+# Parent  95543bdc59bd038a3d5d084b85a4fec493c349ee
+Bug 1373988 - Make webrtc-gtest build work with system jpeg and libvpx; r?glandium
+
+MozReview-Commit-ID: 1x8v7G2fvlK
+
+diff --git a/media/webrtc/trunk/gtest/moz.build b/media/webrtc/trunk/gtest/moz.build
+--- a/media/webrtc/trunk/gtest/moz.build
++++ b/media/webrtc/trunk/gtest/moz.build
+@@ -30,9 +30,7 @@ LOCAL_INCLUDES += [
+ USE_LIBS += [
+     '/media/webrtc/trunk/third_party/gflags/gflags_gflags/gflags',
+     '/testing/gtest/gtest',
+-    'media_libjpeg',
+     'media_libopus',
+-    'media_libvpx',
+     'mozglue',
+     'speex',
+     'webrtc',
+@@ -45,6 +43,16 @@ USE_LIBS += [
+     'yuv',
+ ]
+ 
++if CONFIG['MOZ_SYSTEM_JPEG']:
++    OS_LIBS += CONFIG['MOZ_JPEG_LIBS']
++else:
++    USE_LIBS += ['media_libjpeg']
++
++if CONFIG['MOZ_SYSTEM_LIBVPX']:
++    OS_LIBS += CONFIG['MOZ_LIBVPX_LIBS']
++else:
++    USE_LIBS += ['media_libvpx']
++
+ if CONFIG['OS_TARGET'] in ['Darwin', 'Linux', 'WINNT']:
+     if CONFIG['OS_TARGET'] == 'Linux':
+         DEFINES['WEBRTC_BUILD_LIBEVENT'] = True
