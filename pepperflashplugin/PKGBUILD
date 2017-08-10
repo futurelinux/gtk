@@ -1,6 +1,6 @@
 pkgname=pepperflashplugin
 pkgdesc="Adobe/Google Pepper Flash Player plugin installer"
-pkgver=26.0.0.137
+pkgver=26.0.0.151
 pkgrel=1
 arch=('x86_64')
 url="http://www.adobe.com/downloads.html"
@@ -8,7 +8,7 @@ license=('custom')
 source=("https://fpdownload.adobe.com/pub/flashplayer/pdc/$pkgver/flash_player_ppapi_linux.x86_64.tar.gz"
         "http://wwwimages.adobe.com/content/dam/acom/en/legal/licenses-terms/pdf/Flash_Player_${pkgver%%.*}_0.pdf"
         'chromium_pepperflashplayer.sh')
-sha1sums=('4c1fc238dd6db11e6a31b1bff09dddfd1fc919d0'
+sha1sums=('ed6e6c28c2ca2d83dfd9da4db10ee536a2b0141b'
           '05d437c6ec042fdf37d61db658efcc6780efb307'
           '9de6c84623820f3de10df6e33274794dfb808a01')
 
