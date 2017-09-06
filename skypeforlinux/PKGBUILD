@@ -1,12 +1,12 @@
 pkgname=skypeforlinux
 pkgver=8.6.76.56247
-pkgrel=1
+pkgrel=2
 pkgdesc="Skype for Linux WebRTC Beta"
 arch=('x86_64')
 url="http://www.skype.com"
 license=('custom')
-depends=('gtk2' 'libxss' 'gconf' 'alsa-lib' 'libxtst' 'libgnome-keyring' 'nss')
-optdepends=('gnome-keyring')
+depends=('gtk2' 'libxss' 'gconf' 'alsa-lib' 'libxtst' 'libgnome-keyring' 'nss' 'libsecret')
+optdepends=('gnome-keyring') # to be verified, how to replace it with kwallet?
 conflicts=('skype')
 provides=('skype')
 source=("https://repo.skype.com/deb/pool/main/s/skypeforlinux/skypeforlinux_${pkgver}_amd64.deb")
