@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=55.0.3
+pkgver=56.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -7,11 +7,11 @@ license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
          libvpx libevent nss hunspell 'nspr>=4.14' 'libproxy'
-         "sqlite3>=3.17.0" # icu>=58.1
+         "sqlite3>=3.17.0" 'icu>=59.0'
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
              autoconf2.13 cargo gtk2 gobject-introspection
-             cmake extra-cmake-modules)
+             cmake extra-cmake-modules llvm clang)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'upower: Battery API'
@@ -35,7 +35,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=038d048a3940
+_patchrev=9fc447b00040
 _kmozillahelper_commit=47e708e
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
@@ -46,9 +46,8 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'vendor.js'
         'kde.js'
         'pgo-fix-missing-kdejs.patch'
-	'fix-wifi-scanner.diff'
+        'fix-wifi-scanner.diff'
         'no-crmf.diff'
-	'firefox-55.0-system-jpeg-libvpx.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -72,22 +71,21 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha1sums=('8d9b0861ad71845d4b0e668f1981ec99e617ff36'
+sha1sums=('806cb335752ee93b204750b89dc6940768408088'
           'SKIP'
-          'f547a835dde60d82aeeee89358a4b647a30bc51a'
+          '9901d209bfdee85f91fb1153733b7833dad20ccd'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
-          '89f906832e1279159530b51ab7b93b2879fc6198'
+          'a77df52cedb94f38ec3d94fc19bb40d120729fc1'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           '9ed341bb7b147da7ebba420110dcf5a5a8e8d887'
           '1842e9c213e2289cc7fa49b22e2a1809a687ace9'
-          '28bb523f38933dc8422ca013a1ff7f385c06fb3f'
-          '02d513e2867d1badedb7c77bf12172a7075f0009'
+          '3f09209b3a6beddb19619b8246f4c6ddde20669c'
           '7ea7b3b8d3bc0e91d73481ca24f8702bbe0fe8f7'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
-          '5a38d441d73647b12e1e13416de3fde822dfed18'
-          '5b1ba01b6cb5a473b0e352e641d392d83497a723'
+          '1cb412a081404db6ee50dd20438b96857dcfe58f'
+          '3c0124918ce9d5f603ea88ae8774262ed849dd59'
           '9cf8c5a03bcc97b66d97d62d72c325ddb14102cb'
           '5978fb0131d31b0e91459a90edc918f66eec3155')
 
@@ -116,9 +114,6 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
   patch -Np1 -i ../fix-wifi-scanner.diff
-
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1373988
-  patch -Np1 -i ../firefox-55.0-system-jpeg-libvpx.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
@@ -176,9 +171,11 @@ build_firefox() {
   export PATH="$srcdir/path:$PATH"
   export PYTHON="/usr/bin/python2"
   export SHELL=/bin/bash
+  export CXX=clang++
+  export CC=clang
 
   # Do PGO
-  #xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
+  xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
   make -f client.mk build MOZ_PGO=1
   # make -f client.mk build
 }
@@ -228,6 +225,8 @@ END
 
   # Use system-provided dictionaries
   rm -r "$pkgdir"/usr/lib/firefox/dictionaries
+  ln -Ts /usr/share/hunspell "$pkgdir/usr/lib/firefox/dictionaries"
+  ln -Ts /usr/share/hyphen "$pkgdir/usr/lib/firefox/hyphenation"
 
   # Install a wrapper to avoid confusion about binary path
   install -Dm755 /dev/stdin "$pkgdir/usr/bin/firefox" <<END

@@ -14,5 +14,3 @@ pref("extensions.shownSelectionUI", true);
 // Default e10s support to be enabled
 pref("browser.tabs.remote.autostart", true);
 
-// Enbale spellchecking
-pref("spellchecker.dictionary_path", "/usr/share/myspell");
