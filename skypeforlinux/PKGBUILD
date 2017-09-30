@@ -1,6 +1,6 @@
 pkgname=skypeforlinux
-pkgver=8.6.76.56247
-pkgrel=2
+pkgver=8.8.76.60544
+pkgrel=1
 pkgdesc="Skype for Linux WebRTC Beta"
 arch=('x86_64')
 url="http://www.skype.com"
@@ -10,7 +10,7 @@ optdepends=('gnome-keyring') # to be verified, how to replace it with kwallet?
 conflicts=('skype')
 provides=('skype')
 source=("https://repo.skype.com/deb/pool/main/s/skypeforlinux/skypeforlinux_${pkgver}_amd64.deb")
-sha256sums=('f03f7eb1ecef8ab316501747a759d54fe7c28a60396ee51ea1cd5c8906159479')
+sha256sums=('86a86fa6f14ecc0ab6ec38d8aa60ffdbe04d97ef24cf0cf6d274c98ba33dfb37')
 
 package() {
   cd "${srcdir}"
