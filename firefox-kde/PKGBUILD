@@ -6,8 +6,8 @@ arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
-         libvpx libevent nss hunspell 'nspr>=4.14' 'libproxy'
-         "sqlite3>=3.17.0" 'icu>=59.0'
+         libvpx libevent hunspell libproxy
+         "sqlite3>=3.17.0"
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
              autoconf2.13 cargo gtk2 gobject-introspection
@@ -46,7 +46,11 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'vendor.js'
         'kde.js'
         'pgo-fix-missing-kdejs.patch'
-        'fix-wifi-scanner.diff'
+        'wifi-disentangle.patch'
+        'wifi-fix-interface.patch'
+        '0001-Bug-1384062-Make-SystemResourceMonitor.stop-more-res.patch'
+        'plugin-crash.diff'
+        'no-plt.diff'
         'no-crmf.diff'
 
         # Firefox patchset
@@ -73,13 +77,17 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 )
 sha1sums=('806cb335752ee93b204750b89dc6940768408088'
           'SKIP'
-          '9901d209bfdee85f91fb1153733b7833dad20ccd'
+          '9c46ecda00782da59fbc173c00dbf75ac347b05c'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           'a77df52cedb94f38ec3d94fc19bb40d120729fc1'
           'ce48f8e5065319e191a7389539ec663dc8a919d7'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
-          '9ed341bb7b147da7ebba420110dcf5a5a8e8d887'
+          'b979e1a2f3361fe76dbe2766d48033bf20e3d619'
+          '8b38e2640c848adbc0cffa93918ff42fa9bbdea1'
+          '6bf62ee89cd42ad3a7bb2095283d3c770270ef4d'
+          '925922d69ae9727a91018b2e614bf74e2166bfb9'
+          '2ee940cd4801e288e1825221c7115177228b0942'
           '1842e9c213e2289cc7fa49b22e2a1809a687ace9'
           '3f09209b3a6beddb19619b8246f4c6ddde20669c'
           '7ea7b3b8d3bc0e91d73481ca24f8702bbe0fe8f7'
@@ -113,7 +121,17 @@ prepare() {
   patch -Np1 -i ../no-crmf.diff
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
-  patch -Np1 -i ../fix-wifi-scanner.diff
+  patch -Np1 -i ../wifi-disentangle.patch
+  patch -Np1 -i ../wifi-fix-interface.patch
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1384062
+  patch -Np1 -i ../0001-Bug-1384062-Make-SystemResourceMonitor.stop-more-res.patch
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1382942
+  patch -Np1 -i ../no-plt.diff
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1400175
+  patch -Np1 -i ../plugin-crash.diff
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
@@ -152,7 +170,8 @@ build_kmozillahelper() {
   mkdir -p kmozillahelper-build
   cd kmozillahelper-build
 
-  cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release ../kmozillahelper
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_BUILD_TYPE=Release ../kmozillahelper
   make
 }
 
@@ -175,9 +194,9 @@ build_firefox() {
   export CC=clang
 
   # Do PGO
-  xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
-  make -f client.mk build MOZ_PGO=1
-  # make -f client.mk build
+  #xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
+  #make -f client.mk build MOZ_PGO=1
+  make -f client.mk build
 }
 
 package() {
@@ -238,4 +257,8 @@ END
   # https://bugzilla.mozilla.org/show_bug.cgi?id=658850
   ln -srf "$pkgdir/usr/bin/firefox" \
     "$pkgdir/usr/lib/firefox/firefox-bin"
+
+  # Use system certificates
+  ln -srf "$pkgdir/usr/lib/libnssckbi.so" \
+    "$pkgdir/usr/lib/firefox/libnssckbi.so"
 }
