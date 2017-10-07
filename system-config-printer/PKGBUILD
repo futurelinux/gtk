@@ -1,5 +1,5 @@
 pkgname=system-config-printer
-pkgver=1.5.8
+pkgver=1.5.9
 pkgrel=1
 pkgdesc="A CUPS printer configuration tool and status applet"
 url="http://cyberelk.net/tim/software/system-config-printer/"
@@ -8,15 +8,26 @@ license=('GPL')
 depends=('python3-pycups' 'python3-dbus' 'python3-pycurl' 'python3-requests' 'python3-gobject' 'gtk3'
          'python3-cairo' 'libnotify')
 makedepends=('intltool' 'xmlto' 'docbook-xsl' 'desktop-file-utils')
-optdepends=('libgnome-keyring: password management'
-            'pysmbc: SMB browser support')
-source=(https://github.com/zdohnal/${pkgname}/archive/${pkgver}.tar.gz)
-md5sums=('69b4f36478abcc0c745bdc23abb03246')
+optdepends=('python3-pysmbc: SMB browser support')
+source=(https://github.com/zdohnal/${pkgname}/archive/v${pkgver}.tar.gz
+        pass_libgnome_keyring_missing.diff)
+md5sums=('cdadf9343398f3dc8fa4d4f83ac5d8b8'
+         '1c219bf9e55e39b125daaa9f5eed5b84')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  
+  # make it actually work without libgnome-keyring
+  # https://bugs.archlinux.org/task/52607, https://github.com/zdohnal/system-config-printer/issues/51
+  patch -Np1 -i ../pass_libgnome_keyring_missing.diff
+  
+  touch README ChangeLog
+  autoreconf -fi
+}
 
 build() {
   cd $pkgname-$pkgver
 
-  ./bootstrap
   ./configure --prefix=/usr \
     --sbindir=/usr/bin \
     --sysconfdir=/etc \
