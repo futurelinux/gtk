@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=56.0
+pkgver=56.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -75,9 +75,9 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha1sums=('806cb335752ee93b204750b89dc6940768408088'
+sha1sums=('a8409d1c2dd129dbd53d5e0745e55a899b55ecd0'
           'SKIP'
-          '9c46ecda00782da59fbc173c00dbf75ac347b05c'
+          'e815bef8ad63e4a19d8d5a8c7b0488dcc88b9a1f'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           'a77df52cedb94f38ec3d94fc19bb40d120729fc1'
@@ -194,9 +194,9 @@ build_firefox() {
   export CC=clang
 
   # Do PGO
-  #xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
-  #make -f client.mk build MOZ_PGO=1
-  make -f client.mk build
+  xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
+  make -f client.mk build MOZ_PGO=1
+  #make -f client.mk build
 }
 
 package() {
