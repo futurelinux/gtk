@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=56.0.1
-pkgrel=1
+pkgrel=3
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -49,6 +49,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'wifi-disentangle.patch'
         'wifi-fix-interface.patch'
         '0001-Bug-1384062-Make-SystemResourceMonitor.stop-more-res.patch'
+        '0002-Bug-1389436-Explicitly-instantiate-gfxFont.patch'
         'plugin-crash.diff'
         'no-plt.diff'
         'no-crmf.diff'
@@ -77,7 +78,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
 )
 sha1sums=('a8409d1c2dd129dbd53d5e0745e55a899b55ecd0'
           'SKIP'
-          'e815bef8ad63e4a19d8d5a8c7b0488dcc88b9a1f'
+          '9c46ecda00782da59fbc173c00dbf75ac347b05c'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           'a77df52cedb94f38ec3d94fc19bb40d120729fc1'
@@ -86,6 +87,7 @@ sha1sums=('a8409d1c2dd129dbd53d5e0745e55a899b55ecd0'
           'b979e1a2f3361fe76dbe2766d48033bf20e3d619'
           '8b38e2640c848adbc0cffa93918ff42fa9bbdea1'
           '6bf62ee89cd42ad3a7bb2095283d3c770270ef4d'
+          '67419bf4f984aacf3b4660cc44d857ce9b19dd7d'
           '925922d69ae9727a91018b2e614bf74e2166bfb9'
           '2ee940cd4801e288e1825221c7115177228b0942'
           '1842e9c213e2289cc7fa49b22e2a1809a687ace9'
@@ -126,6 +128,9 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1384062
   patch -Np1 -i ../0001-Bug-1384062-Make-SystemResourceMonitor.stop-more-res.patch
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1389436
+  patch -Np1 -i ../0002-Bug-1389436-Explicitly-instantiate-gfxFont.patch
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1382942
   patch -Np1 -i ../no-plt.diff
@@ -185,17 +190,15 @@ build_firefox() {
   LDFLAGS+=" -Wl,-z,now"
 
   # GCC 6
-  # CXXFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
+  CXXFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
 
   export PATH="$srcdir/path:$PATH"
   export PYTHON="/usr/bin/python2"
   export SHELL=/bin/bash
-  export CXX=clang++
-  export CC=clang
 
   # Do PGO
   xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
-  make -f client.mk build MOZ_PGO=1
+  make -f client.mk profiledbuild
   #make -f client.mk build
 }
 
