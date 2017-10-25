@@ -1,6 +1,6 @@
 pkgname=pepperflashplugin
 pkgdesc="Adobe/Google Pepper Flash Player plugin installer"
-pkgver=27.0.0.170
+pkgver=27.0.0.183
 pkgrel=1
 arch=('x86_64')
 url="http://www.adobe.com/downloads.html"
