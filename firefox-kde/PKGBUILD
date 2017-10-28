@@ -1,16 +1,16 @@
 pkgname=firefox-kde
-pkgver=56.0.1
-pkgrel=3
+pkgver=56.0.2
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
-         libvpx libevent hunspell libproxy
+         libvpx libevent hunspell libproxy nss nspr pixman
          "sqlite3>=3.17.0"
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
-             autoconf2.13 cargo gtk2 gobject-introspection
+             autoconf2.13 gtk2 gobject-introspection jack rust
              cmake extra-cmake-modules llvm clang)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
@@ -35,7 +35,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=9fc447b00040
+_patchrev=bfa8722a06ad
 _kmozillahelper_commit=47e708e
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
@@ -50,6 +50,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'wifi-fix-interface.patch'
         '0001-Bug-1384062-Make-SystemResourceMonitor.stop-more-res.patch'
         '0002-Bug-1389436-Explicitly-instantiate-gfxFont.patch'
+	'0003-Added-stylo-nspr-build.patch'
         'plugin-crash.diff'
         'no-plt.diff'
         'no-crmf.diff'
@@ -76,9 +77,9 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha1sums=('a8409d1c2dd129dbd53d5e0745e55a899b55ecd0'
+sha1sums=('1b7310adea833a7c74498505f1207416690c9748'
           'SKIP'
-          '9c46ecda00782da59fbc173c00dbf75ac347b05c'
+          '7d004575b10888fc2e306ef7003a9f25879e68f5'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           'a77df52cedb94f38ec3d94fc19bb40d120729fc1'
@@ -88,6 +89,7 @@ sha1sums=('a8409d1c2dd129dbd53d5e0745e55a899b55ecd0'
           '8b38e2640c848adbc0cffa93918ff42fa9bbdea1'
           '6bf62ee89cd42ad3a7bb2095283d3c770270ef4d'
           '67419bf4f984aacf3b4660cc44d857ce9b19dd7d'
+          '46b5904abb4e9646f8173c739bd4f8260e010b7e'
           '925922d69ae9727a91018b2e614bf74e2166bfb9'
           '2ee940cd4801e288e1825221c7115177228b0942'
           '1842e9c213e2289cc7fa49b22e2a1809a687ace9'
@@ -95,7 +97,7 @@ sha1sums=('a8409d1c2dd129dbd53d5e0745e55a899b55ecd0'
           '7ea7b3b8d3bc0e91d73481ca24f8702bbe0fe8f7'
           'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
           '1cb412a081404db6ee50dd20438b96857dcfe58f'
-          '3c0124918ce9d5f603ea88ae8774262ed849dd59'
+          '87309eb063858c221ad5faf373eaaf3ef09ba260'
           '9cf8c5a03bcc97b66d97d62d72c325ddb14102cb'
           '5978fb0131d31b0e91459a90edc918f66eec3155')
 
@@ -131,6 +133,9 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1389436
   patch -Np1 -i ../0002-Bug-1389436-Explicitly-instantiate-gfxFont.patch
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1341234
+  patch -Np1 -i ../0003-Added-stylo-nspr-build.patch
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1382942
   patch -Np1 -i ../no-plt.diff
@@ -260,8 +265,4 @@ END
   # https://bugzilla.mozilla.org/show_bug.cgi?id=658850
   ln -srf "$pkgdir/usr/bin/firefox" \
     "$pkgdir/usr/lib/firefox/firefox-bin"
-
-  # Use system certificates
-  ln -srf "$pkgdir/usr/lib/libnssckbi.so" \
-    "$pkgdir/usr/lib/firefox/libnssckbi.so"
 }
