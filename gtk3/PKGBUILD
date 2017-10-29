@@ -1,18 +1,18 @@
 pkgbase=gtk3
 pkgname=(gtk3 gtk-update-icon-cache)
-pkgver=3.20.6
-pkgrel=2
+pkgver=3.22.24
+pkgrel=1
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
 depends=(atk cairo libcups libxcursor libxinerama libxrandr libxi libepoxy gdk-pixbuf2
-         libxcomposite libxdamage pango shared-mime-info colord at-spi2-atk 'wayland>1.9.91' libxkbcommon
-         json-glib librsvg 'wayland-protocols>=1.0')
-makedepends=(gobject-introspection libcanberra)
+         libxcomposite libxdamage pango shared-mime-info colord at-spi2-atk wayland libxkbcommon
+         json-glib librsvg wayland-protocols)
+makedepends=(gobject-introspection libcanberra colord glib2-docs)
 license=(LGPL)
 source=(https://download.gnome.org/sources/gtk+/${pkgver:0:4}/gtk+-$pkgver.tar.xz
         settings.ini)
-sha256sums=('3f8016563a96b1cfef4ac9e795647f6316deb2978ff939b19e4e4f8f936fa4b2'
+sha256sums=('cbb16e4cfc928ab8f5f22f7290616f95f6ebc8c97cc724a2007b07ced833592b'
             '0dd1d69a8e9ca9fca03b874049e0a7a439c4100cb4aac4dc37d12b595579c9d9')
 
 prepare() {
