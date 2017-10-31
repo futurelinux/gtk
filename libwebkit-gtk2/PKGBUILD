@@ -2,45 +2,49 @@
 # Contributor on CCR: Ben R <thebenj88 *AT* gmail *DOT* com>
 
 pkgname=libwebkit-gtk2
-pkgver=2.4.9
-pkgrel=2
-pkgdesc="An opensource web content engine"
+pkgver=2.18.2
+pkgrel=1
+pkgdesc="GTK+ Web content engine library"
 arch=('x86_64')
 url="http://webkitgtk.org/"
 license=('custom')
-depends=('libxt' 'libxslt' 'sqlite3' 'icu' 'gst-plugins-base' 'libsoup' 'enchant' 'libwebp' 'harfbuzz-icu')
-makedepends=('gperf' 'gobject-introspection' 'python2' 'gtk2' 'ruby')
+depends=('libxt' 'libxslt' 'geoclue' 'sqlite3' 'icu' 'gst-plugins-base-libs' 'gst-plugins-bad' 'libsecret'
+         'libsoup' 'enchant' 'libwebp' 'harfbuzz-icu' 'libnotify' 'hyphen' 'gtk2')
+makedepends=('gperf' 'gobject-introspection' 'python2' 'gtk3' 'ruby' 'ninja' 'cmake')
 provides=('libwebkit')
 options=('!emptydirs')
 install=libwebkit.install
-source=(http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz)
-sha256sums=('afdf29e7828816cad0be2604cf19421e96d96bf493987328ffc8813bb20ac564')
+source=(http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz{,.asc})
+sha256sums=('b14cb3f1b5321b1dc50abcc0445a97f8e2f8813562bca7ce4d2f8069f6fec8e7'
+            'SKIP')
+validpgpkeys=('D7FCF61CF9A2DEAB31D81BD3F3D322D0EC4582C3')
+
+
+prepare() {
+  mkdir build
+  cd webkitgtk-$pkgver
+
+  sed -i '1s/python$/&2/' Tools/gtk/generate-gtkdoc
+  rm -r Source/ThirdParty/gtest/
+}
 
 build() {
-
-  cd "${srcdir}/webkitgtk-${pkgver}"
-
-  
-  PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
-    --enable-introspection \
-    --disable-geolocation \
-    --disable-libsecret \
-    --disable-credential_storage \
-    --with-font-backend=freetype \
-    --disable-gtk-doc \
-    --with-unicode-backend=icu \
-    --with-gtk=2.0 \
-    --disable-webkit2 \
-    --enable-spellcheck "$@"
-
-
-  # https://bugzilla.gnome.org/show_bug.cgi?id=655517
-  sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-
-  make all stamp-po
+  cd build
+  cmake -G Ninja -DPORT=GTK -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_SKIP_RPATH=ON -DCMAKE_INSTALL_PREFIX=/usr \
+        -DLIB_INSTALL_DIR=/usr/lib -DLIBEXEC_INSTALL_DIR=/usr/lib/${pkgname} \
+        -DENABLE_GTKDOC=OFF -DUSE_SYSTEM_MALLOC=ON ../webkitgtk-$pkgver
+  ninja
 }
 
 package() {
-  cd "$srcdir/webkitgtk-$pkgver"
-  make DESTDIR="${pkgdir}" install
+  cd build
+  DESTDIR="$pkgdir" ninja install
+
+  cd ../webkitgtk-$pkgver/Source
+  while IFS= read -d $'\0' -r _f; do
+    echo "### $_f ###"; cat "$_f"; echo
+  done < <(find . -name 'COPYING*' -or -name 'LICENSE*' -print0) \
+    | install -Dm644 /dev/stdin "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
+
