@@ -1,11 +1,11 @@
 pkgname=wxgtk
 pkgver=3.0.3.1
-pkgrel=2
+pkgrel=3
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
 license=('custom:wxWindows')
-depends=('gtk2' 'gst-plugins-base-libs')
+depends=('gtk2' 'gst-plugins-base-libs' 'libsm' 'libxxf86vm' 'libnotify')
 makedepends=('gst-plugins-base' 'glu' 'libwebkit-gtk2')
 optdepends=('libwebkit-gtk2: for webview support')
 options=('!emptydirs')
