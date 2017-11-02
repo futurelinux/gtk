@@ -1,6 +1,6 @@
 pkgname=amule
-pkgver=2.3.2+35+047a55c
-pkgrel=4
+pkgver=2.3.2+49+dc0f6c6f7
+pkgrel=1
 epoch=1
 pkgdesc="An eMule-like client for ed2k p2p network"
 arch=('x86_64')
@@ -9,12 +9,10 @@ license=('GPL')
 depends=('wxgtk' 'gd' 'geoip' 'libupnp' 'crypto++' 'libsm')
 makedepends=('ccache' 'git' 'boost')
 install=amule.install
-source=("git+https://github.com/amule-project/amule.git#commit=047a55c"
-        "http://chakra.sourceforge.net/sources/oxygen-themes/aMule_Oxygen_Skin.zip"
+source=("git+https://github.com/amule-project/amule.git#commit=dc0f6c6"
         'amuled.systemd'
         'amuleweb.systemd')
 sha256sums=('SKIP'
-            'a340cadb86697acde60b94187fe0134d5262635233870e583a766aa1b8aa06ad'
             '527a2cca6d56b8269722aafc77a89734f59a929f946f342bd0f69b256f9c7522'
             'f4f43b1154ddccc9036a4291a58c6715f097b171fec62ea7aead0c9d9fa654f2')
 
@@ -43,6 +41,7 @@ build() {
               --enable-ccache \
               --enable-geoip \
               --enable-upnp \
+              --enable-fileview \
               --with-boost
   make
 }
@@ -51,8 +50,6 @@ package() {
   cd $pkgname
 
   make DESTDIR=$pkgdir install
-
-  cp -f ../aMule_Oxygen_Skin.zip $pkgdir/usr/share/amule/skins/
 
   install -D -m644 ../amuled.systemd $pkgdir/usr/lib/systemd/system/amuled.service
   install -D -m644 ../amuleweb.systemd $pkgdir/usr/lib/systemd/system/amuleweb.service
