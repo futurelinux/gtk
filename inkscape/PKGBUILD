@@ -16,11 +16,16 @@ optdepends=('pstoedit: latex formulas'
             'python2-numpy: some extensions'
             'python2-lxml: some extensions and filters'
             'uniconvertor: reading/writing to some proprietary formats')
-source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2")
-sha256sums=('a628d0e04c254e9840947e6d866974f92c68ae31631a38b94d9b65e5cd84cfd3')
+source=("https://inkscape.global.ssl.fastly.net/media/resources/file/$pkgname-$pkgver.tar.bz2"
+            poppler-0.58.patch)
+sha256sums=('a628d0e04c254e9840947e6d866974f92c68ae31631a38b94d9b65e5cd84cfd3'
+            '0505f49cf69ad51159cda5aa5f497f001fe9d10f34d59e6ad704a1b1e1dc50c1')
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
+	# https://gitlab.com/inkscape/inkscape/commit/93ccf03162cd2e46d962822d5507865f3451168c
+	patch -Np1 -i ../poppler-0.58.patch
+	
 	./autogen.sh
 
 	sed -i 's|/usr/bin/python\>|/usr/bin/python2|g' cxxtest/*.py
@@ -28,6 +33,8 @@ prepare() {
 	sed -i 's|"python" },|"python2" },|g' src/extension/implementation/script.cpp
 	sed -i 's|python -c|python2 -c|g' configure share/extensions/uniconv*.py
 	sed -i 's|"python"|"python2"|g' src/main.cpp
+	
+	sed -i 's| abs(| std::fabs(|g' src/ui/tools/flood-tool.cpp
 }
 
 build() {
