@@ -49,7 +49,6 @@ ac_add_options --with-system-png
 
 # Features
 ac_add_options --enable-startup-notification
-ac_add_options --enable-url-classifier
 ac_add_options --enable-jack
 ac_add_options --disable-gconf
 ac_add_options --disable-updater

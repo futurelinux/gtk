@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=56.0.2
+pkgver=57.0b14
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -35,7 +35,7 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=bfa8722a06ad
+_patchrev=65e317e42eff
 _kmozillahelper_commit=47e708e
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
@@ -48,10 +48,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'pgo-fix-missing-kdejs.patch'
         'wifi-disentangle.patch'
         'wifi-fix-interface.patch'
-        '0001-Bug-1384062-Make-SystemResourceMonitor.stop-more-res.patch'
-        '0002-Bug-1389436-Explicitly-instantiate-gfxFont.patch'
 	'0003-Added-stylo-nspr-build.patch'
-        'plugin-crash.diff'
         'no-plt.diff'
         'no-crmf.diff'
 
@@ -77,9 +74,9 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha1sums=('1b7310adea833a7c74498505f1207416690c9748'
+sha1sums=('cc3f8154a35833d34b36b4134d0a281b1b9f8614'
           'SKIP'
-          '7d004575b10888fc2e306ef7003a9f25879e68f5'
+          '992db40f6b4f4f2d41afae76a149d54ca1a2fdbb'
           '1a8ecc6d2cfd97791d8182882a74929f2a7289e9'
           '693b54b9206ad854e4d75cbbf393029b77e82153'
           'a77df52cedb94f38ec3d94fc19bb40d120729fc1'
@@ -87,19 +84,16 @@ sha1sums=('1b7310adea833a7c74498505f1207416690c9748'
           'e480985ad1c4277e48a7d69c07258f0d7e97a977'
           'b979e1a2f3361fe76dbe2766d48033bf20e3d619'
           '8b38e2640c848adbc0cffa93918ff42fa9bbdea1'
-          '6bf62ee89cd42ad3a7bb2095283d3c770270ef4d'
-          '67419bf4f984aacf3b4660cc44d857ce9b19dd7d'
           '46b5904abb4e9646f8173c739bd4f8260e010b7e'
-          '925922d69ae9727a91018b2e614bf74e2166bfb9'
           '2ee940cd4801e288e1825221c7115177228b0942'
           '1842e9c213e2289cc7fa49b22e2a1809a687ace9'
-          '3f09209b3a6beddb19619b8246f4c6ddde20669c'
-          '7ea7b3b8d3bc0e91d73481ca24f8702bbe0fe8f7'
-          'dbfd269cbf88a4e1faea99bffc57ba26b8a0a7d9'
+          'd1026670e4cf6c7c64d499cb9075590e99cab5eb'
+          '37c10bb9ca6c61ae10cf069078426a75ed4db439'
+          'c6f2fdac2e7706d7c05ac60f05e021049fb62b53'
           '1cb412a081404db6ee50dd20438b96857dcfe58f'
-          '87309eb063858c221ad5faf373eaaf3ef09ba260'
+          'bfd2254e261e232053cbf5eae6db1a2e8f8c4e3d'
           '9cf8c5a03bcc97b66d97d62d72c325ddb14102cb'
-          '5978fb0131d31b0e91459a90edc918f66eec3155')
+          'ef73665d3eb3e39d4f005e38e6f0d0dc2baad2e8')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -128,20 +122,11 @@ prepare() {
   patch -Np1 -i ../wifi-disentangle.patch
   patch -Np1 -i ../wifi-fix-interface.patch
 
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1384062
-  patch -Np1 -i ../0001-Bug-1384062-Make-SystemResourceMonitor.stop-more-res.patch
-
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1389436
-  patch -Np1 -i ../0002-Bug-1389436-Explicitly-instantiate-gfxFont.patch
-
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1341234
   patch -Np1 -i ../0003-Added-stylo-nspr-build.patch
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1382942
   patch -Np1 -i ../no-plt.diff
-
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1400175
-  patch -Np1 -i ../plugin-crash.diff
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
