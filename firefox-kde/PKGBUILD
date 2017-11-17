@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=57.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -45,9 +45,9 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'pgo-fix-missing-kdejs.patch'
         'wifi-disentangle.patch'
         'wifi-fix-interface.patch'
-	'0003-Added-stylo-nspr-build.patch'
         'no-plt.diff'
         'no-crmf.diff'
+        'mozilla-1399611.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -79,9 +79,9 @@ sha1sums=('ce4fb33c451a2fbd0ed24d5f4b2c3c2e4ea22f33'
           '12327a932bdb70d884277a7b781d2d17bff78b1c'
           'b979e1a2f3361fe76dbe2766d48033bf20e3d619'
           '8b38e2640c848adbc0cffa93918ff42fa9bbdea1'
-          '46b5904abb4e9646f8173c739bd4f8260e010b7e'
           '2ee940cd4801e288e1825221c7115177228b0942'
           '1842e9c213e2289cc7fa49b22e2a1809a687ace9'
+          '4dde21cd48ac9c61c4d4835d41eb2b379e373b16'
           'd1026670e4cf6c7c64d499cb9075590e99cab5eb'
           '37c10bb9ca6c61ae10cf069078426a75ed4db439'
           'c6f2fdac2e7706d7c05ac60f05e021049fb62b53'
@@ -122,6 +122,10 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1382942
   patch -Np1 -i ../no-plt.diff
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1399611
+  # Experimental patch for CSD on toolkit base, default to off
+  patch -Np1 -i ../mozilla-1399611.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo -n "$_mozilla_api_key" > mozilla-api-key
@@ -178,13 +182,13 @@ ac_add_options --with-system-libvpx
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-icu
+ac_add_options --with-system-png
 ac_add_options --enable-system-pixman
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-cairo
 ac_add_options --enable-libproxy
-ac_add_options --with-system-png
 
 # Features
 ac_add_options --enable-startup-notification
