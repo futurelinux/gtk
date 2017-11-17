@@ -1,17 +1,17 @@
 pkgname=atom
-pkgver=1.20.1
+pkgver=1.22.0
 pkgrel=1
 pkgdesc='A hackable text editor for the 21st Century'
 arch=('x86_64')
 url='https://github.com/atom/atom'
 license=('MIT' 'custom')
-depends=('libxkbfile' 'gtk2')
+depends=('libxkbfile' 'gtk2' 'libxtst' 'libxss' 'alsa-lib')
 makedepends=('git' 'npm' 'libgnome-keyring' 'gconf' 'python2' 'libsecret')
 options=(!emptydirs)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
         'fix-license-path.patch'
         'fix-restart.patch')
-sha256sums=('0577ff9df069f8c290fb73b387ea88f8af1fae8b4a40c5ad7cf97af824584b11'
+sha256sums=('28f2db2c92e2ee12fedbcf8e21f91df7a8308f05babc7b93f196f61f0b975103'
             'b7a325867a16fe1eece589ff5d70e642e7387557865c6d6c566b760cbe93f4e2'
             '83b6a85c8f3d38fcb13682bc8d948137448ae5cd9f616f20f76b5f504f4caa52')
 
