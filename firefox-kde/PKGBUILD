@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=57.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -40,10 +40,9 @@ _kmozillahelper_commit=47e708e
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
-        'firefox.desktop' ddg.xml''
+        'firefox.desktop' 'ddg.xml'
         'firefox-install-dir.patch'
         'pgo-fix-missing-kdejs.patch'
-        '0000-Alternate-default-search-plugin.patch'
         '0001-Bug-1360278-Add-preference-to-trigger-context-menu-o.patch'
         'wifi-disentangle.patch'
         'wifi-fix-interface.patch'
@@ -78,7 +77,6 @@ sha256sums=('603af00155be87f2c9c58047dd0072971f1cdab1f632695aae6ad072efefbb8f'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
             'b5466017083d81719355b6b88269cc3e526d005739d4e32fcb80ee5ace911abe'
             '8eaa41d3eae6a45bf4e1e5b63e3e48f12223319ea84cdb14fad9277aeabd61e0'
-            'ce4ce5a180b00f0025b9ecca78571e7c5dbcbb3a44dfdc4e81b40703c24673c6'
             '6d457c1e623d2ca3ed11d169f23275545b4b60dc296e005700139b3f25f6f56d'
             'f068b84ad31556095145d8fefc012dd3d1458948533ed3fff6cbc7250b6e73ed'
             'e98a3453d803cc7ddcb81a7dc83f883230dd8591bdf936fc5a868428979ed1f1'
@@ -111,7 +109,6 @@ prepare() {
   cd ${srcdir}/firefox-${pkgver}/
 
   patch -Np1 -i ../firefox-install-dir.patch
-  #patch -Np1 -i ../0000-Alternate-default-search-plugin.patch
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1371991
   patch -Np1 -i ../no-crmf.diff
@@ -219,8 +216,6 @@ END
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   patch -Np1 -i "$srcdir"/pgo-fix-missing-kdejs.patch
   patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
-
-  cp -frv $srcdir/ddg.xml browser/locales/searchplugins/ddg.xml
 }
 
 build() {
@@ -302,7 +297,7 @@ app.distributor=chakralinux
 app.distributor.channel=${pkgname%-kde}
 app.partner.chakralinux=chakralinux
 END
-
+  install -Dm644 $srcdir/ddg.xml $pkgdir/usr/lib/firefox/distribution/searchplugins/common/ddg-chakra.xml
   for i in 16 22 24 32 48 256; do
     install -Dm644 browser/branding/official/default$i.png \
       "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
