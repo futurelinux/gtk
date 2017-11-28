@@ -27,6 +27,8 @@ build() {
                         --libjack=weak \
                         --optimize \
                         --docs \
+                        --cxx11 \
+                        --no-phone-home \
                         --versioned \
                         --freedesktop
 
