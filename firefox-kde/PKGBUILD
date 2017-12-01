@@ -1,6 +1,6 @@
 pkgname=firefox-kde
-pkgver=57.0
-pkgrel=4
+pkgver=57.0.1
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -71,7 +71,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('603af00155be87f2c9c58047dd0072971f1cdab1f632695aae6ad072efefbb8f'
+sha256sums=('7db7829e0771acf1be253a8841b9dc96d2ad6490a8f1430fa074e5fd857181ba'
             'SKIP'
             '33dd0347a0d74ab30ee6f2b8b6b0c60780f94d459d0e89cf752e33627a62fe02'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -290,7 +290,7 @@ END
 [Global]
 id=chakralinux
 version=1.0
-about=Mozilla Firefox for Chakra GNU/Linux
+about=Mozilla Firefox compiled by Chakra GNU/Linux
 
 [Preferences]
 app.distributor=chakralinux
