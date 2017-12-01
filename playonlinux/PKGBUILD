@@ -1,28 +1,28 @@
 pkgname=playonlinux
-pkgver=4.2.10
-pkgrel=2
+pkgver=4.2.12
+pkgrel=1
 pkgdesc="GUI for managing Windows programs under linux"
 url="http://www.playonlinux.com/"
 license=('GPL')
 depends=('wine' 'imagemagick' 'xterm' 'wxpython' 'cabextract' 'unzip' 'mesa-demos'
          'xdg-user-dirs' 'gnu-netcat' 'gnupg' 'icoutils' 'libxmu' 'wget' 'p7zip')
-arch=('any')
+arch=('x86_64')
 source=(http://www.playonlinux.com/script_files/PlayOnLinux/${pkgver/.0/}/PlayOnLinux_${pkgver/.0/}.tar.gz)
 options=(!strip)
-md5sums=('9869697c13010e88cf68607cea334dbd')
+md5sums=('c4407d9e558a1eb6424cd024c91bd96f')
 screenshot=('http://i.imgur.com/77mGY.png')
 
 package() {
-  cd "$srcdir/$pkgname"
-
+  
   install -d $pkgdir/usr/share/$pkgname
   install -d $pkgdir/usr/bin 
-  cp -r $srcdir/$pkgname/ $pkgdir/usr/share/
+  
+  cp -r $pkgname/ $pkgdir/usr/share/
 
   echo "#!/bin/bash" > $pkgdir/usr/bin/$pkgname 
   echo "/usr/share/$pkgname/$pkgname \"\$@\"" >> $pkgdir/usr/bin/$pkgname
   chmod +x  $pkgdir/usr/bin/$pkgname
 
-  install -D -m644 $srcdir/$pkgname/etc/PlayOnLinux.desktop $pkgdir/usr/share/applications/playonlinux.desktop
+  install -D -m644 $pkgname/etc/PlayOnLinux.desktop $pkgdir/usr/share/applications/playonlinux.desktop
   sed -i "s/ %F//g" $pkgdir/usr/share/applications/playonlinux.desktop
 }
