@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=57.0.1
+pkgver=57.0.2
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -44,6 +44,7 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'firefox-install-dir.patch'
         'pgo-fix-missing-kdejs.patch'
         '0001-Bug-1360278-Add-preference-to-trigger-context-menu-o.patch'
+        '0002-Bug-1419426-Implement-browserSettings.contextMenuSho.patch'
         'wifi-disentangle.patch'
         'wifi-fix-interface.patch'
         'no-plt.diff' 'no-crmf.diff'
@@ -71,13 +72,14 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('7db7829e0771acf1be253a8841b9dc96d2ad6490a8f1430fa074e5fd857181ba'
+sha256sums=('cad021a13daf8fd2c951fab763e784c82aabef45e68a34c941fb64d62f1a5707'
             'SKIP'
-            '33dd0347a0d74ab30ee6f2b8b6b0c60780f94d459d0e89cf752e33627a62fe02'
+            '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
             'b5466017083d81719355b6b88269cc3e526d005739d4e32fcb80ee5ace911abe'
             '8eaa41d3eae6a45bf4e1e5b63e3e48f12223319ea84cdb14fad9277aeabd61e0'
             '6d457c1e623d2ca3ed11d169f23275545b4b60dc296e005700139b3f25f6f56d'
+            '52c56c33f7ab98232d9c0644965f149da9b7266f607c84b80aca8a5534cee3bb'
             'f068b84ad31556095145d8fefc012dd3d1458948533ed3fff6cbc7250b6e73ed'
             'e98a3453d803cc7ddcb81a7dc83f883230dd8591bdf936fc5a868428979ed1f1'
             'ea8e1b871c0f1dd29cdea1b1a2e7f47bf4713e2ae7b947ec832dba7dfcc67daa'
@@ -119,6 +121,9 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1360278
   patch -Np1 -i ../0001-Bug-1360278-Add-preference-to-trigger-context-menu-o.patch
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1419426
+  patch -Np1 -i ../0002-Bug-1419426-Implement-browserSettings.contextMenuSho.patch
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1341234
   patch -Np1 -i ../mozilla-bindgen-systemlibs.patch
@@ -201,7 +206,7 @@ ac_add_options --disable-updater
 ac_add_options --disable-crashreporter
 
 # PGO
-mk_add_options PROFILE_GEN_SCRIPT='EXTRA_TEST_ARGS=10 $(MAKE) -C $(MOZ_OBJDIR) pgo-profile-run'
+mk_add_options PROFILE_GEN_SCRIPT='EXTRA_TEST_ARGS=10 \$(MAKE) -C \$(MOZ_OBJDIR) pgo-profile-run'
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-ff
 STRIP_FLAGS="--strip-debug"
 END
