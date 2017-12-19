@@ -1,19 +1,19 @@
 pkgname=atom
-pkgver=1.22.0
+pkgver=1.23.1
 pkgrel=1
 pkgdesc='A hackable text editor for the 21st Century'
 arch=('x86_64')
 url='https://github.com/atom/atom'
 license=('MIT' 'custom')
-depends=('libxkbfile' 'gtk2' 'libxtst' 'libxss' 'alsa-lib')
+depends=('libxkbfile' 'gtk2' 'libxtst' 'libxss' 'alsa-lib' 'nss')
 makedepends=('git' 'npm' 'libgnome-keyring' 'gconf' 'python2' 'libsecret')
 options=(!emptydirs)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
         'fix-license-path.patch'
         'fix-restart.patch')
-sha256sums=('28f2db2c92e2ee12fedbcf8e21f91df7a8308f05babc7b93f196f61f0b975103'
-            'b7a325867a16fe1eece589ff5d70e642e7387557865c6d6c566b760cbe93f4e2'
-            '83b6a85c8f3d38fcb13682bc8d948137448ae5cd9f616f20f76b5f504f4caa52')
+sha256sums=('56147093f1b8fd98e1cdf9671888694b732ed6b83f7641c199ddbc54df76544f'
+            'e9df53a60c1d27d7adf9d6b8d6eb2d3462967875e3a21b672f2cc8fbbefeec0c'
+            '34625e26f1089a068582bd43a9a3755b3f5186b90dcc097b519def8f701d9f3a')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
