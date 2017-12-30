@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=52.5.0
+pkgver=52.5.2
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -30,7 +30,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         0001-Bug-1338655-Don-t-try-to-build-mp4parse-bindings.-r-.patch
         no-crmf.diff
         glibc-2.26-fix.diff)
-sha512sums=('b9b599e5853887bd518e5a57f6fd04751bb78f553f97b260cd9ba7268c4cff307be40b81b00f1320f5a5156e5c67115595b2d389f931c265d0c3448f56fb8319'
+sha512sums=('d626d3d37959539b15b5d2ae4a580fcc160380974bfc1a69a1fc8ff2435932e90a69fa386d5ecb6721d9154603c6b7d063e3368f6f995fea057eb593c06ef4ff'
             'e67c9bf97d73b95dbe31a2bba2dd8ae3d7413a8d3cd728f2b321cf222e4b1490d1ccf804634e4549911603e23850b0db52f524450b487a151c4ab2e992c7e350'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '1eecdc7942ac189a67d4d57bca305937ae8d5986944738139bad4baa47e5a9c904797db6a26840d559740178fb6e1904a2d5377c86a7d0f8a6b721471ef37d75'
