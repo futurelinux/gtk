@@ -9,7 +9,7 @@ hdr
 *~
 
 build-desktop.sh
-build.sh
+./build.sh
 check-database.sh
 check-links.sh
 check-so-files.sh
