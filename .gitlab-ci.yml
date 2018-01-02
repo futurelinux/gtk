@@ -1,0 +1,99 @@
+image: chakralinux/chakra-bootstrap:latest
+
+variables:
+  REPODIR: "$CI_PROJECT_DIR"
+
+stages:
+  - package
+  - sign
+  - deploy
+
+
+before_script:
+  - pacman -Syyu --needed --noconfirm base-devel gettext wget openssh git rsync
+
+  # The repository build script is run by user 'builder'. The build scripts needs
+  # to install dependencies using pacman. This requires root permissions.
+  # (Note: the build script itself can't be run as root, as makepkg would
+  # complain)
+  - useradd -m -G users -s /bin/bash builder
+  - "echo 'builder ALL=(ALL) NOPASSWD: /usr/bin/pacman' >> /etc/sudoers"
+  #- echo -en "builder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/10-builder
+
+  # SSH setup
+  # Run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+
+  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+
+  # For Docker builds disable host key checking. Be aware that by adding that
+  # you are suspectible to man-in-the-middle attacks.
+  # WARNING: Use this only with the Docker executor, if you use it with shell
+  # you will overwrite your user's SSH config.
+  #- mkdir -p ~/.ssh
+  #- '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  # In order to properly check the server's host key, assuming you created the
+  # SSH_SERVER_HOSTKEYS variable previously, uncomment the following two lines
+  # instead.
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+  - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+  - chmod 600 ~/.ssh/id_rsa && chmod 700 ~/.ssh
+
+  # GPG setup
+  - gpg -v --batch --import <(echo "$GPG_PRIVATE_KEY")
+  - echo "allow-loopback-pinentry" > ~/.gnupg/gpg-agent.conf
+  - gpg-connect-agent reloadagent /bye
+
+  # setup basic environment settings, as root
+  - .build-bin/prepare.sh
+  # import pgp keys flagged as valid
+  - sudo -u builder -E -H .build-bin/import-validpgpkeys.sh
+
+build_repo:
+  stage: package
+  script:
+    # the build script can't be run as root, as makepkg would complain...
+    - sudo -u builder -E -H .build-bin/build.sh
+
+  artifacts:
+    # expire artifacts per default - the gitlab web frontend can be used to keep
+    # artifacts of interest for an unlimited time
+    expire_in: 1 week
+    paths:
+      - ./*.pkg.tar.xz
+    name: "$CI_BUILD_NAME"
+  cache:
+    paths:
+      - /var/cache/pacman/pkg
+  tags:
+    - PKGBUILD
+
+sign_pkgs:
+  stage: sign
+  script:
+     - echo "$GPG_PASSWORD" | gpg -sb --pinentry-mode loopback --passphrase-fd 0 ./*.pkg.tar.xz
+  artifacts:
+    # expire artifacts per default - the gitlab web frontend can be used to keep
+    # artifacts of interest for an unlimited time
+    expire_in: 1 week
+    paths:
+      - ./*.pkg.tar.xz.sig
+    name: "$CI_BUILD_NAME"
+  tags:
+    - signature
+
+deploy_repo:
+  stage: deploy
+  variables:
+    DEPLOY_REPO: "$DEPLOY_REPO"
+    DEPLOY_SERVER: "$DEPLOY_SERVER"
+    SSH_USER: "$SSH_USER"
+    SSH_PORT: "$SSH_PORT"
+  environment: staging-repo
+  script:
+     - .build-bin/deploy.sh
+  when: manual
+  tags:
+    - rsync
