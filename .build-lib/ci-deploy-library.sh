@@ -34,6 +34,29 @@ function _unlock_repo() {
   _do_akbm ssh $SSH_USER@$DEPLOY_SERVER -p $SSH_PORT "akbm --repo-name $DEPLOY_REPO --arch x86_64 --unlock"
 }
 
+# checks whether $1 contains a globbing pattern
+# returns: '$1' or '*$1*'
+function _glob() {
+  if [[ "$1" =~ [][*?] ]]; then
+    echo -n "$1"
+  else
+    echo -n "*$1*"
+  fi
+}
+
+# takes a list of find patterns and transform it into arguments to find
+function _find_args() {
+  local -a fargs=("-name" "$(_glob $1)"); shift
+  while [[ $# -gt 0 ]]; do
+    fargs+=("-o" "-name" "$(_glob $1)"); shift
+  done
+  echo "${fargs[@]}"
+}
+
+function list_upload_packages() {
+    UPLOAD_LIST+=( $(set -o noglob; find $REPODIR -name '*.pkg.tar.*' \( $(_find_args ${args[@]}) \) -print) )
+}
+
 function _upload_files() {
   local -a files=( $* )   # files to upload
 
