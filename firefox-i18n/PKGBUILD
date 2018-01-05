@@ -5,7 +5,7 @@ pkgdesc="Language pack for Firefox"
 arch=('any')
 url="http://www.mozilla.com/"
 license=('MPL' 'GPL')
-depends=("firefox-kde=$pkgver")
+#depends=("firefox-kde=$pkgver")
 makedepends=('zip' 'unzip')
 
 _languages=(
