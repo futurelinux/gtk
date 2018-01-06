@@ -1,4 +1,4 @@
-image: chakralinux/chakra-bootstrap:latest
+image: chakralinux/makepkg:latest
 
 variables:
   REPODIR: "$CI_PROJECT_DIR"
@@ -10,8 +10,6 @@ stages:
 
 
 before_script:
-  - pacman -Syyu --needed --noconfirm base-devel gettext wget openssh git rsync
-
   # The repository build script is run by user 'builder'. The build scripts needs
   # to install dependencies using pacman. This requires root permissions.
   # (Note: the build script itself can't be run as root, as makepkg would
