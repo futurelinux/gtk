@@ -71,7 +71,7 @@ build_repo:
 sign_pkgs:
   stage: sign
   script:
-     - echo "$GPG_PASSWORD" | gpg -sb --pinentry-mode loopback --passphrase-fd 0 ./*.pkg.tar.xz
+     - for pkg in $(find . -type f | grep ".pkg.tar.xz"); do echo "sign: $pkg" && echo "$GPG_PASSWORD" | gpg -sb --pinentry-mode loopback --passphrase-fd 0 $pkg; done
   artifacts:
     # expire artifacts per default - the gitlab web frontend can be used to keep
     # artifacts of interest for an unlimited time
