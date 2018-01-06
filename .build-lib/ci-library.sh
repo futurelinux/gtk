@@ -165,6 +165,40 @@ function sort_packages_by_dependency() {
     PACKAGES=("${sorted_packages[@]}")
 }
 
+# determine the repository to build against
+function get_repository() {
+    # save the current branch as the default repository
+    local current_repo=$CI_COMMIT_REF_NAME
+
+    if [ "$current_repo" == "master" ]; then
+    current_repo="stable"
+    fi
+
+    # verify if a manual override is present in the git comment
+    GIT_COMMIT_MESSAGE=$(git rev-list --format=%B --max-count=1 HEAD)
+    # extract the text between brackets, ex. [stable], [testing]
+    tokens=$(echo $GIT_COMMIT_MESSAGE | cut -d "[" -f2 | cut -d "]" -f1)
+
+    for token in $tokens;
+    do
+        case "$token" in
+        "stable")
+            current_repo="stable"
+            ;;
+        "testing")
+            current_repo="testing"
+            ;;
+        "staging" | "unstable")
+            current_repo="staging"
+            ;;
+        *)
+            ;;
+        esac
+    done
+
+    echo "$current_repo"
+}
+
 # Build all packages defined in array variable PACKAGES
 # builds all $PACKAGES in the given order
 function build_packages() {

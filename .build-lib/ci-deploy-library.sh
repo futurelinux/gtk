@@ -34,6 +34,17 @@ function _unlock_repo() {
   _do_akbm ssh $SSH_USER@$DEPLOY_SERVER -p $SSH_PORT "akbm --repo-name $DEPLOY_REPO --arch x86_64 --unlock"
 }
 
+function _set_deploy_repo() {
+  if [[ "$1" == "stable" ]]; then
+    # convert stable to the real repository name
+    # DEPLOY_REPO=$CI_PROJECT_NAME
+    # force uploading to testing
+    DEPLOY_REPO="testing"
+  else
+    DEPLOY_REPO=$1
+  fi
+}
+
 # checks whether $1 contains a globbing pattern
 # returns: '$1' or '*$1*'
 function _glob() {
@@ -70,6 +81,7 @@ function _upload_files() {
 }
 
 function upload_files() {
+    _do _set_deploy_repo $1
     _log build_step "Start uploading to $DEPLOY_REPO the following packages: ${UPLOAD_LIST[@]}"
     _do _lock_repo
     _do_deploy _upload_files "${UPLOAD_LIST[@]}"
@@ -87,7 +99,7 @@ function update_remote_db() {
     _do _unlock_repo
 }
 
-_ensure-var "DEPLOY_REPO"
+#_ensure-var "DEPLOY_REPO"
 _ensure-var "DEPLOY_SERVER"
 _ensure-var "SSH_USER"
 _ensure-var "SSH_PORT"

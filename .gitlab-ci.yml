@@ -85,7 +85,6 @@ sign_pkgs:
 deploy_repo:
   stage: deploy
   variables:
-    DEPLOY_REPO: "$DEPLOY_REPO"
     DEPLOY_SERVER: "$DEPLOY_SERVER"
     SSH_USER: "$SSH_USER"
     SSH_PORT: "$SSH_PORT"

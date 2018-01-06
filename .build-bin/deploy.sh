@@ -10,8 +10,7 @@ if [ -z "$UPLOAD_LIST" ]; then
     _log success "Done nothing to upload!"
 else
     # rsync upload
-    _do upload_files
-
+    _do upload_files $(get_repository)
     # akbm to add to the repository
     _do update_remote_db
 

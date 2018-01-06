@@ -10,7 +10,7 @@ _do sh -c "echo 'LC_MESSAGES=C' >> '/etc/locale.conf'"
 
 # create a local makepkg settings
 _log command "Setting up makepkg.conf..."
-_do echo "source /etc/makepkg.conf
+echo "source /etc/makepkg.conf
 
 #-- Make Flags: change this for DistCC/SMP systems
 MAKEFLAGS=\"-j$(($(nproc)+1))\"
@@ -23,5 +23,11 @@ _log command "Patching makepkg..."
 _do wget https://code.chakralinux.org/tools/chakrabuildsystem/raw/master/chakra/bin/makepkg
 _do cp makepkg /usr/bin/makepkg
 
-# force to use the default chakra rsync
-# sed -i '1s/^/<added text> /' file
+# determine the the repository where we should build against (stable|testing|staging)
+repo_name=$(get_repository)
+_log command "Enabling [$repo_name] pacman.conf..."
+_do wget "https://code.chakralinux.org/tools/chakrabuildsystem/raw/master/conf/$repo_name.conf"
+_do cp $repo_name.conf /etc/pacman.conf
+
+# resync database and update with latest changes
+_do pacman -Syyu  --noconfirm
