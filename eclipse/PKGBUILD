@@ -1,9 +1,9 @@
 pkgbase=eclipse
-pkgname=(eclipse-{java,cpp,php,jee})
-pkgver=4.6.0
+pkgname=(eclipse-{java,cpp,php,jee,javascript})
+pkgver=4.7.2
 pkgrel=1
-_release=mars
-_rel=1
+_release=neon
+_rel=3
 pkgdesc="Highly extensible IDE"
 arch=('x86_64')
 url="http://eclipse.org"
@@ -15,25 +15,30 @@ source=("http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads
         "http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/$_release/$_rel/eclipse-cpp-$_release-$_rel-linux-gtk-x86_64.tar.gz"
         "http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/$_release/$_rel/eclipse-php-$_release-$_rel-linux-gtk-x86_64.tar.gz"
         "http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/$_release/$_rel/eclipse-jee-$_release-$_rel-linux-gtk-x86_64.tar.gz"
+        "http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/$_release/$_rel/eclipse-javascript-$_release-$_rel-linux-gtk-x86_64.tar.gz"
         'eclipse-java.desktop'
         'eclipse-cpp.desktop'
         'eclipse-php.desktop'
         'eclipse-jee.desktop'
+        'eclipse-javascript.desktop'
         'eclipse.svg'
         'epl-v10.html'
         'eclipse.sh')
 noextract=("eclipse-java-$_release-$_rel-linux-gtk-x86_64.tar.gz"
            "eclipse-cpp-$_release-$_rel-linux-gtk-x86_64.tar.gz"
            "eclipse-php-$_release-$_rel-linux-gtk-x86_64.tar.gz"
-           "eclipse-jee-$_release-$_rel-linux-gtk-x86_64.tar.gz")
-sha1sums=('74cbc500a4ade717e115afb13b3a633f8a4db786'
-          'acb089bac953232ac1004fee4d7f3b7b84aad68f'
-          'ad3a07f4b2ebd29fc4a4f2bf5314cef59bdd075c'
-          '503bdce0ec918265821b94949880fd26bd783e68'
+           "eclipse-jee-$_release-$_rel-linux-gtk-x86_64.tar.gz"
+           "eclipse-javascript-$_release-$_rel-linux-gtk-x86_64.tar.gz")
+sha1sums=('6bebb30f41bb07e85dfb783b0a4435ccddbcc6f4'
+          '3ab16e24f895d65570339b35730f80b5349b6da2'
+          '42fcb7f30a0397e170682a2f334a748c566e53ec'
+          '6391821bc778081226fb3e566417dcac306bf380'
+          'dd489bfad3ea5dbd2e5c8a11a97dcef759a03df9'
           '8272587b38fb823aed510a75dfe1d91d249ae74f'
           '67dc0d49a668e61087d24c89999c5f88eccb2e71'
           '838df3cbc1ece133f81a0677636fe2b793cb9b02'
           'adeb6355fa963102126bf653e87b6fed5c18a1a0'
+          'a12272c6e68e2fe47a94bc0c50fae030bc77b862'
           '91206140df8c2039bb29fc9e67f067f1b07003a4'
           '35666c54f2406125707e63edab12f2914d85ca76'
           '05d119f25c30f6703f624ae836a3f1d9cd8fa800')
@@ -48,6 +53,8 @@ prepare() {
    mv eclipse eclipse-php
    bsdtar -xf eclipse-jee-$_release-$_rel-linux-gtk-x86_64.tar.gz
    mv eclipse eclipse-jee
+   bsdtar -xf eclipse-javascript-$_release-$_rel-linux-gtk-x86_64.tar.gz
+   mv eclipse eclipse-javascript
 }            
             
 package_eclipse-java() {
@@ -148,4 +155,29 @@ package_eclipse-jee() {
 
   # license
   cp -a "${srcdir}/epl-v10.html" "${pkgdir}/usr/share/licenses/eclipse-jee/epl-v10.html"
+}
+
+package_eclipse-javascript() {
+  conflicts=('eclipse')
+  provides=('eclipse')
+  pkgdesc+=" - javascript"
+  cd ${srcdir}
+
+  # create directories
+  install -dm755 "${pkgdir}"/usr/{share/{applications,eclipse-javascript,licenses/eclipse-javascript},bin}
+  
+  # install bin symlink
+  install -D eclipse.sh ${pkgdir}/usr/bin/eclipse-javascript
+  sed -i s!'/usr/share/eclipse'!'/usr/share/eclipse-javascript'! \
+  ${pkgdir}/usr/bin/eclipse-javascript
+  
+  # install .desktop and svg
+  install -Dm644 "${srcdir}/eclipse-javascript.desktop" "${pkgdir}/usr/share/applications/eclipse-javascript.desktop"
+  install -Dm644 "${srcdir}/eclipse.svg" "${pkgdir}/usr/share/pixmaps/eclipse-javascript.svg"
+  
+  # install eclipse
+  cp -ar "${srcdir}/eclipse-javascript" "${pkgdir}/usr/share/"
+
+  # license
+  cp -a "${srcdir}/epl-v10.html" "${pkgdir}/usr/share/licenses/eclipse-javascript/epl-v10.html"
 }

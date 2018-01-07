@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Eclipse Javascript
+Comment=A Javascript Development Environment
+Icon=eclipse-javascript
+Exec=eclipse-javascript
+Terminal=false
+Type=Application
+Categories=Development;IDE;Java;Javascript
+StartupNotify=true
