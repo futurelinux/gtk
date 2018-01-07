@@ -35,6 +35,5 @@ package() {
   install -D -m755 Main/${pkgname} "${pkgdir}/usr/bin/${pkgname}"
   install -D -m644 "Setup/Linux/${pkgname}.desktop" "${pkgdir}/usr/share/applications/${pkgname}.desktop"
   install -D -m644 Resources/Icons/VeraCrypt-256x256.xpm "${pkgdir}/usr/share/pixmaps/veracrypt.xpm"
-  install -D -m644 "Release/Setup Files/License.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-  install -D -m644 "Release/Setup Files/VeraCrypt User Guide.pdf" "${pkgdir}/usr/share/${pkgname}/doc/VeraCrypt User Guide.pdf"
+  install -D -m644 "License.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
