@@ -3,7 +3,7 @@
 pkgbase=bluegriffon-i18n
 pkgname=()
 pkgver=3.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="The next-generation Web Editor based on the rendering engine of Firefox"
 arch=('any')
 url="http://bluegriffon.org/"
