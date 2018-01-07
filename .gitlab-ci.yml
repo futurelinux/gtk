@@ -8,52 +8,19 @@ stages:
   - sign
   - deploy
 
-
 before_script:
-  # The repository build script is run by user 'builder'. The build scripts needs
-  # to install dependencies using pacman. This requires root permissions.
-  # (Note: the build script itself can't be run as root, as makepkg would
-  # complain)
-  - useradd -m -G users -s /bin/bash builder
-  - "echo 'builder ALL=(ALL) NOPASSWD: /usr/bin/pacman' >> /etc/sudoers"
-  #- echo -en "builder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/10-builder
-
-  # SSH setup
-  # Run ssh-agent (inside the build environment)
-  - eval $(ssh-agent -s)
-
-  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
-  - ssh-add <(echo "$SSH_PRIVATE_KEY")
-
-  # For Docker builds disable host key checking. Be aware that by adding that
-  # you are suspectible to man-in-the-middle attacks.
-  # WARNING: Use this only with the Docker executor, if you use it with shell
-  # you will overwrite your user's SSH config.
-  #- mkdir -p ~/.ssh
-  #- '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  # In order to properly check the server's host key, assuming you created the
-  # SSH_SERVER_HOSTKEYS variable previously, uncomment the following two lines
-  # instead.
-  - mkdir -p ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
-  - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-  - chmod 600 ~/.ssh/id_rsa && chmod 700 ~/.ssh
-
-  # GPG setup
-  - gpg -v --batch --import <(echo "$GPG_PRIVATE_KEY")
-  - echo "allow-loopback-pinentry" > ~/.gnupg/gpg-agent.conf
-  - gpg-connect-agent reloadagent /bye
-
+  # import the gitlab-ci scripts
+  - git clone --depth 1 https://code.chakralinux.org/tools/chakra-gitlab-ci-scripts _gitlab-ci-scripts
   # setup basic environment settings, as root
-  - .build-bin/prepare.sh
+  - _gitlab-ci-scripts/prepare.sh
   # import pgp keys flagged as valid
-  - sudo -u builder -E -H .build-bin/import-validpgpkeys.sh
+  - sudo -u builder -E -H _gitlab-ci-scripts/import-validpgpkeys.sh
 
 build_repo:
   stage: package
   script:
     # the build script can't be run as root, as makepkg would complain...
-    - sudo -u builder -E -H .build-bin/build.sh
+    - sudo -u builder -E -H _gitlab-ci-scripts/build.sh
 
   artifacts:
     # expire artifacts per default - the gitlab web frontend can be used to keep
@@ -90,7 +57,7 @@ deploy_repo:
     SSH_PORT: "$SSH_PORT"
   environment: staging-repo
   script:
-     - .build-bin/deploy.sh
+     - _gitlab-ci-scripts/deploy.sh
   when: manual
   tags:
     - rsync
