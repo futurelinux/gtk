@@ -1,9 +1,9 @@
 pkgname=veracrypt
-pkgver=1.19
+pkgver=1.21
 pkgrel=1
 pkgdesc="Free disk encryption software, TrueCrypt fork."
 arch=('x86_64')
-url="http://veracrypt.codeplex.com/"
+url='https://www.veracrypt.fr'
 license=('custom')
 depends=('fuse' 'wxgtk' 'libsm' 'device-mapper')
 makedepends=('nasm')
@@ -11,7 +11,7 @@ replaces=('truecrypt')
 install='veracrypt.install'
 source=("https://github.com/veracrypt/VeraCrypt/archive/VeraCrypt_${pkgver}.tar.gz"
 	'no_makeself.patch')
-sha256sums=('7d3fa5007b8e9dc93691c2da78dee497954b0596763a50e21724ec0564eb761b'
+sha256sums=('4071d3d1e87839a7c2bdc9a3837940d49f38bfd92d71f9cbc670b61a48824885'
             '76c78498703d806d80707e65b253c2f2fa7f328fdae29efdca64b6d4a0ef2816')
 
 build() {
