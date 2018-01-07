@@ -1,5 +1,5 @@
 pkgname=atom
-pkgver=1.23.1
+pkgver=1.23.2
 pkgrel=1
 pkgdesc='A hackable text editor for the 21st Century'
 arch=('x86_64')
@@ -11,8 +11,8 @@ options=(!emptydirs)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
         'fix-license-path.patch'
         'fix-restart.patch')
-sha256sums=('56147093f1b8fd98e1cdf9671888694b732ed6b83f7641c199ddbc54df76544f'
-            'e9df53a60c1d27d7adf9d6b8d6eb2d3462967875e3a21b672f2cc8fbbefeec0c'
+sha256sums=('d814b179cdd816faf832ef4da2e4b5deaa03c3ad9b22291972f72837bde525a3'
+            '75e60c20ddbe79c812595fdf88771422317db4256a200d2caefd09ebdd27ecc7'
             '34625e26f1089a068582bd43a9a3755b3f5186b90dcc097b519def8f701d9f3a')
 
 prepare() {
