@@ -6,7 +6,7 @@ arch=('x86_64')
 url='https://www.veracrypt.fr'
 license=('custom')
 depends=('fuse' 'wxgtk' 'libsm' 'device-mapper')
-makedepends=('nasm')
+makedepends=('yasm')
 replaces=('truecrypt')
 install='veracrypt.install'
 source=("https://github.com/veracrypt/VeraCrypt/archive/VeraCrypt_${pkgver}.tar.gz"
@@ -14,13 +14,20 @@ source=("https://github.com/veracrypt/VeraCrypt/archive/VeraCrypt_${pkgver}.tar.
 sha256sums=('4071d3d1e87839a7c2bdc9a3837940d49f38bfd92d71f9cbc670b61a48824885'
             '76c78498703d806d80707e65b253c2f2fa7f328fdae29efdca64b6d4a0ef2816')
 
-build() {
+prepare() {
   cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
   # apply patch(es)
   patch -Np1 -i ../../no_makeself.patch  # disable sfx https://github.com/veracrypt/VeraCryptarchive
+}
+
+build() {
+  cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
   # build
-  export WX_CONFIG=/usr/bin/wx-config
-  make LFLAGS+="-ldl"
+  make PKG_CONFIG_PATH=/usr/lib/pkgconfig \
+    WX_CONFIG=/usr/bin/wx-config \
+    TC_EXTRA_LFLAGS+="-ldl ${LDFLAGS}" \
+    TC_EXTRA_CXXFLAGS="${CXXFLAGS}" \
+    TC_EXTRA_CFLAGS="${CFLAGS}"
 }
 
 package() {
