@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=57.0.4
+pkgver=58.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -35,8 +35,8 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=77c890186192
-_kmozillahelper_commit=47e708e
+_patchrev=d14085eee2b2
+_kmozillahelper_commit=2ca28e0 #v5.0.2
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
@@ -45,21 +45,18 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         'pgo-fix-missing-kdejs.patch'
         '0001-Bug-1360278-Add-preference-to-trigger-context-menu-o.patch'
         '0002-Bug-1419426-Implement-browserSettings.contextMenuSho.patch'
-        'wifi-disentangle.patch'
-        'wifi-fix-interface.patch'
         'no-plt.diff' 'no-crmf.diff'
-        'mozilla-1399611.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
         "$_patchurl/firefox-branded-icons.patch"
         "$_patchurl/firefox-no-default-ualocale.patch" # try to refer to chrome://global/locale/intl.properties(which is defined in language pack) for ua locale
+        "$_patchurl/mozilla-enable-csd.patch"
 
         # Gecko/toolkit patchset
         "$_patchurl/mozilla-nongnome-proxies.patch"
         "$_patchurl/mozilla-kde.patch"
         "$_patchurl/mozilla-openaes-decl.patch"
-	"$_patchurl/mozilla-bindgen-systemlibs.patch"
 
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
@@ -72,26 +69,23 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('97cced69abfd5c57d968f0095631f86beff4f7b61883edd5a4f207e7f9c43b33'
+sha256sums=('0e0a39caabf94d7467d8bb4008fa9e7340a7be57b8c78ccf0cf98791a3bfaaff'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
             'b5466017083d81719355b6b88269cc3e526d005739d4e32fcb80ee5ace911abe'
-            '8eaa41d3eae6a45bf4e1e5b63e3e48f12223319ea84cdb14fad9277aeabd61e0'
+            'c6cff32939199189ca89a49860db0f71b5c445b9114609e8d344f5f7d8f68a2d'
             '6d457c1e623d2ca3ed11d169f23275545b4b60dc296e005700139b3f25f6f56d'
             '52c56c33f7ab98232d9c0644965f149da9b7266f607c84b80aca8a5534cee3bb'
-            'f068b84ad31556095145d8fefc012dd3d1458948533ed3fff6cbc7250b6e73ed'
-            'e98a3453d803cc7ddcb81a7dc83f883230dd8591bdf936fc5a868428979ed1f1'
             'ea8e1b871c0f1dd29cdea1b1a2e7f47bf4713e2ae7b947ec832dba7dfcc67daa'
             'fb85a538044c15471c12cf561d6aa74570f8de7b054a7063ef88ee1bdfc1ccbb'
-            '51a3821ba37d90e715fe7819283b968436a77ec75c89684e94cec0f4506178f2'
-            'd8cf3221222e97e08dbf704a8b0c9d38e29d7dd1033455404872f04a1df10ccf'
+            'e412f09c2742355814285ebc7f23d0c4fe23722553af2629b0924737faebc422'
             'f4f919ae5c0921218d7ef7d4502ac8de3212d66d86accc588de04ea24ceb2f36'
             '175c61f549b1ea08704d1f051d801d3e566d6ec0b048ca6127eaa922e6ddd266'
+            'b4224e2d70d898e004ffef87c807df9c682ddccb0c8a0dfbe3695e330c7857c9'
             'ef0f90c9134ef05b950f06a3ffbd699c2e5a5f99a4cdf9868e799534d68c204f'
-            'fc0358619be3a63683c680b7c59e024030d96e6dc461217fe451d8289b1236bf'
-            'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70'
-            'a09dffd8482f3ac30ee0566b45bc0dcbc6447067a44e38f7e70291bf4c9f67de')
+            '82ae1f6184bcc494a2655eeeba82ee3d0be3dc9ddbbddd2ef32e10cf1d0c7d99'
+            'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -115,25 +109,12 @@ prepare() {
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1371991
   patch -Np1 -i ../no-crmf.diff
 
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
-  patch -Np1 -i ../wifi-disentangle.patch
-  patch -Np1 -i ../wifi-fix-interface.patch
-
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1360278
-  patch -Np1 -i ../0001-Bug-1360278-Add-preference-to-trigger-context-menu-o.patch
-
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1419426
-  patch -Np1 -i ../0002-Bug-1419426-Implement-browserSettings.contextMenuSho.patch
-
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1341234
-  patch -Np1 -i ../mozilla-bindgen-systemlibs.patch
-
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1382942
   patch -Np1 -i ../no-plt.diff
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1399611
   # Experimental patch for CSD on toolkit base, default to off
-  patch -Np1 -i ../mozilla-1399611.patch
+  patch -Np1 -i ../mozilla-enable-csd.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo -n "$_mozilla_api_key" > mozilla-api-key
@@ -165,6 +146,7 @@ ac_add_options --enable-optimize="-O2"
 ac_add_options --enable-jemalloc
 ac_add_options --enable-pthreads
 ac_add_options --enable-stylo
+ac_add_options MOZ_PGO=1
 
 # Release branding
 ac_add_options --enable-application=browser
@@ -208,6 +190,7 @@ ac_add_options --disable-crashreporter
 # PGO
 mk_add_options PROFILE_GEN_SCRIPT='EXTRA_TEST_ARGS=10 \$(MAKE) -C \$(MOZ_OBJDIR) pgo-profile-run'
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-ff
+mk_add_options MOZ_MAKE_FLAGS="-j9"
 STRIP_FLAGS="--strip-debug"
 END
 
@@ -219,7 +202,7 @@ END
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
-  patch -Np1 -i "$srcdir"/pgo-fix-missing-kdejs.patch
+  patch -Np0 -i "$srcdir/pgo-fix-missing-kdejs.patch"
   patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
 }
 
@@ -256,7 +239,8 @@ build_firefox() {
 
   # Do PGO
   xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
-  make -f client.mk profiledbuild
+	./mach build
+  ./mach buildsymbols
   #make -f client.mk build
 }
 
@@ -269,7 +253,8 @@ package() {
   cd "$srcdir/firefox-${pkgver}"
  
   export SHELL=/bin/bash
-  make -f client.mk DESTDIR="$pkgdir" MOZ_PKG_FATAL_WARNINGS=0 INSTALL_SDK= install
+  DESTDIR="$pkgdir" ./mach install
+  find . -name '*crashreporter-symbols-full.zip' -exec cp -fvt "$startdir" {} +
 
   _vendorjs="$pkgdir/usr/lib/$pkgname/browser/defaults/preferences/vendor.js"
   install -Dm644 /dev/stdin "$_vendorjs" <<END
@@ -282,9 +267,6 @@ pref("browser.shell.checkDefaultBrowser", false);
 // Don't disable our bundled extensions in the application directory
 pref("extensions.autoDisableScopes", 11);
 pref("extensions.shownSelectionUI", true);
-
-// Default e10s support to be enabled
-pref("browser.tabs.remote.autostart", true);
 END
 
   install -Dm644 kde.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/kde.js"
