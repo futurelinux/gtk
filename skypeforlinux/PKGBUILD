@@ -1,5 +1,5 @@
 pkgname=skypeforlinux
-pkgver=8.12.76.7
+pkgver=8.13.0.2
 pkgrel=1
 pkgdesc="Skype for Linux WebRTC Beta"
 arch=('x86_64')
@@ -10,7 +10,7 @@ optdepends=('gnome-keyring') # to be verified, how to replace it with kwallet?
 conflicts=('skype')
 provides=('skype')
 source=("https://repo.skype.com/deb/pool/main/s/skypeforlinux/skypeforlinux_${pkgver}_amd64.deb")
-sha256sums=('a92e72c9ceee16c54a2c0899f6280dbe2aa8f525b1b32adb4ca19dce8a0f7b8a')
+sha256sums=('c931f4a30e5bf34e74393e0eb38190811dcef25e8598a786c4a97387bcd9e196')
 
 package() {
   tar -xJC "${pkgdir}" -f data.tar.xz
