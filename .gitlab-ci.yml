@@ -16,7 +16,7 @@ before_script:
   # import pgp keys flagged as valid
   - sudo -u builder -E -H _gitlab-ci-scripts/import-validpgpkeys.sh
 
-build_repo:
+build_pkgs:
   stage: package
   script:
     # the build script can't be run as root, as makepkg would complain...
@@ -49,7 +49,7 @@ sign_pkgs:
   tags:
     - signature
 
-deploy_repo:
+deploy_pkgs:
   stage: deploy
   variables:
     DEPLOY_SERVER: "$DEPLOY_SERVER"
