@@ -171,6 +171,7 @@ build() {
     'use_gconf=false'
     'use_gnome_keyring=false'
     'use_gold=false'
+    'use_lld=false'
     'use_sysroot=false'
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
