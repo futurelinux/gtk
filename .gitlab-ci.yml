@@ -19,6 +19,8 @@ before_script:
 build_pkgs:
   stage: package
   script:
+    # setup makepkg settings (enable and sync the correct repository), as root
+    - _gitlab-ci-scripts/prepare_makepkg.sh
     # the build script can't be run as root, as makepkg would complain...
     - sudo -u builder -E -H _gitlab-ci-scripts/build.sh
 
