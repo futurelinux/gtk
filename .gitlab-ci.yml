@@ -7,6 +7,7 @@ stages:
   - package
   - sign
   - deploy
+  - stable
 
 before_script:
   # import the gitlab-ci scripts
@@ -57,9 +58,25 @@ deploy_pkgs:
     DEPLOY_SERVER: "$DEPLOY_SERVER"
     SSH_USER: "$SSH_USER"
     SSH_PORT: "$SSH_PORT"
+    GPG_PASSWORD: "$GPG_PASSWORD"
   environment: staging-repo
   script:
      - _gitlab-ci-scripts/deploy.sh
+  when: manual
+  tags:
+    - rsync
+
+move_pkgs_to_stable:
+  stage: stable
+  variables:
+    DEPLOY_SERVER: "$DEPLOY_SERVER"
+    SSH_USER: "$SSH_USER"
+    SSH_PORT: "$SSH_PORT"
+    GPG_PASSWORD: "$GPG_PASSWORD"
+    DEST_REPO: "stable"
+  environment: stable-repo
+  script:
+     - _gitlab-ci-scripts/move.sh
   when: manual
   tags:
     - rsync
