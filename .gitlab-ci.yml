@@ -73,7 +73,7 @@ move_pkgs_to_stable:
     SSH_USER: "$SSH_USER"
     SSH_PORT: "$SSH_PORT"
     GPG_PASSWORD: "$GPG_PASSWORD"
-    DEST_REPO: "stable"
+    DEST_REPO: "gtk"
   environment: stable-repo
   script:
      - _gitlab-ci-scripts/move.sh
