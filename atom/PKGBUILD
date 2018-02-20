@@ -1,5 +1,5 @@
 pkgname=atom
-pkgver=1.23.2
+pkgver=1.24.0
 pkgrel=1
 pkgdesc='A hackable text editor for the 21st Century'
 arch=('x86_64')
@@ -10,16 +10,19 @@ makedepends=('git' 'npm' 'libgnome-keyring' 'gconf' 'python2' 'libsecret')
 options=(!emptydirs)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
         'fix-license-path.patch'
-        'fix-restart.patch')
-sha256sums=('d814b179cdd816faf832ef4da2e4b5deaa03c3ad9b22291972f72837bde525a3'
+        'fix-restart.patch'
+        'update-tello.patch')
+sha256sums=('7494fba115b214e29d3977cc1a3b08b94d0e88cad65b0d506d40904e3f967bbc'
             '75e60c20ddbe79c812595fdf88771422317db4256a200d2caefd09ebdd27ecc7'
-            '34625e26f1089a068582bd43a9a3755b3f5186b90dcc097b519def8f701d9f3a')
+            '34625e26f1089a068582bd43a9a3755b3f5186b90dcc097b519def8f701d9f3a'
+            'c285e6301093cc810bcbee122315f3a48ff17f530521d5e1903b48e67e0b9d4f')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   patch -Np1 -i "${srcdir}"/fix-license-path.patch
   patch -Np1 -i "${srcdir}"/fix-restart.patch
+  patch -Np1 -i "${srcdir}"/update-tello.patch
 }
 
 build() {
