@@ -1,0 +1,11 @@
+--- mysql-workbench-community-6.3.9-src.orig/plugins/migration/copytable/copytable.cpp  2016-10-14 15:12:03.000000000 +0300
++++ mysql-workbench-community-6.3.9-src/plugins/migration/copytable/copytable.cpp 2016-11-17 16:27:43.044632958 +0200
+@@ -2847,7 +2847,7 @@
+   // This is needed because the escaping depends on the character set in use by the server
+   unsigned long ret_length = 0;
+ 
+-#if MYSQL_CHECK_VERSION(5, 7, 6)
++#if MYSQL_CHECK_VERSION(5, 7, 6) && !defined(MARIADB_BASE_VERSION)
+   if (_target->is_mysql_version_at_least(5, 7, 6))
+     ret_length += mysql_real_escape_string_quote(_mysql, buffer + length, data, (unsigned long)dlength, '"');
+   else
