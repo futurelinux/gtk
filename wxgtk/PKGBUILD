@@ -1,17 +1,17 @@
 pkgname=wxgtk
-pkgver=3.0.3.1
-pkgrel=4
+pkgver=3.0.4
+pkgrel=1
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
 license=('custom:wxWindows')
-depends=('gtk2' 'gst-plugins-base-libs' 'libsm' 'libxxf86vm' 'libnotify')
+depends=('gtk2' 'libgl' 'gst-plugins-base-libs' 'libsm' 'libxxf86vm' 'libnotify')
 makedepends=('gst-plugins-base' 'glu' 'libwebkit-gtk2')
 optdepends=('libwebkit-gtk2: for webview support')
 options=('!emptydirs')
 source=(https://github.com/wxWidgets/wxWidgets/releases/download/v$pkgver/wxWidgets-$pkgver.tar.bz2
         'make-abicheck-non-fatal.patch')
-sha256sums=('3164ad6bc5f61c48d2185b39065ddbe44283eb834a5f62beb13f1d0923e366e4'
+sha256sums=('96157f988d261b7368e5340afa1a0cad943768f35929c22841f62c25b17bf7f0'
             '46a1bb97d69163547da13d5e23a4c73e68de27ee601da5d2fb5bc5c417931453')
 
 prepare() {
