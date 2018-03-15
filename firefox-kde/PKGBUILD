@@ -1,22 +1,21 @@
 pkgname=firefox-kde
-pkgver=58.0.2
-pkgrel=2
+pkgver=59.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
          libvpx libevent hunspell libproxy nss nspr pixman
-         "sqlite3>=3.17.0"
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
              autoconf2.13 gtk2 gobject-introspection jack rust
-             cmake extra-cmake-modules llvm clang)
+             cmake extra-cmake-modules)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'upower: Battery API'
             'firefox-i18n: for multilanguage support')
-options=(!emptydirs)
+options=(!emptydirs !makeflags)
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 provides=("firefox=${pkgver}" "kmozillahelper")
 conflicts=('kmozillahelper')
@@ -35,21 +34,20 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=d14085eee2b2
+_patchrev=d61b64679bb4
 _kmozillahelper_commit=2ca28e0 #v5.0.2
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
-source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.xz"
+_repo=https://hg.mozilla.org/releases/mozilla-release/archive
+_changeset=7a8e35a861ae # check the _repo
+source=("$_repo/FIREFOX_${pkgver//./_}_RELEASE".tar.gz
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
         'firefox.desktop' 'ddg.xml'
-        'firefox-install-dir.patch'
         'pgo-fix-missing-kdejs.patch'
         'no-plt.diff' 'no-crmf.diff'
-	'mozilla-1399611.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
         "$_patchurl/firefox-branded-icons.patch"
-        "$_patchurl/firefox-no-default-ualocale.patch" # try to refer to chrome://global/locale/intl.properties(which is defined in language pack) for ua locale
 
         # Gecko/toolkit patchset
         "$_patchurl/mozilla-nongnome-proxies.patch"
@@ -67,20 +65,17 @@ source=("https://download-installer.cdn.mozilla.net/pub/firefox/releases/${pkgve
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('2b7794e4c2a24fa388f3acb2956c96bb2c3eae455467f0e386788ebaea7240c3'
+sha256sums=('beed87f586b48c5c1546dc6190f9c90a5c266061f78c7117ed62122c77330ceb'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
-            'b5466017083d81719355b6b88269cc3e526d005739d4e32fcb80ee5ace911abe'
             'c6cff32939199189ca89a49860db0f71b5c445b9114609e8d344f5f7d8f68a2d'
             'ea8e1b871c0f1dd29cdea1b1a2e7f47bf4713e2ae7b947ec832dba7dfcc67daa'
-            'fb85a538044c15471c12cf561d6aa74570f8de7b054a7063ef88ee1bdfc1ccbb'
-            '30c18a567d92029f5ab1bcc0c6b4189e4af51d7e2c630f93667fad2e16def618'
-            'e412f09c2742355814285ebc7f23d0c4fe23722553af2629b0924737faebc422'
-            'f4f919ae5c0921218d7ef7d4502ac8de3212d66d86accc588de04ea24ceb2f36'
-            '175c61f549b1ea08704d1f051d801d3e566d6ec0b048ca6127eaa922e6ddd266'
+            '02000d185e647aa20ca336e595b4004bb29cdae9d8f317f90078bdcc7a36e873'
+            'd39011bb49ea13d3b0d1d6832e6343d7c8e6859f43bce4fa08e6818efac706af'
+            '67ae8fc341a465c1e0961014bed5ad89a66a211362c82451c6e068b0e4ad2eb8'
             'ef0f90c9134ef05b950f06a3ffbd699c2e5a5f99a4cdf9868e799534d68c204f'
-            '82ae1f6184bcc494a2655eeeba82ee3d0be3dc9ddbbddd2ef32e10cf1d0c7d99'
+            'b302ef6220bd2fb1c5b466ce6d4b36c756095900cad3bbbcb69978ca2e08377d'
             'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70')
 
 
@@ -98,19 +93,16 @@ _mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
 
 
 prepare() {
-  cd ${srcdir}/firefox-${pkgver}/
+  mkdir path
+  ln -s /usr/bin/python2 path/python
 
-  patch -Np1 -i ../firefox-install-dir.patch
+  cd ${srcdir}/mozilla-release-FIREFOX_${pkgver//./_}_RELEASE
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1371991
   patch -Np1 -i ../no-crmf.diff
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1382942
   patch -Np1 -i ../no-plt.diff
-
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1399611
-  # Experimental patch for CSD on toolkit base, default to off
-  patch -Np1 -i ../mozilla-1399611.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo -n "$_mozilla_api_key" > mozilla-api-key
@@ -142,6 +134,7 @@ ac_add_options --enable-optimize="-O2"
 ac_add_options --enable-jemalloc
 ac_add_options --enable-pthreads
 ac_add_options --enable-stylo
+ac_add_options --enable-rust-simd
 ac_add_options MOZ_PGO=1
 
 # Release branding
@@ -154,6 +147,7 @@ export MOZILLA_OFFICIAL=1
 export MOZ_TELEMETRY_REPORTING=1
 export MOZ_ADDON_SIGNING=1
 export MOZ_REQUIRE_SIGNING=1
+export MOZ_SOURCE_CHANGESET=$_changeset
 
 # Keys
 ac_add_options --with-google-api-keyfile=${PWD@Q}/google-api-key
@@ -171,7 +165,6 @@ ac_add_options --with-system-icu
 ac_add_options --with-system-png
 ac_add_options --enable-system-pixman
 ac_add_options --enable-system-hunspell
-ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-cairo
 ac_add_options --enable-libproxy
@@ -199,7 +192,6 @@ END
   patch -Np1 -i "$srcdir/firefox-kde.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   patch -Np0 -i "$srcdir/pgo-fix-missing-kdejs.patch"
-  patch -Np1 -i "$srcdir/firefox-no-default-ualocale.patch"
 }
 
 build() {
@@ -220,7 +212,7 @@ build_kmozillahelper() {
 }
 
 build_firefox() {
-  cd  "$srcdir/firefox-${pkgver}"
+  cd  "$srcdir/mozilla-release-FIREFOX_${pkgver//./_}_RELEASE"
 
   # _FORTIFY_SOURCE causes configure failures
   CPPFLAGS+=" -O2"
@@ -228,14 +220,13 @@ build_firefox() {
   # Hardening
   LDFLAGS+=" -Wl,-z,now"
 
-  # GCC 6
-  CXXFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
-
+  export PATH="$srcdir/path:$PATH"
   export SHELL=/bin/bash
+  export MOZ_SOURCE_REPO="$_repo"
 
   # Do PGO
   xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
-	./mach build
+       ./mach build
   ./mach buildsymbols
   #make -f client.mk build
 }
@@ -246,7 +237,7 @@ package() {
   make DESTDIR=$pkgdir install
 
   msg "package() Firefox"
-  cd "$srcdir/firefox-${pkgver}"
+  cd "$srcdir/mozilla-release-FIREFOX_${pkgver//./_}_RELEASE"
  
   export SHELL=/bin/bash
   DESTDIR="$pkgdir" ./mach install
@@ -255,7 +246,7 @@ package() {
   _vendorjs="$pkgdir/usr/lib/$pkgname/browser/defaults/preferences/vendor.js"
   install -Dm644 /dev/stdin "$_vendorjs" <<END
 // Use LANG environment variable to choose locale
-pref("intl.locale.matchOS", true);
+pref("intl.locale.requested", "");
 
 // Disable default browser checking.
 pref("browser.shell.checkDefaultBrowser", false);
