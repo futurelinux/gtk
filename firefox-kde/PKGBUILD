@@ -271,14 +271,10 @@ app.distributor.channel=${pkgname%-kde}
 app.partner.chakralinux=chakralinux
 END
   install -Dm644 $srcdir/ddg.xml $pkgdir/usr/lib/firefox/distribution/searchplugins/common/ddg-chakra.xml
-  for i in 16 22 24 32 48 256; do
+  for i in 16 22 24 32 48 64 128 256; do
     install -Dm644 browser/branding/official/default$i.png \
       "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
   done
-  install -Dm644 browser/branding/official/content/icon64.png \
-    "$pkgdir/usr/share/icons/hicolor/64x64/apps/firefox.png"
-  install -Dm644 browser/branding/official/mozicon128.png \
-    "$pkgdir/usr/share/icons/hicolor/128x128/apps/firefox.png"
   install -Dm644 browser/branding/official/content/about-logo.png \
     "$pkgdir/usr/share/icons/hicolor/192x192/apps/firefox.png"
   install -Dm644 browser/branding/official/content/about-logo@2x.png \
