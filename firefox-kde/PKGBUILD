@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=59.0
+pkgver=59.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -24,8 +24,8 @@ install=firefox.install
 #
 # For whom want to update this package
 #
-# Alternative firefox source url: 
-# http://releases.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/source/firefox-${pkgver}.source.tar.bz2
+# Alternative firefox source url:
+# http://releases.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/SOURCE
 # This URL uses CDN so it's faster, but maybe out of date when new firefox release comes out.
 #
 # Find Firefox KDE related patch:
@@ -38,8 +38,8 @@ _patchrev=d61b64679bb4
 _kmozillahelper_commit=2ca28e0 #v5.0.2
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 _repo=https://hg.mozilla.org/releases/mozilla-release/archive
-_changeset=7a8e35a861ae # check the _repo
-source=("$_repo/FIREFOX_${pkgver//./_}_RELEASE".tar.gz
+_changeset=3db9e3d52b17563efca181ccbb50deb8660c59ae # check the _repo
+source=("$_repo/${_changeset}.tar.gz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
         'firefox.desktop' 'ddg.xml'
         'pgo-fix-missing-kdejs.patch'
@@ -96,7 +96,7 @@ prepare() {
   mkdir path
   ln -s /usr/bin/python2 path/python
 
-  cd ${srcdir}/mozilla-release-FIREFOX_${pkgver//./_}_RELEASE
+  cd ${srcdir}/mozilla-release-${_changeset}
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1371991
   patch -Np1 -i ../no-crmf.diff
@@ -211,7 +211,7 @@ build_kmozillahelper() {
 }
 
 build_firefox() {
-  cd  "$srcdir/mozilla-release-FIREFOX_${pkgver//./_}_RELEASE"
+  cd  "$srcdir/mozilla-release-${_changeset}"
 
   # _FORTIFY_SOURCE causes configure failures
   CPPFLAGS+=" -O2"
@@ -236,7 +236,7 @@ package() {
   make DESTDIR=$pkgdir install
 
   msg "package() Firefox"
-  cd "$srcdir/mozilla-release-FIREFOX_${pkgver//./_}_RELEASE"
+  cd "$srcdir/mozilla-release-${_changeset}"
  
   export SHELL=/bin/bash
   DESTDIR="$pkgdir" ./mach install
