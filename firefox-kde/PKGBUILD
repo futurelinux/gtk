@@ -65,7 +65,7 @@ source=("$_repo/${_changeset}.tar.gz"
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('beed87f586b48c5c1546dc6190f9c90a5c266061f78c7117ed62122c77330ceb'
+sha256sums=('e667289e2abb054bf8645d2cee0fc08d6a43ada3158adb1cea69de2a849b065f'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
