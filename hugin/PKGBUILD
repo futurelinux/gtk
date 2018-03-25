@@ -1,8 +1,8 @@
 # WARNING: this package should exactly match the hugin-tools platform package
 
 pkgname=hugin
-pkgver=2017.0.0
-pkgrel=5
+pkgver=2018.0.0
+pkgrel=1
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
@@ -11,7 +11,7 @@ depends=('wxgtk' 'boost-libs' 'enblend-enfuse' 'exiv2' "hugin-tools=${pkgver}"
          'lensfun' 'lapack' 'make' 'perl-exiftool' 'desktop-file-utils' 'glew')
 makedepends=('cmake' 'boost' 'tclap' 'mesa' 'zip' 'swig')
 source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('4ba7f5bf5afdadbea9cf10d15aa14e644ef94ed3')
+sha1sums=('bf62cc597015f8fcbddb52590fe3f8eac497449f')
 
 install=install
 
@@ -45,6 +45,7 @@ package() {
   rm -v "${pkgdir}/usr/share/hugin/data/celeste.model"
   rm -v "${pkgdir}/usr/bin/autooptimiser"
   rm -v "${pkgdir}/usr/bin/hugin_hdrmerge"
+  rm -v "${pkgdir}/usr/bin/hugin_stacker"
   rm -v "${pkgdir}/usr/bin/linefind"
   rm -v "${pkgdir}/usr/bin/nona"
   rm -v "${pkgdir}/usr/bin/fulla"
