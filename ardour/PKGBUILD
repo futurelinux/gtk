@@ -1,11 +1,11 @@
 pkgname=ardour
 pkgver=5.12
-pkgrel=1
+pkgrel=2
 pkgdesc="Professional-grade digital audio workstation"
 arch=('x86_64')
 url="http://ardour.org/"
 license=('GPL')
-depends=('liblrdf' 'liblo' 'lilv' 'gtkmm' 'aubio' 'suil' 'taglib' 'rubberband')
+depends=('liblrdf' 'liblo' 'lilv' 'gtkmm' 'aubio' 'suil' 'taglib' 'rubberband' 'libarchive')
 makedepends=('git' 'python2' 'boost' 'cppunit' 'doxygen' 'graphviz' 'itstool')
 install=$pkgname.install
 source=(${pkgname}-${pkgver}::"git://git.ardour.org/${pkgname}/${pkgname}.git#tag=${pkgver}")
@@ -23,14 +23,15 @@ build() {
 
   python2 waf configure --prefix=/usr \
                         --configdir=/etc \
-                        --with-backends="jack,alsa" \
+                        --with-backends="jack,alsa,dummy" \
                         --libjack=weak \
                         --optimize \
                         --docs \
                         --cxx11 \
                         --no-phone-home \
                         --versioned \
-                        --freedesktop
+                        --freedesktop \
+                        --ptformat
 
   python2 waf build $MAKEFLAGS
 }
