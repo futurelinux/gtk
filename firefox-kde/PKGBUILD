@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=59.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -14,7 +14,8 @@ makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'upower: Battery API'
-            'firefox-i18n: for multilanguage support')
+            'firefox-i18n: for multilanguage support'
+            'libdbusmenu-gtk3: for global menu support')
 options=(!emptydirs !makeflags)
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 provides=("firefox=${pkgver}" "kmozillahelper")
@@ -247,7 +248,7 @@ package() {
   DESTDIR="$pkgdir" ./mach install
   find . -name '*crashreporter-symbols-full.zip' -exec cp -fvt "$startdir" {} +
 
-  _vendorjs="$pkgdir/usr/lib/$pkgname/browser/defaults/preferences/vendor.js"
+  _vendorjs="$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
   install -Dm644 /dev/stdin "$_vendorjs" <<END
 // Use LANG environment variable to choose locale
 pref("intl.locale.requested", "");
@@ -272,7 +273,7 @@ about=Mozilla Firefox compiled by Chakra GNU/Linux
 
 [Preferences]
 app.distributor=chakralinux
-app.distributor.channel=${pkgname%-kde}
+app.distributor.channel=firefox
 app.partner.chakralinux=chakralinux
 END
   install -Dm644 $srcdir/ddg.xml $pkgdir/usr/lib/firefox/distribution/searchplugins/common/ddg-chakra.xml
