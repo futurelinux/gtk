@@ -1,5 +1,5 @@
 pkgname=filezilla
-pkgver=3.31.0
+pkgver=3.32.0
 pkgrel=1
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
@@ -8,8 +8,8 @@ license=('GPL')
 depends=('dbus' 'xdg-utils' 'wxgtk' 'libidn' 'hicolor-icon-theme' 'sqlite3' 'gnutls' 'libfilezilla' 'libnotify')
 install=${pkgname}.install
 screenshot="https://filezilla-project.org/images/screenshots/fz3_linux_main.png"
-source=("http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2")
-sha256sums=('14c568b7e3331b8ae6d2371aeb4f4b43fbf97f057c0af9d75165d0d8d0d2dee5')
+source=("https://dl3.cdn.filezilla-project.org/client/FileZilla_${pkgver}_src.tar.bz2")
+sha256sums=('2d3d28b590c21b7b9cb92209c04833caf4c50f51186ca20747e5d9653f623be9')
 
 build() {
   cd "${pkgname}-${pkgver}"
