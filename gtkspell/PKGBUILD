@@ -1,21 +1,37 @@
 pkgname=gtkspell
 pkgver=2.0.16
-pkgrel=3
+pkgrel=4
 url="http://gtkspell.sourceforge.net/"
 pkgdesc="GtkSpell provides word-processor-style highlighting and replacement of misspelled words in a GtkTextView widget"
 arch=('x86_64')
 license=('GPL')
 depends=('gtk2' 'enchant')
-makedepends=('intltool')
-options=('!libtool')
-install=gtkspell.install
-source=(http://gtkspell.sourceforge.net/download/${pkgname}-${pkgver}.tar.gz)
-md5sums=('f75dcc9338f182c571b321d37c606a94')
+makedepends=('intltool' 'gtk-doc' 'python3-six')
+validpgpkeys=('7C70E4D9927061BD840E82DB6BA6197569B23319') #Daniel Atallah <daniel.atallah@gmail.com>
+source=(https://downloads.sourceforge.net/sourceforge/gtkspell/${pkgname}-${pkgver}.tar.gz{,.asc}
+        enchant-2.diff)
+sha1sums=('49a3eaff850d119a94fc929635270f01e87cdca1'
+          'SKIP'
+          '505bf7bad778c7c1bdd0bfbad7887f042dfd5eea')
 
+prepare() {
+  cd $pkgname-$pkgver   
+  # enchant 2.2
+  patch -Np1 -i ../enchant-2.diff
+  gtkdocize
+  autoreconf -fvi
+}
+                   
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr --disable-gtk-doc	
+  ./configure --prefix=/usr --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
+}
+
+check() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make check
 }
 
 package() {
