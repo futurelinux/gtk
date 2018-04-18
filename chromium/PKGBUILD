@@ -44,7 +44,7 @@ depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib'
          'desktop-file-utils' 'hicolor-icon-theme')
 depends+=(${_system_libs[@]})
-makedepends=('python2' 'gperf' 'yasm' 'mesa' 'ninja' 'nodejs' 'git' 'clang' 'lld')
+makedepends=('python3' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'nodejs' 'git' 'clang' 'lld')
 optdepends=('pepperflashplugin: support for Flash content'
             'kwallet: for storing passwords in KWallet'
             'kdialog: needed for file dialogs in KDE')
@@ -180,7 +180,6 @@ build() {
     'ffmpeg_branding="Chrome"'
     'proprietary_codecs=true'
     'link_pulseaudio=true'
-    'use_gconf=false'
     'use_gnome_keyring=false'
     'use_sysroot=false'
     'linux_use_bundled_binutils=false'
@@ -208,7 +207,7 @@ build() {
     CPPFLAGS+=' -DNO_UNWIND_TABLES'
   fi
 
-  python2 tools/gn/bootstrap/bootstrap.py --gn-gen-args "${_flags[*]}"
+  python2 tools/gn/bootstrap/bootstrap.py -s --no-clean
   out/Release/gn gen out/Release --args="${_flags[*]}" \
     --script-executable=/usr/bin/python2
 
