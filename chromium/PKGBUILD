@@ -34,7 +34,7 @@ readonly _unwanted_bundled_libs=(
 
 pkgname=chromium
 pkgver=66.0.3359.117
-pkgrel=1
+pkgrel=2
 _launcher_ver=6
 pkgdesc="A web browser built for speed, simplicity, and security"
 arch=('x86_64')
@@ -112,14 +112,6 @@ prepare() {
   # https://crbug.com/skia/6663#c10
   patch -Np4 -i ../chromium-skia-harmony.patch
 
-  # Remove compiler flags not supported by our system clang
-  sed -i \
-    -e '/"-Wno-enum-compare-switch"/d' \
-    -e '/"-Wno-null-pointer-arithmetic"/d' \
-    -e '/"-Wno-tautological-unsigned-zero-compare"/d' \
-    -e '/"-Wno-tautological-constant-compare"/d' \
-    build/config/compiler/BUILD.gn
-
   # Use Python 2
   find . -name '*.py' -exec sed -i -r 's|/usr/bin/python$|&2|g' {} +
 
@@ -172,7 +164,7 @@ build() {
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
     'host_toolchain="//build/toolchain/linux/unbundle:default"'
     'clang_use_chrome_plugins=false'
-    'is_official_build=false' # When we have latest clang, we should make it true.
+    'is_official_build=true'
     'is_debug=false'
     'treat_warnings_as_errors=false'
     'fieldtrial_testing_like_official_build=true'
