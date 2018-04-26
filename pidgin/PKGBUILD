@@ -1,5 +1,5 @@
 pkgname=('pidgin')
-pkgver=2.12.0
+pkgver=2.13.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Multi-protocol instant messaging client"
@@ -12,13 +12,13 @@ makedepends=('nss' 'libsasl' 'libidn' 'python3' 'avahi'
 optdepends=('aspell: for spelling correction')
 install=pidgin.install
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2"
-        'pidgin-2.10.12-py3-fixes.patch')
-md5sums=('8287400c4e5663e0e7844e868d5152af'
-         '83509c89a24a9c675ea6d876ef693bd5')
+        'purple-remote-python3.patch')
+md5sums=('423403494fe1951e47cc75231f743bb0'
+         '0709677de2cb5bc08b30e6b04ea0d3c5')
 
 prepare() {
    cd "${srcdir}/${pkgname}-${pkgver}"
-   patch -Np1 -i ../pidgin-2.10.12-py3-fixes.patch
+   patch -Np1 -i ../purple-remote-python3.patch
    autoreconf -vi
 }
 
