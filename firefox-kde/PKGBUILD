@@ -1,6 +1,6 @@
 pkgname=firefox-kde
-pkgver=59.0.2
-pkgrel=2
+pkgver=60.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -21,11 +21,11 @@ screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 provides=("firefox=${pkgver}" "kmozillahelper")
 conflicts=('kmozillahelper')
 replaces=('kmozillahelper')
-install=firefox.install
+validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 #
 # For whom want to update this package
 #
-# Alternative firefox source url:
+# Notes on mercurial release revision
 # http://releases.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/SOURCE
 # This URL uses CDN so it's faster, but maybe out of date when new firefox release comes out.
 #
@@ -35,17 +35,17 @@ install=firefox.install
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=d61b64679bb4
+_patchrev=75893a3d8fbe
 _kmozillahelper_commit=2ca28e0 #v5.0.2
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 _repo=https://hg.mozilla.org/releases/mozilla-release/archive
-_changeset=239e434d6d2b8e1e2b697c3416d1e96d48fe98e5 # check the _repo
-source=("$_repo/${_changeset}.tar.gz"
+_changeset=3202d5534730 # check the _repo
+#source=("$_repo/${_changeset}.tar.gz"
+source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname%%-kde}-${pkgver}.source.tar.xz"{,.asc}
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
         'firefox.desktop' 'ddg.xml'
         'pgo-fix-missing-kdejs.patch'
         'no-plt.diff' 'no-crmf.diff'
-        'unity-menubar.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -55,6 +55,7 @@ source=("$_repo/${_changeset}.tar.gz"
         "$_patchurl/mozilla-nongnome-proxies.patch"
         "$_patchurl/mozilla-kde.patch"
         "$_patchurl/mozilla-openaes-decl.patch"
+        "$_patchurl/mozilla-enable-csd.patch"
 
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
@@ -67,19 +68,20 @@ source=("$_repo/${_changeset}.tar.gz"
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('9d095b82289eab5d857c85567f121c99c17cc7b19f968f7987faa0cd0617ec88'
+sha256sums=('4bc4fd997e6239f53e16a70b04f197791e5c5d09367e2916bcfe4a427999f842'
+            'SKIP'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
             'c6cff32939199189ca89a49860db0f71b5c445b9114609e8d344f5f7d8f68a2d'
             'ea8e1b871c0f1dd29cdea1b1a2e7f47bf4713e2ae7b947ec832dba7dfcc67daa'
             '02000d185e647aa20ca336e595b4004bb29cdae9d8f317f90078bdcc7a36e873'
-            '535d225437398d7b3952924c9a75d0617665c4ec61b484e3973ca24616c0afba'
-            'd39011bb49ea13d3b0d1d6832e6343d7c8e6859f43bce4fa08e6818efac706af'
+            '6b73aaa38847c320ff26f90118d07433049f63341b64359acf11b1e4f77d50b9'
             '67ae8fc341a465c1e0961014bed5ad89a66a211362c82451c6e068b0e4ad2eb8'
             'ef0f90c9134ef05b950f06a3ffbd699c2e5a5f99a4cdf9868e799534d68c204f'
-            'b302ef6220bd2fb1c5b466ce6d4b36c756095900cad3bbbcb69978ca2e08377d'
-            'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70')
+            '2471b962a512addebf37778c80c9445354e702b63be3636a9e124aa2fd6b743b'
+            'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70'
+            'ca1602c69f22ee1bd1000cebb883895eeb19b0e1647dfe4ca00422f39ed215aa')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -99,7 +101,8 @@ prepare() {
   mkdir path
   ln -s /usr/bin/python2 path/python
 
-  cd ${srcdir}/mozilla-release-${_changeset}
+  #cd ${srcdir}/mozilla-release-${_changeset}
+  cd ${srcdir}/${pkgname%%-kde}-${pkgver}
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1371991
   patch -Np1 -i ../no-crmf.diff
@@ -189,14 +192,12 @@ END
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch" 
   patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
+  patch -Np1 -i "$srcdir/mozilla-enable-csd.patch"
 
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   patch -Np0 -i "$srcdir/pgo-fix-missing-kdejs.patch"
-
-  msg 'Patching Globalmenu Support'
-  patch -Np1 -i "$srcdir/unity-menubar.patch"
 }
 
 build() {
@@ -217,7 +218,8 @@ build_kmozillahelper() {
 }
 
 build_firefox() {
-  cd  "$srcdir/mozilla-release-${_changeset}"
+  # cd  "$srcdir/mozilla-release-${_changeset}"
+  cd $srcdir/${pkgname%%-kde}-${pkgver}
 
   # _FORTIFY_SOURCE causes configure failures
   CPPFLAGS+=" -O2"
@@ -242,7 +244,8 @@ package() {
   make DESTDIR=$pkgdir install
 
   msg "package() Firefox"
-  cd "$srcdir/mozilla-release-${_changeset}"
+  #cd "$srcdir/mozilla-release-${_changeset}"
+  cd $srcdir/${pkgname%%-kde}-${pkgver}
  
   export SHELL=/bin/bash
   DESTDIR="$pkgdir" ./mach install
