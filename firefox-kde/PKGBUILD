@@ -6,7 +6,7 @@ arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
-         libvpx libevent hunspell libproxy nspr pixman
+         libvpx libevent hunspell libproxy nss nspr pixman
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
              autoconf2.13 gtk2 gobject-introspection jack rust gconf
@@ -164,6 +164,7 @@ ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
 ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
+ac_add_options --with-system-nss
 ac_add_options --with-system-nspr
 ac_add_options --with-system-icu
 ac_add_options --with-system-png
