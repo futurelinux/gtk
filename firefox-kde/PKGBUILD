@@ -6,7 +6,7 @@ arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
-         libvpx libevent hunspell libproxy nss nspr pixman
+         libvpx libevent hunspell libproxy nspr pixman
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
              autoconf2.13 gtk2 gobject-introspection jack rust
@@ -15,11 +15,8 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'upower: Battery API'
             'firefox-i18n: for multilanguage support')
-options=(!emptydirs !makeflags)
-screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
-provides=("firefox=${pkgver}" "kmozillahelper")
-conflicts=('kmozillahelper')
-replaces=('kmozillahelper')
+options=(!emptydirs strip)
+provides=("firefox-kde=${pkgver}")
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 #
 # For whom want to update this package
@@ -49,8 +46,15 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         # Gecko/toolkit patchset
         "$_patchurl/mozilla-nongnome-proxies.patch"
         "$_patchurl/mozilla-kde.patch"
-        "$_patchurl/mozilla-openaes-decl.patch"
         "$_patchurl/mozilla-enable-csd.patch"
+        
+        # Gentoo patch
+        1004_fix_pie_detection.patch
+        1005_fix_fortify_sources.patch
+        2000_system_harfbuzz.patch
+        2001_system_graphite2.patch
+        2003_nICER_implicit_decls.patch
+        2004_fix_lto_builds.patch
 
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
@@ -74,8 +78,13 @@ sha256sums=('4bc4fd997e6239f53e16a70b04f197791e5c5d09367e2916bcfe4a427999f842'
             '67ae8fc341a465c1e0961014bed5ad89a66a211362c82451c6e068b0e4ad2eb8'
             'ef0f90c9134ef05b950f06a3ffbd699c2e5a5f99a4cdf9868e799534d68c204f'
             '2471b962a512addebf37778c80c9445354e702b63be3636a9e124aa2fd6b743b'
-            'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70'
-            'ca1602c69f22ee1bd1000cebb883895eeb19b0e1647dfe4ca00422f39ed215aa')
+            'ca1602c69f22ee1bd1000cebb883895eeb19b0e1647dfe4ca00422f39ed215aa'
+            '2b813ba66a3904b3e745d199479967dafc9b23e69db2238a932e013cdc21b91d'
+            'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
+            'a850e98166d89f6541f04ac188c4bbdf075f2be601d3d6e88b17d20048ae5243'
+            '6d9a7d3059d9017c1d3c28b38f257fe99b48ebcb1d829d427db59f80826fdc89'
+            'c39d22c4223c99181e1e828c1d6ba3bde035f497744ad423c60da91425ac4942'
+            'aee8725b94b19a6a08c3496c3844d174760d608e9c97f2daae05c7af28f290a4')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -111,7 +120,6 @@ pref("browser.backspace_action", 0);
 END
 
   msg 'Generating mozconfig'
-  cat >.mozconfig <<END
 # There multiple default mozconfigs in the soruce tree with references across directories
 # $topsrcdir/build/unix/mozconfig.gtk
 # $topsrcdir/build/unix/mozconfig.linux
@@ -123,6 +131,7 @@ END
 # But we intend to mantain our own mozconfig without reference to any of the mozilla upstream configuration to keep it simple
 # This mozconfig would inlcude most of the configurations listed above into one file
 
+  cat >.mozconfig <<END
 ac_add_options --prefix=/usr
 ac_add_options --enable-release
 ac_add_options --enable-pie
@@ -153,7 +162,6 @@ ac_add_options --with-system-bz2
 ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
 ac_add_options --with-system-nspr
-ac_add_options --with-system-nss
 ac_add_options --with-system-icu
 ac_add_options --with-system-png
 ac_add_options --enable-system-pixman
@@ -164,9 +172,10 @@ ac_add_options --enable-libproxy
 # Features
 ac_add_options --enable-startup-notification
 ac_add_options --enable-jack
-ac_add_options --disable-gconf
+ac_add_options --enable-alsa
+ac_add_options --enable-gconf
 ac_add_options --disable-updater
-ac_add_options --disable-crashreporter
+ac_add_options --enable-crashreporter
 
 # PGO
 mk_add_options PROFILE_GEN_SCRIPT='EXTRA_TEST_ARGS=10 \$(MAKE) -C \$(MOZ_OBJDIR) pgo-profile-run'
@@ -185,6 +194,25 @@ END
   patch -Np1 -i "$srcdir/firefox-kde.patch"
   patch -Np1 -i "$srcdir/firefox-branded-icons.patch"
   patch -Np0 -i "$srcdir/pgo-fix-missing-kdejs.patch"
+
+  msg "Gentoo Patchset"
+  patch -Np1 -i $srcdir/1004_fix_pie_detection.patch
+  patch -Np1 -i $srcdir/1005_fix_fortify_sources.patch
+  patch -Np1 -i $srcdir/2000_system_harfbuzz.patch
+  patch -Np1 -i $srcdir/2001_system_graphite2.patch
+  patch -Np1 -i $srcdir/2003_nICER_implicit_decls.patch
+  patch -Np1 -i $srcdir/2004_fix_lto_builds.patch
+
+  msg "Arch Patchset"
+  patch -Np1 -i "$srcdir/0001-Bug-1435212-Add-support-for-FFmpeg-4.0.-r-bryce.patch"
+
+  sed -i \
+    -e '/^OS_LIBS += no_as_needed/d' \
+    -e '/^OS_LIBS += as_needed/d' \
+    ./widget/gtk/mozgtk/gtk2/moz.build \
+    ./widget/gtk/mozgtk/gtk3/moz.build
+
+  SHELL=/bin/bash MOZ_NOSPAM=1 ./mach configure
 }
 
 build() {
@@ -205,22 +233,18 @@ build_kmozillahelper() {
 }
 
 build_firefox() {
-  # cd  "$srcdir/mozilla-release-${_changeset}"
   cd $srcdir/${pkgname%%-kde}-${pkgver}
 
   # _FORTIFY_SOURCE causes configure failures
   CPPFLAGS+=" -O2"
 
-  # Hardening
-  LDFLAGS+=" -Wl,-z,now"
-
   export PATH="$srcdir/path:$PATH"
   export SHELL=/bin/bash
-  export MOZ_SOURCE_REPO="$_repo"
 
   # Do PGO
   xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
-       ./mach build
+       ./mach build --verbose
+  ./mach buildsymbols
   #make -f client.mk build
 }
 
@@ -235,6 +259,7 @@ package() {
  
   export SHELL=/bin/bash
   DESTDIR="$pkgdir" ./mach install
+  find . -name '*crashreporter-symbols-full.zip' -exec cp -fvt "$startdir" {} +
 
   _vendorjs="$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
   install -Dm644 /dev/stdin "$_vendorjs" <<END
