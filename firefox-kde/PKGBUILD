@@ -36,7 +36,7 @@ replaces=('kmozillahelper')
 _patchrev=847ae61baab6
 _kmozillahelper_commit=2ca28e0 #v5.0.2
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
-source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname%%-kde}-${pkgver}.source.tar.xz"{,.asc}
+source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname%%-kde}-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
         'firefox.desktop' 'ddg.xml'
         'pgo-fix-missing-kdejs.patch' 'no-crmf.diff'
@@ -70,7 +70,6 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
 sha256sums=('4bc4fd997e6239f53e16a70b04f197791e5c5d09367e2916bcfe4a427999f842'
-            'SKIP'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
