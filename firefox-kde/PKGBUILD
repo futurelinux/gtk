@@ -16,8 +16,10 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'upower: Battery API'
             'firefox-i18n: for multilanguage support')
 options=(!emptydirs strip)
-provides=("firefox-kde=${pkgver}")
-validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
+screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
+provides=("firefox=${pkgver}" "kmozillahelper")
+conflicts=('kmozillahelper')
+replaces=('kmozillahelper')
 #
 # For whom want to update this package
 #
