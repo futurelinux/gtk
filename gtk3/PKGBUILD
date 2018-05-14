@@ -50,7 +50,7 @@ package_gtk3() {
     cd "gtk+-$pkgver"
     make DESTDIR="$pkgdir" install
     install -Dm644 ../settings.ini "$pkgdir/usr/share/gtk-3.0/settings.ini"
-    install -Dm644 ../gtk-query-immodules-3.0.hook "$pkgdir/usr/share/libalpm/hooks/gtk-query-immodules-3.0.hook"
+    install -Dm644 $srcdir/gtk-query-immodules-3.0.hook "$pkgdir/usr/share/libalpm/hooks/gtk-query-immodules-3.0.hook"
 
     # split this out to use with gtk2 too
     rm "$pkgdir/usr/bin/gtk-update-icon-cache"
@@ -59,10 +59,9 @@ package_gtk3() {
 package_gtk-update-icon-cache() {
     pkgdesc="GTK+ icon cache updater"
     depends=(gdk-pixbuf2 hicolor-icon-theme)
-    install=gtk-update-icon-cache.install
 
     cd gtk+-$pkgver/gtk
     install -Dm755 gtk-update-icon-cache "$pkgdir/usr/bin/gtk-update-icon-cache"
-    install -Dm644 ../gtk-update-icon-cache.hook "$pkgdir/usr/share/libalpm/hooks/gtk-update-icon-cache.hook"
-    install -D ../gtk-update-icon-cache.script "$pkgdir/usr/share/libalpm/scripts/gtk-update-icon-cache"
+    install -Dm644 $srcdir/gtk-update-icon-cache.hook "$pkgdir/usr/share/libalpm/hooks/gtk-update-icon-cache.hook"
+    install -D $srcdir/gtk-update-icon-cache.script "$pkgdir/usr/share/libalpm/scripts/gtk-update-icon-cache"
 }
