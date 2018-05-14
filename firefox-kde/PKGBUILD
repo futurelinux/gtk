@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=60.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -15,7 +15,7 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'upower: Battery API'
             'firefox-i18n: for multilanguage support')
-options=(!emptydirs)
+options=(!emptydirs !strip)
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 provides=("firefox=${pkgver}" "kmozillahelper")
 conflicts=('kmozillahelper')
