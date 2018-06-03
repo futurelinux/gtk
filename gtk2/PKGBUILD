@@ -1,46 +1,59 @@
 pkgname=gtk2
 pkgver=2.24.32
-pkgrel=1
+pkgrel=2
 # When updating, remember to also update lib32-gtk2
 pkgdesc="GObject-based multi-platform GUI toolkit (legacy)"
 arch=(x86_64)
-url="http://www.gtk.org/"
-depends=(atk pango libxcursor libxinerama libxrandr libxi libxcomposite libxdamage 
-         shared-mime-info cairo libcups gtk-update-icon-cache librsvg)
-makedepends=(gobject-introspection python2)
+url="https://www.gtk.org/"
+depends=(atk pango libxcursor libxinerama libxrandr libxi libxcomposite libxdamage
+         shared-mime-info cairo libcups gtk-update-icon-cache librsvg desktop-file-utils)
+makedepends=(gobject-introspection python2 git gtk-doc)
 license=(LGPL)
 install=gtk2.install
-source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-$pkgver.tar.xz
+_commit=ed7d3e25f8b6debae6ccc8b50d1329155338cab8  # tags/2.24.32^0
+source=("git+https://gitlab.gnome.org/GNOME/gtk.git#commit=$_commit"
+        gtk-query-immodules-2.0.hook
         xid-collision-debug.patch)
-sha256sums=('b6c8a93ddda5eabe3bfee1eb39636c9a03d2a56c7b62828b359bf197943c582e'
+sha256sums=('SKIP'
+            '9656a1efc798da1ac2dae94e921ed0f72719bd52d4d0138f305b993f778f7758'
             'd758bb93e59df15a4ea7732cf984d1c3c19dff67c94b957575efea132b8fe558')
 
+pkgver() {
+  cd gtk
+  git describe --tags | sed 's/-/+/g'
+}
+
 prepare() {
-    cd gtk+-$pkgver
-    patch -Np1 -i ../xid-collision-debug.patch
+  cd gtk
+  patch -Np1 -i ../xid-collision-debug.patch
+  sed -i '1s/python$/&2/' gtk/gtk-builder-convert
+  NOCONFIGURE=1 ./autogen.sh
 }
 
 build() {
-    cd gtk+-$pkgver
+  cd gtk
 
-    CXX=/bin/false ./configure --prefix=/usr \
-        --sysconfdir=/etc \
-        --localstatedir=/var \
-        --with-xinput=yes
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --with-xinput=yes \
+    --disable-gtk-doc
 
-    # https://bugzilla.gnome.org/show_bug.cgi?id=655517
-    sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  # https://bugzilla.gnome.org/show_bug.cgi?id=655517
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
-    make
+  make
 }
 
 package() {
-    cd gtk+-$pkgver
-    make DESTDIR="$pkgdir" install
+  cd gtk
+  make DESTDIR="$pkgdir" install
 
-    sed -i "s#env python#env python2#" $pkgdir/usr/bin/gtk-builder-convert
-    echo 'gtk-fallback-icon-theme = "oxygen"' > "$pkgdir/etc/gtk-2.0/gtkrc"
+  install -Dt "$pkgdir/usr/share/libalpm/hooks" -m644 ../gtk-query-immodules-2.0.hook
+  echo 'gtk-fallback-icon-theme = "breeze"' > "$pkgdir/etc/gtk-2.0/gtkrc"
 
-    rm "$pkgdir/usr/bin/gtk-update-icon-cache"
-    rm -r "$pkgdir/usr/share/gtk-doc"
+  rm "$pkgdir/usr/bin/gtk-update-icon-cache"
 }
+
+# vim:set et sw=2:
