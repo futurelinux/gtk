@@ -1,6 +1,6 @@
 pkgname=firefox-kde
-pkgver=60.0.1
-pkgrel=3
+pkgver=60.0.2
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -71,7 +71,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('c8e621c7dfccbef14cce41a6847b83bee15b5276cd0c35771c3874e464e6a662'
+sha256sums=('764566a06b71164e7fd20b2b0e6b08a71b4ccd4d6fd61867eb08011a551f6725'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -165,8 +165,8 @@ ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
 ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
-#ac_add_options --with-system-nss
-#ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-nspr
 ac_add_options --with-system-icu
 ac_add_options --with-system-png
 ac_add_options --enable-system-pixman
