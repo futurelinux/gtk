@@ -6,7 +6,6 @@ arch=('x86_64')
 url="https://filezilla-project.org/"
 license=('GPL')
 depends=('dbus' 'xdg-utils' 'wxgtk' 'libidn' 'hicolor-icon-theme' 'sqlite3' 'gnutls' 'libfilezilla' 'libnotify')
-install=${pkgname}.install
 screenshot="https://filezilla-project.org/images/screenshots/fz3_linux_main.png"
 source=("https://dl3.cdn.filezilla-project.org/client/FileZilla_${pkgver}_src.tar.bz2")
 sha512sums=('73468e3849785cef9cfff39aaa526db756b678c907ce6064573d3fb52a5ad435bb1f053ed1d6fb7663189201b7829f0a85027f3e3905d1cae7d23f9806a0d92c')
