@@ -1,7 +1,7 @@
 pkgbase=eclipse
 pkgname=(eclipse-{common,java,jee,cpp,php,javascript})
 pkgver=4.7.3.a
-pkgrel=1
+pkgrel=2
 _release=oxygen-3a
 pkgdesc="Highly extensible IDE"
 license=(EPL)
@@ -43,7 +43,7 @@ build() {
 
 package_eclipse-common() {
   pkgdesc+=" (common files)"
-  depends=("java-environment>=8" webkit2gtk unzip)
+  depends=("java-environment>=8" libwebkit-gtk2 unzip)
 
   install -d "$pkgdir/usr/lib"
   cp -a eclipse-common "$pkgdir/usr/lib/eclipse"
