@@ -30,7 +30,7 @@ build_pkgs:
     # artifacts of interest for an unlimited time
     expire_in: 1 week
     paths:
-      - _gitlab-ci-scripts/prepare_makepkg.sh
+      - ./_repo/gitlab-ci/*.pkg.tar.xz
     name: "$CI_BUILD_NAME"
   cache:
     paths:
