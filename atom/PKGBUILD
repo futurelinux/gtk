@@ -1,6 +1,6 @@
 pkgname=atom
-pkgver=1.26.1
-pkgrel=1
+pkgver=1.27.2
+pkgrel=2
 pkgdesc='A hackable text editor for the 21st Century'
 arch=('x86_64')
 url='https://github.com/atom/atom'
@@ -10,16 +10,35 @@ makedepends=('git' 'npm' 'libgnome-keyring' 'gconf' 'python2' 'libsecret')
 options=(!emptydirs)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
         'fix-license-path.patch'
-        'fix-restart.patch')
-sha256sums=('d5c2fab3f671b4162992d0baffb2393bc58e6b361aa37214dcc5c9be1e03c65f'
+        'fix-restart.patch'
+        'fix-node8.patch')
+sha256sums=('e99c96326682cd674d3d225c01b706ddd7e5a6b3f4e7cbfcbef1a74d3b977223'
             '67ecd71b08292218388205ee49e02d176a15bd0c3e74d30cb720b79c6946f4c9'
-            'a6fa960741823a52b2f82684285e26eb84ce54825dc7ed008fdaca974b60957e')
+            'a6fa960741823a52b2f82684285e26eb84ce54825dc7ed008fdaca974b60957e'
+            'eb771d7c009be8d48c1387ed63f3e575dc12f3bd69455b4be4b78ab57cb49b86')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   patch -Np1 -i "${srcdir}"/fix-license-path.patch
   patch -Np1 -i "${srcdir}"/fix-restart.patch
+  patch -Np1 -i "${srcdir}"/fix-node8.patch
+
+  # Upstream ea1ff8d45448679390058be185ee0d36f823872e
+  sed -e 's/"archive-view": "0.64.3"/"archive-view": "0.64.6"/' -i package.json
+
+  # Workaround for Node 10
+  sed -e 's|"electron-link": "0.2.0"|"electron-link": "../../electron-link"|' \
+      -i script/package.json
+  cd ..
+  git clone https://github.com/atom/electron-link.git
+  cd electron-link
+  git checkout v0.2.0
+  sed -e 's/"leveldown": "^1.6.0"/"leveldown": "^2.0.1"/' -i package.json
+  npm install
+  npx babel src -d lib
+  cd node_modules/levelup
+  sed -e 's/"leveldown": "^1.1.0"/"leveldown": "^2.0.1"/' -i package.json
 }
 
 build() {
@@ -28,7 +47,7 @@ build() {
   export PYTHON=/usr/bin/python2
   export ATOM_RESOURCE_PATH="$srcdir/atom-$pkgver"
   # If unset, ~/.atom/.node-gyp/.atom/.npm is used
-  export NPM_CONFIG_CACHE="$srcdir/.atom/.npm"
+  export NPM_CONFIG_CACHE="${HOME}/.atom/.npm"
 
   cd script
   npm install
