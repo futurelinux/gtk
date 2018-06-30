@@ -40,7 +40,6 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
         'firefox.desktop' 'ddg.xml'
         'pgo-fix-missing-kdejs.patch'
-        '0001-Bug-1435212-Add-support-for-FFmpeg-4.0.-r-bryce.patch'
 
         # Firefox patchset
         "$_patchurl/firefox-kde.patch"
@@ -75,8 +74,7 @@ sha256sums=('3453e8ac7c602390bda0d34a4a636e0d65fd89d9ae69f7aa1740926715c42268'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
-            'c6cff32939199189ca89a49860db0f71b5c445b9114609e8d344f5f7d8f68a2d'
-            '81ed8187ad0bc7d751d0bc4b48f57c3855905ca21a060390383c9c9f98b55dba'
+            '7c3b3079e587fb5c7fd8725b4677efb270355c03c8d16513bbe619903038381e'
             '336706c48f2a39eb3515227e97323a4933362d4f3b8f2d499f6e1ff843e1a18b'
             '29acfc63f366510f471e395cc7a3815108072abda5851c48b64fdb894550408c'
             'ef0f90c9134ef05b950f06a3ffbd699c2e5a5f99a4cdf9868e799534d68c204f'
@@ -88,7 +86,7 @@ sha256sums=('3453e8ac7c602390bda0d34a4a636e0d65fd89d9ae69f7aa1740926715c42268'
             'a850e98166d89f6541f04ac188c4bbdf075f2be601d3d6e88b17d20048ae5243'
             '6d9a7d3059d9017c1d3c28b38f257fe99b48ebcb1d829d427db59f80826fdc89'
             'c39d22c4223c99181e1e828c1d6ba3bde035f497744ad423c60da91425ac4942'
-            'aee8725b94b19a6a08c3496c3844d174760d608e9c97f2daae05c7af28f290a4')
+            'd199e00089a407f1a08e1d547c822279afd1abbffa361fb471990413eeeb2862')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -205,7 +203,6 @@ END
   patch -Np1 -i $srcdir/2004_fix_lto_builds.patch
 
   msg "Arch Patchset"
-  patch -Np1 -i "$srcdir/0001-Bug-1435212-Add-support-for-FFmpeg-4.0.-r-bryce.patch"
 }
 
 build() {

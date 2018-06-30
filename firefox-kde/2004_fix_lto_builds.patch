@@ -1,26 +1,17 @@
 From: Jory A. Pratt <anarchy@gentoo.org>
+Modified: Luca Giambonini <almack@chakralinux.org>
 
 Enable to build with LTO support
 
 diff --git a/security/sandbox/linux/moz.build b/security/sandbox/linux/moz.build
 --- a/security/sandbox/linux/moz.build
 +++ b/security/sandbox/linux/moz.build
-@@ -98,17 +98,17 @@
-     SOURCES['../chromium/sandbox/linux/services/syscall_wrappers.cc'].flags += [
-         '-Wno-empty-body',
-     ]
- 
- # gcc lto likes to put the top level asm in syscall.cc in a different partition
+@@ -100,7 +100,7 @@
  # from the function using it which breaks the build.  Work around that by
  # forcing there to be only one partition.
  if '-flto' in CONFIG['OS_CXXFLAGS'] and CONFIG['CC_TYPE'] != 'clang':
 -    LDFLAGS += ['--param lto-partitions=1']
 +    LDFLAGS += ['--lto-partition=one']
  
- if CONFIG['MOZ_ALSA']:
-     DEFINES['MOZ_ALSA'] = True
- 
  DEFINES['NS_NO_XPCOM'] = True
  DisableStlWrapping()
- 
- LOCAL_INCLUDES += ['/security/sandbox/linux']
