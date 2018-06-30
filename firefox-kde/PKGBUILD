@@ -188,7 +188,8 @@ END
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch" 
   patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
-  patch -Np1 -i "$srcdir/mozilla-enable-csd.patch"
+  # ToDo the CSD is now enabled upstream?
+  #patch -Np1 -i "$srcdir/mozilla-enable-csd.patch"
 
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
