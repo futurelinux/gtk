@@ -1,6 +1,6 @@
 pkgname=firefox-kde
-pkgver=60.0.2
-pkgrel=2
+pkgver=61.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -33,7 +33,7 @@ replaces=('kmozillahelper')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=847ae61baab6
+_patchrev=a0c915e59e05
 _kmozillahelper_commit=2ca28e0 #v5.0.2
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname%%-kde}-${pkgver}.source.tar.xz"
@@ -71,7 +71,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('764566a06b71164e7fd20b2b0e6b08a71b4ccd4d6fd61867eb08011a551f6725'
+sha256sums=('3453e8ac7c602390bda0d34a4a636e0d65fd89d9ae69f7aa1740926715c42268'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -170,7 +170,7 @@ ac_add_options --with-system-nspr
 ac_add_options --with-system-icu
 ac_add_options --with-system-png
 ac_add_options --enable-system-pixman
-ac_add_options --enable-system-hunspell
+#ac_add_options --enable-system-hunspell
 #ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
 ac_add_options --enable-libproxy
@@ -262,6 +262,9 @@ package() {
 // Use LANG environment variable to choose locale
 pref("intl.locale.requested", "");
 
+// Use system-provided dictionaries
+pref("spellchecker.dictionary_path", "/usr/share/hunspell");
+
 // Disable default browser checking.
 pref("browser.shell.checkDefaultBrowser", false);
 
@@ -297,11 +300,6 @@ END
 
   install -Dm644 ../firefox.desktop \
     "$pkgdir/usr/share/applications/firefox.desktop"
-
-  # Use system-provided dictionaries
-  rm -r "$pkgdir"/usr/lib/firefox/dictionaries
-  ln -Ts /usr/share/hunspell "$pkgdir/usr/lib/firefox/dictionaries"
-  ln -Ts /usr/share/hyphen "$pkgdir/usr/lib/firefox/hyphenation"
 
   # Install a wrapper to avoid confusion about binary path
   install -Dm755 /dev/stdin "$pkgdir/usr/bin/firefox" <<END
