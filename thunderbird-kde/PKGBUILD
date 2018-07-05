@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=52.8.0
+pkgver=52.9.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -29,7 +29,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         kde.js
         0001-Bug-1338655-Don-t-try-to-build-mp4parse-bindings.-r-.patch
         no-crmf.diff)
-sha512sums=('ce44f32f44244560499c44dbe963a8296cf58cf33e3f26d07be455746ed7f77791084e41bc66b2c90fe46e97fa15ae2041b1f5fcfa94d15b45c4f90172230d03'
+sha512sums=('2142ba7cc04f48a9ffa17ad8f3a0d761f90416c9e6a7066be662a09b19846f13f0fb9669356ccbbf576744a83143cd659c28ce034679c4d6377004f428932dc1'
             '12a0815b662996b53fbb2d9f1a4eb797075dbdc1c00ed65717361b3e9f43ddc2e0d66bd1615b82ff5b6f1481136ab145287994ec638d26cf045a15400971576b'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '1eecdc7942ac189a67d4d57bca305937ae8d5986944738139bad4baa47e5a9c904797db6a26840d559740178fb6e1904a2d5377c86a7d0f8a6b721471ef37d75'
