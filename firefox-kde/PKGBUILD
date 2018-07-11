@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=61.0
+pkgver=61.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -59,6 +59,9 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         2003_nICER_implicit_decls.patch
         2004_fix_lto_builds.patch
 
+        # Ubuntu patch
+        unity-menubar.patch
+
         # Useless patchset
         #"$_patchurl/gecko-lockdown.patch"
         #"$_patchurl/mozilla-idldir.patch"
@@ -70,7 +73,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('3453e8ac7c602390bda0d34a4a636e0d65fd89d9ae69f7aa1740926715c42268'
+sha256sums=('708f4dc39fdf105fe9d3ee6b52412a1c7548fd7d34e14c29f840064de3fe8a28'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -86,7 +89,8 @@ sha256sums=('3453e8ac7c602390bda0d34a4a636e0d65fd89d9ae69f7aa1740926715c42268'
             'a850e98166d89f6541f04ac188c4bbdf075f2be601d3d6e88b17d20048ae5243'
             '6d9a7d3059d9017c1d3c28b38f257fe99b48ebcb1d829d427db59f80826fdc89'
             'c39d22c4223c99181e1e828c1d6ba3bde035f497744ad423c60da91425ac4942'
-            'd199e00089a407f1a08e1d547c822279afd1abbffa361fb471990413eeeb2862')
+            'd199e00089a407f1a08e1d547c822279afd1abbffa361fb471990413eeeb2862'
+            '4465aa66734452597d4d797847de0c34c15bc08f21e9e8b6bf9f6ff270908f6f')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -202,7 +206,8 @@ END
   patch -Np1 -i $srcdir/2003_nICER_implicit_decls.patch
   patch -Np1 -i $srcdir/2004_fix_lto_builds.patch
 
-  msg "Arch Patchset"
+#  msg "Ubuntu Patchset"
+#  patch -Np1 -i $srcdir/unity-menubar.patch
 }
 
 build() {
