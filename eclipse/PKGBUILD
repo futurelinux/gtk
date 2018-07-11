@@ -1,6 +1,6 @@
 pkgbase=eclipse
 pkgname=(eclipse-{common,java,jee,cpp,php,javascript})
-pkgver=4.7.4
+pkgver=4.8
 pkgrel=1
 _release=photon-R
 pkgdesc="Highly extensible IDE"
