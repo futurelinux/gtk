@@ -51,16 +51,14 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  install -d -m 755 "${pkgdir}"/usr/lib
-  cp -r out/app "${pkgdir}"/usr/lib/atom
-  install -m 644 out/startup.js "${pkgdir}"/usr/lib/atom
-  install -m 755 "${srcdir}/atom.js" "${pkgdir}"/usr/lib/atom/atom
+  install -d -m 755 "${pkgdir}"/usr/share
+  cp -r out/app "${pkgdir}"/usr/share/atom
 
   msg "installing .desktop"
   install -d -m 755 "${pkgdir}/usr/share/applications"
   sed -e "s|<%= appName %>|Atom|" \
       -e "s/<%= description %>/${pkgdesc}/" \
-      -e "s|<%= installDir %>/share/<%= appFileName %>/atom|/usr/lib/atom/atom|" \
+      -e "s|<%= installDir %>/share/<%= appFileName %>/atom|/usr/bin/atom|" \
       -e "s|<%= iconPath %>|atom|" \
       resources/linux/atom.desktop.in > "${pkgdir}/usr/share/applications/atom.desktop"
 
