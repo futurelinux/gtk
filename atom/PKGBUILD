@@ -1,6 +1,6 @@
 pkgname=atom
 pkgver=1.28.1
-pkgrel=1
+pkgrel=2
 pkgdesc='A hackable text editor for the 21st Century'
 arch=('x86_64')
 url='https://github.com/atom/atom'
@@ -95,17 +95,4 @@ package() {
   msg "installing license"
   install -d -m 755 "${pkgdir}/usr/share/licenses/${pkgname}"
   node -e "require('./script/lib/get-license-text')().then((licenseText) => require('fs').writeFileSync('${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md', licenseText))"
-
-  # Remove useless stuff
-  find "${pkgdir}"/usr/share/atom/node_modules \
-      -name "*.a" -exec rm '{}' \; \
-      -or -name "*.bat" -exec rm '{}' \; \
-      -or -name "*.node" -exec chmod a-x '{}' \; \
-      -or -name "benchmark" -prune -exec rm -r '{}' \; \
-      -or -name "doc" -prune -exec rm -r '{}' \; \
-      -or -name "html" -prune -exec rm -r '{}' \; \
-      -or -name "man" -prune -exec rm -r '{}' \; \
-      -or -name "scripts" -prune -exec rm -r '{}' \; \
-      -or -path "*/less/gradle" -prune -exec rm -r '{}' \; \
-      -or -path "*/task-lists/src" -prune -exec rm -r '{}' \;
 }
