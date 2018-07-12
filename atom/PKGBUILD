@@ -13,7 +13,7 @@ options=(!emptydirs)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
         'fix-license-path.patch'
 	'fix-restart.patch')
-sha256sums=('8d31c74870b7c0813f14eeae55aa85e13bffdfb33a087ad08f1f5eec319331f4'
+sha256sums=('24df7ea2017fb7a4c19f685a228af4f6f64b96de42da99084ab6dff29b417247'
             '67ecd71b08292218388205ee49e02d176a15bd0c3e74d30cb720b79c6946f4c9'
             'a6fa960741823a52b2f82684285e26eb84ce54825dc7ed008fdaca974b60957e')
 
