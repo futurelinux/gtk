@@ -1,5 +1,5 @@
 pkgname=atom
-pkgver=1.28.0
+pkgver=1.28.1
 pkgrel=1
 pkgdesc='A hackable text editor for the 21st Century'
 arch=('x86_64')
@@ -7,11 +7,13 @@ url='https://github.com/atom/atom'
 license=('MIT' 'custom')
 depends=('libxkbfile' 'gtk3' 'libxtst' 'libxss' 'alsa-lib' 'nss')
 makedepends=('git' 'npm' 'libgnome-keyring' 'gconf' 'python2' 'libsecret')
+optdepends=('ctags: symbol indexing support'
+            'git: Git and GitHub integration')
 options=(!emptydirs)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
         'fix-license-path.patch'
-        'fix-restart.patch')
-sha256sums=('8d31c74870b7c0813f14eeae55aa85e13bffdfb33a087ad08f1f5eec319331f4'
+	'fix-restart.patch')
+sha256sums=('24df7ea2017fb7a4c19f685a228af4f6f64b96de42da99084ab6dff29b417247'
             '67ecd71b08292218388205ee49e02d176a15bd0c3e74d30cb720b79c6946f4c9'
             'a6fa960741823a52b2f82684285e26eb84ce54825dc7ed008fdaca974b60957e')
 
@@ -28,7 +30,13 @@ prepare() {
   git clone https://github.com/atom/electron-link.git
   cd electron-link
   git checkout v0.2.0
-  sed -e 's/"leveldown": "^1.6.0"/"leveldown": "^2.0.1"/' -i package.json
+
+  # npm audit fix, remove package-lock to apply the fix
+  sed -e 's/"leveldown": "^1.6.0"/"leveldown": "^2.0.1"/' \
+      -e 's/"electron": "1.7.10"/"electron": "^2.0.4"/' \
+      -e 's/"electron-mocha": "^3.3.0"/"electron-mocha": "^6.0.4"/' \
+      -e 's/"mocha": "^3.2.0"/"mocha": "^5.2.0"/' -i package.json
+  rm package-lock.json
   npm install
   npx babel src -d lib
   cd node_modules/levelup
@@ -44,6 +52,13 @@ build() {
   export NPM_CONFIG_CACHE="${HOME}/.atom/.npm"
 
   cd script
+
+  # npm audit fix
+  sed -e 's/"babel-core": "5.8.38"/"babel-core": "^6.26.3"/' \
+	 's/"electron-packager": "7.3.0"/"electron-packager": "^12.1.0"/' \
+	 's/"npm": "5.3.0"/"npm": "^6.1.0"/' \
+	 '"webdriverio": "2.4.5"/"webdriverio": "^4.13.1"/' -i package.json
+
   npm install
   ./build
 }
@@ -78,7 +93,6 @@ package() {
   node -e "require('./script/lib/get-license-text')().then((licenseText) => require('fs').writeFileSync('${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md', licenseText))"
 
   # Remove useless stuff
-  rm "${pkgdir}"/usr/lib/atom/node_modules/.bin/pegjs
   find "${pkgdir}"/usr/lib/atom/node_modules \
       -name "*.a" -exec rm '{}' \; \
       -or -name "*.bat" -exec rm '{}' \; \
