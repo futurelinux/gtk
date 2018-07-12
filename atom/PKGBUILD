@@ -55,9 +55,9 @@ build() {
 
   # npm audit fix
   sed -e 's/"babel-core": "5.8.38"/"babel-core": "^6.26.3"/' \
-	 's/"electron-packager": "7.3.0"/"electron-packager": "^12.1.0"/' \
-	 's/"npm": "5.3.0"/"npm": "^6.1.0"/' \
-	 '"webdriverio": "2.4.5"/"webdriverio": "^4.13.1"/' -i package.json
+      -e 's/"electron-packager": "7.3.0"/"electron-packager": "^12.1.0"/' \
+      -e 's/"npm": "5.3.0"/"npm": "^6.1.0"/' \
+      -e '"webdriverio": "2.4.5"/"webdriverio": "^4.13.1"/' -i package.json
 
   npm install
   ./build
