@@ -70,7 +70,7 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  install -d -m 755 "${pkgdir}"/usr/share
+  install -d -m 755 "${pkgdir}"/usr/share/atom
   cp -r out/atom-$pkgver-amd64/* "${pkgdir}"/usr/share/atom
 
   msg "installing .desktop"
