@@ -1,7 +1,7 @@
 # Contributions from Arch: https://projects.archlinux.org/svntogit/packages.git/tree/trunk?h=packages/babl
 
 pkgname=babl
-pkgver=0.1.24
+pkgver=0.1.52
 pkgrel=1
 pkgdesc="Dynamic, any to any, pixel format conversion library"
 arch=('x86_64')
@@ -10,7 +10,7 @@ license=('LGPL3')
 depends=('glibc')
 options=('!makeflags')
 source=("http://ftp.gimp.org/pub/babl/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('87d4eb409cfa50bd622f85c2858ddaa8167b4f5e')
+sha1sums=('8b6999269328507ce1b62cd52af40a88edd56fd1')
  
 build() {
   cd $pkgname-$pkgver
