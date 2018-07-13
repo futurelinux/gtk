@@ -1,6 +1,6 @@
 pkgname=atom
 pkgver=1.28.1
-pkgrel=2
+pkgrel=3
 pkgdesc='A hackable text editor for the 21st Century'
 arch=('x86_64')
 url='https://github.com/atom/atom'
@@ -70,8 +70,8 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  install -d -m 755 "${pkgdir}"/usr/share
-  cp -r out/app "${pkgdir}"/usr/share/atom
+  install -d -m 755 "${pkgdir}"/usr/share/atom
+  cp -r out/atom-$pkgver-amd64/* "${pkgdir}"/usr/share/atom
 
   msg "installing .desktop"
   install -d -m 755 "${pkgdir}/usr/share/applications"
