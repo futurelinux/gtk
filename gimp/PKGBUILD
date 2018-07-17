@@ -1,7 +1,7 @@
 pkgname=gimp
 pkgver=2.10.4
 _pkgver=2.10
-pkgrel=1
+pkgrel=2
 pkgdesc="GNU Image Manipulation Program (Development Version)"
 arch=('x86_64')
 url="http://www.gimp.org/"
@@ -47,7 +47,6 @@ build() {
 package() {
   cd $pkgname-$pkgver
   make DESTDIR=$pkgdir install
-  sed -i 's|#![ ]*/usr/bin/env python|#!/usr/bin/env python2|' $pkgdir/usr/lib/gimp/2.0/plug-ins/*.py
   install -D -m644 ../linux.gpl $pkgdir/usr/share/gimp/2.0/palettes/Linux.gpl
 
   ln -sf gimp-console-$pkgver.1.gz $pkgdir/usr/share/man/man1/gimp-console.1.gz
