@@ -1,7 +1,7 @@
 
 pkgname=libgexiv2
 pkgver=0.10.8
-pkgrel=1
+pkgrel=2
 pkgdesc="GObject-based wrapper around the Exiv2 library"
 url="https://wiki.gnome.org/Projects/gexiv2"
 arch=(x86_64)
@@ -17,12 +17,8 @@ pkgver() {
   git describe --tags | sed 's/^gexiv2-//;s/-/+/g'
 }
 
-prepare() {
-  cd gexiv2
-}
-
 build() {
-  meson gexiv2 build \
+  chakra-meson gexiv2 build \
     -Denable-gtk-doc=false
   ninja -C build
 }
