@@ -1,17 +1,4 @@
-post_install() {
-  update-desktop-database -q
-  gtk-update-icon-cache -q -t -f usr/share/icons/hicolor
-  /sbin/ldconfig -r .
-}
-
 post_upgrade() {
-  post_install
-  /sbin/ldconfig -r .
   echo 'we now set local configuration in ~/.config/gimp,'
   echo 'please consider manually moving it from ~/.gimp-2.8 before you start it.'
-}
-
-post_remove() {
-  post_install
-  /sbin/ldconfig -r .
 }
