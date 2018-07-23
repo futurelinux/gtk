@@ -289,12 +289,7 @@ diff --git a/toolkit/content/xul.css b/toolkit/content/xul.css
 diff --git a/widget/gtk/moz.build b/widget/gtk/moz.build
 --- a/widget/gtk/moz.build
 +++ b/widget/gtk/moz.build
-@@ -34,32 +34,42 @@ EXPORTS.mozilla += [
- 
- UNIFIED_SOURCES += [
-     'IMContextWrapper.cpp',
-     'mozcontainer.cpp',
-     'NativeKeyBindings.cpp',
+@@ -39,10 +39,18 @@
      'nsAppShell.cpp',
      'nsBidiKeyboard.cpp',
      'nsColorPicker.cpp',
@@ -313,12 +308,7 @@ diff --git a/widget/gtk/moz.build b/widget/gtk/moz.build
      'nsNativeThemeGTK.cpp',
      'nsSound.cpp',
      'nsToolkit.cpp',
-     'nsWidgetFactory.cpp',
-     'ScreenHelperGTK.cpp',
-     'TaskbarProgress.cpp',
-     'WakeLockListener.cpp',
-     'WidgetTraceEvent.cpp',
-     'WidgetUtilsGtk.cpp',
+@@ -55,6 +63,8 @@
  ]
  
  SOURCES += [
@@ -327,29 +317,15 @@ diff --git a/widget/gtk/moz.build b/widget/gtk/moz.build
      'nsWindow.cpp', # conflicts with X11 headers
  ]
  
- if CONFIG['MOZ_X11']:
-     UNIFIED_SOURCES += [
-         'CompositorWidgetChild.cpp',
-         'CompositorWidgetParent.cpp',
-         'GtkCompositorWidget.cpp',
-@@ -120,16 +130,17 @@ else:
-     ]
- 
- include('/ipc/chromium/chromium-config.mozbuild')
- 
- FINAL_LIBRARY = 'xul'
+@@ -125,6 +135,7 @@
  
  LOCAL_INCLUDES += [
      '/layout/generic',
 +    '/layout/style',
      '/layout/xul',
      '/other-licenses/atk-1.0',
-     '/widget',
-     '/widget/headless',
- ]
- 
- if CONFIG['MOZ_X11']:
-     LOCAL_INCLUDES += [
+     '/toolkit/xre',
+
 diff --git a/widget/gtk/nsDbusmenu.cpp b/widget/gtk/nsDbusmenu.cpp
 new file mode 100644
 --- /dev/null
