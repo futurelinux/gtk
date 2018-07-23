@@ -3,15 +3,15 @@
 # Contributor: Martchus <martchus@gmx.net>
 
 pkgname=libfilezilla
-pkgver=0.12.3
-pkgrel=2
+pkgver=0.13.0
+pkgrel=1
 pkgdesc="Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs"
 arch=('x86_64')
 url="https://lib.filezilla-project.org/"
 license=('GPL')
 depends=('gcc-libs')
 source=("https://download.filezilla-project.org/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-sha512sums=('a08343a418b4147b42d38afd04c66a26c405770109818b48a291c127a5fde6c98515b716990fb056b319c3be859f44060d4ee83e96ec5c4bfa40c755ddc01bba')
+sha512sums=('cb7950febf72a6d13f3ec3961d32ac281e8437e881155f9fb26820d6deb2a1d59ed5a18c08cb59a75d9527a8a9fda2f502a96dda4045f361dcbae522c1e1b26f')
 
 build() {
   cd "${srcdir}/$pkgname-$pkgver"
