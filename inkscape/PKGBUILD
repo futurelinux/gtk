@@ -2,7 +2,7 @@
 
 pkgname=inkscape
 pkgver=0.92.3
-pkgrel=1
+pkgrel=2
 pkgdesc='Professional vector graphics editor'
 url='https://inkscape.org/'
 license=('GPL' 'LGPL')
@@ -18,11 +18,19 @@ optdepends=('pstoedit: latex formulas'
             'python2-numpy: some extensions'
             'python2-lxml: some extensions and filters'
             'uniconvertor: reading/writing to some proprietary formats')
-source=("https://media.inkscape.org/dl/resources/file/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('063296c05a65d7a92a0f627485b66221487acfc64a24f712eb5237c4bd7816b2')
+source=("https://media.inkscape.org/dl/resources/file/${pkgname}-${pkgver}.tar.bz2"
+        "https://gitlab.com/inkscape/inkscape/commit/a600c6438fef2f4c06f9a4a7d933d99fb054a973.diff"
+        "https://gitlab.com/inkscape/inkscape/commit/fa1c469aa8c005e07bb8676d72af9f7c16fae3e0.diff")
+sha256sums=('063296c05a65d7a92a0f627485b66221487acfc64a24f712eb5237c4bd7816b2'
+            '510861d5a242c2456e8bfd6d0eb666b5a192c02bb435f9beeee114af77a9aaa5'
+            'c53ebb25f6e1e4153c837c7e2ce8ce270256c9c121cd96fe1add922f5df66992')
 
 prepare() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd $pkgname-$pkgver
+
+        # poppler 0.64 & up needed patches
+        patch -p1 -i ${srcdir}/a600c6438fef2f4c06f9a4a7d933d99fb054a973.diff
+        patch -p1 -i ${srcdir}/fa1c469aa8c005e07bb8676d72af9f7c16fae3e0.diff
 
 	./autogen.sh
 
@@ -33,10 +41,11 @@ prepare() {
 	sed -i 's|"python"|"python2"|g' src/main.cpp
 
 	sed -i 's| abs(| std::fabs(|g' src/ui/tools/flood-tool.cpp
+       
 }
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
 		--with-python \
@@ -49,6 +58,6 @@ build() {
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd $pkgname-$pkgver
 	make DESTDIR="${pkgdir}" install
 }
