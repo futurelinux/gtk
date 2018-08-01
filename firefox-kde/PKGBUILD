@@ -1,6 +1,6 @@
 pkgname=firefox-kde
 pkgver=61.0.1
-pkgrel=3
+pkgrel=5
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -90,7 +90,7 @@ sha256sums=('708f4dc39fdf105fe9d3ee6b52412a1c7548fd7d34e14c29f840064de3fe8a28'
             '6d9a7d3059d9017c1d3c28b38f257fe99b48ebcb1d829d427db59f80826fdc89'
             'c39d22c4223c99181e1e828c1d6ba3bde035f497744ad423c60da91425ac4942'
             'd199e00089a407f1a08e1d547c822279afd1abbffa361fb471990413eeeb2862'
-            '4465aa66734452597d4d797847de0c34c15bc08f21e9e8b6bf9f6ff270908f6f')
+            '47b9c634e511ec384e6984575428d50f2b6c31100f0f09b896d2602f7bd7d370')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -206,8 +206,8 @@ END
   patch -Np1 -i $srcdir/2003_nICER_implicit_decls.patch
   patch -Np1 -i $srcdir/2004_fix_lto_builds.patch
 
-#  msg "Ubuntu Patchset"
-#  patch -Np1 -i $srcdir/unity-menubar.patch
+  msg "Ubuntu Patchset"
+  patch -Np1 -i $srcdir/unity-menubar.patch
 }
 
 build() {
