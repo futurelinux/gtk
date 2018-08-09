@@ -49,7 +49,6 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         "$_patchurl/mozilla-nongnome-proxies.patch"
         "$_patchurl/mozilla-kde.patch"
         "$_patchurl/mozilla-openaes-decl.patch"
-        "$_patchurl/mozilla-enable-csd.patch"
         
         # Gentoo patch
         1004_fix_pie_detection.patch
@@ -73,7 +72,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('708f4dc39fdf105fe9d3ee6b52412a1c7548fd7d34e14c29f840064de3fe8a28'
+sha256sums=('0bdecbbb2a955c9f4c5cd0b33acd1e47afcb6cd57ac89cf11257668e3cef202c'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -83,7 +82,6 @@ sha256sums=('708f4dc39fdf105fe9d3ee6b52412a1c7548fd7d34e14c29f840064de3fe8a28'
             'ef0f90c9134ef05b950f06a3ffbd699c2e5a5f99a4cdf9868e799534d68c204f'
             'a18680f62e07c3a217dcbd31d2b974db4a38eae8561bc1de65a5d725c1c42f9e'
             'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70'
-            'ca1602c69f22ee1bd1000cebb883895eeb19b0e1647dfe4ca00422f39ed215aa'
             '2b813ba66a3904b3e745d199479967dafc9b23e69db2238a932e013cdc21b91d'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
             'a850e98166d89f6541f04ac188c4bbdf075f2be601d3d6e88b17d20048ae5243'
@@ -190,8 +188,6 @@ END
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch" 
   patch -Np1 -i "$srcdir/mozilla-openaes-decl.patch"
-  # ToDo the CSD is now enabled upstream?
-  #patch -Np1 -i "$srcdir/mozilla-enable-csd.patch"
 
   msg "Firefox patchset"
   patch -Np1 -i "$srcdir/firefox-kde.patch"
