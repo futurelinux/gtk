@@ -1,7 +1,7 @@
 pkgname=gimp
-pkgver=2.10.4
+pkgver=2.10.6
 _pkgver=2.10
-pkgrel=2
+pkgrel=1
 pkgdesc="GNU Image Manipulation Program (Development Version)"
 arch=('x86_64')
 url="http://www.gimp.org/"
@@ -16,7 +16,7 @@ optdepends=('gutenprint: for sophisticated printing only as gimp has built-in cu
             'curl: for URI support'
             'ghostscript: for postscript support')
 source=("http://download.gimp.org/pub/gimp/v${_pkgver}/$pkgname-$pkgver.tar.bz2" "linux.gpl")
-md5sums=('9e0a3703a920da8b3e51e845fa3bff7d'
+md5sums=('6e92c1e2ccee90b4075547fc3d129ca1'
          'bb27bc214261d36484093e857f015f38')
 
 prepare() {
