@@ -53,7 +53,6 @@ prepare(){
   cp "$srcdir/mozconfig" .mozconfig
 
   msg "Patching for KDE"
-  cd mozilla
   patch -Np1 -i "$srcdir/mozilla-language.patch"
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch"
