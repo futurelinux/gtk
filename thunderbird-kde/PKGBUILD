@@ -21,7 +21,6 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         mozconfig
         thunderbird.desktop
         mozilla-kde.patch
-        mozilla-language.patch
         mozilla-nongnome-proxies.patch
         vendor.js
         kde.js
@@ -30,7 +29,6 @@ sha512sums=('ca3346eb4b6e1237a74ffc5c3d483fcad8d2f0d1146f56a4b11f1ab0f83b47b28fb
             'ee9633832b7cd39cb18967f390691ae11df6981221d47ba6e55ba5ba73f6ade38e66ca7ba98d89aff3b08b88f0ba41e2c610b47b3a369ff99bd3ca00fb27f663'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '0fe3c53722708f2675f84bb41dd68319cf6d9af572e0bfc738d9bb6ec2d54ed30381cb237a04379e42254f2b3a143a86bdd9ddcf290316e145f14e8a9d29df9d'
-            '001776b5b332c526adeee9ef338a0f589e3f2c1b3eb3c1ece5aaae91637a50f821b830e717ea646f136ccfb121d28d83d28abfe65b57f3aa5784d0e79f8dfaf4'
             '2b7b03697e3bf68681fd45eb06235c5f9145ad7f549a3291e0e62fa95e8b3de02a118b0562d50387ff174fbe23a9060f1c749a21cdd2ccb0f20680424f70587b'
             'e9494683d32401745db31f5cfb459be9496c32f5cb9b76e56400c50ad3d40f29affc7863e8c0c1c8e22de51b2a654a838ce33be723b78fe38f77252ce58e063b'
             '06696c5b3216fd38d546d743f61a2ac0bb215a01192e53da75b069095565c602ec5730b3f317de08e4bd3318c4e5642560e9bc25153a69e4b5442772edef8cd8'
