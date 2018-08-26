@@ -18,20 +18,14 @@ options=(!emptydirs !makeflags)
 install=thunderbird.install
 # For patch look here: https://github.com/manjaro/packages-community/tree/master/thunderbird-kde
 source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/source/thunderbird-$pkgver.source.tar.xz
-        mozconfig
         thunderbird.desktop
         mozilla-kde.patch
         mozilla-nongnome-proxies.patch
-        vendor.js
-        kde.js
         bz1482248.patch)
 sha512sums=('ca3346eb4b6e1237a74ffc5c3d483fcad8d2f0d1146f56a4b11f1ab0f83b47b28fb2da8c0344f228bfff8c84b755f46a86a5b44fd7172de387ceb83650b33152'
-            'e25e3814d2dcd6f730084f74e26a4595f16ee749f30cf1efc72371aa6fd301c86a4eddf5dc71bae2bdf56e2f2a191ef52585f28b83369699c2f395dd66131589'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '0fe3c53722708f2675f84bb41dd68319cf6d9af572e0bfc738d9bb6ec2d54ed30381cb237a04379e42254f2b3a143a86bdd9ddcf290316e145f14e8a9d29df9d'
             '2b7b03697e3bf68681fd45eb06235c5f9145ad7f549a3291e0e62fa95e8b3de02a118b0562d50387ff174fbe23a9060f1c749a21cdd2ccb0f20680424f70587b'
-            'e9494683d32401745db31f5cfb459be9496c32f5cb9b76e56400c50ad3d40f29affc7863e8c0c1c8e22de51b2a654a838ce33be723b78fe38f77252ce58e063b'
-            '06696c5b3216fd38d546d743f61a2ac0bb215a01192e53da75b069095565c602ec5730b3f317de08e4bd3318c4e5642560e9bc25153a69e4b5442772edef8cd8'
             '2a6eae68576495624ba6c5fd8e90255196045f4b07aa11d1a558c87b00ae2f9721ab740c58af68392fc733480731e4a75b30b2c7d921c7ef51424243ee7a3462')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -48,23 +42,69 @@ _mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
 
 prepare(){
   cd thunderbird-${pkgver}
-  cp "$srcdir/mozconfig" .mozconfig
+
+  msg 'Generating kde.js'
+  cat >kde.js <<END
+pref("browser.preferences.instantApply", false);
+END
+
+  cat >.mozconfig <<END
+ac_add_options --enable-application=comm/mail
+
+ac_add_options --prefix=/usr
+ac_add_options --libdir=/usr/lib
+ac_add_options --enable-release
+ac_add_options --enable-linker=gold
+ac_add_options --enable-hardening
+ac_add_options --enable-optimize
+ac_add_options --enable-rust-simd
+ac_add_options --enable-default-toolkit=cairo-gtk3
+
+# Keys
+ac_add_options --with-google-api-keyfile=${PWD@Q}/google-api-key
+ac_add_options --with-mozilla-api-keyfile=${PWD@Q}/mozilla-api-key
+
+# System libraries
+ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-zlib
+ac_add_options --with-system-bz2
+ac_add_options --with-system-png
+ac_add_options --with-system-libevent
+ac_add_options --with-system-libvpx
+# our icu is too old
+#ac_add_options --with-system-icu
+ac_add_options --enable-system-hunspell
+ac_add_options --enable-system-sqlite
+ac_add_options --enable-system-ffi
+ac_add_options --enable-system-cairo
+
+# Features
+ac_add_options --enable-official-branding
+ac_add_options --enable-update-channel=release
+ac_add_options --with-distribution-id=org.chakralinux
+ac_add_options --enable-startup-notification
+ac_add_options --enable-calendar
+
+ac_add_options --disable-gconf
+ac_add_options --disable-crashreporter
+ac_add_options --disable-updater
+ac_add_options --disable-tests
+ac_add_options --disable-debug-symbols
+
+export MOZILLA_OFFICIAL=1
+mk_add_options MOZILLA_OFFICIAL=1
+END
 
   msg "Patching for KDE"
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch"
-  cd ..
-
-  echo -n "$_google_api_key" > google-api-key
-  echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
-
-  echo -n "$_mozilla_api_key" > mozilla-api-key
-  echo "ac_add_options --with-mozilla-api-keyfile=\"$PWD/mozilla-api-key\"" >>.mozconfig
 
   mkdir "$srcdir/path"
   ln -s /usr/bin/python2 "$srcdir/path/python"
 
-  cd thunderbird-${pkgver}/comm
+  cd comm
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1482248
   patch -p1 -i "$srcdir/bz1482248.patch"
 }
@@ -84,8 +124,20 @@ package() {
   cd thunderbird-${pkgver}
   DESTDIR="$pkgdir" ./mach install
 
-  install -Dm644 "$srcdir"/vendor.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/vendor.js"
-  install -Dm644 "$srcdir"/kde.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/kde.js"
+  _vendorjs="$pkgdir/usr/lib/thunderbird/defaults/preferences/vendor.js"
+  install -Dm644 /dev/stdin "$_vendorjs"<<END
+// Use LANG environment variable to choose locale
+pref("intl.locale.requested", "");
+
+// Disable default mailer checking.
+pref("mail.shell.checkDefaultMail", false);
+
+// Don't disable our bundled extensions in the application directory
+pref("extensions.autoDisableScopes", 11);
+pref("extensions.shownSelectionUI", true);
+END
+
+  install -Dm644 kde.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/kde.js"
 
   _distini="$pkgdir/usr/lib/thunderbird/distribution/distribution.ini"
   install -Dm644 /dev/stdin "$_distini" <<END
