@@ -64,7 +64,7 @@ prepare(){
   mkdir "$srcdir/path"
   ln -s /usr/bin/python2 "$srcdir/path/python"
 
-  cd comm
+  cd thunderbird-${pkgver}/comm
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1482248
   patch -p1 -i "$srcdir/bz1482248.patch"
 }
