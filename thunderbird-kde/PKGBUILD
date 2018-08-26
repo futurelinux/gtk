@@ -81,7 +81,6 @@ ac_add_options --with-system-libvpx
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
-ac_add_options --enable-system-cairo
 
 # Features
 ac_add_options --enable-official-branding
