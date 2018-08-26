@@ -1,6 +1,6 @@
 pkgname=thunderbird-kde
-pkgver=52.9.1
-pkgrel=2
+pkgver=60.0
+pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
@@ -20,27 +20,21 @@ install=thunderbird.install
 source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/source/thunderbird-$pkgver.source.tar.xz
         mozconfig
         thunderbird.desktop
-        thunderbird-install-dir.patch
         mozilla-kde.patch
         mozilla-language.patch
         mozilla-nongnome-proxies.patch
-        fix-wifi-scanner.diff
         vendor.js
         kde.js
-        0001-Bug-1338655-Don-t-try-to-build-mp4parse-bindings.-r-.patch
-        no-crmf.diff)
-sha512sums=('0de80a5036b1e8a5a8549c546b4693cb285ee4d10f546f4b4aceed9e1d6c64b9dbafce7bacaaf057112130036f7b41fb2e0fa3343412140e6ac926dd94c27d23'
-            '12a0815b662996b53fbb2d9f1a4eb797075dbdc1c00ed65717361b3e9f43ddc2e0d66bd1615b82ff5b6f1481136ab145287994ec638d26cf045a15400971576b'
+        bz1482248.patch)
+sha512sums=('ca3346eb4b6e1237a74ffc5c3d483fcad8d2f0d1146f56a4b11f1ab0f83b47b28fb2da8c0344f228bfff8c84b755f46a86a5b44fd7172de387ceb83650b33152'
+            'ee9633832b7cd39cb18967f390691ae11df6981221d47ba6e55ba5ba73f6ade38e66ca7ba98d89aff3b08b88f0ba41e2c610b47b3a369ff99bd3ca00fb27f663'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
-            '1eecdc7942ac189a67d4d57bca305937ae8d5986944738139bad4baa47e5a9c904797db6a26840d559740178fb6e1904a2d5377c86a7d0f8a6b721471ef37d75'
-            '04bc673d5cd0c9b3b28ac7f5cb463a8da9d4f527df1518862dca61cfba76f1afc51946d21a8aafa0d1d7ad81a30819df0c949ac849bf09ae28dec17a44a353bd'
+            '0fe3c53722708f2675f84bb41dd68319cf6d9af572e0bfc738d9bb6ec2d54ed30381cb237a04379e42254f2b3a143a86bdd9ddcf290316e145f14e8a9d29df9d'
             '001776b5b332c526adeee9ef338a0f589e3f2c1b3eb3c1ece5aaae91637a50f821b830e717ea646f136ccfb121d28d83d28abfe65b57f3aa5784d0e79f8dfaf4'
             '2b7b03697e3bf68681fd45eb06235c5f9145ad7f549a3291e0e62fa95e8b3de02a118b0562d50387ff174fbe23a9060f1c749a21cdd2ccb0f20680424f70587b'
-            '1bd2804bea1fe8c85b602f8c5f8777f4ba470c9e767ad284cb3d0287c6d6e1b126e760738d7c671f38933ee3ec6b8931186df8e978995b5109797ae86dfdd85a'
-            'aeb444784732267f1b1e87e6084a776f82a1912c4c2637d2cf1de1c135dd9d41d2ef66d2bd3f9cbd3a79fad32d17ea6e2968ba644d5f887cb66ba6c09a2098f5'
+            'e9494683d32401745db31f5cfb459be9496c32f5cb9b76e56400c50ad3d40f29affc7863e8c0c1c8e22de51b2a654a838ce33be723b78fe38f77252ce58e063b'
             '06696c5b3216fd38d546d743f61a2ac0bb215a01192e53da75b069095565c602ec5730b3f317de08e4bd3318c4e5642560e9bc25153a69e4b5442772edef8cd8'
-            '9a02d89603ad2928e38d7350d5d71ec904815958c65cc13323f5d4cd9392b823264fae812ea658d83728839372b412fd185653ef65b7ab8dd0595158b3bdc2e2'
-            '08572139508d4fd4e2b855d294ebee3286151da80dfeae656ae29b49ce6d72185f4cfa73dfb827c1bcce6bc8c544d0cf4a00164c9059dff316351901601fb6ea')
+            '2a6eae68576495624ba6c5fd8e90255196045f4b07aa11d1a558c87b00ae2f9721ab740c58af68392fc733480731e4a75b30b2c7d921c7ef51424243ee7a3462')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -57,7 +51,6 @@ _mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
 prepare(){
   cd thunderbird-${pkgver}
   cp "$srcdir/mozconfig" .mozconfig
-  patch -Np2 -i ../thunderbird-install-dir.patch
 
   msg "Patching for KDE"
   cd mozilla
@@ -65,15 +58,6 @@ prepare(){
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch"
   cd ..
-
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1314968
-  patch -d mozilla -Np1 < ../fix-wifi-scanner.diff
-
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1371991
-  patch -Np1 -i ../no-crmf.diff
-
-  # https://bugs.archlinux.org/task/53890
-  patch -d mozilla -Np1 < ../0001-Bug-1338655-Don-t-try-to-build-mp4parse-bindings.-r-.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
@@ -83,31 +67,26 @@ prepare(){
 
   mkdir "$srcdir/path"
   ln -s /usr/bin/python2 "$srcdir/path/python"
+
+  cd comm
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1482248
+  patch -p1 -i "$srcdir/bz1482248.patch"
 }
          
 build() {
   cd thunderbird-${pkgver}
-  
-  # _FORTIFY_SOURCE causes configure failures
-  CPPFLAGS+=" -O2"
-
-  # Hardening
-  LDFLAGS+=" -Wl,-z,now"
-
-  # GCC 6
-  # CXXFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
 
   export PYTHON="/usr/bin/python2"
   export SHELL="/bin/bash"
   
-  #xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
-  #  make -f client.mk profiledbuild
-  make -f client.mk build
+  ./mach configure
+  ./mach build
+  ./mach buildsymbols
 }
 
 package() {
   cd thunderbird-${pkgver}
-  make -f client.mk DESTDIR="$pkgdir" INSTALL_SDK= install
+  DESTDIR="$pkgdir" ./mach install
 
   install -Dm644 "$srcdir"/vendor.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/vendor.js"
   install -Dm644 "$srcdir"/kde.js "$pkgdir/usr/lib/thunderbird/defaults/preferences/kde.js"
@@ -125,10 +104,13 @@ app.distributor.channel=${pkgname%-kde}
 app.partner.chakralinux=chakralinux
 END
 
-  for i in 16 22 24 32 48 256; do
-      install -Dm644 other-licenses/branding/thunderbird/mailicon$i.png \
+  for i in 16 22 24 32 48 64 128 256; do
+      install -Dm644 comm/mail/branding/thunderbird/default${i}.png \
           "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/thunderbird.png"
   done
+
+  install -Dm644 comm/mail/branding/thunderbird/TB-symbolic.svg \
+    "$pkgdir/usr/share/icons/hicolor/symbolic/apps/thunderbird-symbolic.svg"
 
   install -Dm644 "$srcdir/thunderbird.desktop" \
       "$pkgdir/usr/share/applications/thunderbird.desktop"
