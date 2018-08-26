@@ -43,6 +43,9 @@ _mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
 prepare(){
   cd thunderbird-${pkgver}
 
+  echo -n "$_google_api_key" >google-api-key
+  echo -n "$_mozilla_api_key" >mozilla-api-key
+
   msg 'Generating kde.js'
   cat >kde.js <<END
 pref("browser.preferences.instantApply", false);
