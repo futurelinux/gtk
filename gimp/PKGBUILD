@@ -15,7 +15,7 @@ optdepends=('gutenprint: for sophisticated printing only as gimp has built-in cu
             'alsa-lib: for MIDI event controller module'
             'curl: for URI support'
             'ghostscript: for postscript support')
-source=("http://download.gimp.org/pub/gimp/v${_pkgver}/$pkgname-$pkgver.tar.bz2" "linux.gpl")
+source=("https://download.gimp.org/pub/gimp/v${_pkgver}/$pkgname-$pkgver.tar.bz2" "linux.gpl")
 md5sums=('6e92c1e2ccee90b4075547fc3d129ca1'
          'bb27bc214261d36484093e857f015f38')
 
@@ -33,14 +33,11 @@ build() {
     --enable-mp \
     --enable-gimp-console \
     --enable-python \
-    --with-libcurl \
-    --with-gif-compression=lzw \
     --with-gimpdir=.config/gimp \
     --with-bug-report-url='https://code.chakralinux.org/packages/gtk/issues/?search=gimp' \
     --without-aa \
-    --without-hal \
-    --without-gvfs \
-    --without-gnomevfs
+    --with-openexr
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
 }
 
