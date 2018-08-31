@@ -1,6 +1,6 @@
 pkgname=gtk2
 pkgver=2.24.32
-pkgrel=2
+pkgrel=3
 # When updating, remember to also update lib32-gtk2
 pkgdesc="GObject-based multi-platform GUI toolkit (legacy)"
 arch=(x86_64)
