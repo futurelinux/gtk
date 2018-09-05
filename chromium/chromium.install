@@ -12,14 +12,5 @@ EOF
 }
 
 post_install() {
-    post_upgrade
     instructions
-}
-
-post_upgrade() {
-	xdg-icon-resource forceupdate --theme hicolor &> /dev/null
-}
-
-post_remove() {
-	xdg-icon-resource forceupdate --theme hicolor &> /dev/null
 }
