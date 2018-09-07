@@ -5,7 +5,7 @@ CFLAGS must contain -fPIC when checking the linker
 diff --git a/build/autoconf/compiler-opts.m4 b/build/autoconf/compiler-opts.m4
 --- a/build/autoconf/compiler-opts.m4
 +++ b/build/autoconf/compiler-opts.m4
-@@ -205,23 +205,26 @@ MOZ_PIE=
+@@ -216,23 +216,26 @@ fi
  
  MOZ_ARG_ENABLE_BOOL(pie,
  [  --enable-pie           Enable Position Independent Executables],

@@ -1,12 +1,12 @@
 pkgname=firefox-kde
-pkgver=61.0.2
+pkgver=62.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
-         libvpx libevent hunspell libproxy nss nspr pixman
+         libvpx libevent libproxy nss nspr pixman
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
              autoconf2.13 gtk2 gobject-introspection jack rust gconf
@@ -14,10 +14,11 @@ makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'upower: Battery API'
-            'firefox-i18n: for multilanguage support')
+            'firefox-i18n: for multilanguage support'
+            'hunspell: for spell check support')
 options=(!emptydirs !strip)
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
-provides=("firefox=${pkgver}" "kmozillahelper")
+provides=("firefox=${pkgver}" "kmozillahelper=5.0.2")
 conflicts=('kmozillahelper')
 replaces=('kmozillahelper')
 #
@@ -33,7 +34,7 @@ replaces=('kmozillahelper')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=a0c915e59e05
+_patchrev=18f97bd2c2bf
 _kmozillahelper_commit=2ca28e0 #v5.0.2
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname%%-kde}-${pkgver}.source.tar.xz"
@@ -51,12 +52,10 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         "$_patchurl/mozilla-openaes-decl.patch"
         
         # Gentoo patch
-        1004_fix_pie_detection.patch
-        1005_fix_fortify_sources.patch
-        2000_system_harfbuzz.patch
-        2001_system_graphite2.patch
-        2003_nICER_implicit_decls.patch
-        2004_fix_lto_builds.patch
+        1002_fix_pie_detection.patch
+        1003_foritify_sources_properly.patch
+        2000_system_harfbuzz_support.patch
+        2001_system_graphite2_support.patch
 
         # Ubuntu patch
         unity-menubar.patch
@@ -72,23 +71,21 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('0bdecbbb2a955c9f4c5cd0b33acd1e47afcb6cd57ac89cf11257668e3cef202c'
+sha256sums=('b3f850581f7d89655a05d5dc26ba010783934d86aa920399237f79dedd5daec9'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
             '7c3b3079e587fb5c7fd8725b4677efb270355c03c8d16513bbe619903038381e'
-            '336706c48f2a39eb3515227e97323a4933362d4f3b8f2d499f6e1ff843e1a18b'
+            'c70835b481317d64b3c7f70c6feabd36bef67b5a54f3638aca8c9f31ad6087ca'
             '29acfc63f366510f471e395cc7a3815108072abda5851c48b64fdb894550408c'
             'ef0f90c9134ef05b950f06a3ffbd699c2e5a5f99a4cdf9868e799534d68c204f'
-            'a18680f62e07c3a217dcbd31d2b974db4a38eae8561bc1de65a5d725c1c42f9e'
+            'ee1ee84425723bee11dfa16837e48b025b5cbf05ace861f8f170c0ea40230040'
             'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70'
-            '2b813ba66a3904b3e745d199479967dafc9b23e69db2238a932e013cdc21b91d'
+            '2b679a3cb082d73bec085b8529a56030a990106408f4d9e73915ec51f4c3259e'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
-            'a850e98166d89f6541f04ac188c4bbdf075f2be601d3d6e88b17d20048ae5243'
-            '6d9a7d3059d9017c1d3c28b38f257fe99b48ebcb1d829d427db59f80826fdc89'
-            'c39d22c4223c99181e1e828c1d6ba3bde035f497744ad423c60da91425ac4942'
-            'd199e00089a407f1a08e1d547c822279afd1abbffa361fb471990413eeeb2862'
-            '47b9c634e511ec384e6984575428d50f2b6c31100f0f09b896d2602f7bd7d370')
+            '1e101b49faa804bd3fc6487c8e3cab4af7bd1f9aa32ad8199941739a6b3b71cb'
+            '4c75f71ba636934ded24eecb3a81f5ba6583e88db2dd9025c842aefc9c8ef216'
+            '9b5ef6e910e59054715a78d83a4d7ecf41cd8c202a7796a73f5fd6d53dc415be')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -148,7 +145,6 @@ ac_add_options --with-distribution-id=org.chakralinux
 ac_add_options --enable-default-toolkit=cairo-gtk3
 export MOZILLA_OFFICIAL=1
 export MOZ_TELEMETRY_REPORTING=1
-export MOZ_ADDON_SIGNING=1
 export MOZ_REQUIRE_SIGNING=1
 
 # Keys
@@ -166,7 +162,6 @@ ac_add_options --with-system-nspr
 ac_add_options --with-system-icu
 ac_add_options --with-system-png
 ac_add_options --enable-system-pixman
-#ac_add_options --enable-system-hunspell
 #ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
 ac_add_options --enable-libproxy
@@ -195,12 +190,10 @@ END
   patch -Np0 -i "$srcdir/pgo-fix-missing-kdejs.patch"
 
   msg "Gentoo Patchset"
-  patch -Np1 -i $srcdir/1004_fix_pie_detection.patch
-  patch -Np1 -i $srcdir/1005_fix_fortify_sources.patch
-  patch -Np1 -i $srcdir/2000_system_harfbuzz.patch
-  patch -Np1 -i $srcdir/2001_system_graphite2.patch
-  patch -Np1 -i $srcdir/2003_nICER_implicit_decls.patch
-  patch -Np1 -i $srcdir/2004_fix_lto_builds.patch
+  patch -Np1 -i $srcdir/1002_fix_pie_detection.patch
+  patch -Np1 -i $srcdir/1003_foritify_sources_properly.patch
+  patch -Np1 -i $srcdir/2000_system_harfbuzz_support.patch
+  patch -Np1 -i $srcdir/2001_system_graphite2_support.patch
 
   msg "Ubuntu Patchset"
   patch -Np1 -i $srcdir/unity-menubar.patch
@@ -266,6 +259,10 @@ pref("browser.shell.checkDefaultBrowser", false);
 // Don't disable our bundled extensions in the application directory
 pref("extensions.autoDisableScopes", 11);
 pref("extensions.shownSelectionUI", true);
+
+// Force HW acceleration
+pref("layers.acceleration.force-enabled",  true);
+pref("webgl.force-enabled",                true);
 END
 
   install -Dm644 kde.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/kde.js"
