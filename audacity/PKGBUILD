@@ -1,17 +1,15 @@
 pkgname=audacity
-pkgver=2.2.2
-pkgrel=3
+pkgver=2.3.0
+pkgrel=1
 pkgdesc="A program that lets you manipulate digital audio waveforms"
 arch=('x86_64')
 url="https://www.audacityteam.org/"
 license=('GPL')
-depends=('libmad' 'libid3tag' 'wxgtk' 'lame' 'lilv' 'soundtouch' 'libsamplerate' 'libnotify'
-         'ffmpeg' 'vamp-plugin-sdk' 'portsmf' 'desktop-file-utils' 'jack') # sbsms - needs unreleased version
-makedepends=('python2' 'cmake' 'portaudio')
-options=('!makeflags')
-install="${pkgname}.install"
-source=(https://github.com/audacity/audacity/archive/Audacity-${pkgver}.tar.gz)
-md5sums=('0389b57584a41994d92951b2388dfbcd')
+depends=('libid3tag' 'libmad' 'libsoxr' 'lilv' 'portsmf' 'soundtouch' 'suil' 'twolame' 'vamp-plugin-sdk' 'wxgtk')
+makedepends=('cmake' 'ffmpeg')
+optdepends=('ffmpeg: additional import/export capabilities')
+source=("https://github.com/${pkgname}/${pkgname}/archive/Audacity-${pkgver}.tar.gz")
+sha256sums=('37127f68dceeb5da08d008ec9373a65e2d5d0a9b937c808a5d7c3b88aa9e275e')
 
 build() {
   cd ${pkgname}-Audacity-${pkgver}
