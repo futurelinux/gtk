@@ -1,12 +1,12 @@
 pkgname=thunderbird-kde
-pkgver=60.0
+pkgver=60.2.1
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
 pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
 license=('MPL' 'GPL')
-url="http://www.mozilla.org/thunderbird/"
+url="https://www.thunderbird.net/"
 depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'libpulse' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
@@ -16,17 +16,14 @@ optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 options=(!emptydirs !makeflags)
 install=thunderbird.install
-# For patch look here: https://github.com/manjaro/packages-community/tree/master/thunderbird-kde
 source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/source/thunderbird-$pkgver.source.tar.xz
         thunderbird.desktop
         mozilla-kde.patch
-        mozilla-nongnome-proxies.patch
-        bz1482248.patch)
-sha512sums=('ca3346eb4b6e1237a74ffc5c3d483fcad8d2f0d1146f56a4b11f1ab0f83b47b28fb2da8c0344f228bfff8c84b755f46a86a5b44fd7172de387ceb83650b33152'
+        mozilla-nongnome-proxies.patch)
+sha512sums=('d74da3c90658c5baf09c22760cad31594524c09f2cd5aba81c5b15bb6db64d78f613562cb015d8a725b4902caa4a57a2d1dafce28284533747faed00f8268a02'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
-            '0fe3c53722708f2675f84bb41dd68319cf6d9af572e0bfc738d9bb6ec2d54ed30381cb237a04379e42254f2b3a143a86bdd9ddcf290316e145f14e8a9d29df9d'
-            '2b7b03697e3bf68681fd45eb06235c5f9145ad7f549a3291e0e62fa95e8b3de02a118b0562d50387ff174fbe23a9060f1c749a21cdd2ccb0f20680424f70587b'
-            '2a6eae68576495624ba6c5fd8e90255196045f4b07aa11d1a558c87b00ae2f9721ab740c58af68392fc733480731e4a75b30b2c7d921c7ef51424243ee7a3462')
+            'ff742c82350bbb9ff89bd342208efa9de7dfdcfee1b9e16d3f07cb65169827a42c06c413caa1f59ce5c4146b10ca5889fe558bb78f35d27e1a9e7b82dc657fc4'
+            '2b7b03697e3bf68681fd45eb06235c5f9145ad7f549a3291e0e62fa95e8b3de02a118b0562d50387ff174fbe23a9060f1c749a21cdd2ccb0f20680424f70587b')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -105,10 +102,6 @@ END
 
   mkdir "$srcdir/path"
   ln -s /usr/bin/python2 "$srcdir/path/python"
-
-  cd comm
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1482248
-  patch -p1 -i "$srcdir/bz1482248.patch"
 }
          
 build() {
