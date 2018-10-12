@@ -1,5 +1,5 @@
 pkgname=ibus
-pkgver=1.5.16
+pkgver=1.5.19
 pkgrel=1
 pkgdesc="Next Generation Input Bus for Linux, IBus qt library and IBus qt input method plugin included"
 arch=('x86_64')
@@ -7,15 +7,16 @@ url="https://github.com/ibus/ibus"
 license=('LGPL')
 depends=('dconf' 'gtk2' 'gtk3' 'hicolor-icon-theme' 'libnotify' 'python3-dbus' 'python3-gobject' 
          'iso-codes' 'python2-gobject2' 'python2-dbus' 'python2-gobject' 'librsvg')
-makedepends=('gobject-introspection' 'vala' 'intltool' 'gnome-common' 'gtk-doc' 'qt5-base'
-             'unicode-emoji' 'cldr-emoji-annotation')
+makedepends=('gobject-introspection' 'vala' 'intltool' 'gnome-common' 'gtk-doc' 'gconf' 'qt5-base'
+             'unicode-emoji' 'unicode-character-database' 'cldr-emoji-annotation')
 options=('!emptydirs')
 install=ibus.install
-source=(https://github.com/${pkgname}/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz)
-sha1sums=('54d751585c1d32998a147cb2a31ed9cbda300829')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/ibus/ibus/archive/$pkgver.tar.gz")
+sha1sums=('04be911a8b5b2f0a6148149536ae54a7f1b25ba8')
 
 prepare() {
-  sed -i 's|$(libibus) $(libibus_emoji_dialog)|$(libibus_emoji_dialog) $(libibus)|' ibus-$pkgver/ui/gtk3/Makefile.am
+  cd ${pkgname}-${pkgver}
+  sed -i 's|$(libibus) $(libibus_emoji_dialog)|$(libibus_emoji_dialog) $(libibus)|' ui/gtk3/Makefile.am
 }
 
 build() {
@@ -25,12 +26,14 @@ build() {
     --libexecdir=/usr/lib/ibus \
     --sysconfdir=/etc \
     --disable-gconf \
-    --disable-memconf \
-    --enable-gtk-doc \
-    --enable-ui \
+    --enable-dconf \
     --enable-wayland \
+    --enable-gtk-doc \
+    --disable-memconf \
+    --enable-ui \
     --enable-python-library \
-    --with-python=python3 
+    --with-python=python3 \
+    --with-ucd-dir=/usr/share/unicode/
   make
 }
 
