@@ -1,6 +1,6 @@
 pkgbase=nvidia-390xx-settings
 pkgname=('nvidia-390xx-settings' 'libxnvctrl-390xx')
-pkgver=390.59
+pkgver=390.87
 pkgrel=1
 pkgdesc='Tool for configuring the NVIDIA graphics driver, 390xx legacy branch'
 url='https://github.com/NVIDIA/nvidia-settings'
@@ -10,7 +10,7 @@ makedepends=('git' 'inetutils' 'gtk2' 'jansson' 'gtk3' 'libxv' 'libvdpau' 'nvidi
 options=('staticlibs')
 source=(nvidia-settings-${pkgver}.tar.gz::https://github.com/NVIDIA/nvidia-settings/archive/${pkgver}.tar.gz
         libxnvctrl_so.patch)
-sha512sums=('6d1e0a076e3bb69887fb62c9038d300258a98dd7931a747aa76d4f5ca1f1345621984b60a4883e7d5030a136b3e5db463fd68dcc25106fb9d9dbeb7e6879824d'
+sha512sums=('2fb98c8a2e7633ead1e40acb5539e1f66cc6f12667ad2ed12599c0f0500fc92754915c286030a5f31673047ff100066f689741b4aa5c3e2be2bc2259b7a5a8f7'
             'f69f5dc84fe624579a3c9ce877f4ae4e34c2184877576afbea07b8abdd7ff01e470517f2b77cd11a904518cbcb83fb388ca1d08888006f0ef2854723920c9cf8')
 
 prepare() {
