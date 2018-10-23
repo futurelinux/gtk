@@ -83,9 +83,9 @@ sha256sums=('3f95b028571ab9ffb3bf637761534a685aed224de3b87eb8ad7e1d0831995c07'
             'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70'
             '2b679a3cb082d73bec085b8529a56030a990106408f4d9e73915ec51f4c3259e'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
-            '1e101b49faa804bd3fc6487c8e3cab4af7bd1f9aa32ad8199941739a6b3b71cb'
+            'e72782d0fc5a4b1ef5d9bdaaad4631b686e4b6a89f6b511327c48cb4096d1e08'
             '4c75f71ba636934ded24eecb3a81f5ba6583e88db2dd9025c842aefc9c8ef216'
-            '9b5ef6e910e59054715a78d83a4d7ecf41cd8c202a7796a73f5fd6d53dc415be')
+            '722324ef522f3e2452f49924e47a2e8a3a547e18aef32d7c1252113eb839451f')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
