@@ -54,23 +54,6 @@ diff --git a/dom/base/moz.build b/dom/base/moz.build
  countermap = GENERATED_FILES['PropertyUseCounterMap.inc']
  countermap.script = 'gen-usecounters.py:property_map'
  countermap.inputs = ['UseCounters.conf']
-diff --git a/gfx/harfbuzz/README-mozilla b/gfx/harfbuzz/README-mozilla
---- a/gfx/harfbuzz/README-mozilla
-+++ b/gfx/harfbuzz/README-mozilla
-@@ -14,8 +14,13 @@ this file when updating HarfBuzz, and ch
- 
- The normal approach to updating HarfBuzz, therefore, is to pull the latest HB
- source into a scratch directory and do a local build; then copy the original
- sources AND the generated header mentioned above from the build directory into
- the mozilla tree.
- 
- If the collection of source files changes, manual updates to moz.build may be
- needed, as we don't use the upstream makefiles.
-+
-+The in-tree copy may be omitted during build by --with-system-harfbuzz.
-+Make sure to keep pkg-config version check within toolkit/moz.configure in sync
-+with checkout version or increment latest tag by one if it's not based
-+on upstream release.
 diff --git a/gfx/moz.build b/gfx/moz.build
 --- a/gfx/moz.build
 +++ b/gfx/moz.build
@@ -153,7 +136,7 @@ diff --git a/gfx/skia/moz.build b/gfx/skia/moz.build
 diff --git a/gfx/thebes/moz.build b/gfx/thebes/moz.build
 --- a/gfx/thebes/moz.build
 +++ b/gfx/thebes/moz.build
-@@ -281,11 +281,14 @@ if CONFIG['MOZ_WIDGET_TOOLKIT'] in ('and
+@@ -285,14 +285,17 @@
  
  if CONFIG['MOZ_WIDGET_TOOLKIT'] == 'gtk3':
      CXXFLAGS += CONFIG['MOZ_PANGO_CFLAGS']
@@ -168,6 +151,9 @@ diff --git a/gfx/thebes/moz.build b/gfx/thebes/moz.build
  if CONFIG['CC_TYPE'] == 'clang':
      # Suppress warnings from Skia header files.
      SOURCES['gfxPlatform.cpp'].flags += ['-Wno-implicit-fallthrough']
+ 
+ if CONFIG['CC_TYPE'] == 'clang-cl':
+     AllowCompilerWarnings()  # workaround for bug 1090497
 diff --git a/intl/unicharutil/util/moz.build b/intl/unicharutil/util/moz.build
 --- a/intl/unicharutil/util/moz.build
 +++ b/intl/unicharutil/util/moz.build
