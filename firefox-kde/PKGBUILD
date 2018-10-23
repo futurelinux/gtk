@@ -1,6 +1,6 @@
 pkgname=firefox-kde
-pkgver=62.0.3
-pkgrel=2
+pkgver=63.0
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -34,7 +34,7 @@ replaces=('kmozillahelper')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=18f97bd2c2bf
+_patchrev=4b99400f6d17
 _kmozillahelper_commit=2ca28e0 #v5.0.2
 _patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
 source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname%%-kde}-${pkgver}.source.tar.xz"
@@ -71,15 +71,15 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
         #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
 )
-sha256sums=('c1d506eb7b1225e52398b2e4587085e77ff5f1fbf07728ba0fee60bbeae94636'
+sha256sums=('3f95b028571ab9ffb3bf637761534a685aed224de3b87eb8ad7e1d0831995c07'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
             '7c3b3079e587fb5c7fd8725b4677efb270355c03c8d16513bbe619903038381e'
-            'c70835b481317d64b3c7f70c6feabd36bef67b5a54f3638aca8c9f31ad6087ca'
+            'd6b7a81c9e11740480cedda791974bdfa2c44fd93a22db38ad020d78d2afb73e'
             '29acfc63f366510f471e395cc7a3815108072abda5851c48b64fdb894550408c'
             'ef0f90c9134ef05b950f06a3ffbd699c2e5a5f99a4cdf9868e799534d68c204f'
-            'ee1ee84425723bee11dfa16837e48b025b5cbf05ace861f8f170c0ea40230040'
+            'de50ebcc6b0fd59e970cf1e19dab09f7c7b2b7c75724fd2ac1fa367c1cd79c20'
             'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70'
             '2b679a3cb082d73bec085b8529a56030a990106408f4d9e73915ec51f4c3259e'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
