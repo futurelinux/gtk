@@ -9,9 +9,9 @@ license=('GPL' 'LGPL')
 arch=('x86_64')
 depends=('gc' 'gsl' 'gtkmm' 'gtkspell' 'libmagick6' 'libxslt' 'libvisio' 'libwpg'
          'poppler-glib' 'popt' 'potrace' 'ttf-dejavu' 'python2' 'desktop-file-utils'
-         'hicolor-icon-theme')
+         'hicolor-icon-theme' 'openmp')
 # python is needed for glib-genmarshal (at least with GLib 2.54)
-makedepends=('boost' 'intltool' 'python3' 'clang' 'openmp')
+makedepends=('boost' 'intltool' 'python3' 'clang')
 optdepends=('pstoedit: latex formulas'
             'python2-scour: optimized SVG output'
             'texlive-core: latex formulas'
