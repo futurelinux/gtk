@@ -11,7 +11,7 @@ depends=('gc' 'gsl' 'gtkmm' 'gtkspell' 'libmagick6' 'libxslt' 'libvisio' 'libwpg
          'poppler-glib' 'popt' 'potrace' 'ttf-dejavu' 'python2' 'desktop-file-utils'
          'hicolor-icon-theme')
 # python is needed for glib-genmarshal (at least with GLib 2.54)
-makedepends=('boost' 'intltool' 'python3' 'clang' 'openmp')
+makedepends=('boost' 'intltool' 'python3' 'cmake' 'clang' 'openmp')
 optdepends=('pstoedit: latex formulas'
             'python2-scour: optimized SVG output'
             'texlive-core: latex formulas'
@@ -29,36 +29,29 @@ prepare() {
         # poppler 0.64 & up needed patches
         patch -Np1 -i ${srcdir}/poppler-fixes-from-master.patch
 
-	./autogen.sh
-
-	sed -i 's|/usr/bin/python\>|/usr/bin/python2|g' cxxtest/*.py
-	sed -i 's|/usr/bin/env python\>|/usr/bin/env python2|g' share/*/{test/,}*.py
-	sed -i 's|"python" },|"python2" },|g' src/extension/implementation/script.cpp
-	sed -i 's|python -c|python2 -c|g' configure share/extensions/uniconv*.py
-	sed -i 's|"python"|"python2"|g' src/main.cpp
-
 	sed -i 's| abs(| std::fabs(|g' src/ui/tools/flood-tool.cpp
-       
+        mkdir $srcdir/build       
 }
 
 build() {
-	cd $pkgname-$pkgver
+	cd build
 	export PKG_CONFIG_PATH='/usr/lib/imagemagick6/pkgconfig'
 	export FREETYPE_CONFIG="/usr/bin/pkg-config freetype2"
         export CC=clang
         export CXX=clang++
-	./configure \
-		--prefix=/usr \
-		--enable-lcms \
-		--enable-poppler-cairo \
-		--disable-strict-build \
-		--disable-dependency-tracking \
-                --with-inkjar \
-                --enable-wpg \
-                --enable-visio \
-                --enable-dbusapi \
-                --enable-openmp \
-                --disable-static
+
+	cmake ../${pkgname}-${pkgver} \
+	  -DCMAKE_BUILD_TYPE=Release \
+	  -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+          -DENABLE_BINRELOC=TRUE \
+	  -DCMAKE_WITH_NLS=ON \
+          -DWITH_DBUS=ON \
+          -DWITH_LIBCDR=ON \
+          -DWITH_LIBVISIO=ON \
+          -DWITH_LIBWPG=ON \
+          -DWITH_NLS=ON \
+          -DWITH_OPENMP=ON \
+          -DWITH_PROFILING=ON
 	make
 }
 
