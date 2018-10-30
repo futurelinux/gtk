@@ -1,5 +1,5 @@
 pkgname=ibus-libzhuyin
-pkgver=1.8.1
+pkgver=1.8.3
 pkgrel=1
 pkgdesc="New Zhuyin engine based on libzhuyin for IBus."
 arch=('x86_64')
@@ -7,7 +7,7 @@ license=('GPL')
 url="https://github.com/libzhuyin/ibus-libzhuyin"
 depends=('ibus' 'gettext' 'intltool' 'sqlite3' 'opencc' 'libpinyin' 'python3')
 source=("http://downloads.sourceforge.net/libzhuyin/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-sha1sums=('022a29c5052b3a925520f0556c102831f0441058')
+sha1sums=('9f4dca957739b29e37b51822a34a6131240174a6')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
