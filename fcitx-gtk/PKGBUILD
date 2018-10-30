@@ -1,7 +1,7 @@
 _pkgbase=fcitx
 pkgbase=fcitx-gtk
 pkgname=('fcitx-gtk2' 'fcitx-gtk3')
-pkgver=4.2.9.5
+pkgver=4.2.9.6
 pkgrel=1
 pkgdesc="Gtk im module for fcitx"
 arch=('x86_64')
@@ -9,8 +9,8 @@ url="https://github.com/fcitx/fcitx-gtk"
 license=('GPL')
 makedepends=('gtk2' 'gtk3' 'cmake' 'icu' 'opencc' 'iso-codes' 'libxkbfile' 'cairo'
              'pango' 'dbus' 'qt' 'extra-cmake-modules' 'lua')
-source=(https://github.com/fcitx/fcitx/archive/${pkgver}.tar.gz)
-md5sums=('24a656fbdcd85d7fca2a5ed23e175935')
+source=(https://download.fcitx-im.org/$_pkgbase/$_pkgbase-${pkgver}_dict.tar.xz)
+md5sums=('29e18ea4144c4e059dc2c56fb62d55e5')
 
 prepare() {
     cd ${srcdir}/${_pkgbase}-${pkgver}
