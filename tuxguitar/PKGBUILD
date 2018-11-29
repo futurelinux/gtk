@@ -1,6 +1,6 @@
 pkgname=tuxguitar
-pkgver=1.3.2
-pkgrel=2
+pkgver=1.5.2
+pkgrel=1
 _jdk=java-8-openjdk
 pkgdesc="multitrack guitar tablature editor and player"
 arch=('x86_64')
@@ -10,11 +10,9 @@ depends=('java-runtime' 'swt-extra' 'alsa-lib')
 makedepends=('unzip' 'zip' 'apache-ant' 'jack' 'fluidsynth' 'maven')
 install=$pkgname.install
 source=("http://downloads.sourceforge.net/project/$pkgname/TuxGuitar/TuxGuitar-$pkgver/$pkgname-$pkgver-src.tar.gz"
-        "http://chakra.sourceforge.net/sources/$pkgname/TuxGuitar-Oxygen.tar.gz"
 	"$pkgname.desktop"
 	"$pkgname.xml")
-md5sums=('ba436b4558dc3ca054b395d8d7e38c50'
-         '7b2a6ffbf4fc6bcf4ed8e7453dd1bb52'
+md5sums=('12fe24e145837999a38790b67bdb753d'
          'fa9d98c32f4dae2f80ade4aa1e22c3a3'
          '59ce4eb8dcc0d0dde81e6cf2820aa9b0')
 
@@ -76,8 +74,5 @@ EOF
   # desktop files
   install -D -m0644 $srcdir/tuxguitar.xml $pkgdir/usr/share/mime/packages/tuxguitar.xml
   install -D -m0644 $srcdir/tuxguitar.desktop $pkgdir/usr/share/applications/tuxguitar.desktop
-  
-  # Oxygen theme
-  cp -rf $srcdir/TuxGuitar-Oxygen $pkgdir/usr/share/tuxguitar/share/skins/
 
 }
