@@ -1,6 +1,6 @@
 pkgname=('pidgin')
 pkgver=2.13.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Multi-protocol instant messaging client"
 url="http://pidgin.im/"
@@ -10,7 +10,6 @@ depends=('libpurple' 'startup-notification' 'gtkspell' 'libxss' 'libsm'
 makedepends=('nss' 'libsasl' 'libidn' 'python3' 'avahi'
              'tk' 'ca-certificates' 'intltool' 'networkmanager')
 optdepends=('aspell: for spelling correction')
-install=pidgin.install
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2"
         'purple-remote-python3.patch')
 md5sums=('423403494fe1951e47cc75231f743bb0'
