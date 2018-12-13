@@ -59,16 +59,17 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         # Ubuntu patch
         unity-menubar.patch
 
-        # Useless patchset
+        # Unused patchset
         #"$_patchurl/gecko-lockdown.patch"
-        #"$_patchurl/mozilla-idldir.patch"
         #$_patchurl/firefox-ui-lockdown.patch
-        #"$_patchurl/toolkit-ui-lockdown.patch"
-        #"$_patchurl/mozilla-bmo1088588.patch" # Specify for ARM and PPC
-        #"$_patchurl/toolkit-download-folder.patch"
-        #"$_patchurl/mozilla-language.patch" # making use of LANGUAGE= env var which isn't part of our standard
-        #"$_patchurl/mozilla-prefer_plugin_pref.patch" removed from opensuse. reason: dropped mozilla-prefer_plugin_pref.patch as this feature is likely not worth maintaining further
-        #"$_patchurl/mozilla-shared-nss-db.patch" shared by default now
+        #"$_patchurl/toolkit-ui-lockdown.patch" # Not appliable
+        # mozilla-gconf-backend.patch: we disabled gconf
+        # mozilla-bmo1463035.patch: not our targetted architecture
+        # mozilla-bmo256180.patch: don't know what it is for
+        # mozilla-cubeb-noreturn.patch looks like this should be upstreamed
+        # mozilla-no-stdcxx-check.patch: we just passed it
+        # mozilla-ntlm-full-path.patch: not affected it seems
+        # mozilla-reduce-files-per-UnifiedBindings.patch
 )
 sha256sums=('da40f2f8f1cbf0ddb3454aa9f65bb1a2b2043ca9b1724aecd016337be77d537f'
             'SKIP'
@@ -147,6 +148,7 @@ export CXX=clang++
 export MOZILLA_OFFICIAL=1
 export MOZ_TELEMETRY_REPORTING=1
 export MOZ_REQUIRE_SIGNING=1
+export MOZ_PGO=1
 export AR=llvm-ar
 export NM=llvm-nm
 export RANLIB=llvm-ranlib
