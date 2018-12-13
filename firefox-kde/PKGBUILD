@@ -130,7 +130,6 @@ END
   cat >.mozconfig <<END
 ac_add_options --prefix=/usr
 ac_add_options --enable-release
-ac_add_options --enable-pie
 ac_add_options --enable-gold
 ac_add_options --enable-optimize="-O2"
 ac_add_options --enable-rust-simd
@@ -225,6 +224,9 @@ build_firefox() {
 
   export PATH="$srcdir/path:$PATH"
   export SHELL=/bin/bash
+
+  # LTO requires this
+  ulimit -n 4096
 
   # Do PGO
   xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
