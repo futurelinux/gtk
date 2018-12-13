@@ -224,8 +224,9 @@ build_firefox() {
 
   export PATH="$srcdir/path:$PATH"
   export SHELL=/bin/bash
+  export MOZ_NOSPAM=1
 
-  # LTO requires this
+  # LTO requires opening more files
   ulimit -n 4096
 
   # Do PGO
