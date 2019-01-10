@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=64.0
+pkgver=64.0.2
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -71,7 +71,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         # mozilla-ntlm-full-path.patch: not affected it seems
         # mozilla-reduce-files-per-UnifiedBindings.patch
 )
-sha256sums=('da40f2f8f1cbf0ddb3454aa9f65bb1a2b2043ca9b1724aecd016337be77d537f'
+sha256sums=('34cf115a4eeb4d73f7199396bb3a5d5843c8c455eae4213bf451c4db88768f1f'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
