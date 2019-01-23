@@ -2,28 +2,27 @@
 # Contributor: Ionut Biru <ibiru@archlinux.org>
 
 pkgname=dconf
-pkgver=0.24.0
+pkgver=0.31.1
 pkgrel=1
 pkgdesc="A low-level configuration system."
 arch=('x86_64')
 url="http://live.gnome.org/dconf"
 license=('LGPL2.1')
 depends=('glib2' 'libdbus')
-makedepends=('vala' 'intltool' 'docbook-xsl' 'python2')
-install=dconf.install
+makedepends=('vala' 'intltool' 'docbook-xsl' 'python3' 'meson' 'bash-completion' )
 source=(http://download.gnome.org/sources/$pkgname/${pkgver:0:4}/$pkgname-$pkgver.tar.xz)
-sha256sums=('4373e0ced1f4d7d68d518038796c073696280e22957babb29feb0267c630fec2')
+sha256sums=('adb4698e9c37055170031a3eeb362300c37dd6cba6145d1e06d96d9429ec4b04')
 
 build() {
-  cd "$pkgname-$pkgver"
+  chakra-meson $pkgname-$pkgver build -D gtk_doc=false
+  ninja -C build
+}
 
-  ./configure --prefix=/usr --sysconfdir=/etc \
-    --libexecdir=/usr/lib/dconf
-  make
+check() {
+  # dbus tests can't connect and dbus-run-session doesn't help
+  meson test -C build || :
 }
 
 package() {
-  cd "$pkgname-$pkgver"
-  make completiondir=/usr/share/bash-completion/completions DESTDIR="$pkgdir" install
+  DESTDIR="$pkgdir" meson install -C build
 }
-
