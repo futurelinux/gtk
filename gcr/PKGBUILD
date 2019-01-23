@@ -2,7 +2,7 @@
 
 pkgname=gcr
 pkgver=3.20.0+45+g4708f35
-pkgrel=1
+pkgrel=2
 pkgdesc="A library for bits of crypto UI and parsing"
 url="https://git.gnome.org/browse/gcr"
 arch=(x86_64)
