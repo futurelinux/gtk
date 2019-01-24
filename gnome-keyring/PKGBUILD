@@ -1,7 +1,7 @@
 # Contributions from ArchLinux: https://git.archlinux.org/svntogit/packages.git/tree/trunk?h=packages/gnome-keyring
 
 pkgname=gnome-keyring
-pkgver=3.20.0+57+g9db67ef
+pkgver=3.28.2
 pkgrel=1
 pkgdesc="Stores passwords and encryption keys"
 url="https://wiki.gnome.org/Projects/GnomeKeyring"
@@ -10,7 +10,7 @@ license=(GPL LGPL)
 depends=(gcr libcap-ng pam)
 makedepends=(intltool gtk-doc gnome-common git python3)
 install=gnome-keyring.install
-_commit=9db67ef6e39ac51d426dee91da3b9305670241e6  # master
+_commit=c2b54cdd3498ca443fbcb6dc66ff2e6e7b3c44b0  # tags/3.28.2^0
 source=("git+https://git.gnome.org/browse/gnome-keyring#commit=$_commit")
 sha256sums=('SKIP')
 
