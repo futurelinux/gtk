@@ -1,8 +1,8 @@
 # Contributions from ArchLinux: https://git.archlinux.org/svntogit/packages.git/tree/trunk?h=packages/gcr
 
 pkgname=gcr
-pkgver=3.20.0+45+g4708f35
-pkgrel=2
+pkgver=3.28.1
+pkgrel=1
 pkgdesc="A library for bits of crypto UI and parsing"
 url="https://git.gnome.org/browse/gcr"
 arch=(x86_64)
@@ -10,8 +10,8 @@ license=(GPL2)
 depends=(dconf gtk3 libgcrypt p11-kit)
 makedepends=(intltool gobject-introspection python3 vala libxslt gnome-common git gtk-doc)
 checkdepends=(python2)
-_commit=4708f3562ddf28bf51eb70b9cff548b217370639  # master
-source=("git+https://git.gnome.org/browse/gcr#commit=$_commit"
+_commit=3197d9e3711a946fca2efcb9059c7d5968254b90  # tags/3.28.1^0
+source=("git+https://gitlab.gnome.org/GNOME/gcr.git#commit=$_commit"
         10-gcr.conf)
 sha256sums=('SKIP'
             '1230351a1da53a9c2bada81c44f5a5113e5457552196eccb7b1413dcf4f661b5')
@@ -22,16 +22,18 @@ pkgver() {
 }
 
 prepare() {
-  mkdir path
-  ln -s /usr/bin/python2 path/python
   cd $pkgname
+
+  sed -i '1s/python$/&2/' build/tap-{driver,gtester}
   NOCONFIGURE=1 ./autogen.sh
 }
 
 build() {
   cd $pkgname
   ./configure --prefix=/usr \
-    --libexecdir=/usr/lib/gcr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libexecdir=/usr/lib \
     --enable-gtk-doc \
     --disable-static \
     --disable-update-mime \
@@ -42,7 +44,8 @@ build() {
 
 check() {
   cd $pkgname
-  PATH="$srcdir/path:$PATH" dbus-run-session make -k check || :
+  # Secure memory tests fail
+  dbus-run-session make -k check || :
 }
 
 package() {
@@ -52,5 +55,5 @@ package() {
   # gcr wants to lock some memory to prevent swapping out private keys
   # https://bugs.archlinux.org/task/32616
   # https://bugzilla.gnome.org/show_bug.cgi?id=688161
-  install -Dm644 ../10-gcr.conf "$pkgdir/etc/security/limits.d/10-gcr.conf"
+  install -Dt "$pkgdir/etc/security/limits.d" -m644 ../10-gcr.conf
 }
