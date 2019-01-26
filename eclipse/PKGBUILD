@@ -1,7 +1,7 @@
 pkgbase=eclipse
 pkgname=(eclipse-{common,java,jee,cpp,php,javascript})
 pkgver=4.10
-pkgrel=2
+pkgrel=3
 _release=2018-12
 pkgdesc="Highly extensible IDE"
 license=(EPL)
@@ -15,7 +15,7 @@ noextract=()
 for _pkg in ${pkgname[@]}; do
   [[ $_pkg == 'eclipse-common' ]] && continue
   source+=(http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/$_release/R/$_pkg-$_release-R-linux-gtk-x86_64.tar.gz)
-  noextract+=($_pkg-$_release-linux-gtk-x86_64.tar.gz)
+  noextract+=($_pkg-$_release-R-linux-gtk-x86_64.tar.gz)
   eval "package_$_pkg() { _package $_pkg; }"
 done
 
@@ -31,7 +31,7 @@ prepare() {
   for pkg in ${pkgname[@]}; do
     mkdir $pkg
     [[ $pkg == eclipse-common ]] && continue
-    bsdtar -xf "$pkg-$_release-linux-gtk-x86_64.tar.gz" -C $pkg --strip-components 1
+    bsdtar -xf "$pkg-$_release-R-linux-gtk-x86_64.tar.gz" -C $pkg --strip-components 1
   done
 }
 
