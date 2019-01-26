@@ -1,6 +1,6 @@
 pkgbase=eclipse
 pkgname=(eclipse-{common,java,jee,cpp,php,javascript})
-pkgver=4.9
+pkgver=4.10
 pkgrel=1
 _release=2018-09
 pkgdesc="Highly extensible IDE"
