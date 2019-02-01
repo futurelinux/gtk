@@ -1,5 +1,5 @@
 pkgname=firefox-kde
-pkgver=64.0.2
+pkgver=65.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib als
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
              autoconf2.13 gtk2 gobject-introspection jack rust gconf
-             cmake extra-cmake-modules llvm clang lld cbindgen nodejs)
+             cmake extra-cmake-modules llvm clang lld cbindgen nodejs nasm)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'upower: Battery API'
@@ -34,22 +34,27 @@ replaces=('kmozillahelper')
 #
 # Usually, we also port non-openSUSE specific patch together.
 #
-_patchrev=821cfbe8efcc
 _kmozillahelper_commit=2ca28e0 #v5.0.2
-_patchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_patchrev
+_kdepatchrev=87f893cf45b9
+_kdepatchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_kdepatchrev
+_ubuntuver=build2-0ubuntu0.14.04.1
+#_ubuntupatchurl=http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_${pkgver}+${_ubuntuver}.debian.tar.xz # no TLS @2019, really?
+#_gentoopatch=https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
+
+
 source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname%%-kde}-${pkgver}.source.tar.xz"
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
         'firefox.desktop' 'ddg.xml'
         'pgo-fix-missing-kdejs.patch'
 
         # Firefox patchset
-        "$_patchurl/firefox-kde.patch"
-        "$_patchurl/firefox-branded-icons.patch"
+        "$_kdepatchurl/firefox-kde.patch"
+        "$_kdepatchurl/firefox-branded-icons.patch"
 
         # Gecko/toolkit patchset
-        "$_patchurl/mozilla-nongnome-proxies.patch"
-        "$_patchurl/mozilla-kde.patch"
-        "$_patchurl/mozilla-openaes-decl.patch"
+        "$_kdepatchurl/mozilla-nongnome-proxies.patch"
+        "$_kdepatchurl/mozilla-kde.patch"
+        "$_kdepatchurl/mozilla-openaes-decl.patch"
         
         # Gentoo patch
         1003_foritify_sources_properly.patch
@@ -57,7 +62,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         2001_system_graphite2_support.patch
 
         # Ubuntu patch
-        unity-menubar.patch
+        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_${pkgver}+${_ubuntuver}.debian.tar.xz"
 
         # Unused patchset
         #"$_patchurl/gecko-lockdown.patch"
@@ -71,20 +76,20 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         # mozilla-ntlm-full-path.patch: not affected it seems
         # mozilla-reduce-files-per-UnifiedBindings.patch
 )
-sha256sums=('34cf115a4eeb4d73f7199396bb3a5d5843c8c455eae4213bf451c4db88768f1f'
+sha256sums=('75b1b14605d63e8c83b60e0a4020cdb75b8671fb646959da865cbead0c2b466d'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
             '7c3b3079e587fb5c7fd8725b4677efb270355c03c8d16513bbe619903038381e'
-            '933fbd3e32b68d5096a2b516f190eba7ec718bb57a089ef8b057404369efba63'
+            'eefe8c6d061cce4ea6e357d01f9f764aff198ddd06ff47991e10d1e8ddfc59a3'
             '29acfc63f366510f471e395cc7a3815108072abda5851c48b64fdb894550408c'
-            'ef0f90c9134ef05b950f06a3ffbd699c2e5a5f99a4cdf9868e799534d68c204f'
-            '52e6ad9d35efb3a1487f511bfe69dc0a60edc682bd5aeb1e74ee615270670273'
+            'fa3222d3bc8b14b82b58a8ac2b252fdbd41768a5234d334538a1a3c703a3a73d'
+            '4fc2ff5a197781aff9733f6fe99c99c529eae4eb1ec5a95ef1db0a3d5529b88e'
             'be7aa94f682dcb0feec3dd7c277d5d19e3c56fe3d4940203c942bbbefad6ed70'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
-            'e72782d0fc5a4b1ef5d9bdaaad4631b686e4b6a89f6b511327c48cb4096d1e08'
-            '4c75f71ba636934ded24eecb3a81f5ba6583e88db2dd9025c842aefc9c8ef216'
-            '18d37f79d6919d26c7f581f4c0025b556ced05362749be29af118da05f3cfb51')
+            '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
+            '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
+            'b8e97e3d2d5044f1c32eed9e7f61427693ac2142dbe4570fa017d7f66add04b9')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -165,7 +170,7 @@ ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
 ac_add_options --with-system-nss
 ac_add_options --with-system-nspr
-ac_add_options --with-system-icu
+#ac_add_options --with-system-icu
 ac_add_options --with-system-png
 ac_add_options --enable-system-pixman
 ac_add_options --enable-system-sqlite
@@ -201,7 +206,7 @@ END
   patch -Np1 -i $srcdir/2001_system_graphite2_support.patch
 
   msg "Ubuntu Patchset"
-  patch -Np1 -i $srcdir/unity-menubar.patch
+  patch -Np1 -i $srcdir/debian/patches/unity-menubar.patch
 }
 
 build() {
