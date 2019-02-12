@@ -6,7 +6,7 @@ arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib alsa-lib ffmpeg
-         libvpx libevent libproxy nss nspr pixman
+         libevent libproxy nss nspr pixman
          kio knotifications kwindowsystem ki18n)
 makedepends=(unzip zip diffutils python2 yasm mesa imake libpulse inetutils xorg-server-xvfb
              autoconf2.13 gtk2 gobject-introspection jack rust gconf
@@ -153,7 +153,7 @@ export CXX=clang++
 export MOZILLA_OFFICIAL=1
 export MOZ_TELEMETRY_REPORTING=1
 export MOZ_REQUIRE_SIGNING=1
-export MOZ_PGO=1
+#export MOZ_PGO=1
 export AR=llvm-ar
 export NM=llvm-nm
 export RANLIB=llvm-ranlib
@@ -167,10 +167,10 @@ ac_add_options --with-system-jpeg
 ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
 ac_add_options --with-system-libevent
-ac_add_options --with-system-libvpx
+ac_add_options --without-system-libvpx
 ac_add_options --with-system-nss
 ac_add_options --with-system-nspr
-#ac_add_options --with-system-icu
+ac_add_options --without-system-icu
 ac_add_options --with-system-png
 ac_add_options --enable-system-pixman
 ac_add_options --enable-system-sqlite
@@ -183,7 +183,7 @@ ac_add_options --enable-jack
 ac_add_options --enable-alsa
 ac_add_options --enable-gconf
 ac_add_options --disable-updater
-ac_add_options --enable-crashreporter
+ac_add_options --disable-crashreporter
 
 # PGO
 mk_add_options MOZ_MAKE_FLAGS="-j9"
@@ -237,9 +237,8 @@ build_firefox() {
   ulimit -n 4096
 
   # Do PGO
-  xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
+  #xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
        ./mach build
-  ./mach buildsymbols
   #make -f client.mk build
 }
 
@@ -254,7 +253,6 @@ package() {
  
   export SHELL=/bin/bash
   DESTDIR="$pkgdir" ./mach install
-  find . -name '*crashreporter-symbols-full.zip' -exec cp -fvt "$startdir" {} +
 
   _vendorjs="$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
   install -Dm644 /dev/stdin "$_vendorjs" <<END
