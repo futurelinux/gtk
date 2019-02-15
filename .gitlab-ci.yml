@@ -31,6 +31,7 @@ build_pkgs:
     expire_in: 1 week
     paths:
       - ./_repo/gitlab-ci/*.pkg.tar.xz
+      - ./_logs/*.log
     name: "$CI_BUILD_NAME"
   cache:
     paths:
