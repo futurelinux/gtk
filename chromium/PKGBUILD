@@ -33,7 +33,7 @@ readonly _unwanted_bundled_libs=(
 )
 
 pkgname=chromium
-pkgver=72.0.3626.96
+pkgver=72.0.3626.109
 pkgrel=1
 _launcher_ver=6
 pkgdesc="A web browser built for speed, simplicity, and security"
@@ -42,23 +42,34 @@ url="https://www.chromium.org/Home"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib'
-         'desktop-file-utils' 'hicolor-icon-theme')
+         'desktop-file-utils' 'hicolor-icon-theme' 'libva')
 depends+=(${_system_libs[@]})
 makedepends=('python3' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'nodejs' 'git' 'clang' 'lld' 'gn' 'java-runtime')
 optdepends=('pepperflashplugin: support for Flash content'
             'kwallet: for storing passwords in KWallet'
             'kdialog: needed for file dialogs in KDE')
+replaces=('chromium-vaapi' 'chromium-vaapi-bin')
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
+        chromium-drirc-disable-10bpc-color-configs.conf
         chromium-system-icu.patch
         chromium-webrtc-missing-header.patch
+        chromium-vaapi.patch
+        chromium-vaapi-relax-the-version-check-for-VA-API.patch
+        chromium-enable-mojo-video-decoders-by-default.patch
+        chromium-vaapi-fix-the-VA_CHECK_VERSION.patch
         chromium-widevine.patch
         chromium-skia-harmony.patch)
-sha256sums=('b2daf52aac4d9eba0ab9f034db6f2411ad6930dd02544c4b583e3a6e49dcaa3b'
+sha256sums=('574a5400dcd9452bf41481518aa5097c396df6e1eb97c67303638ba967048c2d'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
+            'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e2d284311f49c529ea45083438a768db390bde52949995534034d2a814beab89'
             '63cbed7d7af327c17878a2066c303f106ff08636372721845131f7ff13d87b44'
+            'e87ede45edf39ac19e56ac1ae49c9d1f5f5130e5838bcbb4c3d4fb16e55575c0'
+            '07fcf5d25114c7335582f117090b5e0bd148aca69044d4fe25c66b4c52dcd2a6'
+            '669a9ad4773d182a06ee729008a60aeadddae92f1a0077b3811e11f292c8d4ff'
+            '0bd750255163bfb1bedaf97c1cdb313f42bd9e6e52243c6e68494b6e0ffb84bf'
             'd081f2ef8793544685aad35dea75a7e6264a2cb987ff3541e6377f4a3650a28b'
             '5887f78b55c4ecbbcba5930f3f0bb7bc0117c2a41c2f761805fcf7f46f1ca2b3')
 
@@ -81,6 +92,12 @@ prepare() {
     third_party/blink/renderer/core/xml/*.cc \
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
     third_party/libxml/chromium/libxml_utils.cc
+
+  # Enable VAAPI on Linux
+  patch -Np1 -i ../chromium-vaapi.patch
+  patch -Np1 -i ../chromium-vaapi-relax-the-version-check-for-VA-API.patch
+  patch -Np1 -i ../chromium-enable-mojo-video-decoders-by-default.patch
+  patch -Np1 -i ../chromium-vaapi-fix-the-VA_CHECK_VERSION.patch
 
   # Load Widevine CDM if available
   patch -Np1 -i ../chromium-widevine.patch
@@ -163,6 +180,7 @@ build() {
     'use_custom_libcxx=false'
     'enable_hangout_services_extension=true'
     'enable_widevine=true'
+    'use_vaapi=true'
     'enable_nacl=false'
     'enable_swiftshader=false'
     "google_api_key=\"${_google_api_key}\""
@@ -199,6 +217,9 @@ package() {
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
   ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
+
+  install -Dm644 ../chromium-drirc-disable-10bpc-color-configs.conf \
+    "$pkgdir/usr/share/drirc.d/10-$pkgname.conf"
 
   install -Dm644 chrome/installer/linux/common/desktop.template \
     "$pkgdir/usr/share/applications/chromium.desktop"
