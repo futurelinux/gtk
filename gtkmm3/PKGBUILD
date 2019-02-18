@@ -3,7 +3,7 @@
 
 pkgbase=gtkmm3
 pkgname=(gtkmm3 gtkmm3-docs)
-pkgver=3.22.2+2+g3002ed86
+pkgver=3.24.0
 pkgrel=1
 pkgdesc="C++ bindings for GTK+ 3"
 url="http://www.gtkmm.org/"
@@ -11,7 +11,7 @@ arch=(x86_64)
 license=(LGPL)
 depends=(gtk3 pangomm atkmm)
 makedepends=(git mm-common glibmm-docs cairomm-docs pangomm-docs atkmm-docs)
-_commit=3002ed863d2d85d57431e3aa1df9721d5dd3787c  # gtkmm-3-22
+_commit=18a438b4c6d80b18d3a53b282dcec6e5dfcccbbf  # tags/3.24.0^0
 source=("git+https://git.gnome.org/browse/gtkmm#commit=$_commit")
 sha256sums=('SKIP')
 
