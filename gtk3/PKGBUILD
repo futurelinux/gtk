@@ -1,6 +1,6 @@
 pkgbase=gtk3
 pkgname=(gtk3 gtk-update-icon-cache)
-pkgver=3.22.30
+pkgver=3.24.5
 pkgrel=1
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
@@ -8,14 +8,14 @@ url="http://www.gtk.org/"
 depends=(atk cairo libcups libxcursor libxinerama libxrandr libxi libepoxy gdk-pixbuf2
          libxcomposite libxdamage pango shared-mime-info colord at-spi2-atk wayland libxkbcommon
          json-glib librsvg wayland-protocols)
-makedepends=(gobject-introspection libcanberra colord glib2-docs)
+makedepends=(gobject-introspection libcanberra colord glib2-docs gtk-doc)
 license=(LGPL)
 source=(https://download.gnome.org/sources/gtk+/${pkgver:0:4}/gtk+-$pkgver.tar.xz
         settings.ini
         gtk-query-immodules-3.0.hook
         gtk-update-icon-cache.hook
         gtk-update-icon-cache.script)
-sha256sums=('a1a4a5c12703d4e1ccda28333b87ff462741dc365131fbc94c218ae81d9a6567'
+sha256sums=('0be5fb0d302bc3de26ab58c32990d895831e2b7c7418d0ffea1206d6a3ddb02f'
             '0dd1d69a8e9ca9fca03b874049e0a7a439c4100cb4aac4dc37d12b595579c9d9'
             'de46e5514ff39a7a65e01e485e874775ab1c0ad20b8e94ada43f4a6af1370845'
             '496064a9dd6214bd58f689dd817dbdc4d7f17d42a8c9940a87018c3f829ce308'
@@ -23,18 +23,20 @@ sha256sums=('a1a4a5c12703d4e1ccda28333b87ff462741dc365131fbc94c218ae81d9a6567'
 
 prepare() {
     cd gtk+-$pkgver
+    NOCONFIGURE=1 ./autogen.sh
 }
 
 build() {
     cd "gtk+-$pkgver"
 
-    CXX=/bin/false ./configure --prefix=/usr \
-        --sysconfdir=/etc \
-        --localstatedir=/var \
-        --disable-schemas-compile \
-        --enable-x11-backend \
-        --enable-broadway-backend \
-        --enable-wayland-backend
+    ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-schemas-compile \
+    --enable-x11-backend \
+    --enable-broadway-backend \
+    --enable-wayland-backend \
+    --enable-gtk-doc
 
     #https://bugzilla.gnome.org/show_bug.cgi?id=655517
     sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
