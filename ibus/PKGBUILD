@@ -1,6 +1,6 @@
 pkgname=ibus
-pkgver=1.5.19
-pkgrel=2
+pkgver=1.5.20
+pkgrel=1
 pkgdesc="Next Generation Input Bus for Linux, IBus qt library and IBus qt input method plugin included"
 arch=('x86_64')
 url="https://github.com/ibus/ibus"
@@ -12,7 +12,7 @@ makedepends=('gobject-introspection' 'vala' 'intltool' 'gnome-common' 'gtk-doc' 
 options=('!emptydirs')
 install=ibus.install
 source=("$pkgname-$pkgver.tar.gz::https://github.com/ibus/ibus/archive/$pkgver.tar.gz")
-sha1sums=('04be911a8b5b2f0a6148149536ae54a7f1b25ba8')
+sha1sums=('90183a98b1e6d12d5f4495602cf0913c38f23a1b')
 
 prepare() {
   cd ${pkgname}-${pkgver}
