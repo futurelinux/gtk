@@ -1,5 +1,5 @@
 pkgname=audacity
-pkgver=2.3.0
+pkgver=2.3.1
 pkgrel=1
 pkgdesc="A program that lets you manipulate digital audio waveforms"
 arch=('x86_64')
@@ -9,7 +9,7 @@ depends=('libid3tag' 'libmad' 'libsoxr' 'lilv' 'portsmf' 'soundtouch' 'suil' 'tw
 makedepends=('cmake' 'ffmpeg')
 optdepends=('ffmpeg: additional import/export capabilities')
 source=("https://github.com/${pkgname}/${pkgname}/archive/Audacity-${pkgver}.tar.gz")
-sha256sums=('37127f68dceeb5da08d008ec9373a65e2d5d0a9b937c808a5d7c3b88aa9e275e')
+sha256sums=('2ef1c06f9cdc2ee3d315b8e575dc2bea5b372f4f415f3dc6570c3cfca0f93321')
 
 build() {
   cd ${pkgname}-Audacity-${pkgver}
