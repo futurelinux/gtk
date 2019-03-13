@@ -115,7 +115,6 @@ prepare() {
   # Remove compiler flags not supported by our system clang
   sed -i \
     -e '/"-fsplit-lto-unit"/d' \
-    -e '/"-Wno-ignored-pragma-optimize"/d' \
     -e '/"-Wno-defaulted-function-deleted"/d' \
     build/config/compiler/BUILD.gn
 
