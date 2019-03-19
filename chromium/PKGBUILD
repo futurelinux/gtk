@@ -59,9 +59,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         chromium-skia-harmony.patch)
 sha256sums=('8304810626c69c296b3262844e20052e7476280b634c525a711a7f6c0e3dd57c'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
-            'babda4f5c1179825797496898d77334ac067149cac03d797ab27ac69671a7feb'
             'e2d284311f49c529ea45083438a768db390bde52949995534034d2a814beab89'
-            'e87ede45edf39ac19e56ac1ae49c9d1f5f5130e5838bcbb4c3d4fb16e55575c0'
             'b3b6f5147d519c586cbdaf3b227dd1719676fa3a65edd6f08989087afd287afa'
             'f51fe91427d8638c5551746d2ec7de99e8059dd76889cfeaee8ca3d8fed62265'
             'f2b12ccf83a8e0adda4a87ae5c983df5e092ccf1f9a6f2e05799ce4d451dbda1'
