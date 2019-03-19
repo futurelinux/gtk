@@ -42,19 +42,16 @@ url="https://www.chromium.org/Home"
 license=('BSD')
 depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib'
-         'desktop-file-utils' 'hicolor-icon-theme' 'libva')
+         'desktop-file-utils' 'hicolor-icon-theme')
 depends+=(${_system_libs[@]})
 makedepends=('python3' 'python2' 'gperf' 'yasm' 'mesa' 'ninja' 'nodejs' 'git' 'clang' 'lld' 'gn' 'java-runtime')
 optdepends=('pepperflashplugin: support for Flash content'
             'kwallet: for storing passwords in KWallet'
             'kdialog: needed for file dialogs in KDE')
-replaces=('chromium-vaapi' 'chromium-vaapi-bin')
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
-        chromium-drirc-disable-10bpc-color-configs.conf
         chromium-system-icu.patch
-        chromium-vaapi.patch
         chromium-color_utils-use-std-sqrt.patch
         chromium-media-fix-build-with-libstdc++.patch
         chromium-avoid-log-flooding-in-GLSurfacePresentationHelper.patch
@@ -100,9 +97,6 @@ prepare() {
   # https://crbug.com/879929
   patch -Np1 -i ../chromium-avoid-log-flooding-in-GLSurfacePresentationHelper.patch
 
-  # Enable VAAPI on Linux
-  patch -Np1 -i ../chromium-vaapi.patch
-
   # Load Widevine CDM if available
   patch -Np1 -i ../chromium-widevine.patch
 
@@ -115,6 +109,7 @@ prepare() {
   # Remove compiler flags not supported by our system clang
   sed -i \
     -e '/"-fsplit-lto-unit"/d' \
+    -e '/"-Wno-ignored-pragma-optimize"/d' \
     -e '/"-Wno-defaulted-function-deleted"/d' \
     build/config/compiler/BUILD.gn
 
@@ -181,7 +176,6 @@ build() {
     'use_custom_libcxx=false'
     'enable_hangout_services_extension=true'
     'enable_widevine=true'
-    'use_vaapi=true'
     'enable_nacl=false'
     'enable_swiftshader=false'
     "google_api_key=\"${_google_api_key}\""
@@ -218,9 +212,6 @@ package() {
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
   ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
-
-  install -Dm644 ../chromium-drirc-disable-10bpc-color-configs.conf \
-    "$pkgdir/usr/share/drirc.d/10-$pkgname.conf"
 
   install -Dm644 chrome/installer/linux/common/desktop.template \
     "$pkgdir/usr/share/applications/chromium.desktop"
