@@ -44,6 +44,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
         'firefox.desktop' 'ddg.xml'
         'pgo-fix-missing-kdejs.patch'
+        '0001-bz-1468911.patch'
 
         # Firefox patchset
         "$_kdepatchurl/firefox-kde.patch"
@@ -112,6 +113,8 @@ prepare() {
   #cd ${srcdir}/mozilla-release-${_changeset}
   cd ${srcdir}/${pkgname%%-kde}-${pkgver}
 
+  patch -Np1 -i $srcdir/0001-bz-1468911.patch
+
   echo -n "$_google_api_key" > google-api-key
   echo -n "$_mozilla_api_key" > mozilla-api-key
 
@@ -154,7 +157,8 @@ export MOZ_REQUIRE_SIGNING=1
 export MOZ_PGO=1
 
 # Keys
-ac_add_options --with-google-api-keyfile=${PWD@Q}/google-api-key
+ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
+ac_add_options --with-google-safebrowsing-api-keyfile=${PWD@Q}/google-api-key
 ac_add_options --with-mozilla-api-keyfile=${PWD@Q}/mozilla-api-key
 
 # System libraries
