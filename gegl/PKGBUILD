@@ -1,17 +1,17 @@
 # Contributor from CCR:  danyf90 <daniele.formichelli@gmail.com>
 
 pkgname=gegl
-pkgver=0.4.12
+pkgver=0.4.14
 pkgrel=1
 pkgdesc="Graph based image processing framework"
 arch=('x86_64')
-url="http://www.gegl.org/"
+url="https://www.gegl.org/"
 license=('GPL3' 'LGPL3')
 depends=('babl' 'gtk2' 'libspiro' 'json-glib' 'libgexiv2' 'libraw' 'openexr' 'librsvg' 'libtiff' 'lua' 'jasper' 'lensfun' 'suitesparse')
 makedepends=('intltool' 'ruby' 'mesa' 'glu' 'ffmpeg' 'exiv2' 'vala' 'python2' 'gobject-introspection')
 optdepends=('ffmpeg: for using the ffmpeg plugin')
 source=("http://ftp.gimp.org/pub/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
-sha256sums=('e967293eabe89257e1d511bf68435fbfd44e6e0f9ef51b86cc50781f09eb5852')
+sha256sums=('4c01d58599d8ddb3714effd2675ea1863272cf2d7d9ed3d32aee80c89f859901')
 
 build() {
   cd $pkgname-$pkgver
