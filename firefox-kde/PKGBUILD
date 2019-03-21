@@ -145,6 +145,11 @@ ac_add_options --enable-optimize="-O2"
 ac_add_options --enable-rust-simd
 ac_add_options --enable-lto
 ac_add_options --enable-hardening
+export CC=clang
+export CXX=clang++
+export AR=llvm-ar
+export NM=llvm-nm
+export RANLIB=llvm-ranlib
 
 # Release branding
 ac_add_options --enable-application=browser
@@ -230,15 +235,14 @@ build_firefox() {
   cd $srcdir/${pkgname%%-kde}-${pkgver}
 
   export PATH="$srcdir/path:$PATH"
-  export SHELL=/bin/bash
   export MOZ_NOSPAM=1
+  export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
 
   # LTO requires opening more files
   ulimit -n 4096
 
   # Do PGO
-  xvfb-run -a -n 95 -s "-extension GLX -screen 0 1280x1024x24" \
-       ./mach build
+  xvfb-run -a -n 97 -s "-extension GLX -screen 0 1280x1024x24" ./mach build
 }
 
 package() {
