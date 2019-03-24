@@ -146,14 +146,7 @@ ac_add_options --prefix=/usr
 ac_add_options --enable-release
 ac_add_options --enable-gold
 ac_add_options --enable-optimize="-O2"
-ac_add_options --enable-rust-simd
-ac_add_options --enable-lto
-ac_add_options --enable-hardening
-export CC=clang
-export CXX=clang++
-export AR=llvm-ar
-export NM=llvm-nm
-export RANLIB=llvm-ranlib
+ac_add_options --disable-elf-hack
 
 # Release branding
 ac_add_options --enable-application=browser
@@ -164,7 +157,7 @@ ac_add_options --enable-default-toolkit=cairo-gtk3
 export MOZILLA_OFFICIAL=1
 export MOZ_TELEMETRY_REPORTING=0
 export MOZ_REQUIRE_SIGNING=1
-export MOZ_PGO=1
+#export MOZ_PGO=1
 
 # Keys
 ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
@@ -176,10 +169,10 @@ ac_add_options --with-system-jpeg
 ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
 ac_add_options --with-system-libevent
-ac_add_options --without-system-libvpx
+#ac_add_options --with-system-libvpx
 ac_add_options --with-system-nss
 ac_add_options --with-system-nspr
-ac_add_options --without-system-icu
+#ac_add_options --with-system-icu
 ac_add_options --with-system-png
 ac_add_options --enable-system-pixman
 ac_add_options --enable-system-sqlite
@@ -247,7 +240,8 @@ build_firefox() {
   ulimit -n 4096
 
   # Do PGO
-  xvfb-run -a -n 97 -s "-extension GLX -screen 0 1280x1024x24" ./mach build
+  #xvfb-run -a -n 97 -s "-extension GLX -screen 0 1280x1024x24"
+  ./mach build
 }
 
 package() {
