@@ -1,4 +1,4 @@
-pkgname=firefox-kde
+pkgname=firefox
 pkgver=66.0.2
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
@@ -6,10 +6,9 @@ arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib ffmpeg
-         libevent libproxy nss kio knotifications kwindowsystem ki18n)
+         libevent libproxy nss)
 makedepends=(unzip zip diffutils python2 yasm mesa imake inetutils xorg-server-xvfb
-             autoconf2.13 gtk2 gobject-introspection jack rust
-             cmake extra-cmake-modules llvm clang lld cbindgen nodejs nasm)
+             autoconf2.13 gtk2 gobject-introspection jack rust llvm clang lld cbindgen nodejs nasm)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'upower: Battery API'
@@ -17,9 +16,8 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'hunspell: For spellchecking support'
             'xdg-desktop-portal-kde: For native KDE file dialog support')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
-provides=("firefox=${pkgver}" "kmozillahelper=5.0.2")
-conflicts=('kmozillahelper')
-replaces=('kmozillahelper')
+conflicts=('firefox-kde')
+replaces=('firefox-kde')
 #
 # To whom want to update this package
 #
@@ -41,7 +39,6 @@ _ubuntuver=build1-0ubuntu1
 #_gentoopatch=https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
 
 source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname%%-kde}-${pkgver}.source.tar.xz"{,.asc}
-        "git://github.com/openSUSE/kmozillahelper#commit=${_kmozillahelper_commit}"
         'firefox.desktop' 'ddg.xml'
         '0001-bz-1468911.patch'
 
@@ -67,7 +64,6 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
 )
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 sha256sums=('fc37538e5852d4c97778ad7437fb1d37e9218c284ced70935378562e35184b46'
-            'SKIP'
             'SKIP'
             '297c1a4ddb5448f6821caf0269b163e35a3065c907ce18569316d413b7f66a9c'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -121,6 +117,14 @@ ac_add_options --enable-release
 ac_add_options --enable-gold
 ac_add_options --enable-optimize="-O2"
 ac_add_options --disable-elf-hack
+ac_add_options --enable-rust-simd
+ac_add_options --enable-lto
+ac_add_options --enable-hardening
+export CC=clang
+export CXX=clang++
+export AR=llvm-ar
+export NM=llvm-nm
+export RANLIB=llvm-ranlib
 
 # Release branding
 ac_add_options --enable-application=browser
@@ -161,7 +165,6 @@ ac_add_options --disable-gconf
 ac_add_options --disable-updater
 ac_add_options --disable-crashreporter
 
-# PGO
 mk_add_options MOZ_MAKE_FLAGS="-j9"
 STRIP_FLAGS="--strip-debug"
 END
@@ -176,23 +179,6 @@ END
 }
 
 build() {
-  msg "build_kmozillahelper"
-  build_kmozillahelper
-  msg "build_firefox"
-  build_firefox
-}
-
-build_kmozillahelper() {
-  cd $srcdir/
-  mkdir -p kmozillahelper-build
-  cd kmozillahelper-build
-
-  cmake -DCMAKE_INSTALL_PREFIX=/usr \
-	-DCMAKE_BUILD_TYPE=Release ../kmozillahelper
-  make
-}
-
-build_firefox() {
   cd $srcdir/${pkgname%%-kde}-${pkgver}
 
   export PATH="$srcdir/path:$PATH"
@@ -204,16 +190,11 @@ build_firefox() {
   ulimit -n 4096
 
   # Do PGO
-  xvfb-run -a -n 97 -s "-extension GLX -screen 0 1280x1024x24"
-  ./mach build
+#  xvfb-run -a -n 97 -s "-extension GLX -screen 0 1280x1024x24" \
+   ./mach build
 }
 
 package() {
-  msg "package() kmozillahelper"
-  cd $srcdir/kmozillahelper-build
-  make DESTDIR=$pkgdir install
-
-  msg "package() Firefox"
   #cd "$srcdir/mozilla-release-${_changeset}"
   cd $srcdir/${pkgname%%-kde}-${pkgver}
  
