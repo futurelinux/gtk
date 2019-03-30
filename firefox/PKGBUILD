@@ -1,6 +1,6 @@
 pkgname=firefox
 pkgver=66.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -38,7 +38,7 @@ _ubuntuver=build1-0ubuntu1
 #_ubuntupatchurl=http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_${pkgver}+${_ubuntuver}.debian.tar.xz # no TLS @2019, really?
 #_gentoopatch=https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
 
-source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname%%-kde}-${pkgver}.source.tar.xz"{,.asc}
+source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.xz"{,.asc}
         'firefox.desktop' 'ddg.xml'
         '0001-bz-1468911.patch'
 
@@ -48,7 +48,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         2001_system_graphite2_support.patch
 
         # Ubuntu patch
-        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_${pkgver%.1}+${_ubuntuver}.debian.tar.xz"
+        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_${pkgver}+${_ubuntuver}.debian.tar.xz"
 
         # Unused patchset
         # gecko-lockdown.patch
@@ -65,7 +65,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 sha256sums=('fc37538e5852d4c97778ad7437fb1d37e9218c284ced70935378562e35184b46'
             'SKIP'
-            '297c1a4ddb5448f6821caf0269b163e35a3065c907ce18569316d413b7f66a9c'
+            'c57d29e69f3a87d65ecede31be3c9e503a3cb05ab647e674987427a6475ece45'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
             '821f858bac2e13ce02b8c20d5387d4ecc8ab2d0e4ebe0a517cbf935da6aeb31b'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
@@ -92,7 +92,7 @@ prepare() {
   ln -s /usr/bin/python2 path/python
 
   #cd ${srcdir}/mozilla-release-${_changeset}
-  cd ${srcdir}/${pkgname%%-kde}-${pkgver}
+  cd ${srcdir}/${pkgname}-${pkgver}
 
   patch -Np1 -i $srcdir/0001-bz-1468911.patch
 
@@ -179,7 +179,7 @@ END
 }
 
 build() {
-  cd $srcdir/${pkgname%%-kde}-${pkgver}
+  cd $srcdir/${pkgname}-${pkgver}
 
   export PATH="$srcdir/path:$PATH"
   export MOZ_NOSPAM=1
@@ -196,7 +196,7 @@ build() {
 
 package() {
   #cd "$srcdir/mozilla-release-${_changeset}"
-  cd $srcdir/${pkgname%%-kde}-${pkgver}
+  cd $srcdir/${pkgname}-${pkgver}
  
   export SHELL=/bin/bash
   DESTDIR="$pkgdir" ./mach install
@@ -254,6 +254,7 @@ END
   # Install a wrapper to avoid confusion about binary path
   install -Dm755 /dev/stdin "$pkgdir/usr/bin/firefox" <<END
 #!/bin/sh
+export GTK_USE_PORTAL=1
 exec /usr/lib/firefox/firefox "\$@"
 END
 
