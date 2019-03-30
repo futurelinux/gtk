@@ -65,7 +65,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 sha256sums=('fc37538e5852d4c97778ad7437fb1d37e9218c284ced70935378562e35184b46'
             'SKIP'
-            'c57d29e69f3a87d65ecede31be3c9e503a3cb05ab647e674987427a6475ece45'
+            '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
             '821f858bac2e13ce02b8c20d5387d4ecc8ab2d0e4ebe0a517cbf935da6aeb31b'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
