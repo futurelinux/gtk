@@ -1,6 +1,6 @@
 pkgname=firefox-i18n
 pkgver=66.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Language pack for Firefox"
 arch=('x86_64')
 url="http://www.mozilla.com/"
@@ -125,7 +125,7 @@ noextract=(${source[@]%%::*})
 
 package_firefox-i18n() {
   pkgdesc="Transition package to split build"
-  depends=("firefox-kde=${pkgver}" "firefox-langpack=${pkgver}")
+  depends=("firefox=${pkgver}" "firefox-langpack=${pkgver}")
 }
 
 _package() {
