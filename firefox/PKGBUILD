@@ -1,20 +1,19 @@
 pkgname=firefox
 pkgver=66.0.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib ffmpeg
-         libevent libproxy nss)
+         libevent libproxy nss xdg-desktop-portal-kde)
 makedepends=(unzip zip diffutils python2 yasm mesa imake inetutils xorg-server-xvfb
              autoconf2.13 gtk2 gobject-introspection jack rust llvm clang lld cbindgen nodejs nasm)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'upower: Battery API'
             'firefox-i18n: For multilanguage support'
-            'hunspell: For spellchecking support'
-            'xdg-desktop-portal-kde: For native KDE file dialog support')
+            'hunspell: For spellchecking support')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
 conflicts=('firefox-kde')
 replaces=('firefox-kde')
