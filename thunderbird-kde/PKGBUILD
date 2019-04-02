@@ -106,7 +106,7 @@ END
   ln -s /usr/bin/python2 "$srcdir/path/python"
 
   # Fix rust 1.33 or later build
-  patch -Np0 -i "$srcdir/rust-1.33-build.patch"
+  patch -Np1 -i "$srcdir/rust-1.33-build.patch"
 }
          
 build() {
