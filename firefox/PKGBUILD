@@ -1,6 +1,6 @@
 pkgname=firefox
-pkgver=66.0.2
-pkgrel=4
+pkgver=66.0.3
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -62,7 +62,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         # mozilla-reduce-files-per-UnifiedBindings.patch
 )
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
-sha256sums=('fc37538e5852d4c97778ad7437fb1d37e9218c284ced70935378562e35184b46'
+sha256sums=('1fe4cfe4f4afce8d5532da8f36a48c333750c90a6ee67167309357edf514c22a'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -70,7 +70,7 @@ sha256sums=('fc37538e5852d4c97778ad7437fb1d37e9218c284ced70935378562e35184b46'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
-            'ce243540712471cbe1bbc9abee6672720909caee0ed10d9d85e65defa2dd2f2d')
+            '2c724ae01a4ef11c72bf836bd1e2974bb667da04279eab9ec704c4c3f1b3612f')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
