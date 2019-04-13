@@ -1,6 +1,6 @@
 pkgname=emacs
-pkgver=26.1
-pkgrel=3
+pkgver=26.2
+pkgrel=1
 pkgdesc="The extensible, customizable, self-documenting real-time display editor"
 arch=('x86_64')
 url="https://www.gnu.org/software/emacs/emacs.html"
@@ -8,13 +8,13 @@ license=('GPL3')
 depends=('librsvg' 'gpm' 'giflib' 'libxpm' 'libotf' 'm17n-lib' 'gtk3' 'hicolor-icon-theme' 'desktop-file-utils'
 	 'alsa-lib' 'libmagick6' 'gnutls')
 conflicts=('emacs-nox')
-install=emacs.install
 source=(ftp://ftp.gnu.org/gnu/emacs/$pkgname-$pkgver.tar.xz)
-md5sums=('649ec46965a8b842bdb2cbf7764c2a9a')
+md5sums=('02ba7003f14957529bcd05cfc3ebb754')
 
 build() {
   cd "$srcdir"/$pkgname-$pkgver
-  ./configure --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/lib \
+  PKG_CONFIG_PATH="/usr/lib/imagemagick6/pkgconfig" \
+  ac_cv_lib_gif_EGifPutExtensionLast=yes ./configure --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/lib \
     --localstatedir=/var --with-x-toolkit=gtk3 --with-xft --with-modules
   make
 }
