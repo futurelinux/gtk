@@ -1,5 +1,5 @@
 pkgname=firefox
-pkgver=66.0.3
+pkgver=66.0.4
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -47,7 +47,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         2001_system_graphite2_support.patch
 
         # Ubuntu patch
-        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_${pkgver}+${_ubuntuver}.debian.tar.xz"
+        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_66.0.3+${_ubuntuver}.debian.tar.xz"
 
         # Unused patchset
         # gecko-lockdown.patch
@@ -134,7 +134,7 @@ ac_add_options --enable-default-toolkit=cairo-gtk3
 export MOZILLA_OFFICIAL=1
 export MOZ_TELEMETRY_REPORTING=0
 export MOZ_REQUIRE_SIGNING=1
-#export MOZ_PGO=1
+export MOZ_PGO=1
 
 # Keys
 ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
@@ -189,7 +189,7 @@ build() {
   ulimit -n 4096
 
   # Do PGO
-#  xvfb-run -a -n 97 -s "-extension GLX -screen 0 1280x1024x24" \
+  xvfb-run -a -n 97 -s "-extension GLX -screen 0 1280x1024x24" \
    ./mach build
 }
 
