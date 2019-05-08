@@ -2,7 +2,7 @@
 # Contributor on CCR: Ben R <thebenj88 *AT* gmail *DOT* com>
 
 pkgname=libwebkit-gtk2
-pkgver=2.18.2
+pkgver=2.24.1
 pkgrel=1
 pkgdesc="GTK+ Web content engine library"
 arch=('x86_64')
