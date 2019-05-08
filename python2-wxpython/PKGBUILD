@@ -1,11 +1,11 @@
 pkgname=python2-wxpython
 pkgver=3.0.2.0
-pkgrel=3
+pkgrel=4
 pkgdesc="A wxWidgets GUI toolkit for Python"
 arch=('x86_64')
 url="https://www.wxpython.org"
 license=('custom:wxWindows')
-depends=('wxgtk' 'python2')
+depends=('wxgtk3' 'python2')
 makedepends=('mesa' 'glu')
 conflicts=(wxpython)
 replaces=(wxpython)
@@ -29,7 +29,7 @@ build() {
   ./configure --prefix=/usr \
               --libdir=/usr/lib \
               --includedir=/usr/include \
-              --with-gtk=2 \
+              --with-gtk=3 \
               --with-opengl \
               --enable-unicode \
               --enable-graphics_ctx \
@@ -38,13 +38,15 @@ build() {
               --with-libjpeg=sys \
               --with-libtiff=sys \
               --disable-precomp-headers \
-              --without-gconf
-  cd "${srcdir}/wxPython-src-${pkgver}/wxPython"
-  python2 setup.py WXPORT=gtk2 UNICODE=1 build
+              --without-gconf \
+              --with-wx-config=/usr/bin/wx-config-gtk3
+  cd wxPython
+  python2 setup.py WX_CONFIG=/usr/bin/wx-config-gtk3 WXPORT=gtk3 UNICODE=1 build
 }
 
 package() {
-  cd "${srcdir}/wxPython-src-${pkgver}/wxPython"
-  python2 setup.py WXPORT=gtk2 UNICODE=1 install --root="${pkgdir}"
-  install -D -m644 ../docs/licence.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  cd wxPython-src-${pkgver}/wxPython
+  python2 setup.py WX_CONFIG=/usr/bin/wx-config-gtk3 WXPORT=gtk3 UNICODE=1 install --root="${pkgdir}" --optimize=1
+    for file in "${pkgdir}"/usr/bin/*; do mv "${file}" "${file}2"; done
+    install -Dm644 ../docs/licence.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 }
