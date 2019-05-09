@@ -1,11 +1,11 @@
 pkgname=audacity
 pkgver=2.3.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A program that lets you manipulate digital audio waveforms"
 arch=('x86_64')
 url="https://www.audacityteam.org/"
 license=('GPL')
-depends=('libid3tag' 'libmad' 'libsoxr' 'lilv' 'portsmf' 'soundtouch' 'suil' 'twolame' 'vamp-plugin-sdk' 'wxgtk')
+depends=('libid3tag' 'libmad' 'libsoxr' 'lilv' 'portsmf' 'soundtouch' 'suil' 'twolame' 'vamp-plugin-sdk' 'wxgtk3')
 makedepends=('cmake' 'ffmpeg')
 optdepends=('ffmpeg: additional import/export capabilities')
 source=("https://github.com/${pkgname}/${pkgname}/archive/Audacity-${pkgver}.tar.gz")
@@ -13,9 +13,22 @@ sha256sums=('2ef1c06f9cdc2ee3d315b8e575dc2bea5b372f4f415f3dc6570c3cfca0f93321')
 
 build() {
   cd ${pkgname}-Audacity-${pkgver}
-  ./configure --prefix=/usr \
-              --with-libsamplerate \
-              --enable-shared
+  WX_CONFIG=wx-config-gtk3 ./configure --prefix=/usr \
+    --with-libsndfile="system" \
+    --with-ffmpeg="system" \
+    --with-expat="system" \
+    --with-lame="system" \
+    --with-libsoxr="system" \
+    --with-portaudio \
+    --with-portmidi \
+    --with-libflac \
+    --with-libid3tag \
+    --with-libsamplerate \
+    --with-sbsms \
+    --with-soundtouch \
+    --with-libtwolame \
+    --with-libvorbis \
+    --with-lv2
   make
 }
 
