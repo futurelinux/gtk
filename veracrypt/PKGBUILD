@@ -1,18 +1,20 @@
 pkgname=veracrypt
 pkgver=1.23
-pkgrel=1
+pkgrel=2
 pkgdesc="Free disk encryption software, TrueCrypt fork."
 arch=('x86_64')
 url='https://www.veracrypt.fr'
-license=('custom')
-depends=('fuse' 'wxgtk' 'libsm' 'device-mapper')
+license=('custom:TrueCrypt')
+depends=('fuse2' 'wxgtk3' 'libsm' 'device-mapper')
 makedepends=('yasm')
+optdepends=('sudo: mounting encrypted volumes as nonroot users')
 replaces=('truecrypt')
-install='veracrypt.install'
 source=("https://github.com/veracrypt/VeraCrypt/archive/VeraCrypt_${pkgver}.tar.gz"
-	'no_makeself.patch')
+	'no_makeself.patch'
+        'veracrypt.desktop')
 sha256sums=('a97e7a18d98ad08530b6b2deca8ab1b064ac9baf8f0bb51908c09cf5229b142a'
-            '76c78498703d806d80707e65b253c2f2fa7f328fdae29efdca64b6d4a0ef2816')
+            '76c78498703d806d80707e65b253c2f2fa7f328fdae29efdca64b6d4a0ef2816'
+            'd9a08ad0dd8160f8ce1e9f799fef24dc5f439f1988d4578ead9ae09f200dd09e')
 
 prepare() {
   cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
@@ -24,7 +26,7 @@ build() {
   cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
   # build
   make PKG_CONFIG_PATH=/usr/lib/pkgconfig \
-    WX_CONFIG=/usr/bin/wx-config \
+    WX_CONFIG=/usr/bin/wx-config-gtk3 \
     TC_EXTRA_LFLAGS+="-ldl ${LDFLAGS}" \
     TC_EXTRA_CXXFLAGS="${CXXFLAGS}" \
     TC_EXTRA_CFLAGS="${CFLAGS}"
@@ -32,8 +34,8 @@ build() {
 
 package() {
   cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
-  install -D -m755 Main/${pkgname} "${pkgdir}/usr/bin/${pkgname}"
-  install -D -m644 "Setup/Linux/${pkgname}.desktop" "${pkgdir}/usr/share/applications/${pkgname}.desktop"
-  install -D -m644 Resources/Icons/VeraCrypt-256x256.xpm "${pkgdir}/usr/share/pixmaps/veracrypt.xpm"
-  install -D -m644 "License.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -Dm 755 Main/${pkgname} "${pkgdir}/usr/bin/${pkgname}"
+  install -Dm 644 "${srcdir}/veracrypt.desktop" -t "${pkgdir}/usr/share/applications"
+  install -Dm 644 Resources/Icons/VeraCrypt-256x256.xpm "${pkgdir}/usr/share/pixmaps/veracrypt.xpm"
+  install -Dm 644 License.txt -t "${pkgdir}/usr/share/licenses/${pkgname}"
 }
