@@ -1,28 +1,25 @@
 pkgname=wxmaxima
-pkgver=17.10.1
+pkgver=19.05.2
 pkgrel=1
 pkgdesc="A wxWidgets GUI for the computer algebra system Maxima"
 arch=('x86_64')
-url="http://andrejv.github.io/wxmaxima/index.html"
+url="https://wxmaxima-developers.github.io/wxmaxima/"
 license=('GPL2')
-depends=('maxima' 'libxml2' 'wxgtk') # 'ttf-linux-libertine' required?
+depends=('maxima' 'libxml2' 'wxgtk3') # 'ttf-linux-libertine' required?
 makedepends=('cmake' 'doxygen')
-source=($pkgname-$pkgver.tar.gz::"https://github.com/andrejv/wxmaxima/archive/Version-$pkgver.tar.gz")
-install=wxmaxima.install
-sha1sums=('fd0c586705ccddfebd6f57be704fc6b23231adf0')
+source=($pkgname-$pkgver.tar.gz::"https://github.com/wxMaxima-developers/wxmaxima/archive/Version-${pkgver}.tar.gz")
+sha1sums=('34bc74b46f6a67bd357b777e5d0df1b01d661abb')
 
 build() {
   cd "${srcdir}/${pkgname}-Version-${pkgver}"
   cmake . \
-        -DCMAKE_INSTALL_PREFIX=/usr
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DwxWidgets_CONFIG_EXECUTABLE=/usr/bin/wx-config-gtk3
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-Version-${pkgver}"
 
-  make DESTDIR="${pkgdir}" install 
-
-  # Fix category in .desktop file
-  sed -i '/Categories=/c\Categories=Science;Math;' data/wxMaxima.desktop
+  make DESTDIR="${pkgdir}" install
 }
