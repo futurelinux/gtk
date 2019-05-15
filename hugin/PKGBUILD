@@ -2,12 +2,12 @@
 
 pkgname=hugin
 pkgver=2018.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc='Panorama photo stitcher'
 url='http://hugin.sourceforge.net/'
 license=('GPL')
 arch=('x86_64')
-depends=('wxgtk' 'boost-libs' 'enblend-enfuse' 'exiv2' "hugin-tools=${pkgver}"
+depends=('wxgtk3' 'boost-libs' 'enblend-enfuse' 'exiv2' "hugin-tools=${pkgver}"
          'lensfun' 'lapack' 'make' 'perl-exiftool' 'desktop-file-utils' 'glew')
 makedepends=('cmake' 'boost' 'tclap' 'mesa' 'zip' 'swig')
 source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
