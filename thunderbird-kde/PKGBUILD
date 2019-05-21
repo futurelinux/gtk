@@ -24,7 +24,7 @@ sha512sums=('60428b652bed985f463a6ebf765a384e3ef875b193a60e4b14de8bb96658adf471c
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '00f363a5ece0afecf42597d0305aa8d363ce35870d3f54fd2d3c2f5d12b863e2e1d243b88e1ca506673a862da1eef48934d07cc7e7d10c2920453c49f7bb171c'
             '7f255bb3e02ac3a703bdcffe4bdb531489dace4e669a557fe9845e8137e87939fc671ed103dcef44162e3297dd04aad5484ab5f3b1d0859b75249fdad9de11f7'
-            '7e6c9096c50ffcd216a36b6c2ad3eee773c7f337ffc3ed69538b4dec691748b87da822ef0b8cf73990efacd4bb0cb30313cec13ad2946483f8345e3eb0c1592f')
+            'cf4b30d7c985940025b701c714e31adfaf8dbcfc729dd51f38e30392cf0df7632c797cf79363f4aac00552ef6d32497b13b049dee9c9e4f032ac6518d3ffcd69')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
