@@ -1,6 +1,6 @@
 pkgname=firefox
 pkgver=67.0
-pkgrel=2
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -40,6 +40,9 @@ _ubuntuver=build2-0ubuntu1
 source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.xz"{,.asc}
         'firefox.desktop' 'ddg.xml'
 
+        # Arch patch rust
+        0001-bz-1521249.patch
+
         # Gentoo patch
         1003_foritify_sources_properly.patch
         2000_system_harfbuzz_support.patch
@@ -65,6 +68,7 @@ sha256sums=('2cb937db00e35162393aa5b65d1f2280be1e62d5ee33d3e9997cccba542d791b'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
+            'd0673786a6a1f1b9f6f66a3a1356afa33f1f18f59dabd92bd193c88c52a1d04c'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
@@ -90,6 +94,9 @@ prepare() {
 
   #cd ${srcdir}/mozilla-release-${_changeset}
   cd ${srcdir}/${pkgname}-${pkgver}
+
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1521249
+  patch -Np1 -i ../0001-bz-1521249.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo -n "$_mozilla_api_key" > mozilla-api-key
