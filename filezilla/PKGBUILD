@@ -1,6 +1,6 @@
 pkgname=filezilla
 pkgver=3.42.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Fast and reliable FTP, FTPS and SFTP client"
 arch=('x86_64')
 url="https://filezilla-project.org/"
@@ -15,9 +15,6 @@ build() {
     --prefix=/usr \
     --disable-manualupdatecheck \
     --disable-autoupdatecheck \
-    --disable-static \
-    --enable-locales \
-    --enable-gnutlssystemciphers \
     --with-pugixml=builtin \
     --with-wx-config=/usr/bin/wx-config-gtk3
 
@@ -28,7 +25,4 @@ package() {
   cd "${pkgname}-${pkgver}"
 
   make DESTDIR="${pkgdir}" install
-  
-  install -dm755 "${pkgdir}/usr/share/doc/${pkgname}"
-  install -Dm644 {AUTHORS,ChangeLog,README} "${pkgdir}/usr/share/doc/${pkgname}/"
 }
