@@ -1,5 +1,5 @@
 pkgname=firefox
-pkgver=67.0
+pkgver=67.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -33,7 +33,7 @@ replaces=('firefox-kde')
 _kmozillahelper_commit=2ca28e0 #v5.0.2
 _kdepatchrev=eca1c1f2fe50
 _kdepatchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_kdepatchrev
-_ubuntuver=build2-0ubuntu1
+_ubuntuver=build1-0ubuntu1
 #_ubuntupatchurl=http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_${pkgver}+${_ubuntuver}.debian.tar.xz # no TLS @2019, really?
 #_gentoopatch=https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
 
@@ -64,7 +64,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         # mozilla-reduce-files-per-UnifiedBindings.patch
 )
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
-sha256sums=('2cb937db00e35162393aa5b65d1f2280be1e62d5ee33d3e9997cccba542d791b'
+sha256sums=('d4c68b1220e82129ac12520b8020f669a352669dd55c628994b72269418539b2'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -72,7 +72,7 @@ sha256sums=('2cb937db00e35162393aa5b65d1f2280be1e62d5ee33d3e9997cccba542d791b'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
-            '5707f61000df9c4881b7ad65634695a5317d2dd5b5e2a8ac2c66278188f8b18f')
+            '5802c9e426fda5abf59a43c08c5c9ae2116f947c3cee00dd7c3104ba95a367c7')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
