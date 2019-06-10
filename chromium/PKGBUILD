@@ -110,6 +110,7 @@ prepare() {
     -e '/"-fsplit-lto-unit"/d' \
     -e '/"-Wno-ignored-pragma-optimize"/d' \
     -e '/"-Wno-defaulted-function-deleted"/d' \
+    -e '/"-fcrash-diagnostics-dir"/d' \
     build/config/compiler/BUILD.gn
 
   # Use Python 2
