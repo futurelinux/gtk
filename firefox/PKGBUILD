@@ -1,5 +1,5 @@
 pkgname=firefox
-pkgver=67.0.1
+pkgver=67.0.2
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -33,9 +33,10 @@ replaces=('firefox-kde')
 _kmozillahelper_commit=2ca28e0 #v5.0.2
 _kdepatchrev=eca1c1f2fe50
 _kdepatchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_kdepatchrev
-_ubuntuver=build1-0ubuntu1
-#_ubuntupatchurl=http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_${pkgver}+${_ubuntuver}.debian.tar.xz # no TLS @2019, really?
-#_gentoopatch=https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
+
+# To decide _ubuntuver, check the firefox_*.debian.tar.xz at http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/
+_ubuntuver=build2-0ubuntu1
+# Gentoo patches are from https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
 
 source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.xz"{,.asc}
         'firefox.desktop' 'ddg.xml'
@@ -64,7 +65,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         # mozilla-reduce-files-per-UnifiedBindings.patch
 )
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
-sha256sums=('d4c68b1220e82129ac12520b8020f669a352669dd55c628994b72269418539b2'
+sha256sums=('6a0dd9a838c9532b143bb0322f73d03afd272f6afba92af5be5845061f0deb47'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -72,7 +73,7 @@ sha256sums=('d4c68b1220e82129ac12520b8020f669a352669dd55c628994b72269418539b2'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
-            '5802c9e426fda5abf59a43c08c5c9ae2116f947c3cee00dd7c3104ba95a367c7')
+            'a185c45593a37b5716ac4779093caf082c20a432d802056498efa294c855ed5a')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
