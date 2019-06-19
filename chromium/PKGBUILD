@@ -53,18 +53,22 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
         chromium-system-icu.patch
         libstdc-do-not-assume-unique_ptr-has-ostream-operator.patch
+        disallow-partial-swaps-for-linux-based-on-gl_version.patch
         chromium-fix-window-flash-for-some-WMs.patch
         chromium-widevine.patch
         chromium-skia-harmony.patch
-        constexpr-errors-with-old-clang.patch)
-sha256sums=('da828bc8d887821380b461abfbbd0e17538c211d56f240f03711b918c77a66d6'
+        constexpr-errors-with-old-clang.patch
+        chromium-compiler-r9.patch)
+sha256sums=('9e1360101b6d9f9635e540db77626e3e15b452f413d8750518244ac37b73fca0'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'e2d284311f49c529ea45083438a768db390bde52949995534034d2a814beab89'
             'e309dfd9d790f32cb1d23103726ac25e405b6ae6757a1c957a8395667d753908'
+            '1e4686de75c019f38a3ed947463e429a777d5387fd29310deef2108c58617b07'
             '183d8cc712f0bcf1afcb01ce90c4c104a4c8d8070a06f94974a28b007d9e2ce4'
             'd081f2ef8793544685aad35dea75a7e6264a2cb987ff3541e6377f4a3650a28b'
             '5887f78b55c4ecbbcba5930f3f0bb7bc0117c2a41c2f761805fcf7f46f1ca2b3'
-            '6c8895b64562449acc5d356586b95a89bd7fa01d776f544d2fcc59b3c0ddac4d')
+            '6c8895b64562449acc5d356586b95a89bd7fa01d776f544d2fcc59b3c0ddac4d'
+            '365e1a76dc3e508846a221d4490d134ed7fa3d36a3a28ce0b03f5d66c1503778')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
