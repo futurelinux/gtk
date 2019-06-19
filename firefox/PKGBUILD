@@ -1,5 +1,5 @@
 pkgname=firefox
-pkgver=67.0.2
+pkgver=67.0.3
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -34,10 +34,11 @@ _kmozillahelper_commit=2ca28e0 #v5.0.2
 _kdepatchrev=eca1c1f2fe50
 _kdepatchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_kdepatchrev
 
-# To decide _ubuntuver, check the firefox_*.debian.tar.xz at http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/
+# To decide _ubuntuver, check the firefox_$pkgver+*.debian.tar.xz file at http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/
 _ubuntuver=build2-0ubuntu1
 # Gentoo patches are from https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
 
+# Another mirror for release tarball can be found here: https://ftp.mozilla.org/pub/firefox/releases/
 source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.xz"{,.asc}
         'firefox.desktop' 'ddg.xml'
 
@@ -50,7 +51,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         2001_system_graphite2_support.patch
 
         # Ubuntu patch
-        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_${pkgver}+${_ubuntuver}.debian.tar.xz"
+        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_67.0.2+${_ubuntuver}.debian.tar.xz"
 
         # Unused patchset
         # gecko-lockdown.patch
@@ -64,8 +65,10 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         # mozilla-ntlm-full-path.patch: not affected it seems
         # mozilla-reduce-files-per-UnifiedBindings.patch
 )
+# To fetch the following key, use the command, replace $pkgver with real version number
+#   curl 'https://releases.mozilla.org/pub/firefox/releases/$pkgver/KEY' -o - | gpg --import
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
-sha256sums=('6a0dd9a838c9532b143bb0322f73d03afd272f6afba92af5be5845061f0deb47'
+sha256sums=('b5f8c82910335c26f9a82d6ecd49a01800596026422c6fb6bd941fda900e5f2f'
             'SKIP'
             '6c2ea431c36afef67710547ae67e81975254309e9e1c82d8312f765caa950fe5'
             '1190f251471305f4c96a313b32aa66ee1549125300d7ce385356f45bd8ebcb3d'
@@ -251,7 +254,12 @@ END
   install -Dm644 browser/branding/official/content/about-logo@2x.png \
     "$pkgdir/usr/share/icons/hicolor/384x384/apps/firefox.png"
 
-  install -Dm644 ../firefox.desktop \
+  sed -e '/%%/d' \
+      -e '/@MOZ_DISPLAY_NAME@/d' \
+      -e "s/@MOZ_APP_NAME@ -/$pkgname --/g" \
+      -i $srcdir/debian/firefox.desktop.in
+
+  install -Dm644 $srcdir/debian/firefox.desktop.in \
     "$pkgdir/usr/share/applications/firefox.desktop"
 
   # Install a wrapper to avoid confusion about binary path
