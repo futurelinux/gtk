@@ -15,8 +15,6 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'firefox-i18n: For multilanguage support'
             'hunspell: For spellchecking support')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
-conflicts=('firefox-kde')
-replaces=('firefox-kde')
 #
 # To whom want to update this package
 #
@@ -126,11 +124,6 @@ ac_add_options --disable-elf-hack
 ac_add_options --enable-rust-simd
 ac_add_options --enable-lto
 ac_add_options --enable-hardening
-export CC=clang
-export CXX=clang++
-export AR=llvm-ar
-export NM=llvm-nm
-export RANLIB=llvm-ranlib
 
 # Release branding
 ac_add_options --enable-application=browser
