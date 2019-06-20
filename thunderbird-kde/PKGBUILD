@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=60.7.0
+pkgver=60.7.1
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -7,11 +7,11 @@ pkgdesc="Standalone Mail/News reader"
 arch=('x86_64')
 license=('MPL' 'GPL')
 url="https://www.thunderbird.net/"
-depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
+depends=('gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'libpulse' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
 makedepends=('unzip' 'zip' 'python2' 'wireless_tools' 'yasm' 'mesa' 'libpulse'
-             'pkg-config' 'gconf' 'xorg-server-xvfb' 'autoconf2.13' 'rust' 'clang' 'llvm')
+             'pkg-config' 'gconf' 'xorg-server-xvfb' 'autoconf2.13' 'rust' 'clang' 'llvm' 'gtk2')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 options=(!emptydirs !makeflags)
@@ -20,7 +20,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         mozilla-kde.patch
         mozilla-nongnome-proxies.patch
         rust-1.33.patch)
-sha512sums=('60428b652bed985f463a6ebf765a384e3ef875b193a60e4b14de8bb96658adf471c7af0f0709d8edbbb014c7ab54f03ca72f2cea1b49cd05a49fe74c748d7328'
+sha512sums=('181d4aec12bb7bb910e24b0cfbc6e909df7bc8b14833ae76add54f9f0aca9cb88b0f9d53d5c3cfd81f8a4f297b0ac8ba8025b1e7977382ca77aaaa7b50afd78a'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '00f363a5ece0afecf42597d0305aa8d363ce35870d3f54fd2d3c2f5d12b863e2e1d243b88e1ca506673a862da1eef48934d07cc7e7d10c2920453c49f7bb171c'
             '7f255bb3e02ac3a703bdcffe4bdb531489dace4e669a557fe9845e8137e87939fc671ed103dcef44162e3297dd04aad5484ab5f3b1d0859b75249fdad9de11f7'
@@ -60,6 +60,8 @@ ac_add_options --enable-hardening
 ac_add_options --enable-optimize
 # https://bugzilla.mozilla.org/show_bug.cgi?id=1521249
 #ac_add_options --enable-rust-simd
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1423822
+ac_add_options --disable-elf-hack
 ac_add_options --enable-default-toolkit=cairo-gtk3
 
 # Keys
