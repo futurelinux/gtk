@@ -1,5 +1,5 @@
 pkgname=gimp
-pkgver=2.10.10
+pkgver=2.10.12
 _pkgver=2.10
 pkgrel=1
 pkgdesc="GNU Image Manipulation Program (Development Version)"
@@ -17,7 +17,7 @@ optdepends=('gutenprint: for sophisticated printing only as gimp has built-in cu
             'ghostscript: for postscript support'
             'ffmpeg')
 source=("https://download.gimp.org/pub/gimp/v${_pkgver}/$pkgname-$pkgver.tar.bz2" "linux.gpl")
-md5sums=('0b837ea2bbf801da7f5306df4c99fa18'
+md5sums=('4cb0a17ea885ad197b5921c78d83456a'
          'bb27bc214261d36484093e857f015f38')
 
 prepare() {
