@@ -19,12 +19,12 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         thunderbird.desktop
         mozilla-kde.patch
         mozilla-nongnome-proxies.patch
-        rust-1.33.patch)
+        rust-1.35.patch)
 sha512sums=('b465544a8cbedf0aff0f737cf98e2d030331f1ea016b2e541dfe30a5cf3172f9075e5a9c8d6b7e0f97ffc2e0d3eebbaf9a39e76a499b9fc976bbc0c944dfd058'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '00f363a5ece0afecf42597d0305aa8d363ce35870d3f54fd2d3c2f5d12b863e2e1d243b88e1ca506673a862da1eef48934d07cc7e7d10c2920453c49f7bb171c'
             '7f255bb3e02ac3a703bdcffe4bdb531489dace4e669a557fe9845e8137e87939fc671ed103dcef44162e3297dd04aad5484ab5f3b1d0859b75249fdad9de11f7'
-            'cf4b30d7c985940025b701c714e31adfaf8dbcfc729dd51f38e30392cf0df7632c797cf79363f4aac00552ef6d32497b13b049dee9c9e4f032ac6518d3ffcd69')
+            '060f87f542a6b204fed139d5c62e1e380c4f95d913471c0101cceecc334eafb295b6fbf650ec56cb7df4759cf7e9642dbcc69f6a2432c4b4c4268b6feae7dfad')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -108,8 +108,7 @@ END
   mkdir "$srcdir/path"
   ln -s /usr/bin/python2 "$srcdir/path/python"
 
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1539901 (Patch from Fedora)
-  patch -Np1 -i ../rust-1.33.patch
+  patch -Np1 -i ../rust-1.35.patch # Fix build with rust 1.35 (Fedora)
 }
          
 build() {
