@@ -1,5 +1,5 @@
 pkgname=firefox
-pkgver=68.0
+pkgver=68.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
@@ -33,7 +33,7 @@ _kdepatchrev=eca1c1f2fe50
 _kdepatchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_kdepatchrev
 
 # To decide _ubuntuver, check the firefox_$pkgver+*.debian.tar.xz file at http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/
-_ubuntuver=build1-0ubuntu1
+_ubuntuver=build3-0ubuntu1
 # Gentoo patches are from https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
 
 # Another mirror for release tarball can be found here: https://ftp.mozilla.org/pub/firefox/releases/
@@ -45,7 +45,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         2001_system_graphite2_support.patch
 
         # Ubuntu patch
-        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/${pkgname}_${pkgver}+${_ubuntuver}.debian.tar.xz"
+        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/${pkgname}_${pkgver%%.1}+${_ubuntuver}.debian.tar.xz"
 
         # Unused patchset
         # gecko-lockdown.patch
@@ -62,12 +62,12 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
 # To fetch the following key, use the command, replace $pkgver with real version number
 #   curl 'https://releases.mozilla.org/pub/firefox/releases/$pkgver/KEY' -o - | gpg --import
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
-sha256sums=('f7d61a08820088f1280d27f0808e355152c1dd0c94625fd077ced7319e522565'
+sha256sums=('6037f77bdab29d79ca5e3fbd1d32f6c209e09d2066189a13dc7f7491227f5568'
             'SKIP'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
-            '0c1955c54209a4add7333ce7390ca50ad613b09603ef5049c9348001d3976eda')
+            '678134d9c6ccf8eeab91f2394d3fc38c8c472a9299d0f4c3b06717a431aa4e34')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
