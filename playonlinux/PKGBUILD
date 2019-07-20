@@ -1,16 +1,15 @@
 pkgname=playonlinux
-pkgver=4.3.3
+pkgver=4.3.4
 pkgrel=1
 pkgdesc="GUI for managing Windows programs under linux"
 url="http://www.playonlinux.com/"
 license=('GPL')
 depends=('wine' 'imagemagick' 'xterm' 'python2-wxpython' 'cabextract' 'unzip' 'mesa-demos'
-         'xdg-user-dirs' 'gnu-netcat' 'gnupg' 'icoutils' 'libxmu' 'wget' 'p7zip')
+         'xdg-user-dirs' 'gnu-netcat' 'gnupg' 'icoutils' 'libxmu' 'wget' 'p7zip' 'jq')
 arch=('x86_64')
 source=(http://www.playonlinux.com/script_files/PlayOnLinux/${pkgver/.0/}/PlayOnLinux_${pkgver/.0/}.tar.gz)
 options=(!strip)
-md5sums=('b3f61c47c6025281657e4d996f858f8e')
-screenshot=('http://i.imgur.com/77mGY.png')
+md5sums=('8c021d54df68b4932487eb787f61d9d0')
 
 package() {
   
