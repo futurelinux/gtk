@@ -58,6 +58,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         chromium-widevine.patch
         chromium-skia-harmony.patch
         constexpr-errors-with-old-clang.patch
+        chromium-compiler-r10.patch
         suppress-newer-clang-warning-flags.patch)
 sha256sums=('510e6ca7ccc218b401b375c13656f6aecab196b03142026dc3602b9d1804a5ac'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
@@ -68,6 +69,7 @@ sha256sums=('510e6ca7ccc218b401b375c13656f6aecab196b03142026dc3602b9d1804a5ac'
             'd081f2ef8793544685aad35dea75a7e6264a2cb987ff3541e6377f4a3650a28b'
             '5887f78b55c4ecbbcba5930f3f0bb7bc0117c2a41c2f761805fcf7f46f1ca2b3'
             '6c8895b64562449acc5d356586b95a89bd7fa01d776f544d2fcc59b3c0ddac4d'
+            '2f95ff2eafdf03db3568ad42994f1ff9c56609ab62df976005aec07498d8b3f2'
             '8072182eff500c46d7cd3efaa7e4d5d22eab597283d4ccd0a721937a7fdc010c')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -91,6 +93,7 @@ prepare() {
     third_party/libxml/chromium/libxml_utils.cc
 
   # Fix some compile error
+  patch -Np1 -i ../chromium-compiler-r10.patch
   patch -Np1 -i ../suppress-newer-clang-warning-flags.patch
 
   # https://chromium-review.googlesource.com/1584292
