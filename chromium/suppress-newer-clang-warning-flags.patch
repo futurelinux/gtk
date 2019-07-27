@@ -1,0 +1,39 @@
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Description: Do not use warning flags that require a newer Clang (xenial has 6.0.0,
+  see https://releases.llvm.org/6.0.0/tools/clang/docs/DiagnosticsReference.html)
+
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -684,8 +684,7 @@ config("compiler") {
+   # This flag enforces that member pointer base types are complete. It helps
+   # prevent us from running into problems in the Microsoft C++ ABI (see
+   # https://crbug.com/847724).
+-  if (is_clang && !is_nacl && target_os != "chromeos" && !use_xcode_clang &&
+-      (is_win || use_custom_libcxx)) {
++  if (false) {
+     cflags += [ "-fcomplete-member-pointers" ]
+   }
+ 
+@@ -1502,7 +1501,7 @@ config("default_warnings") {
+         cflags += [
+           # Ignore warnings about MSVC optimization pragmas.
+           # TODO(thakis): Only for no_chromium_code? http://crbug.com/912662
+-          "-Wno-ignored-pragma-optimize",
++          #"-Wno-ignored-pragma-optimize",
+         ]
+         if (is_fuchsia) {
+           cflags += [
+--- a/third_party/blink/renderer/BUILD.gn
++++ b/third_party/blink/renderer/BUILD.gn
+@@ -42,11 +42,8 @@ config("inside_blink") {
+   ]
+   if (is_clang) {
+     cflags += [
+-      "-Wconversion",
+       "-Wno-float-conversion",
+       "-Wno-sign-conversion",
+-      "-Wno-implicit-float-conversion",
+-      "-Wno-implicit-int-conversion",
+     ]
+   }
+ }
