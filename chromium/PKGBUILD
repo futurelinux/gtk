@@ -18,7 +18,7 @@ declare -rgA _system_libs=(
   #[libpng]=libpng           # https://crbug.com/752403#c10
   #[libvpx]=libvpx           # our libvpx is too old
   [libwebp]=libwebp
-  #[libxml]=libxml2          # https://crbug.com/736026
+  [libxml]=libxml2
   [libxslt]=libxslt
   [opus]=opus
   [re2]=re2
@@ -51,6 +51,7 @@ optdepends=('pepperflashplugin: support for Flash content'
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
+        chromium-system-icu.patch
         chromium-widevine.patch
         chromium-skia-harmony.patch
         constexpr-errors-with-old-clang.patch
@@ -58,6 +59,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         suppress-newer-clang-warning-flags.patch)
 sha256sums=('215ca6acee7b4fd3c95fe796260af4dc5454dbba3b701aa43afeb98a06dc4194'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
+            'e2d284311f49c529ea45083438a768db390bde52949995534034d2a814beab89'
             'd081f2ef8793544685aad35dea75a7e6264a2cb987ff3541e6377f4a3650a28b'
             '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1'
             '6c8895b64562449acc5d356586b95a89bd7fa01d776f544d2fcc59b3c0ddac4d'
@@ -97,6 +99,9 @@ prepare() {
 
   # https://crbug.com/skia/6663#c10
   patch -Np0 -i ../chromium-skia-harmony.patch
+
+  # https://bugs.gentoo.org/661880#c21
+  patch -Np1 -i ../chromium-system-icu.patch
 
   # Remove compiler flags not supported by our system clang
   sed -i \
