@@ -33,7 +33,7 @@ readonly _unwanted_bundled_libs=(
 )
 
 pkgname=chromium
-pkgver=75.0.3770.142
+pkgver=76.0.3809.87
 pkgrel=1
 _launcher_ver=6
 pkgdesc="A web browser built for speed, simplicity, and security"
@@ -51,23 +51,15 @@ optdepends=('pepperflashplugin: support for Flash content'
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
-        chromium-system-icu.patch
-        libstdc-do-not-assume-unique_ptr-has-ostream-operator.patch
-        disallow-partial-swaps-for-linux-based-on-gl_version.patch
-        chromium-fix-window-flash-for-some-WMs.patch
         chromium-widevine.patch
         chromium-skia-harmony.patch
         constexpr-errors-with-old-clang.patch
         chromium-compiler-r10.patch
         suppress-newer-clang-warning-flags.patch)
-sha256sums=('510e6ca7ccc218b401b375c13656f6aecab196b03142026dc3602b9d1804a5ac'
+sha256sums=('215ca6acee7b4fd3c95fe796260af4dc5454dbba3b701aa43afeb98a06dc4194'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
-            'e2d284311f49c529ea45083438a768db390bde52949995534034d2a814beab89'
-            'e309dfd9d790f32cb1d23103726ac25e405b6ae6757a1c957a8395667d753908'
-            '1e4686de75c019f38a3ed947463e429a777d5387fd29310deef2108c58617b07'
-            '183d8cc712f0bcf1afcb01ce90c4c104a4c8d8070a06f94974a28b007d9e2ce4'
             'd081f2ef8793544685aad35dea75a7e6264a2cb987ff3541e6377f4a3650a28b'
-            '5887f78b55c4ecbbcba5930f3f0bb7bc0117c2a41c2f761805fcf7f46f1ca2b3'
+            '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1'
             '6c8895b64562449acc5d356586b95a89bd7fa01d776f544d2fcc59b3c0ddac4d'
             '2f95ff2eafdf03db3568ad42994f1ff9c56609ab62df976005aec07498d8b3f2'
             '8072182eff500c46d7cd3efaa7e4d5d22eab597283d4ccd0a721937a7fdc010c')
@@ -96,15 +88,6 @@ prepare() {
   patch -Np1 -i ../chromium-compiler-r10.patch
   patch -Np1 -i ../suppress-newer-clang-warning-flags.patch
 
-  # https://chromium-review.googlesource.com/1584292
-  patch -Np1 -i ../libstdc-do-not-assume-unique_ptr-has-ostream-operator.patch
-
-  # https://crbug.com/973216
-  patch -Np1 -i ../disallow-partial-swaps-for-linux-based-on-gl_version.patch
-
-  # https://crbug.com/956061
-  patch -Np1 -i ../chromium-fix-window-flash-for-some-WMs.patch
-
   # https://reviews.llvm.org/rL314865
   # When we upgrade llvm to 7.0.0 or later, please remove this patch
   patch -Np1 -i ../constexpr-errors-with-old-clang.patch
@@ -114,9 +97,6 @@ prepare() {
 
   # https://crbug.com/skia/6663#c10
   patch -Np0 -i ../chromium-skia-harmony.patch
-
-  # https://bugs.gentoo.org/661880#c21
-  patch -Np1 -i ../chromium-system-icu.patch
 
   # Remove compiler flags not supported by our system clang
   sed -i \
@@ -203,11 +183,6 @@ build() {
 
   if check_option strip y; then
     _flags+=('symbol_level=0')
-
-    # Mimic exclude_unwind_tables=true
-    CFLAGS+='   -fno-unwind-tables -fno-asynchronous-unwind-tables'
-    CXXFLAGS+=' -fno-unwind-tables -fno-asynchronous-unwind-tables'
-    CPPFLAGS+=' -DNO_UNWIND_TABLES'
   fi
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
