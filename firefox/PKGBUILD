@@ -33,7 +33,7 @@ _kdepatchrev=eca1c1f2fe50
 _kdepatchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_kdepatchrev
 
 # To decide _ubuntuver, check the firefox_$pkgver+*.debian.tar.xz file at http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/
-_ubuntuver=build3-0ubuntu1
+_ubuntuver=build1-0ubuntu2
 # Gentoo patches are from https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
 
 # Another mirror for release tarball can be found here: https://ftp.mozilla.org/pub/firefox/releases/
@@ -46,7 +46,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         2001_system_graphite2_support.patch
 
         # Ubuntu patch
-        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/${pkgname}_${pkgver%%.2}+${_ubuntuver}.debian.tar.xz"
+        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/${pkgname}_${pkgver%%.2}.1+${_ubuntuver}.debian.tar.xz"
 
         # Unused patchset
         # gecko-lockdown.patch
@@ -69,7 +69,7 @@ sha256sums=('9b3e6d8f99819f9eda9ebba403b644a2b96d19450b42cae422bbf4386902a840'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
-            '678134d9c6ccf8eeab91f2394d3fc38c8c472a9299d0f4c3b06717a431aa4e34')
+            '4b8316390f2d14deb123e26a932b74adf40b7a9a17ad16377c804a49bfa2df9d')
 
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
