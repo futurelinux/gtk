@@ -1,6 +1,6 @@
 pkgname=firefox
-pkgver=68.0.1
-pkgrel=2
+pkgver=68.0.2
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -46,7 +46,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
         2001_system_graphite2_support.patch
 
         # Ubuntu patch
-        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/${pkgname}_${pkgver%%.1}+${_ubuntuver}.debian.tar.xz"
+        "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/${pkgname}_${pkgver%%.2}+${_ubuntuver}.debian.tar.xz"
 
         # Unused patchset
         # gecko-lockdown.patch
@@ -63,7 +63,7 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
 # To fetch the following key, use the command, replace $pkgver with real version number
 #   curl 'https://releases.mozilla.org/pub/firefox/releases/$pkgver/KEY' -o - | gpg --import
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
-sha256sums=('6037f77bdab29d79ca5e3fbd1d32f6c209e09d2066189a13dc7f7491227f5568'
+sha256sums=('9b3e6d8f99819f9eda9ebba403b644a2b96d19450b42cae422bbf4386902a840'
             'SKIP'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
