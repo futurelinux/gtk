@@ -7,7 +7,7 @@
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Chakra
 declare -rgA _system_libs=(
-  #[ffmpeg]=ffmpeg     # https://crbug.com/731766
+  [ffmpeg]=ffmpeg
   [flac]=flac
   [fontconfig]=fontconfig
   [freetype]=freetype2
@@ -33,7 +33,7 @@ readonly _unwanted_bundled_libs=(
 )
 
 pkgname=chromium
-pkgver=76.0.3809.87
+pkgver=76.0.3809.100
 pkgrel=1
 _launcher_ver=6
 pkgdesc="A web browser built for speed, simplicity, and security"
@@ -53,18 +53,12 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
         chromium-system-icu.patch
         chromium-widevine.patch
-        chromium-skia-harmony.patch
-        constexpr-errors-with-old-clang.patch
-        chromium-compiler-r10.patch
-        suppress-newer-clang-warning-flags.patch)
-sha256sums=('215ca6acee7b4fd3c95fe796260af4dc5454dbba3b701aa43afeb98a06dc4194'
+        chromium-skia-harmony.patch)
+sha256sums=('8cd93ada3e0837ced512f69783400991d3b82e0d9622e04fab5922877577d26d'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'e2d284311f49c529ea45083438a768db390bde52949995534034d2a814beab89'
             'd081f2ef8793544685aad35dea75a7e6264a2cb987ff3541e6377f4a3650a28b'
-            '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1'
-            '6c8895b64562449acc5d356586b95a89bd7fa01d776f544d2fcc59b3c0ddac4d'
-            '2f95ff2eafdf03db3568ad42994f1ff9c56609ab62df976005aec07498d8b3f2'
-            '8072182eff500c46d7cd3efaa7e4d5d22eab597283d4ccd0a721937a7fdc010c')
+            '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -86,14 +80,6 @@ prepare() {
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
     third_party/libxml/chromium/libxml_utils.cc
 
-  # Fix some compile error
-  patch -Np1 -i ../chromium-compiler-r10.patch
-  patch -Np1 -i ../suppress-newer-clang-warning-flags.patch
-
-  # https://reviews.llvm.org/rL314865
-  # When we upgrade llvm to 7.0.0 or later, please remove this patch
-  patch -Np1 -i ../constexpr-errors-with-old-clang.patch
-
   # Load Widevine CDM if available
   patch -Np1 -i ../chromium-widevine.patch
 
@@ -102,13 +88,6 @@ prepare() {
 
   # https://bugs.gentoo.org/661880#c21
   patch -Np1 -i ../chromium-system-icu.patch
-
-  # Remove compiler flags not supported by our system clang
-  sed -i \
-    -e '/"-fsplit-lto-unit"/d' \
-    -e '/"-Wno-ignored-pragma-optimize"/d' \
-    -e '/"-Wno-defaulted-function-deleted"/d' \
-    build/config/compiler/BUILD.gn
 
   # Use Python 2
   find . -name '*.py' -exec sed -i -r 's|/usr/bin/python$|&2|g' {} +
