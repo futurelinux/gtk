@@ -101,15 +101,12 @@ END
   msg "Patching for KDE"
   patch -Np1 -i "$srcdir/mozilla-nongnome-proxies.patch"
   patch -Np1 -i "$srcdir/mozilla-kde.patch"
-
-  mkdir "$srcdir/path"
-  ln -s /usr/bin/python2 "$srcdir/path/python"
 }
          
 build() {
   cd thunderbird-${pkgver}
 
-  export PYTHON="/usr/bin/python2"
+  export PYTHON="/usr/bin/python3"
   export SHELL="/bin/bash"
   
   ./mach configure
@@ -161,7 +158,6 @@ END
       "$pkgdir/usr/share/applications/thunderbird.desktop"
 
   # Use system-provided dictionaries
-  rm -rf "$pkgdir/usr/lib/thunderbird/{dictionaries,hyphenation}"
   ln -s /usr/share/hunspell "$pkgdir/usr/lib/thunderbird/dictionaries"
   ln -s /usr/share/hyphen "$pkgdir/usr/lib/thunderbird/hyphenation"
 
