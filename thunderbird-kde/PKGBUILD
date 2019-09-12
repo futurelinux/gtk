@@ -11,7 +11,8 @@ depends=('gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'libpulse' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
 makedepends=('unzip' 'zip' 'python3' 'python2' 'yasm' 'mesa' 'imake' 'libpulse' 'inetutils'
-             'xorg-server-xvfb' 'autoconf2.13' 'rust' 'clang' 'llvm' 'gtk2' 'cbindgen' 'nodejs')
+             'xorg-server-xvfb' 'autoconf2.13' 'rust' 'clang' 'llvm' 'gtk2' 'cbindgen' 'nodejs'
+             'python2-virtualenv' 'python3-virtualenv')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 options=(!emptydirs !makeflags)
