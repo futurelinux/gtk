@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=60.8.0
+pkgver=68.1.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -10,21 +10,19 @@ url="https://www.thunderbird.net/"
 depends=('gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'libpulse' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
-makedepends=('unzip' 'zip' 'python2' 'wireless_tools' 'yasm' 'mesa' 'libpulse'
-             'pkg-config' 'gconf' 'xorg-server-xvfb' 'autoconf2.13' 'rust' 'clang' 'llvm' 'gtk2')
+makedepends=('unzip' 'zip' 'python3' 'python2' 'yasm' 'mesa' 'imake' 'libpulse' 'inetutils'
+             'xorg-server-xvfb' 'autoconf2.13' 'rust' 'clang' 'llvm' 'gtk2' 'cbindgen' 'nodejs')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
 options=(!emptydirs !makeflags)
 source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/source/thunderbird-$pkgver.source.tar.xz
         thunderbird.desktop
         mozilla-kde.patch
-        mozilla-nongnome-proxies.patch
-        rust-1.35.patch)
-sha512sums=('b465544a8cbedf0aff0f737cf98e2d030331f1ea016b2e541dfe30a5cf3172f9075e5a9c8d6b7e0f97ffc2e0d3eebbaf9a39e76a499b9fc976bbc0c944dfd058'
+        mozilla-nongnome-proxies.patch)
+sha512sums=('eb2a71bbf4b87ee1156f32b3829cf6970855187f9e60f5003bd3f3680b53b80f34220ed2575c26834bc2960b2c85b2b53c2ee5437b4c19031f94eae5ca9a010c'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
-            '00f363a5ece0afecf42597d0305aa8d363ce35870d3f54fd2d3c2f5d12b863e2e1d243b88e1ca506673a862da1eef48934d07cc7e7d10c2920453c49f7bb171c'
-            '7f255bb3e02ac3a703bdcffe4bdb531489dace4e669a557fe9845e8137e87939fc671ed103dcef44162e3297dd04aad5484ab5f3b1d0859b75249fdad9de11f7'
-            '060f87f542a6b204fed139d5c62e1e380c4f95d913471c0101cceecc334eafb295b6fbf650ec56cb7df4759cf7e9642dbcc69f6a2432c4b4c4268b6feae7dfad')
+            '91d5b3c77375719b8b56a0609d228b951b50ce4aa1c6e13f70f3259b79918cea1928993280722b2110f472cb0f5d511421922755bb2af300b0b3f25d1c8f032d'
+            'fae7ac214cc021adfcb8a66bde9efd90c65e87e5b991a6f4eb3d34b711a9b3234463afbd7cf0ab08596a4a16365d5ae44d343c9b5918bdab78437eb0d8d75bff')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -80,7 +78,6 @@ ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
 # our icu is too old
 #ac_add_options --with-system-icu
-ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
 
@@ -107,8 +104,6 @@ END
 
   mkdir "$srcdir/path"
   ln -s /usr/bin/python2 "$srcdir/path/python"
-
-  patch -Np1 -i ../rust-1.35.patch # Fix build with rust 1.35 (Fedora)
 }
          
 build() {
