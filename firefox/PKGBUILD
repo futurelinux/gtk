@@ -1,13 +1,13 @@
 pkgname=firefox
-pkgver=69.0
-pkgrel=2
+pkgver=69.0.1
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib ffmpeg
-         libevent libproxy nss xdg-desktop-portal)
-makedepends=(unzip zip diffutils python2 yasm mesa imake inetutils xorg-server-xvfb
+         libevent libproxy nss xdg-desktop-portal dav1d)
+makedepends=(unzip zip diffutils python3 yasm mesa imake inetutils xorg-server-xvfb
              autoconf2.13 gtk2 gobject-introspection jack rust llvm clang lld cbindgen nodejs nasm bzr)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
@@ -33,22 +33,27 @@ _kdepatchrev=eca1c1f2fe50
 _kdepatchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_kdepatchrev
 
 # To decide _ubuntuver, check the firefox_$pkgver+*.debian.tar.xz file at http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/
+# We directly use launchpad bzr now
 _ubuntuurl=http://archive.ubuntu.com/ubuntu/pool/main/f/${pkgname}
 _ubuntuver=68.0.2+build1-0ubuntu1
+_revision=2275
+
 # Gentoo patches are from https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
 
 # Another mirror for release tarball can be found here: https://ftp.mozilla.org/pub/firefox/releases/
 source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.xz"{,.asc}
         0001-Use-remoting-name-for-GDK-application-names.patch
+        pgo.patch
 
         # Gentoo patch
         1003_foritify_sources_properly.patch
         2000_system_harfbuzz_support.patch
         2001_system_graphite2_support.patch
+        7002_system_av1_support.patch
 
         # Ubuntu patch
         #"${_ubuntuurl}/${pkgname}_${_ubuntuver}.debian.tar.xz"
-        bzr+lp:firefox#revision=2271
+        bzr+lp:firefox#revision=$_revision
 
         # Unused patchset
         # gecko-lockdown.patch
@@ -65,12 +70,14 @@ source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pk
 # To fetch the following key, use the command, replace $pkgver with real version number
 #   curl 'https://releases.mozilla.org/pub/firefox/releases/$pkgver/KEY' -o - | gpg --import
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
-sha256sums=('413c3febdfeb69eade818824eecbdb11eaeda71de229573810afd641ba741ec5'
+sha256sums=('f5f2f592b8296812d43244d6a50c0c57ad11a5324db8e4e79749545482b79033'
             'SKIP'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
+            '2c0afce91b81abd59acb1cc13e40ba42fb6e960e45af555d9a35fabae7b9c6ed'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
+            '263e61385b24b3db8c8c3b35bedccc6fdffdad9891437671e92b9ed026d5b1a3'
             'SKIP')
 
 
@@ -89,7 +96,7 @@ _mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
 
 prepare() {
   mkdir path
-  ln -s /usr/bin/python2 path/python
+  ln -s /usr/bin/python3 path/python
 
   sed -e '/%%/d' \
       -e '/@MOZ_DISPLAY_NAME@/d' \
@@ -98,6 +105,7 @@ prepare() {
 
   #cd ${srcdir}/mozilla-release-${_changeset}
   cd ${srcdir}/${pkgname}-${pkgver}
+  patch -Np1 -i "$srcdir"/pgo.patch
 
   echo -n "$_google_api_key" > google-api-key
   echo -n "$_mozilla_api_key" > mozilla-api-key
@@ -123,6 +131,12 @@ ac_add_options --enable-rust-simd
 ac_add_options --enable-lto
 ac_add_options --enable-hardening
 
+mk_add_options "export CC=clang"
+mk_add_options "export CXX=clang++"
+mk_add_options "export AR=llvm-ar"
+mk_add_options "export NM=llvm-nm"
+mk_add_options "export RANLIB=llvm-ranlib"
+
 # Release branding
 ac_add_options --enable-application=browser
 ac_add_options --enable-official-branding
@@ -131,7 +145,7 @@ ac_add_options --with-distribution-id=org.chakralinux
 ac_add_options --enable-default-toolkit=cairo-gtk3
 export MOZILLA_OFFICIAL=1
 export MOZ_REQUIRE_SIGNING=1
-#export MOZ_PGO=1
+export MOZ_PGO=1
 
 # Keys
 ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
@@ -144,6 +158,8 @@ ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
 ac_add_options --with-system-libevent
 #ac_add_options --with-system-libvpx
+ac_add_options --enable-system-av1
+ac_add_options --with-system-webp
 ac_add_options --with-system-nss
 ac_add_options --with-system-nspr
 #ac_add_options --with-system-icu
@@ -160,9 +176,10 @@ ac_add_options --enable-alsa
 ac_add_options --disable-gconf
 ac_add_options --disable-updater
 ac_add_options --disable-crashreporter
+ac_add_options --with-unsigned-addon-scopes=app,system
 
 mk_add_options MOZ_MAKE_FLAGS="-j9"
-#mk_add_options PROFILE_GEN_SCRIPT='EXTRA_TEST_ARGS=10 \$(MAKE) -C \$(MOZ_OBJDIR) pgo-profile-run'
+mk_add_options PROFILE_GEN_SCRIPT=' \$(PYTHON) \$(topsrcdir)/build/pgo/profileserver.py 10'
 STRIP_FLAGS="--strip-debug"
 END
 
@@ -173,6 +190,7 @@ END
   patch -Np1 -i $srcdir/1003_foritify_sources_properly.patch
   patch -Np1 -i $srcdir/2000_system_harfbuzz_support.patch
   patch -Np1 -i $srcdir/2001_system_graphite2_support.patch
+  patch -Np1 -i $srcdir/7002_system_av1_support.patch
 
   msg "Ubuntu Patchset"
   patch -Np1 -i $srcdir/$pkgname/debian/patches/unity-menubar.patch
@@ -190,7 +208,7 @@ build() {
   ulimit -n 4096
 
   # Do PGO
-#  xvfb-run -a -n 97 -s "-extension GLX -screen 0 1280x1024x24" \
+  xvfb-run -a -n 97 -s "-screen 0 1280x1024x24" \
    ./mach build
 }
 
