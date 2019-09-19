@@ -209,7 +209,7 @@ build() {
 
   # Do PGO
   xvfb-run -d -s "-screen 0 1280x1024x24" \
-   ./mach build
+   make -f client.mk profiledbuild
 }
 
 package() {
