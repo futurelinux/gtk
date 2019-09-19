@@ -1,14 +1,14 @@
 pkgname=wxmaxima
-pkgver=19.05.2
+pkgver=19.09.0
 pkgrel=1
 pkgdesc="A wxWidgets GUI for the computer algebra system Maxima"
 arch=('x86_64')
 url="https://wxmaxima-developers.github.io/wxmaxima/"
 license=('GPL2')
-depends=('maxima' 'libxml2' 'wxgtk3') # 'ttf-linux-libertine' required?
+depends=('maxima' 'wxgtk3' 'ttf-linux-libertine')
 makedepends=('cmake' 'doxygen')
 source=($pkgname-$pkgver.tar.gz::"https://github.com/wxMaxima-developers/wxmaxima/archive/Version-${pkgver}.tar.gz")
-sha1sums=('34bc74b46f6a67bd357b777e5d0df1b01d661abb')
+sha256sums=('5080cc3fee1bd1fb570dd354dea3c4fae8e8b752895e720fd51e160481d2bd72')
 
 build() {
   cd "${srcdir}/${pkgname}-Version-${pkgver}"
