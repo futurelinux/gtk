@@ -1,6 +1,6 @@
 pkgname=firefox
 pkgver=69.0.1
-pkgrel=2
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -15,6 +15,7 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'firefox-i18n: For multilanguage support'
             'hunspell: For spellchecking support')
 screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
+options=('!makeflags' '!strip')
 #
 # To whom want to update this package
 #
@@ -142,7 +143,7 @@ ac_add_options --with-distribution-id=org.chakralinux
 ac_add_options --enable-default-toolkit=cairo-gtk3
 export MOZILLA_OFFICIAL=1
 export MOZ_REQUIRE_SIGNING=1
-export MOZ_PGO=1
+#export MOZ_PGO=1
 
 # Keys
 ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
@@ -175,8 +176,7 @@ ac_add_options --disable-updater
 ac_add_options --disable-crashreporter
 ac_add_options --with-unsigned-addon-scopes=app,system
 
-mk_add_options MOZ_MAKE_FLAGS="-j9"
-mk_add_options PROFILE_GEN_SCRIPT=' \$(PYTHON) \$(topsrcdir)/build/pgo/profileserver.py 10'
+mk_add_options MOZ_MAKE_FLAGS="-j$(grep -c processor /proc/cpuinfo)"
 STRIP_FLAGS="--strip-debug"
 END
 
@@ -196,7 +196,6 @@ END
 build() {
   cd $srcdir/${pkgname}-${pkgver}
 
-  export PYTHON=python3
   export MOZ_NOSPAM=1
   export SHELL=/bin/bash
   export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
