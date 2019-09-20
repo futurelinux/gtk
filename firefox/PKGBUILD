@@ -7,7 +7,7 @@ license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib ffmpeg
          libevent libproxy nss xdg-desktop-portal dav1d libwebp)
-makedepends=(unzip zip diffutils python3 yasm mesa imake inetutils xorg-server-xvfb
+makedepends=(unzip zip diffutils python3 yasm mesa imake inetutils xorg-server-xvfb python2-setuptools python2-psutil
              autoconf2.13 gtk2 gobject-introspection jack rust llvm clang lld cbindgen nodejs nasm bzr)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
@@ -73,7 +73,7 @@ validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Rel
 sha256sums=('f5f2f592b8296812d43244d6a50c0c57ad11a5324db8e4e79749545482b79033'
             'SKIP'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
-            '2c0afce91b81abd59acb1cc13e40ba42fb6e960e45af555d9a35fabae7b9c6ed'
+            '6adbf700fb8e2e027d24c1c63c08ba6d9ea49eb02e08e8a230d02a9f429e9a0a'
             'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
@@ -95,9 +95,6 @@ _mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
 
 
 prepare() {
-  mkdir path
-  ln -s /usr/bin/python3 path/python
-
   sed -e '/%%/d' \
       -e '/@MOZ_DISPLAY_NAME@/d' \
       -e "s/@MOZ_APP_NAME@/$pkgname/g" \
@@ -199,7 +196,7 @@ END
 build() {
   cd $srcdir/${pkgname}-${pkgver}
 
-  export PATH="$srcdir/path:$PATH"
+  export PYTHON=python3
   export MOZ_NOSPAM=1
   export SHELL=/bin/bash
   export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
@@ -209,7 +206,7 @@ build() {
 
   # Do PGO
   xvfb-run -d -s "-screen 0 1280x1024x24" \
-   make -f client.mk profiledbuild
+   ./mach build
 }
 
 package() {
