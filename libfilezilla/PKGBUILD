@@ -3,7 +3,7 @@
 # Contributor: Martchus <martchus@gmx.net>
 
 pkgname=libfilezilla
-pkgver=0.18.1
+pkgver=0.18.2
 pkgrel=1
 pkgdesc="Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs"
 arch=('x86_64')
@@ -12,7 +12,7 @@ license=('GPL')
 depends=('gcc-libs' 'nettle')
 makedepends=('clang')
 source=("https://download.filezilla-project.org/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('cb7bae8a27a6ff7ea37c89a0ed4347d5c7b0c847473b29894dcadc154b8a7f97')
+sha256sums=('40d86929b486a6809c4b52d607f21a00e634e0b9b792504fe2964c117b522dc9')
 
 build() {
   cd "${srcdir}/$pkgname-$pkgver"
