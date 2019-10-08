@@ -146,7 +146,6 @@ export MOZILLA_OFFICIAL=1
 export MOZ_REQUIRE_SIGNING=1
 export -n MOZ_TELEMETRY_REPORTING
 unset MOZ_TELEMETRY_REPORTING
-export MOZ_PGO=0
 
 # Keys
 ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
