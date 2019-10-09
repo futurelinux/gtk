@@ -1,6 +1,6 @@
 pkgname=firefox
 pkgver=69.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
@@ -86,13 +86,13 @@ sha256sums=('2904ef954626d2a7f320670ccb7cb5d9060610f091c94190a6cbee14aa2cd82e'
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
 # get your own set of keys. Feel free to contact totte@chakralinux.org for
 # more information.
-_google_api_key=AIzaSyDjyg8EmaRUIsewzdjZXFZ0O8N5ARDUDGU
+_google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
 
 # Mozilla API keys (see https://location.services.mozilla.com/api)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
 # get your own set of keys. Feel free to contact totte@chakralinux.org for
 # more information.
-_mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
+_mozilla_api_key=e05d56db0a694edc8b5aaebda3f2db6a
 
 
 prepare() {
@@ -121,16 +121,15 @@ prepare() {
   cat >.mozconfig <<END
 ac_add_options --prefix=/usr
 ac_add_options --enable-release
-ac_add_options --enable-optimize="-O2"
+ac_add_options --enable-optimize
 ac_add_options --disable-elf-hack
 ac_add_options --disable-accessibility
 ac_add_options --enable-rust-simd
-ac_add_options --enable-lto
 ac_add_options --enable-linker=lld
 ac_add_options --enable-hardening
 
-export CC="clang"
-export CXX="clang++"
+export CC='clang --target=x86_64-unknown-linux-gnu'
+export CXX='clang++ --target=x86_64-unknown-linux-gnu'
 export AR="llvm-ar"
 export NM="llvm-nm"
 export RANLIB="llvm-ranlib"
@@ -140,7 +139,7 @@ export AS="clang"
 ac_add_options --enable-application=browser
 ac_add_options --enable-official-branding
 ac_add_options --enable-update-channel=release
-ac_add_options --with-distribution-id=org.chakralinux
+ac_add_options --with-distribution-id=org.archlinux
 ac_add_options --enable-default-toolkit=cairo-gtk3
 export MOZILLA_OFFICIAL=1
 export MOZ_REQUIRE_SIGNING=1
@@ -156,6 +155,18 @@ ac_add_options --with-mozilla-api-keyfile=${PWD@Q}/mozilla-api-key
 ac_add_options --with-system-nss
 ac_add_options --with-system-nspr
 ac_add_options --enable-libproxy
+ac_add_options --with-system-zlib
+ac_add_options --with-system-bz2
+ac_add_options --with-system-libevent
+ac_add_options --with-system-libvpx
+ac_add_options --enable-system-av1
+ac_add_options --with-system-webp
+ac_add_options --with-system-nss
+ac_add_options --with-system-nspr
+ac_add_options --with-system-icu
+ac_add_options --with-system-png
+ac_add_options --enable-system-pixman
+ac_add_options --enable-system-sqlite
 
 # Features
 ac_add_options --enable-startup-notification
@@ -171,7 +182,7 @@ ac_add_options --disable-crashreporter
 ac_add_options --disable-debug-symbols
 ac_add_options --with-unsigned-addon-scopes=app,system
 
-mk_add_options MOZ_MAKE_FLAGS="-j15"
+mk_add_options MOZ_MAKE_FLAGS="-j9"
 END
 
   msg 'Arch Patch'
@@ -196,12 +207,46 @@ build() {
   export SHELL=/bin/bash
   export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
 
-  # LTO requires opening more files
-  ulimit -n 4096
+  # -fno-plt with cross-LTO causes obscure LLVM errors
+  # LLVM ERROR: Function Import: link error
+  CFLAGS="${CFLAGS/-fno-plt/}"
+  CXXFLAGS="${CXXFLAGS/-fno-plt/}"
 
-  # Do PGO
-  xvfb-run -d -s "-screen 0 1280x1024x24" \
-   ./mach build
+  # Do 3-tier PGO
+  msg2 "Building instrumented browser..."
+  cat >.mozconfig ../mozconfig - <<END
+ac_add_options --enable-profile-generate
+END
+  ./mach build
+
+  msg2 "Profiling instrumented browser..."
+  ./mach package
+  LLVM_PROFDATA=llvm-profdata \
+    JARLOG_FILE="$PWD/jarlog" \
+    xvfb-run -d -n 92 -s "-screen 0 1600x1200x24" \
+    ./mach python build/pgo/profileserver.py
+
+  if ! compgen -G '*.profraw' >&2; then
+    error "No profile data produced."
+    return 1
+  fi
+
+  if [[ ! -s jarlog ]]; then
+    error "No jar log produced."
+    return 1
+  fi
+
+  msg2 "Removing instrumented browser..."
+  ./mach clobber
+
+  msg2 "Building optimized browser..."
+  cat >.mozconfig ../mozconfig - <<END
+ac_add_options --enable-lto=cross
+ac_add_options --enable-profile-use
+ac_add_options --with-pgo-profile-path=${PWD@Q}
+ac_add_options --with-pgo-jarlog=${PWD@Q}/jarlog
+END
+  ./mach build
 }
 
 package() {
@@ -238,14 +283,14 @@ END
   _distini="$pkgdir/usr/lib/firefox/distribution/distribution.ini"
   install -Dm644 /dev/stdin "$_distini" <<END
 [Global]
-id=chakralinux
+id=archlinux
 version=1.0
-about=Mozilla Firefox compiled by Chakra GNU/Linux
+about=Mozilla Firefox for Arch Linux
 
 [Preferences]
-app.distributor=chakralinux
-app.distributor.channel=firefox
-app.partner.chakralinux=chakralinux
+app.distributor=archlinux
+app.distributor.channel=$pkgname
+app.partner.archlinux=archlinux
 browser.search.geoSpecificDefaults=false
 END
   for i in 16 22 24 32 48 64 128 256; do
