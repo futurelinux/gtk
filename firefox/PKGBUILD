@@ -118,13 +118,14 @@ prepare() {
 # But we intend to mantain our own mozconfig without reference to any of the mozilla upstream configuration to keep it simple
 # This mozconfig would inlcude most of the configurations listed above into one file
   msg 'Generating mozconfig'
-  cat >.mozconfig <<END
+  cat >../mozconfig <<END
 ac_add_options --prefix=/usr
 ac_add_options --enable-release
 ac_add_options --enable-optimize
 ac_add_options --disable-elf-hack
 ac_add_options --disable-accessibility
 ac_add_options --enable-rust-simd
+ac_add_options --enable-gold
 ac_add_options --enable-linker=lld
 ac_add_options --enable-hardening
 
