@@ -1,6 +1,6 @@
 pkgname=google-talkplugin
-pkgver=5.41.0.0
-pkgrel=2
+pkgver=5.41.3.0
+pkgrel=1
 pkgdesc="Video chat browser plug-in for Google Talk"
 arch=('x86_64')
 url="http://www.google.com/chat/video"
@@ -9,19 +9,22 @@ license=('custom:google')
 depends=('gtk2' 'libgl' 'glew' 'glib2' 'libx11' 'libxfixes' 'libxt' 'openssl')
 optdepends=('libnotify' 'pulseaudio')
 source=(https://dl.google.com/linux/talkplugin/rpm/stable/x86_64/${pkgname}-${pkgver}-1.x86_64.rpm
-license.html::http://www.google.com/intl/en/policies/terms/index.html)
-sha512sums=('79f4ee56370328ccc67cabf4b82026ef21c80f2da463fba60c7846fcdd382511e074af201d84256f8fdcb1f14680ca20930089181c17cdf69b3e25769f94b0b5'
-          '293cd5f82323901036a321f1186c51e499886e09cceb1c6b348e54c8ce14316a7ff5c184e1644fb94b2e1d8d6db6949779b79d175f90e02c574c93fa25e7d99a')
+        ${pkgname}-license.html::https://www.google.com/intl/en/policies/terms/index.html)
+sha256sums=('93e8ca2c9eff0bea71736d5ad01bb173dca0d6027d8d784bd6476e0a11cdc446'
+            '2cb25181ea2e3329e23f559521d394125236d056731e832b976961df136932ba')
 
 package() {
-    cp -R ${srcdir}/opt ${pkgdir}
-    install -d "${pkgdir}/usr/lib"
-    cp -R ${srcdir}/usr/lib*/* ${pkgdir}/usr/lib
-    # change /usr/lib/chromium-browser to /usr/lib/chromium
-    cp -R ${pkgdir}/usr/lib/chromium-browser ${pkgdir}/usr/lib/chromium
-    cp -R ${pkgdir}/usr/lib/chromium-browser ${pkgdir}/usr/lib/chromium-dev
-    # cleaning up cron update script
-    rm -rf ${pkgdir}/opt/google/talkplugin/cron
-    # install license file
-    install -Dm644 "$srcdir/license.html" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+	cp -R "${srcdir}"/opt "${pkgdir}"
+	install -d "${pkgdir}"/usr/lib
+	cp -R "${srcdir}"/usr/lib*/* "${pkgdir}"/usr/lib
+    
+	# makeing it compatible with chromium and chromium-dev for Arch
+	cp -R "${pkgdir}"/usr/lib/chromium-browser "${pkgdir}"/usr/lib/chromium
+	cp -R "${pkgdir}"/usr/lib/chromium-browser "${pkgdir}"/usr/lib/chromium-dev
+    
+	# cleaning up cron update script
+	rm -rf "${pkgdir}"/opt/google/talkplugin/cron
+    
+	# install license file
+	install -Dm644 "${srcdir}"/${pkgname}-license.html "${pkgdir}"/usr/share/licenses/${pkgname}/license.html
 }
