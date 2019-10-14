@@ -41,13 +41,13 @@ validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Rel
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
 # get your own set of keys. Feel free to contact totte@chakralinux.org for
 # more information.
-_google_api_key=AIzaSyDjyg8EmaRUIsewzdjZXFZ0O8N5ARDUDGU
+_google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
 
 # Mozilla API keys (see https://location.services.mozilla.com/api)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
 # get your own set of keys. Feel free to contact totte@chakralinux.org for
 # more information.
-_mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
+_mozilla_api_key=e05d56db0a694edc8b5aaebda3f2db6a
 
 prepare() {
   sed -e '/%%/d' \
@@ -179,7 +179,6 @@ ac_add_options --with-pgo-profile-path=${PWD@Q}
 ac_add_options --with-pgo-jarlog=${PWD@Q}/jarlog
 END
   ./mach build
-
   msg2 "Building symbol archive..."
   ./mach buildsymbols
 }
@@ -214,14 +213,14 @@ END
   _distini="$pkgdir/usr/lib/$pkgname/distribution/distribution.ini"
   install -Dm644 /dev/stdin "$_distini" <<END
 [Global]
-id=chakralinux
+id=archlinux
 version=1.0
 about=Mozilla Firefox for Chakra GNU/Linux
 
 [Preferences]
-app.distributor=chakralinux
-app.distributor.channel=firefox
-app.partner.chakralinux=chakralinux
+app.distributor=archlinux
+app.distributor.channel=$pkgname
+app.partner.archlinux=archlinux
 browser.search.geoSpecificDefaults=false
 END
 
