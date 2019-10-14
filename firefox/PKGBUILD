@@ -1,86 +1,41 @@
 pkgname=firefox
-pkgver=69.0.2
+pkgver=69.0.3
 pkgrel=1
-pkgdesc="Standalone web browser from mozilla.org with OpenSUSE patch, integrate better with KDE"
-arch=('x86_64')
-license=('MPL' 'GPL' 'LGPL')
+pkgdesc="Standalone web browser from mozilla.org"
+arch=(x86_64)
+license=(MPL GPL LGPL)
 url="https://www.mozilla.org/firefox/"
-depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib ffmpeg
-         libevent libproxy nss xdg-desktop-portal dav1d libwebp)
-makedepends=(unzip zip diffutils python3 yasm mesa imake inetutils xorg-server-xvfb python2-setuptools python2-psutil
-             autoconf2.13 gtk2 gobject-introspection jack rust llvm clang lld cbindgen nodejs nasm bzr)
+depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib
+         ffmpeg nss ttf-font libpulse xdg-desktop-portal)
+makedepends=(unzip zip diffutils python2-setuptools yasm mesa imake inetutils
+             xorg-server-xvfb autoconf2.13 rust clang llvm jack gtk2
+             python nodejs python2-psutil cbindgen nasm bzr)
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
-            'upower: Battery API'
+            'pulseaudio: Audio support'
+            'speech-dispatcher: Text-to-Speech'
             'firefox-i18n: For multilanguage support'
-            'hunspell: For spellchecking support')
-screenshot="http://img864.imageshack.us/img864/5116/firefoxm.png"
+            'hunspell-en_US: Spell checking, American English')
 options=(!emptydirs !makeflags !strip)
-#
-# To whom want to update this package
-#
-# Notes on mercurial release revision
-# http://releases.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/SOURCE
-# This URL uses CDN so it's faster, but maybe out of date when new firefox release comes out.
-#
-# Find Firefox KDE related patch:
-# patch http://www.rosenauer.org/hg/mozilla/
-# patch https://build.opensuse.org/package/show?package=MozillaFirefox&project=mozilla%3AFactory
-#
-# Usually, we also port non-openSUSE specific patch together.
-#
-_kmozillahelper_commit=2ca28e0 #v5.0.2
-_kdepatchrev=eca1c1f2fe50
-_kdepatchurl=http://www.rosenauer.org/hg/mozilla/raw-file/$_kdepatchrev
-
-# To decide _ubuntuver, check the firefox_$pkgver+*.debian.tar.xz file at http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/
-# We directly use launchpad bzr now
-_ubuntuurl=http://archive.ubuntu.com/ubuntu/pool/main/f/${pkgname}
-_ubuntuver=68.0.2+build1-0ubuntu1
 _revision=2275
-
-# Gentoo patches are from https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz
-
-# Another mirror for release tarball can be found here: https://ftp.mozilla.org/pub/firefox/releases/
-source=("https://releases.mozilla.org/pub/firefox/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.xz"{,.asc}
-        0001-Use-remoting-name-for-GDK-application-names.patch
+source=(https://archive.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-$pkgver.source.tar.xz{,.asc}
         no-relinking.patch
-
-        # Gentoo patch
-        1003_foritify_sources_properly.patch
+        0001-Use-remoting-name-for-GDK-application-names.patch
+        firefox-symbolic.svg
+        bzr+lp:firefox#revision=$_revision
         2000_system_harfbuzz_support.patch
         2001_system_graphite2_support.patch
-        7002_system_av1_support.patch
-
-        # Ubuntu patch
-        #"${_ubuntuurl}/${pkgname}_${_ubuntuver}.debian.tar.xz"
-        bzr+lp:firefox#revision=$_revision
-
-        # Unused patchset
-        # gecko-lockdown.patch
-        # firefox-ui-lockdown.patch
-        # toolkit-ui-lockdown.patch: this and above, Not appliable
-        # mozilla-gconf-backend.patch: we disabled gconf
-        # mozilla-bmo1463035.patch: not our targetted architecture
-        # mozilla-bmo256180.patch: don't know what it is for
-        # mozilla-cubeb-noreturn.patch looks like this should be upstreamed
-        # mozilla-no-stdcxx-check.patch: we just passed it
-        # mozilla-ntlm-full-path.patch: not affected it seems
-        # mozilla-reduce-files-per-UnifiedBindings.patch
-)
-# To fetch the following key, use the command, replace $pkgver with real version number
-#   curl 'https://releases.mozilla.org/pub/firefox/releases/$pkgver/KEY' -o - | gpg --import
-validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
-sha256sums=('2904ef954626d2a7f320670ccb7cb5d9060610f091c94190a6cbee14aa2cd82e'
+        7002_system_av1_support.patch)
+sha256sums=('7527947a876c1734b8b2339f19b8ff8da6f4e4d06351b44940cb48d3509bb891'
             'SKIP'
-            'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
             '2dc9d1aa5eb7798c89f46478f254ae61e4122b4d1956d6044426288627d8a014'
-            'e5d8f0410ecd05119119e2d44a88fb5f1eb67a5b1035fd0a66b8cf167fb81c5d'
+            'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
+            '9a1a572dc88014882d54ba2d3079a1cf5b28fa03c5976ed2cb763c93dabbd797'
+            'SKIP'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
-            '263e61385b24b3db8c8c3b35bedccc6fdffdad9891437671e92b9ed026d5b1a3'
-            'SKIP')
-
+            '263e61385b24b3db8c8c3b35bedccc6fdffdad9891437671e92b9ed026d5b1a3')
+validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -94,18 +49,30 @@ _google_api_key=AIzaSyDjyg8EmaRUIsewzdjZXFZ0O8N5ARDUDGU
 # more information.
 _mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
 
-
 prepare() {
   sed -e '/%%/d' \
       -e '/@MOZ_DISPLAY_NAME@/d' \
       -e "s/@MOZ_APP_NAME@/$pkgname/g" \
       -i $srcdir/$pkgname/debian/firefox.desktop.in
+  mkdir mozbuild
+  cd firefox-$pkgver
 
-  #cd ${srcdir}/mozilla-release-${_changeset}
-  cd ${srcdir}/${pkgname}-${pkgver}
+  # Avoid relinking during buildsymbols
+  patch -Np1 -i ../no-relinking.patch
 
-  echo -n "$_google_api_key" > google-api-key
-  echo -n "$_mozilla_api_key" > mozilla-api-key
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1530052
+  patch -Np1 -i ../0001-Use-remoting-name-for-GDK-application-names.patch
+
+  msg "Gentoo Patchset"
+  patch -Np1 -i $srcdir/2000_system_harfbuzz_support.patch
+  patch -Np1 -i $srcdir/2001_system_graphite2_support.patch
+  patch -Np1 -i $srcdir/7002_system_av1_support.patch
+
+  msg "Ubuntu Patchset"
+  patch -Np1 -i $srcdir/$pkgname/debian/patches/unity-menubar.patch
+
+  echo -n "$_google_api_key" >google-api-key
+  echo -n "$_mozilla_api_key" >mozilla-api-key
 
 # There multiple default mozconfigs in the soruce tree with references across directories
 # $topsrcdir/build/unix/mozconfig.gtk
@@ -117,35 +84,29 @@ prepare() {
 # $topsrcdir/build/mozconfig.rust
 # But we intend to mantain our own mozconfig without reference to any of the mozilla upstream configuration to keep it simple
 # This mozconfig would inlcude most of the configurations listed above into one file
-  msg 'Generating mozconfig'
-  cat >.mozconfig <<END
+  cat >../mozconfig <<END
+ac_add_options --enable-application=browser
+
 ac_add_options --prefix=/usr
 ac_add_options --enable-release
-ac_add_options --enable-optimize="-O2"
-ac_add_options --disable-elf-hack
-ac_add_options --disable-accessibility
-ac_add_options --enable-rust-simd
-ac_add_options --enable-lto
-ac_add_options --enable-linker=lld
 ac_add_options --enable-hardening
+ac_add_options --enable-optimize
+ac_add_options --enable-rust-simd
+export CC='clang --target=x86_64-unknown-linux-gnu'
+export CXX='clang++ --target=x86_64-unknown-linux-gnu'
+export AR=llvm-ar
+export NM=llvm-nm
+export RANLIB=llvm-ranlib
 
-export CC="clang"
-export CXX="clang++"
-export AR="llvm-ar"
-export NM="llvm-nm"
-export RANLIB="llvm-ranlib"
-export AS="clang"
-
-# Release branding
-ac_add_options --enable-application=browser
+# Branding
 ac_add_options --enable-official-branding
 ac_add_options --enable-update-channel=release
 ac_add_options --with-distribution-id=org.chakralinux
-ac_add_options --enable-default-toolkit=cairo-gtk3
+ac_add_options --with-unsigned-addon-scopes=app,system
 export MOZILLA_OFFICIAL=1
+export MOZ_APP_REMOTINGNAME=${pkgname//-/}
+export MOZ_TELEMETRY_REPORTING=1
 export MOZ_REQUIRE_SIGNING=1
-export -n MOZ_TELEMETRY_REPORTING
-unset MOZ_TELEMETRY_REPORTING
 
 # Keys
 ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
@@ -153,65 +114,81 @@ ac_add_options --with-google-safebrowsing-api-keyfile=${PWD@Q}/google-api-key
 ac_add_options --with-mozilla-api-keyfile=${PWD@Q}/mozilla-api-key
 
 # System libraries
-ac_add_options --with-system-nss
 ac_add_options --with-system-nspr
-ac_add_options --enable-libproxy
+ac_add_options --with-system-nss
 
 # Features
-ac_add_options --enable-startup-notification
-ac_add_options --enable-jack
 ac_add_options --enable-alsa
+ac_add_options --enable-jack
+ac_add_options --enable-startup-notification
+ac_add_options --enable-crashreporter
 ac_add_options --disable-gconf
 ac_add_options --disable-updater
-ac_add_options --disable-necko-wifi
-ac_add_options --disable-install-strip
-ac_add_options --disable-strip
-ac_add_options --disable-debug
-ac_add_options --disable-crashreporter
-ac_add_options --disable-debug-symbols
-ac_add_options --with-unsigned-addon-scopes=app,system
-
+ac_add_options --disable-tests
 mk_add_options MOZ_MAKE_FLAGS="-j15"
 END
-
-  msg 'Arch Patch'
-  patch -Np1 -i $srcdir/0001-Use-remoting-name-for-GDK-application-names.patch
-  patch -Np1 -i $srcdir/no-relinking.patch
-
-  msg "Gentoo Patchset"
-  patch -Np1 -i $srcdir/1003_foritify_sources_properly.patch
-  patch -Np1 -i $srcdir/2000_system_harfbuzz_support.patch
-  patch -Np1 -i $srcdir/2001_system_graphite2_support.patch
-  patch -Np1 -i $srcdir/7002_system_av1_support.patch
-
-  msg "Ubuntu Patchset"
-  patch -Np1 -i $srcdir/$pkgname/debian/patches/unity-menubar.patch
 }
 
 build() {
-  cd $srcdir/${pkgname}-${pkgver}
+  cd firefox-$pkgver
 
-  export PATH="$srcdir/path:$PATH"
   export MOZ_NOSPAM=1
   export SHELL=/bin/bash
   export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
 
-  # LTO requires opening more files
+  # LTO needs more open files
   ulimit -n 4096
 
-  # Do PGO
-  xvfb-run -d -s "-screen 0 1280x1024x24" \
-   ./mach build
+  # -fno-plt with cross-LTO causes obscure LLVM errors
+  # LLVM ERROR: Function Import: link error
+  CFLAGS="${CFLAGS/-fno-plt/}"
+  CXXFLAGS="${CXXFLAGS/-fno-plt/}"
+
+  # Do 3-tier PGO
+  msg2 "Building instrumented browser..."
+  cat >.mozconfig ../mozconfig - <<END
+ac_add_options --enable-profile-generate
+END
+  ./mach build
+
+  msg2 "Profiling instrumented browser..."
+  ./mach package
+  LLVM_PROFDATA=llvm-profdata \
+    JARLOG_FILE="$PWD/jarlog" \
+    xvfb-run -d -n 92 -s "-screen 0 1600x1200x24" \
+    ./mach python build/pgo/profileserver.py
+
+  if ! compgen -G '*.profraw' >&2; then
+    error "No profile data produced."
+    return 1
+  fi
+
+  if [[ ! -s jarlog ]]; then
+    error "No jar log produced."
+    return 1
+  fi
+
+  msg2 "Removing instrumented browser..."
+  ./mach clobber
+
+  msg2 "Building optimized browser..."
+  cat >.mozconfig ../mozconfig - <<END
+ac_add_options --enable-lto=cross
+ac_add_options --enable-profile-use
+ac_add_options --with-pgo-profile-path=${PWD@Q}
+ac_add_options --with-pgo-jarlog=${PWD@Q}/jarlog
+END
+  ./mach build
+
+  msg2 "Building symbol archive..."
+  ./mach buildsymbols
 }
 
 package() {
-  #cd "$srcdir/mozilla-release-${_changeset}"
-  cd $srcdir/${pkgname}-${pkgver}
- 
-  export SHELL=/bin/bash
+  cd firefox-$pkgver
   DESTDIR="$pkgdir" ./mach install
 
-  _vendorjs="$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
+  _vendorjs="$pkgdir/usr/lib/$pkgname/browser/defaults/preferences/vendor.js"
   install -Dm644 /dev/stdin "$_vendorjs" <<END
 // Use LANG environment variable to choose locale
 pref("intl.locale.requested", "");
@@ -222,25 +199,24 @@ pref("spellchecker.dictionary_path", "/usr/share/hunspell");
 // Disable default browser checking.
 pref("browser.shell.checkDefaultBrowser", false);
 
-// Enable Network Manager integration
-pref("network.manage-offline-status", true);
-
 // Don't disable our bundled extensions in the application directory
 pref("extensions.autoDisableScopes", 11);
 pref("extensions.shownSelectionUI", true);
+
+// Enable Network Manager integration
+pref("network.manage-offline-status", true);
 
 // Force HW acceleration
 pref("layers.acceleration.force-enabled",  true);
 pref("webgl.force-enabled",                true);
 END
 
-  msg 'Chakra branding'
-  _distini="$pkgdir/usr/lib/firefox/distribution/distribution.ini"
+  _distini="$pkgdir/usr/lib/$pkgname/distribution/distribution.ini"
   install -Dm644 /dev/stdin "$_distini" <<END
 [Global]
 id=chakralinux
 version=1.0
-about=Mozilla Firefox compiled by Chakra GNU/Linux
+about=Mozilla Firefox for Chakra GNU/Linux
 
 [Preferences]
 app.distributor=chakralinux
@@ -248,27 +224,38 @@ app.distributor.channel=firefox
 app.partner.chakralinux=chakralinux
 browser.search.geoSpecificDefaults=false
 END
+
   for i in 16 22 24 32 48 64 128 256; do
     install -Dm644 browser/branding/official/default$i.png \
-      "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
+      "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/$pkgname.png"
   done
   install -Dm644 browser/branding/official/content/about-logo.png \
-    "$pkgdir/usr/share/icons/hicolor/192x192/apps/firefox.png"
+    "$pkgdir/usr/share/icons/hicolor/192x192/apps/$pkgname.png"
   install -Dm644 browser/branding/official/content/about-logo@2x.png \
-    "$pkgdir/usr/share/icons/hicolor/384x384/apps/firefox.png"
+    "$pkgdir/usr/share/icons/hicolor/384x384/apps/$pkgname.png"
+  install -Dm644 ../firefox-symbolic.svg \
+    "$pkgdir/usr/share/icons/hicolor/symbolic/apps/$pkgname-symbolic.svg"
 
   install -Dm644 $srcdir/$pkgname/debian/firefox.desktop.in \
     "$pkgdir/usr/share/applications/firefox.desktop"
 
   # Install a wrapper to avoid confusion about binary path
-  install -Dm755 /dev/stdin "$pkgdir/usr/bin/firefox" <<END
-#!/bin/sh
+  install -Dm755 /dev/stdin "$pkgdir/usr/bin/$pkgname" <<END
+#!/bin/bash
 export GTK_USE_PORTAL=1
-exec /usr/lib/firefox/firefox "\$@"
+exec /usr/lib/$pkgname/firefox "\$@"
 END
 
   # Replace duplicate binary with wrapper
   # https://bugzilla.mozilla.org/show_bug.cgi?id=658850
-  ln -srf "$pkgdir/usr/bin/firefox" \
-    "$pkgdir/usr/lib/firefox/firefox-bin"
+  ln -srf "$pkgdir/usr/bin/$pkgname" \
+    "$pkgdir/usr/lib/$pkgname/firefox-bin"
+
+  if [[ -f "$startdir/.crash-stats-api.token" ]]; then
+    find . -name '*crashreporter-symbols-full.zip' -exec \
+      "$startdir/upload-symbol-archive" "$startdir/.crash-stats-api.token" {} +
+  else
+    find . -name '*crashreporter-symbols-full.zip' -exec \
+      cp -fvt "$startdir" {} +
+  fi
 }
