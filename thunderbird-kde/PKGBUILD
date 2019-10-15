@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=68.1.1
+pkgver=68.1.2
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -10,7 +10,7 @@ url="https://www.thunderbird.net/"
 depends=('gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'libpulse' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
-makedepends=('unzip' 'zip' 'python3' 'yasm' 'mesa' 'imake' 'libpulse' 'inetutils'
+makedepends=('unzip' 'zip' 'python3' 'python3-setuptools' 'yasm' 'mesa' 'imake' 'libpulse' 'inetutils'
              'xorg-server-xvfb' 'autoconf2.13' 'rust' 'clang' 'llvm' 'gtk2' 'cbindgen' 'nodejs')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
