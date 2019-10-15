@@ -1,0 +1,88 @@
+From c250cc8df6ec28839fce86fc9da8c6f91ec9f0eb Mon Sep 17 00:00:00 2001
+From: BrLi <brli@chakralinux.org>
+Date: Tue, 15 Oct 2019 17:46:36 +0800
+Subject: [PATCH] remove menu event
+
+---
+ browser/base/content/browser-customization.js | 38 ++-----------------
+ 1 file changed, 3 insertions(+), 35 deletions(-)
+
+diff --git a/browser/base/content/browser-customization.js b/browser/base/content/browser-customization.js
+index a81a5a6ce0..14c0bc7fca 100644
+--- a/browser/base/content/browser-customization.js
++++ b/browser/base/content/browser-customization.js
+@@ -115,49 +115,27 @@ var AutoHideMenubar = {
+   },
+ 
+   init() {
+-    this._node.addEventListener("toolbarvisibilitychange", this);
+-    if (this._node.getAttribute("autohide") == "true") {
+-      this._enable();
+-    }
+-  },
+-
+-  _updateState() {
+-    if (this._node.getAttribute("autohide") == "true") {
+-      this._enable();
+-    } else {
+-      this._disable();
+-    }
++    this._enable();
+   },
+ 
+   _events: [
+     "DOMMenuBarInactive",
+-    "DOMMenuBarActive",
+     "popupshowing",
+     "mousedown",
+   ],
++
+   _enable() {
+     this._node.setAttribute("inactive", "true");
+-    for (let event of this._events) {
+-      this._node.addEventListener(event, this);
+-    }
+-  },
+-
+-  _disable() {
+-    this._setActive();
+-    for (let event of this._events) {
+-      this._node.removeEventListener(event, this);
+-    }
+   },
+ 
+   handleEvent(event) {
+     switch (event.type) {
+       case "toolbarvisibilitychange":
+-        this._updateState();
++        this._enable();
+         break;
+       case "popupshowing":
+       // fall through
+       case "DOMMenuBarActive":
+-        this._setActive();
+         break;
+       case "mousedown":
+         if (event.button == 2) {
+@@ -174,18 +152,8 @@ var AutoHideMenubar = {
+ 
+   _setInactiveAsync() {
+     this._inactiveTimeout = setTimeout(() => {
+-      if (this._node.getAttribute("autohide") == "true") {
+         this._inactiveTimeout = null;
+         this._node.setAttribute("inactive", "true");
+-      }
+     }, 0);
+   },
+-
+-  _setActive() {
+-    if (this._inactiveTimeout) {
+-      clearTimeout(this._inactiveTimeout);
+-      this._inactiveTimeout = null;
+-    }
+-    this._node.removeAttribute("inactive");
+-  },
+ };
+-- 
+2.23.0
+

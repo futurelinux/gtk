@@ -1,6 +1,6 @@
 pkgname=firefox
 pkgver=69.0.3
-pkgrel=3
+pkgrel=4
 pkgdesc="Standalone web browser from mozilla.org"
 arch=(x86_64)
 license=(MPL GPL LGPL)
@@ -23,7 +23,7 @@ source=(https://archive.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-
         0001-Use-remoting-name-for-GDK-application-names.patch
         firefox-symbolic.svg
         bzr+lp:firefox#revision=$_revision
-        patch-unity-menubar-patch.patch
+        remove-menu-event.patch
         2000_system_harfbuzz_support.patch
         2001_system_graphite2_support.patch
         7002_system_av1_support.patch)
@@ -33,7 +33,7 @@ sha256sums=('7527947a876c1734b8b2339f19b8ff8da6f4e4d06351b44940cb48d3509bb891'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
             '9a1a572dc88014882d54ba2d3079a1cf5b28fa03c5976ed2cb763c93dabbd797'
             'SKIP'
-            '8f739a76c449888dfab510f3878513971308504e521e06aa274a55fe0deebc1b'
+            'a281ad3614c09985aed30c2bef29b4c1c9facce47d94cdd4551c70a80efdea94'
             '21949f918907e16919820784bfb51540714c7bb256e219a3d965387b14b18886'
             '8afb2dbc729487aaf6e43e0ce0e86fb51c6f0bd27c3b6580dbb0c431c1cf9aa0'
             '263e61385b24b3db8c8c3b35bedccc6fdffdad9891437671e92b9ed026d5b1a3')
@@ -71,7 +71,7 @@ prepare() {
   patch -Np1 -i $srcdir/7002_system_av1_support.patch
 
   msg "Ubuntu Patchset"
-  patch -Np1 -i $srcdir/patch-unity-menubar-patch.patch -d $srcdir/$pkgname/debian/patches/
+  patch -Np1 -i $srcdir/remove-menu-event.patch
   patch -Np1 -i $srcdir/$pkgname/debian/patches/unity-menubar.patch
 
   echo -n "$_google_api_key" >google-api-key
