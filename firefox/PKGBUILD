@@ -1,6 +1,6 @@
 pkgname=firefox
 pkgver=69.0.3
-pkgrel=2
+pkgrel=3
 pkgdesc="Standalone web browser from mozilla.org"
 arch=(x86_64)
 license=(MPL GPL LGPL)
