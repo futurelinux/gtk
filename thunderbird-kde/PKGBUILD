@@ -10,7 +10,7 @@ url="https://www.thunderbird.net/"
 depends=('gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'libpulse' 'desktop-file-utils' 'hicolor-icon-theme' 'kio' 'knotifications'
          'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite3' 'nspr' 'libnotify')
-makedepends=('unzip' 'zip' 'python3' 'python3-setuptools' 'yasm' 'mesa' 'imake' 'libpulse' 'inetutils'
+makedepends=('unzip' 'zip' 'python2' 'yasm' 'mesa' 'imake' 'libpulse' 'inetutils' 'nasm'
              'xorg-server-xvfb' 'autoconf2.13' 'rust' 'clang' 'llvm' 'gtk2' 'cbindgen' 'nodejs')
 optdepends=('thunderbird-i18n: for multilanguage support'
 	    'libcanberra: for sound support')
@@ -19,7 +19,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         thunderbird.desktop
         mozilla-kde.patch
         mozilla-nongnome-proxies.patch)
-sha512sums=('946b9694c93bcd416fb2fe1f2448c7304d97a9b8dada9921ea5790cac019b0a53da2666eb974eb416bffd9f7874a51650563daa4dee97fef1091ac3b8df3f2ac'
+sha512sums=('c6c3cd674e4732f9e98e53dfab5c2dd1ea79bf3595fa4299178e5e4649102fda5c0290858d2962316f2ab1362f8b3494806ab8a0221861ff92088a0248446d76'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '91d5b3c77375719b8b56a0609d228b951b50ce4aa1c6e13f70f3259b79918cea1928993280722b2110f472cb0f5d511421922755bb2af300b0b3f25d1c8f032d'
             'fae7ac214cc021adfcb8a66bde9efd90c65e87e5b991a6f4eb3d34b711a9b3234463afbd7cf0ab08596a4a16365d5ae44d343c9b5918bdab78437eb0d8d75bff')
@@ -75,7 +75,8 @@ ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
 ac_add_options --with-system-png
 ac_add_options --with-system-libevent
-ac_add_options --with-system-libvpx
+# our libvpx is too old
+#ac_add_options --with-system-libvpx
 # our icu is too old
 #ac_add_options --with-system-icu
 ac_add_options --enable-system-sqlite
@@ -106,7 +107,6 @@ END
 build() {
   cd thunderbird-${pkgver}
 
-  export PYTHON="/usr/bin/python3"
   export SHELL="/bin/bash"
   
   ./mach configure
