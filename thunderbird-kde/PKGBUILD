@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=68.1.2
+pkgver=68.2.0
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -19,7 +19,7 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         thunderbird.desktop
         mozilla-kde.patch
         mozilla-nongnome-proxies.patch)
-sha512sums=('c6c3cd674e4732f9e98e53dfab5c2dd1ea79bf3595fa4299178e5e4649102fda5c0290858d2962316f2ab1362f8b3494806ab8a0221861ff92088a0248446d76'
+sha512sums=('ca9afc870245dfaaabe3c75d4db266596c9dd714ea20b775b80e5d9df4671a5c71d2af84c734e27e07efcdb6f0fac0c34b48fda45a5a64e3e092bdafea474efc'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '91d5b3c77375719b8b56a0609d228b951b50ce4aa1c6e13f70f3259b79918cea1928993280722b2110f472cb0f5d511421922755bb2af300b0b3f25d1c8f032d'
             'fae7ac214cc021adfcb8a66bde9efd90c65e87e5b991a6f4eb3d34b711a9b3234463afbd7cf0ab08596a4a16365d5ae44d343c9b5918bdab78437eb0d8d75bff')
