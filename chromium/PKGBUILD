@@ -33,7 +33,7 @@ readonly _unwanted_bundled_libs=(
 )
 
 pkgname=chromium
-pkgver=77.0.3865.120
+pkgver=78.0.3904.70
 pkgrel=1
 _launcher_ver=6
 pkgdesc="A web browser built for speed, simplicity, and security"
@@ -51,13 +51,13 @@ optdepends=('pepperflashplugin: support for Flash content'
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgname-$pkgver.tar.xz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
-        include-memory-in-one_euro_filter.h.patch
-        link-against-harfbuzz-subset.patch
-        fix-wrong-string-initialization-in-LinkedHashSet.patch
-        include-limits-in-web_time_range.cc.patch
+        add-missing-include-for-unique_ptr.patch
+        dns_util-make-DohUpgradeEntry-non-const.patch
+        fix-shutdown-crash-in-ProfileManager.patch
         chromium-system-icu.patch
         chromium-system-old-icu.patch
         chromium-system-zlib.patch
+        fix-spammy-unique-font-matching-log.patch
         chromium-widevine.patch
         chromium-skia-harmony.patch)
 sha256sums=('d792f9b09b1dcfd64e68f47a611c540dd1383dd9abd78ca1e06b2a7e2ff06af8'
@@ -92,22 +92,22 @@ prepare() {
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
     third_party/libxml/chromium/libxml_utils.cc
 
-  # https://crbug.com/819294
-  patch -Np1 -i ../include-memory-in-one_euro_filter.h.patch
+  # Missing include in third_party/blink/public/platform/web_rtc_rtp_source.h
+  patch -Np1 -i ../add-missing-include-for-unique_ptr.patch
 
-  # https://groups.google.com/a/chromium.org/d/msg/chromium-packagers/UyJsVJ5QqWo/jSv5z7-rEQAJ
-  patch -Np1 -i ../link-against-harfbuzz-subset.patch
+  # https://crbug.com/957519#c23
+  patch -Np1 -i ../dns_util-make-DohUpgradeEntry-non-const.patch
 
-  # https://crbug.com/980025
-  patch -Np1 -i ../fix-wrong-string-initialization-in-LinkedHashSet.patch
-
-  # https://crbug.com/992832
-  patch -Np1 -i ../include-limits-in-web_time_range.cc.patch
+  # https://crbug.com/1005244
+  patch -Np1 -i ../fix-shutdown-crash-in-ProfileManager.patch
 
   # Fixes from Gentoo
   patch -Np1 -i ../chromium-system-icu.patch
   patch -Np1 -i ../chromium-system-old-icu.patch
   patch -Np1 -i ../chromium-system-zlib.patch
+
+  # https://crbug.com/1005508
+  patch -Np1 -i ../fix-spammy-unique-font-matching-log.patch
 
   # Load Widevine CDM if available
   patch -Np1 -i ../chromium-widevine.patch
@@ -186,14 +186,18 @@ build() {
     "google_default_client_secret=\"${_google_default_client_secret}\""
   )
 
+  if check_option strip y; then
+    _flags+=('symbol_level=0')
+  fi
+
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
   CPPFLAGS+=' -D__DATE__=  -D__TIME__=  -D__TIMESTAMP__='
 
-  if check_option strip y; then
-    _flags+=('symbol_level=0')
-  fi
+  # Do not warn about unknown warning options
+  CFLAGS+='   -Wno-unknown-warning-option'
+  CXXFLAGS+=' -Wno-unknown-warning-option'
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
   ninja -C out/Release chrome chrome_sandbox chromedriver
