@@ -43,7 +43,7 @@ build() {
 
 package_eclipse-common() {
   pkgdesc+=" (common files)"
-  depends=("java-environment>=8" libwebkit-gtk2 unzip)
+  depends=("java-environment>=8" webkit2gtk unzip)
 
   install -d "$pkgdir/usr/lib"
   cp -a eclipse-common "$pkgdir/usr/lib/eclipse"
