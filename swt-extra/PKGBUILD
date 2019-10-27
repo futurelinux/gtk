@@ -7,8 +7,8 @@ arch=('x86_64')
 url='http://www.eclipse.org/swt/'
 license=('EPL')
 depends=('java-runtime>=7' 'gtk2>=2.20.1' 'libxtst')
-optdepends=('mesa' 'glu' 'libwebkit-gtk2')
-makedepends=('java-environment' 'libxtst' 'mesa' 'glu' 'unzip' 'pkgconfig' 'libwebkit-gtk2' 'apache-ant')
+optdepends=('mesa' 'glu' 'webkit2gtk')
+makedepends=('java-environment' 'libxtst' 'mesa' 'glu' 'unzip' 'pkgconfig' 'webkit2gtk' 'apache-ant')
 source=(http://archive.eclipse.org/eclipse/downloads/drops4/R-${pkgver}-${_date}/swt-${pkgver}-gtk-linux-x86_64.zip
         build-swt.xml)
 sha256sums=('ce89cb9dea5bef927873cbc377a81b5d9f1995622e42402bd9600043a9bc00e3'
