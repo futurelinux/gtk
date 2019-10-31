@@ -1,24 +1,23 @@
 # Contributions from Arch: https://projects.archlinux.org/svntogit/packages.git/tree/trunk?h=packages/babl
 
 pkgname=babl
-pkgver=0.1.66
+pkgver=0.1.72
 pkgrel=1
 pkgdesc="Dynamic, any to any, pixel format conversion library"
 arch=('x86_64')
 url="https://gegl.org/babl/"
 license=('LGPL3')
-depends=('glibc')
-source=("https://ftp.gimp.org/pub/babl/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('369dd89345489a3949e83d5ad63295029088230626f64a05e530761b176fa163')
+depends=('glibc' 'lcms2')
+makedepends=('meson' 'gobject-introspection')
+source=("https://ftp.gimp.org/pub/babl/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('64e111097b1fa22f6c9bf044e341a9cd9ee1372c5acfa0b452e7a86fb37c6a42')
  
 build() {
   cd $pkgname-$pkgver
-  ./configure --prefix=/usr
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make
+  chakra-meson build
 }
  
 package() {
   cd $pkgname-$pkgver
-  make DESTDIR=$pkgdir install
+  DESTDIR="$pkgdir" meson install -C build
 }
