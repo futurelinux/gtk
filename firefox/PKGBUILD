@@ -1,12 +1,14 @@
 pkgname=firefox
-pkgver=70.0
+pkgver=70.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org"
 arch=(x86_64)
 license=(MPL GPL LGPL)
 url="https://www.mozilla.org/firefox/"
 depends=(gtk3 mozilla-common libxt startup-notification mime-types dbus-glib
-         ffmpeg nss ttf-font libpulse xdg-desktop-portal)
+         ffmpeg nss ttf-font libpulse xdg-desktop-portal libproxy libevent
+         # Gentoo patch
+         harfbuzz graphite aom dav1d)
 makedepends=(unzip zip diffutils python2-setuptools yasm mesa imake inetutils
              xorg-server-xvfb autoconf2.13 rust clang llvm jack gtk2
              python nodejs python2-psutil cbindgen nasm bzr)
@@ -22,13 +24,21 @@ source=(https://archive.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-
         no-relinking.patch
         0001-Use-remoting-name-for-GDK-application-names.patch
         firefox-symbolic.svg
-        bzr+lp:firefox#revision=$_revision)
-sha256sums=('cd9f2902753831c07c4b2ee64f7826f33ca1123add6440dc34abe3ff173a0cc6'
+        bzr+lp:firefox#revision=$_revision
+        1002_foritify_sources_properly.patch
+        2000_system_harfbuzz_support.patch
+        2001_system_graphite2_support.patch
+        7002_system_av1_support.patch)
+sha256sums=('f2e9bb26af7682b31e82fdfc3a4b3e04fd1caa8b004469ea608185d33e35691b'
             'SKIP'
             '2dc9d1aa5eb7798c89f46478f254ae61e4122b4d1956d6044426288627d8a014'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
             '9a1a572dc88014882d54ba2d3079a1cf5b28fa03c5976ed2cb763c93dabbd797'
-            'SKIP')
+            'SKIP'
+            '2b7196ef06d4c27a151836b14fb2ae6eeedd0112e89e4f64056e1250f5c612ee'
+            '1997443725f2d6dc9c451568b25364763a0862e140c4c9948c24791acd760706'
+            'ff34e784815583996c2f9576989178b2a5016bb4afe69771a08070a888fae2f7'
+            '7fee677f2f6e3c8cc63f4fb5007c034f53fc42c1bd9ae24c95ec14afd79fad5a')
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -56,6 +66,12 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1530052
   patch -Np1 -i ../0001-Use-remoting-name-for-GDK-application-names.patch
+
+  msg 'Gentoo Patchset'
+  patch -Np1 -i ../1002_foritify_sources_properly.patch
+  patch -Np1 -i ../2000_system_harfbuzz_support.patch
+  patch -Np1 -i ../2001_system_graphite2_support.patch
+  patch -Np1 -i ../7002_system_av1_support.patch
 
   msg "Ubuntu Patchset"
   patch -Np1 -i $srcdir/$pkgname/debian/patches/unity-menubar.patch
@@ -166,6 +182,22 @@ ac_add_options --enable-lto=cross
 ac_add_options --enable-profile-use
 ac_add_options --with-pgo-profile-path=${PWD@Q}
 ac_add_options --with-pgo-jarlog=${PWD@Q}/jarlog
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-zlib
+ac_add_options --with-system-bz2
+ac_add_options --with-system-libevent
+#ac_add_options --with-system-libvpx
+ac_add_options --with-system-nss
+ac_add_options --with-system-nspr
+#ac_add_options --with-system-icu
+ac_add_options --with-system-png
+ac_add_options --enable-system-pixman
+ac_add_options --enable-system-sqlite
+ac_add_options --enable-system-ffi
+ac_add_options --enable-libproxy
+ac_add_options --with-system-av1
+ac_add_options --with-system-harfbuzz
+ac_add_options --with-system-graphite2
 END
   ./mach build
   msg2 "Building symbol archive..."

@@ -1,5 +1,6 @@
-From: Jory A. Pratt <anarchy@gentoo.org>
-
+# HG changeset patch
+# User Jory A. Pratt <anarchy@gentoo.org>
+# Parent  ec98b474911d5e7c5eba45d5cb4d67e640f85bb5
 Ensure we fortify properly, features.h is pulled in via fortification.
 
 diff --git a/config/system-headers.mozbuild b/config/system-headers.mozbuild
