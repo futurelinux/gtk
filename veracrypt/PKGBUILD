@@ -1,6 +1,6 @@
 pkgname=veracrypt
 pkgver=1.24
-pkgrel=1
+pkgrel=2
 pkgdesc="Free disk encryption software, TrueCrypt fork."
 arch=('x86_64')
 url='https://www.veracrypt.fr'
@@ -9,21 +9,21 @@ depends=('fuse2' 'wxgtk3' 'libsm' 'device-mapper')
 makedepends=('yasm')
 optdepends=('sudo: mounting encrypted volumes as nonroot users')
 replaces=('truecrypt')
-source=("https://github.com/veracrypt/VeraCrypt/archive/VeraCrypt_${pkgver}.tar.gz"
+source=("https://github.com/veracrypt/VeraCrypt/archive/VeraCrypt_${pkgver}-Hotfix1.tar.gz"
 	'no_makeself.patch'
         'veracrypt.desktop')
-sha256sums=('dfebef2fab44d9f0bda73e0cc9ee68e27134d3113334efb10461b16c71a96d80'
-            '76c78498703d806d80707e65b253c2f2fa7f328fdae29efdca64b6d4a0ef2816'
+sha256sums=('2531b6d567970bbc497d376adc679041e923d2b92318d33196ef4581fccc67e5'
+            'e1c8412f312393895b0f9613d2b0ca17c4e40a5a8ae2f374389a0f3364b7a599'
             'd9a08ad0dd8160f8ce1e9f799fef24dc5f439f1988d4578ead9ae09f200dd09e')
 
 prepare() {
-  cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
+  cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}-Hotfix1/src
   # apply patch(es)
   patch -Np1 -i ../../no_makeself.patch  # disable sfx https://github.com/veracrypt/VeraCryptarchive
 }
 
 build() {
-  cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
+  cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}-Hotfix1/src
   # build
   make PKG_CONFIG_PATH=/usr/lib/pkgconfig \
     WX_CONFIG=/usr/bin/wx-config-gtk3 \
@@ -33,7 +33,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}/src
+  cd ${srcdir}/VeraCrypt-VeraCrypt_${pkgver}-Hotfix1/src
   install -Dm 755 Main/${pkgname} "${pkgdir}/usr/bin/${pkgname}"
   install -Dm 644 "${srcdir}/veracrypt.desktop" -t "${pkgdir}/usr/share/applications"
   install -Dm 644 Resources/Icons/VeraCrypt-256x256.xpm "${pkgdir}/usr/share/pixmaps/veracrypt.xpm"
