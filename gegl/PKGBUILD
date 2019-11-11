@@ -1,37 +1,27 @@
-# Contributor from CCR:  danyf90 <daniele.formichelli@gmail.com>
-
 pkgname=gegl
-pkgver=0.4.16
+pkgver=0.4.18
 pkgrel=1
 pkgdesc="Graph based image processing framework"
 arch=('x86_64')
 url="https://www.gegl.org/"
 license=('GPL3' 'LGPL3')
-depends=('babl' 'gtk2' 'libspiro' 'json-glib' 'libgexiv2' 'libraw' 'openexr' 'librsvg' 'libtiff' 'lua' 'jasper' 'lensfun' 'suitesparse')
-makedepends=('intltool' 'ruby' 'mesa' 'glu' 'ffmpeg' 'exiv2' 'vala' 'python2' 'gobject-introspection')
+depends=('babl' 'libspiro' 'json-glib' 'libgexiv2' 'libraw' 'openexr' 'librsvg' 'libtiff' 'luajit' 'jasper' 'lensfun' 'suitesparse')
+makedepends=('intltool' 'ruby' 'mesa' 'glu' 'ffmpeg' 'exiv2' 'vala' 'gobject-introspection' 'meson' 'python3-gobject')
 optdepends=('ffmpeg: for using the ffmpeg plugin')
-source=("http://ftp.gimp.org/pub/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
-sha256sums=('0112df690301d9eb993cc48965fc71b7751c9021a4f4ee08fcae366c326b5e5a')
+source=("http://ftp.gimp.org/pub/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
+sha256sums=('c946dfb45beb7fe0fb95b89a25395b449eda2b205ba3e8a1ffb1ef992d9eca64')
 
 build() {
-  cd $pkgname-$pkgver
-  ./configure  --prefix=/usr \
-               --with-sdl \
-               --with-openexr \
-               --with-librsvg \
-               --with-libavformat \
-               --with-jasper \
-               --disable-docs \
-               --enable-introspection
-
-  # https://bugzilla.gnome.org/show_bug.cgi?id=655517
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-
-  make
+  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
+  chakra-meson .. \
+    -Dworkshop=true \
+    -Dmrg=disabled
+  ninja
 }
 
 package() {
-  cd $pkgname-$pkgver
-  make DESTDIR=$pkgdir install
+  cd ${pkgname}-${pkgver}
+  DESTDIR="${pkgdir}" ninja install
 }
-
