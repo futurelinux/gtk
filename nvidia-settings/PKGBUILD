@@ -1,6 +1,6 @@
 pkgbase=nvidia-settings
 pkgname=('nvidia-settings' 'libxnvctrl')
-pkgver=430.40
+pkgver=440.31
 pkgrel=1
 pkgdesc="Tool for configuring the NVIDIA graphics driver"
 url='https://github.com/NVIDIA/nvidia-settings'
@@ -10,12 +10,13 @@ makedepends=('git' 'inetutils' 'gtk2' 'jansson' 'gtk3' 'libxv' 'libvdpau' 'nvidi
 options=('staticlibs')
 source=(${pkgbase}-${pkgver}.tar.gz::https://github.com/NVIDIA/nvidia-settings/archive/${pkgver}.tar.gz
         libxnvctrl_so.patch)
-sha512sums=('b45591e2acd0cf35ef96d416727c7fc9c79d02177546084e0e2c939a5f6ad4a3a3c11db45131c2e2ca43c72f13f83c03f03a502a75e07aefaba208c137938c04'
+sha512sums=('bf4447808b97fa7ca516f1a33da4d9ec63fa8381c5a393108da4ddf37e9b80f6d39a04f42ee387e196103f09f32f02a3cf214e79d33bfa7edcc260090f3d3cbf'
             '91ff94736063b911c83b8876fe3e3778db82e0ffe0102036d81a3a6e872ca44a585914646fcbbbe399cd63aa17685fc7f73263ec4f4084f48768ca4d704037fa')
 
 prepare() {
   export PREFIX=/usr
   export NV_USE_BUNDLED_LIBJANSSON=0
+  export OUTPUTDIR=out
   cd ${pkgbase}-${pkgver}
   patch -p0 < "${srcdir}/libxnvctrl_so.patch"
 }
