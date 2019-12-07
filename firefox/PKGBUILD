@@ -23,12 +23,14 @@ _revision=1339
 _patchver=patches-04
 source=(https://archive.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-$pkgver.source.tar.xz{,.asc}
         0001-Use-remoting-name-for-GDK-application-names.patch
+        0001-Bug-1212502-Switch-mozinfo-to-using-the-distro-packa.patch
         firefox-symbolic.svg
         firefox-ubuntu::bzr+lp:firefox#revision=$_revision
         https://dev.gentoo.org/~anarchy/mozilla/patchsets/firefox-${pkgver}-${_patchver}.tar.xz)
 sha256sums=('78304cd58229e7103b56b34718aad051c9a4db30c266512a64f501ba58da7fbe'
             'SKIP'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
+            '33f5aec0bba83b23410176c5351425d2ad949d7f0bf409a579be25bebb773fce'
             '9a1a572dc88014882d54ba2d3079a1cf5b28fa03c5976ed2cb763c93dabbd797'
             'SKIP'
             '0b5ead4c8805882fe9e54d969faaa38571ee46fd0a951cfbbda51b68cf60fd38')
@@ -56,6 +58,9 @@ prepare() {
 
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1530052
   patch -Np1 -i ../0001-Use-remoting-name-for-GDK-application-names.patch
+
+  # Make it compile with Python 3.8
+  patch -Np1 -i ../0001-Bug-1212502-Switch-mozinfo-to-using-the-distro-packa.patch
 
   msg 'Gentoo Patchset'
   _patchset=(1002_foritify_sources_properly.patch
@@ -174,7 +179,7 @@ END
   cat >.mozconfig ../mozconfig - <<END
 ac_add_options --enable-lto=cross
 ac_add_options --enable-profile-use
-ac_add_options --with-pgo-profile-path=${PWD@Q}
+ac_add_options --with-pgo-profile-path=${PWD@Q}/merged.profdata
 ac_add_options --with-pgo-jarlog=${PWD@Q}/jarlog
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-zlib
