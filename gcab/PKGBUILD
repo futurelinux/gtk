@@ -2,7 +2,7 @@
 
 pkgname=gcab
 pkgver=1.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A GObject library to create cabinet files"
 url="https://wiki.gnome.org/msitools"
 arch=(x86_64)
@@ -18,13 +18,8 @@ pkgver() {
   git describe --tags | sed 's/^v//;s/-/+/g'
 }
 
-prepare() {
-  cd $pkgname
-  cd libgcab
-  sed 's,é,e,g' -i *
-}
-
 build() {
+  export LC_ALL=en_US.UTF-8
   chakra-meson $pkgname build
   ninja -C build
 }
