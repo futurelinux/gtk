@@ -1,6 +1,6 @@
 pkgname=firefox
 pkgver=71.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org"
 arch=(x86_64)
 license=(MPL GPL LGPL)
@@ -198,8 +198,6 @@ ac_add_options --with-system-av1
 ac_add_options --with-system-graphite2
 END
   ./mach build
-  msg2 "Building symbol archive..."
-  ./mach buildsymbols
 }
 
 package() {
@@ -237,9 +235,9 @@ version=1.0
 about=Mozilla Firefox for Chakra GNU/Linux
 
 [Preferences]
-app.distributor=archlinux
+app.distributor=chakralinux
 app.distributor.channel=$pkgname
-app.partner.archlinux=archlinux
+app.partner.chakralinux=chakralinux
 browser.search.geoSpecificDefaults=false
 END
 
@@ -268,12 +266,4 @@ END
   # https://bugzilla.mozilla.org/show_bug.cgi?id=658850
   ln -srf "$pkgdir/usr/bin/$pkgname" \
     "$pkgdir/usr/lib/$pkgname/firefox-bin"
-
-  if [[ -f "$startdir/.crash-stats-api.token" ]]; then
-    find . -name '*crashreporter-symbols-full.zip' -exec \
-      "$startdir/upload-symbol-archive" "$startdir/.crash-stats-api.token" {} +
-  else
-    find . -name '*crashreporter-symbols-full.zip' -exec \
-      cp -fvt "$startdir" {} +
-  fi
 }
