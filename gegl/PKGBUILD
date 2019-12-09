@@ -13,9 +13,8 @@ sha256sums=('c946dfb45beb7fe0fb95b89a25395b449eda2b205ba3e8a1ffb1ef992d9eca64')
 
 build() {
   cd ${pkgname}-${pkgver}
-  mkdir -p build
-  cd build
-  chakra-meson .. \
+  export LC_ALL=en_US.UTF-8
+  chakra-meson ${pkgname}-${pkgver} \
     -Dworkshop=true \
     -Dmrg=disabled
   ninja
