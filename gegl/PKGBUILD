@@ -6,21 +6,33 @@ arch=('x86_64')
 url="https://www.gegl.org/"
 license=('GPL3' 'LGPL3')
 depends=('babl' 'libspiro' 'json-glib' 'libgexiv2' 'libraw' 'openexr' 'librsvg' 'libtiff' 'luajit' 'jasper' 'lensfun' 'suitesparse')
-makedepends=('intltool' 'ruby' 'mesa' 'glu' 'ffmpeg' 'exiv2' 'vala' 'gobject-introspection' 'meson' 'python3-gobject')
+makedepends=('intltool' 'ruby' 'mesa' 'glu' 'ffmpeg' 'exiv2' 'vala' 'gobject-introspection' 'git' 'meson' 'python3-gobject')
 optdepends=('ffmpeg: for using the ffmpeg plugin')
-source=("http://ftp.gimp.org/pub/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
-sha256sums=('c946dfb45beb7fe0fb95b89a25395b449eda2b205ba3e8a1ffb1ef992d9eca64')
+_commit=2556eb7807dd9b3cb97f2769d8993f7a0c38e2a9  # tags/GEGL_0_4_18^0
+source=("git+https://gitlab.gnome.org/GNOME/gegl.git#commit=$_commit")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd $pkgname
+  git describe --tags | sed 's/^GEGL_//;s/_/./g;s/-/+/g'
+}
+
+prepare() {
+  cd $pkgname
+  git cherry-pick -n c1c3541caab485384087bbbcf1c83ef2d5bd4d43
+  mkdir -p build
+}
 
 build() {
-  cd ${pkgname}-${pkgver}
   export LC_ALL=en_US.UTF-8
-  chakra-meson ${pkgname}-${pkgver} \
+  cd build
+  chakra-meson ../${pkgname} \
     -Dworkshop=true \
     -Dmrg=disabled
   ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   DESTDIR="${pkgdir}" ninja install
 }
