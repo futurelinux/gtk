@@ -18,9 +18,9 @@ pkgver() {
 }
 
 prepare() {
+  mkdir -p build
   cd $pkgname
   git cherry-pick -n c1c3541caab485384087bbbcf1c83ef2d5bd4d43
-  mkdir -p build
 }
 
 build() {
