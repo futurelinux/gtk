@@ -19,6 +19,9 @@ before_script:
 
 build_pkgs:
   stage: package
+  except:
+    - master
+    - merge_requests
   script:
     # setup makepkg settings (enable and sync the correct repository), as root
     - _gitlab-ci-scripts/prepare_makepkg.sh
@@ -42,6 +45,9 @@ build_pkgs:
 
 sign_pkgs:
   stage: sign
+  except:
+    - master
+    - merge_requests
   script:
      - for pkg in $(find . -type f | grep ".pkg.tar.xz"); do echo "signing $pkg" && echo "$GPG_PASSWORD" | gpg -sb --pinentry-mode loopback --passphrase-fd 0 $pkg; done
   artifacts:
@@ -56,6 +62,8 @@ sign_pkgs:
 
 deploy_pkgs:
   stage: deploy
+  except:
+    - master
   variables:
     DEPLOY_SERVER: "$DEPLOY_SERVER"
     SSH_USER: "$SSH_USER"
@@ -70,6 +78,8 @@ deploy_pkgs:
 
 move_pkgs_to_stable:
   stage: stable
+  except:
+    - master
   variables:
     DEPLOY_SERVER: "$DEPLOY_SERVER"
     SSH_USER: "$SSH_USER"
