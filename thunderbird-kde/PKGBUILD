@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=68.3.0
+pkgver=68.3.1
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -20,11 +20,11 @@ source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/sou
         mozilla-kde.patch
         mozilla-nongnome-proxies.patch
         thunderbird-rust-1.39.patch)
-sha512sums=('94474f91a4e7b927b94698340c31015fda6f25533ec2a4aad0712bd6d2f9a528184345ed7ddb0ff25e207375391a5c6252506538e4a4992614cd152db28d8cd5'
+sha512sums=('2e24556e6bed7a8d75ad56f0e94e07483e021b8b1ddafcf0dc586c17c93ba1f6994194866a37b7fe23637804c351f0c24d365d39f327f0ee591a86b9560bbb03'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '91d5b3c77375719b8b56a0609d228b951b50ce4aa1c6e13f70f3259b79918cea1928993280722b2110f472cb0f5d511421922755bb2af300b0b3f25d1c8f032d'
             'fae7ac214cc021adfcb8a66bde9efd90c65e87e5b991a6f4eb3d34b711a9b3234463afbd7cf0ab08596a4a16365d5ae44d343c9b5918bdab78437eb0d8d75bff'
-            'b19291920587c1833215dea8e55a98bb02199ed471d19f8e16fd3ead74fceeb2a277e7f3d906141a6d2609415d2bff2afd887024671dbc35c93973e8756867ce')
+            'a9bfc39c45f5c099926a7d043ed8169fdc13a91cd1cfca33fbb782ab442c21d78cfb1900982a9016e05cf66dcd132cc4a5c8e4275a7123547966d2b233d013bd')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
