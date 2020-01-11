@@ -1,6 +1,6 @@
 pkgname=firefox
-pkgver=71.0
-pkgrel=2
+pkgver=72.0.1
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org"
 arch=(x86_64)
 license=(MPL GPL LGPL)
@@ -19,21 +19,20 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'firefox-i18n: For multilanguage support'
             'hunspell-en_US: Spell checking, American English')
 options=(!emptydirs !makeflags !strip)
-_revision=1339
-_patchver=patches-04
+_revision=2299
+_patchver=patches-03
 source=(https://archive.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-$pkgver.source.tar.xz{,.asc}
         0001-Use-remoting-name-for-GDK-application-names.patch
-        0001-Bug-1212502-Switch-mozinfo-to-using-the-distro-packa.patch
         firefox-symbolic.svg
-        firefox-ubuntu::bzr+lp:firefox#revision=$_revision
-        https://dev.gentoo.org/~anarchy/mozilla/patchsets/firefox-${pkgver}-${_patchver}.tar.xz)
-sha256sums=('78304cd58229e7103b56b34718aad051c9a4db30c266512a64f501ba58da7fbe'
+        firefox-ubuntu::bzr+lp:firefox/trunk#revision=$_revision
+        https://dev.gentoo.org/~anarchy/mozilla/patchsets/firefox-${pkgver%%.1}-patches-{01,03}.tar.xz)
+sha256sums=('1fa59aedc8469c3e6ffb12449ab7de2f93776f7679eedebfb74aa309b694956f'
             'SKIP'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
-            '33f5aec0bba83b23410176c5351425d2ad949d7f0bf409a579be25bebb773fce'
             '9a1a572dc88014882d54ba2d3079a1cf5b28fa03c5976ed2cb763c93dabbd797'
             'SKIP'
-            '0b5ead4c8805882fe9e54d969faaa38571ee46fd0a951cfbbda51b68cf60fd38')
+            '078d062220f17b6992c381f9fbcce7701c6cae418a490e558ecce02d2e9c32fc'
+            'bf101c06b3a861e4919483198c15383c7ad96793cf29c6befedcb5a032c7b947')
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
@@ -59,11 +58,9 @@ prepare() {
   # https://bugzilla.mozilla.org/show_bug.cgi?id=1530052
   patch -Np1 -i ../0001-Use-remoting-name-for-GDK-application-names.patch
 
-  # Make it compile with Python 3.8
-  patch -Np1 -i ../0001-Bug-1212502-Switch-mozinfo-to-using-the-distro-packa.patch
-
   msg 'Gentoo Patchset'
   _patchset=(1002_foritify_sources_properly.patch
+             2000_bug1600261-wayland-regression.patch
              2000_system_harfbuzz_support.patch
              2001_system_graphite2_support.patch
              2012_allow-non-ascii-chars.patch
