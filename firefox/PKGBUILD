@@ -61,7 +61,6 @@ prepare() {
   msg 'Gentoo Patchset'
   _patchset=(1002_foritify_sources_properly.patch
              2000_system_harfbuzz_support.patch
-             2001_system_graphite2_support.patch
              2012_allow-non-ascii-chars.patch
              7002_system_av1_support.patch)
   for patch in ${_patchset[@]}; do
