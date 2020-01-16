@@ -1,6 +1,6 @@
 pkgname=firefox
 pkgver=72.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Standalone web browser from mozilla.org"
 arch=(x86_64)
 license=(MPL GPL LGPL)
@@ -45,7 +45,7 @@ _google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
 # get your own set of keys. Feel free to contact totte@chakralinux.org for
 # more information.
-_mozilla_api_key=e05d56db0a694edc8b5aaebda3f2db6a
+_mozilla_api_key=374facc2162a4c72b23dfa031e9c8041
 
 prepare() {
   sed -e '/%%/d' \
