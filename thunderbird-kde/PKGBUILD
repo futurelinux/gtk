@@ -1,5 +1,5 @@
 pkgname=thunderbird-kde
-pkgver=68.3.1
+pkgver=68.4.1
 pkgrel=1
 provides=(thunderbird=${pkgver})
 replaces=(thunderbird)
@@ -18,13 +18,11 @@ options=(!emptydirs !makeflags)
 source=(https://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$pkgver/source/thunderbird-$pkgver.source.tar.xz
         thunderbird.desktop
         mozilla-kde.patch
-        mozilla-nongnome-proxies.patch
-        thunderbird-rust-1.39.patch)
-sha512sums=('2e24556e6bed7a8d75ad56f0e94e07483e021b8b1ddafcf0dc586c17c93ba1f6994194866a37b7fe23637804c351f0c24d365d39f327f0ee591a86b9560bbb03'
+        mozilla-nongnome-proxies.patch)
+sha512sums=('16cccbc2313472e6312e842a28079782238cb22e72b324bebaffefa4a2fe68fec9f2173f2c83f1caccc5522ab9145884b2e2a58e97e236f7aefa4c61764e08b7'
             '057513bc1b2573f31986916dc905f2e1a165e7500fea51ce7cba1f9f600c0a74396d0d39283ec5ee76fb401133bc614ebcf803b5d15fadac46728d55e30353ea'
             '91d5b3c77375719b8b56a0609d228b951b50ce4aa1c6e13f70f3259b79918cea1928993280722b2110f472cb0f5d511421922755bb2af300b0b3f25d1c8f032d'
-            'fae7ac214cc021adfcb8a66bde9efd90c65e87e5b991a6f4eb3d34b711a9b3234463afbd7cf0ab08596a4a16365d5ae44d343c9b5918bdab78437eb0d8d75bff'
-            'a9bfc39c45f5c099926a7d043ed8169fdc13a91cd1cfca33fbb782ab442c21d78cfb1900982a9016e05cf66dcd132cc4a5c8e4275a7123547966d2b233d013bd')
+            'fae7ac214cc021adfcb8a66bde9efd90c65e87e5b991a6f4eb3d34b711a9b3234463afbd7cf0ab08596a4a16365d5ae44d343c9b5918bdab78437eb0d8d75bff')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -40,8 +38,6 @@ _mozilla_api_key=bf05f841-e0bd-4644-81f5-3c132755f2e9
 
 prepare(){
   cd thunderbird-${pkgver}
-
-  patch -p1 -i ../thunderbird-rust-1.39.patch # Fix build with rust 1.39 (Gentoo)
 
   echo -n "$_google_api_key" >google-api-key
   echo -n "$_mozilla_api_key" >mozilla-api-key
