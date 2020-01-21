@@ -1,6 +1,6 @@
 pkgname=firefox
-pkgver=72.0.1
-pkgrel=2
+pkgver=72.0.2
+pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org"
 arch=(x86_64)
 license=(MPL GPL LGPL)
@@ -25,8 +25,8 @@ source=(https://archive.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-
         0001-Use-remoting-name-for-GDK-application-names.patch
         firefox-symbolic.svg
         firefox-ubuntu::bzr+lp:firefox/trunk#revision=$_revision
-        https://dev.gentoo.org/~anarchy/mozilla/patchsets/firefox-${pkgver%%.1}-patches-{01,03}.tar.xz)
-sha256sums=('1fa59aedc8469c3e6ffb12449ab7de2f93776f7679eedebfb74aa309b694956f'
+        https://dev.gentoo.org/~anarchy/mozilla/patchsets/firefox-${pkgver%%.?}-patches-{01,03}.tar.xz)
+sha256sums=('77fd224bea885172d757aef587ad443f2171aa84e4297bca55df91a1951be389'
             'SKIP'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
             '9a1a572dc88014882d54ba2d3079a1cf5b28fa03c5976ed2cb763c93dabbd797'
