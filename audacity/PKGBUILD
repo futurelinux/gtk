@@ -1,12 +1,14 @@
 pkgname=audacity
 pkgver=2.3.3
-pkgrel=2
+pkgrel=3
 pkgdesc="A program that lets you manipulate digital audio waveforms"
 arch=('x86_64')
 url="https://www.audacityteam.org/"
-license=('GPL')
-depends=('libid3tag' 'libmad' 'libsoxr' 'lilv' 'portsmf' 'soundtouch' 'suil' 'twolame' 'vamp-plugin-sdk' 'wxgtk3')
-makedepends=('cmake' 'ffmpeg')
+license=('GPL2' 'CCPL')
+depends=('expat' 'gcc-libs' 'gdk-pixbuf2' 'glib2' 'gtk3' 'flac' 'libid3tag' 'jack' 'lilv'
+         'libmad' 'libogg' 'libsndfile' 'libsoxr' 'suil' 'twolame' 'vamp-plugin-sdk'
+         'libvorbis' 'portsmf' 'soundtouch' 'wxgtk3')
+makedepends=('cmake' 'ffmpeg' 'lv2')
 optdepends=('ffmpeg: additional import/export capabilities')
 source=("https://github.com/${pkgname}/${pkgname}/archive/Audacity-${pkgver}.tar.gz")
 sha256sums=('404e6c49693dedc94212fc5525974058d848536025e19da31359ae02babe8bd7')
