@@ -1,5 +1,5 @@
 pkgname=firefox
-pkgver=72.0.2
+pkgver=73.0.1
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org"
 arch=(x86_64)
@@ -19,20 +19,20 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'firefox-i18n: For multilanguage support'
             'hunspell-en_US: Spell checking, American English')
 options=(!emptydirs !makeflags !strip)
-_revision=2299
+_revision=2303
 _patchver=patches-03
 source=(https://archive.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-$pkgver.source.tar.xz{,.asc}
         0001-Use-remoting-name-for-GDK-application-names.patch
         firefox-symbolic.svg
         firefox-ubuntu::bzr+lp:firefox/trunk#revision=$_revision
-        https://dev.gentoo.org/~anarchy/mozilla/patchsets/firefox-${pkgver%%.?}-patches-{01,03}.tar.xz)
-sha256sums=('77fd224bea885172d757aef587ad443f2171aa84e4297bca55df91a1951be389'
+        https://dev.gentoo.org/~anarchy/mozilla/patchsets/firefox-${pkgver%%.?}-patches-{01,04}.tar.xz)
+sha256sums=('53415180e74da60fc91700ce1ff33bf5b6f51e65353017a98270899a08e0c3d2'
             'SKIP'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
             '9a1a572dc88014882d54ba2d3079a1cf5b28fa03c5976ed2cb763c93dabbd797'
             'SKIP'
-            '078d062220f17b6992c381f9fbcce7701c6cae418a490e558ecce02d2e9c32fc'
-            'bf101c06b3a861e4919483198c15383c7ad96793cf29c6befedcb5a032c7b947')
+            '20118c94c661cbb55e18a02886c8e3640b5c1d4ed6383bf5cd69cef6a9043745'
+            '81cf2c7eff1ac221ff603d5f926d89e966411bd804ecd9e733c69e9ea6389a1d')
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
