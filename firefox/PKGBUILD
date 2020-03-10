@@ -1,5 +1,5 @@
 pkgname=firefox
-pkgver=73.0.1
+pkgver=74.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org"
 arch=(x86_64)
@@ -25,14 +25,16 @@ source=(https://archive.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-
         0001-Use-remoting-name-for-GDK-application-names.patch
         firefox-symbolic.svg
         firefox-ubuntu::bzr+lp:firefox/trunk#revision=$_revision
-        https://dev.gentoo.org/~anarchy/mozilla/patchsets/firefox-${pkgver%%.?}-patches-{01,04}.tar.xz)
-sha256sums=('53415180e74da60fc91700ce1ff33bf5b6f51e65353017a98270899a08e0c3d2'
+        https://dev.gentoo.org/~anarchy/mozilla/patchsets/firefox-${pkgver}-patches-{01,02,03,04}.tar.xz)
+sha256sums=('74589c2836d7c30134636823c3caefbcaed0ea7c3abb2def9e3ddd9f86d9440a'
             'SKIP'
             'ab07ab26617ff76fce68e07c66b8aa9b96c2d3e5b5517e51a3c3eac2edd88894'
             '9a1a572dc88014882d54ba2d3079a1cf5b28fa03c5976ed2cb763c93dabbd797'
             'SKIP'
-            '20118c94c661cbb55e18a02886c8e3640b5c1d4ed6383bf5cd69cef6a9043745'
-            '81cf2c7eff1ac221ff603d5f926d89e966411bd804ecd9e733c69e9ea6389a1d')
+            '95dbcf052207289092b75d794509af02bd29743de705dd3a143cdb90efa98a9e'
+            '79cde28472cfc34bd096a80400d84ba8d70188c807e382cc507d3abe7e35be03'
+            '6ce85b797a8ee7f35c19858363c7b16110707d6a0ba91baff1278efa3d4e033e'
+            '5162afb60241383fae5c9150bf6f10b904ffd8c3d628178f56dc87589cd66bfa')
 validpgpkeys=('14F26682D0916CDD81E37B6D61B7B526D98F0353') # Mozilla Software Releases <release@mozilla.com>
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
