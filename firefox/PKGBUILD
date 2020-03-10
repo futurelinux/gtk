@@ -19,8 +19,7 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'firefox-i18n: For multilanguage support'
             'hunspell-en_US: Spell checking, American English')
 options=(!emptydirs !makeflags !strip)
-_revision=2303
-_patchver=patches-03
+_revision=2305
 source=(https://archive.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-$pkgver.source.tar.xz{,.asc}
         0001-Use-remoting-name-for-GDK-application-names.patch
         firefox-symbolic.svg
