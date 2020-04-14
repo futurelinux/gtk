@@ -1,63 +1,55 @@
-# Contributions from ArchLinux: https://git.archlinux.org/svntogit/packages.git/tree/trunk?h=packages/inkscape
+# Contributions from Arch:
+# Maintainer: Gaetan Bisson <bisson@archlinux.org>
+# Contributor: Tobias Kieslich <tobias@justdreams.de>
+# Contributor: tobias <tobias@archlinux.org>
 
 pkgname=inkscape
-pkgver=0.92.4
+pkgver=0.92.5
 pkgrel=1
 pkgdesc='Professional vector graphics editor'
 url='https://inkscape.org/'
 license=('GPL' 'LGPL')
 arch=('x86_64')
-depends=('gc' 'gsl' 'gtkmm' 'gtkspell' 'libmagick6' 'libxslt' 'libvisio' 'libwpg'
-         'poppler-glib' 'popt' 'potrace' 'ttf-dejavu' 'python2' 'desktop-file-utils'
-         'hicolor-icon-theme' 'openmp')
-# python is needed for glib-genmarshal (at least with GLib 2.54)
-makedepends=('boost' 'intltool' 'python3' 'clang')
+depends=('gc' 'gsl' 'gtkmm' 'gtkspell' 'libmagick6' 'libxslt' 'poppler-glib' 'popt'
+	 'potrace' 'ttf-dejavu' 'python2' 'libcdr' 'desktop-file-utils' 'hicolor-icon-theme')
+makedepends=('boost' 'intltool' 'python3' 'cmake')
 optdepends=('pstoedit: latex formulas'
-            'python2-scour: optimized SVG output'
             'texlive-core: latex formulas'
             'python2-numpy: some extensions'
-            'python2-lxml: some extensions and filters'
-            'uniconvertor: reading/writing to some proprietary formats')
-source=("https://media.inkscape.org/dl/resources/file/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('57ec2da8177b36614a513e2822efd73af721e690f7ddc6bd0a5fbb1525b4515e')
+            'python2-lxml: some extensions')
+source=("https://media.inkscape.org/dl/resources/file/${pkgname}-${pkgver}.tar.bz2"
+        python2.diff)
+sha256sums=('81ee7f69e2bd64a97343d8395a4a7a7905b21b861566ed5e5d9179178d519a0b'
+            '3b9697236c17ed36756f344ace23e71c1b73537fb9e394b6448b2c13fcca0cc8')
+
+# NB: Some CDN nodes appear to be distributing an outdated version of this file.
 
 prepare() {
-	cd $pkgname-$pkgver
+	cd ${pkgname}-${pkgver}
 
-	./autogen.sh
+    # Fix python2 shebangs
+	sed -e '1s|python$|&2|' \
+	    -i cxxtest/*.py share/*/{test/,}*.py
 
-	sed -i 's|/usr/bin/python\>|/usr/bin/python2|g' cxxtest/*.py
-	sed -i 's|/usr/bin/env python\>|/usr/bin/env python2|g' share/*/{test/,}*.py
-	sed -i 's|"python" },|"python2" },|g' src/extension/implementation/script.cpp
-	sed -i 's|python -c|python2 -c|g' configure share/extensions/uniconv*.py
-	sed -i 's|"python"|"python2"|g' src/main.cpp
-
-	sed -i 's| abs(| std::fabs(|g' src/ui/tools/flood-tool.cpp
-       
+	# Non-shebang python2 changes
+	patch -Np1 -i ../python2.diff
 }
 
 build() {
-	cd $pkgname-$pkgver
 	export PKG_CONFIG_PATH='/usr/lib/imagemagick6/pkgconfig'
-	export FREETYPE_CONFIG="/usr/bin/pkg-config freetype2"
-        export CC=clang
-        export CXX=clang++
-	./configure \
-		--prefix=/usr \
-		--enable-lcms \
-		--enable-poppler-cairo \
-		--disable-strict-build \
-		--disable-dependency-tracking \
-                --with-inkjar \
-                --enable-wpg \
-                --enable-visio \
-                --enable-dbusapi \
-                --enable-openmp \
-                --disable-static
-	make
+
+	cmake -H${pkgbase}-${pkgver} -Bbuild \
+		-DCMAKE_BUILD_TYPE=None \
+		-DCMAKE_INSTALL_PREFIX:PATH=/usr \
+		-DINCLUDE_INSTALL_DIR:PATH=/usr/include \
+		-DLIB_INSTALL_DIR:PATH=/usr/lib \
+		-DSYSCONF_INSTALL_DIR:PATH=/etc \
+		-DSHARE_INSTALL_PREFIX:PATH=/usr/share
+	cmake --build build
 }
 
 package() {
-	cd $pkgname-$pkgver
-	make DESTDIR="${pkgdir}" install
+	DESTDIR="${pkgdir}" cmake --build build --target install
+
+	rm "${pkgdir}"/usr/lib/inkscape/*_LIB.a
 }
