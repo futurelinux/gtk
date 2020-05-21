@@ -1,6 +1,6 @@
 pkgname=audacity
-pkgver=2.3.3
-pkgrel=3
+pkgver=2.4.1
+pkgrel=1
 pkgdesc="A program that lets you manipulate digital audio waveforms"
 arch=('x86_64')
 url="https://www.audacityteam.org/"
@@ -11,10 +11,15 @@ depends=('expat' 'gcc-libs' 'gdk-pixbuf2' 'glib2' 'gtk3' 'flac' 'libid3tag' 'jac
 makedepends=('cmake' 'ffmpeg' 'lv2')
 optdepends=('ffmpeg: additional import/export capabilities')
 source=("https://github.com/${pkgname}/${pkgname}/archive/Audacity-${pkgver}.tar.gz")
-sha256sums=('404e6c49693dedc94212fc5525974058d848536025e19da31359ae02babe8bd7')
+sha256sums=('50240f07471373a7e5c2df65cc26eeeaaced9a0850ad1f95cb795f171ea3009f')
 
 build() {
   cd ${pkgname}-Audacity-${pkgver}
+  # the cmake setup is still more complicated and error-prone than the
+  # autotools setup:
+  # https://github.com/audacity/audacity/issues/519
+  # https://github.com/audacity/audacity/issues/520
+  # https://github.com/audacity/audacity/issues/521
   WX_CONFIG=wx-config-gtk3 ./configure --prefix=/usr \
     --with-libsndfile="system" \
     --with-ffmpeg="system" \
@@ -37,4 +42,7 @@ build() {
 package() {
   cd ${pkgname}-Audacity-${pkgver}
   make DESTDIR="${pkgdir}" install
+  # install libnyquist plugins, missing since 2.4.0:
+  # https://bugs.archlinux.org/task/66733
+  install -vDm 644 plug-ins/*.ny -t "${pkgdir}/usr/share/${pkgname}/plug-ins"
 }
