@@ -5,7 +5,6 @@ variables:
 
 stages:
   - build
-  - sign
   - deploy
 
 before_script:
@@ -31,7 +30,7 @@ makepkg:
     # artifacts of interest for an unlimited time
     expire_in: 1 week
     paths:
-      - ./_repo/gitlab-ci/*.pkg.tar.xz
+      - ./_repo/gitlab-ci/*.pkg.tar.*
       - ./_logs/*.log
     name: "$CI_BUILD_NAME"
   cache:
@@ -40,22 +39,6 @@ makepkg:
       - ./_sources
   tags:
     - PKGBUILD
-
-gpg:
-  stage: sign
-  only:
-    - merge_requests
-  artifacts:
-    # expire artifacts per default - the gitlab web frontend can be used to keep
-    # artifacts of interest for an unlimited time
-    expire_in: 1 week
-    paths:
-      - ./_repo/gitlab-ci/*.pkg.tar.xz.sig
-    name: "$CI_BUILD_NAME"
-  tags:
-    - signature
-  script:
-     - for pkg in $(find . -type f | grep ".pkg.tar.xz"); do echo "signing $pkg" && echo "$GPG_PASSWORD" | gpg -sb --pinentry-mode loopback --passphrase-fd 0 $pkg; done
 
 staging:
   stage: deploy
