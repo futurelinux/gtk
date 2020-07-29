@@ -4,10 +4,9 @@ variables:
   REPODIR: "$CI_PROJECT_DIR"
 
 stages:
-  - package
+  - build
   - sign
   - deploy
-  - stable
 
 before_script:
   # import the gitlab-ci scripts
@@ -17,10 +16,9 @@ before_script:
   # import pgp keys flagged as valid
   - sudo -u builder -E -H _gitlab-ci-scripts/import-validpgpkeys.sh
 
-build_pkgs:
-  stage: package
-  except:
-    - master
+makepkg:
+  stage: build
+  only:
     - merge_requests
   script:
     # setup makepkg settings (enable and sync the correct repository), as root
@@ -43,13 +41,10 @@ build_pkgs:
   tags:
     - PKGBUILD
 
-sign_pkgs:
+gpg:
   stage: sign
-  except:
-    - master
+  only:
     - merge_requests
-  script:
-     - for pkg in $(find . -type f | grep ".pkg.tar.xz"); do echo "signing $pkg" && echo "$GPG_PASSWORD" | gpg -sb --pinentry-mode loopback --passphrase-fd 0 $pkg; done
   artifacts:
     # expire artifacts per default - the gitlab web frontend can be used to keep
     # artifacts of interest for an unlimited time
@@ -59,36 +54,43 @@ sign_pkgs:
     name: "$CI_BUILD_NAME"
   tags:
     - signature
+  script:
+     - for pkg in $(find . -type f | grep ".pkg.tar.xz"); do echo "signing $pkg" && echo "$GPG_PASSWORD" | gpg -sb --pinentry-mode loopback --passphrase-fd 0 $pkg; done
 
-deploy_pkgs:
+staging:
   stage: deploy
-  except:
-    - master
+  only:
+    - merge_requests
+  when: manual
+  environment:
+    name: staging
+    url: https://rsync.chakralinux.org/packages/testing/x86_64/
   variables:
     DEPLOY_SERVER: "$DEPLOY_SERVER"
     SSH_USER: "$SSH_USER"
     SSH_PORT: "$SSH_PORT"
     GPG_PASSWORD: "$GPG_PASSWORD"
-  environment: staging-repo
+    DEST_REPO: "testing"
+  tags:
+    - rsync
   script:
      - _gitlab-ci-scripts/deploy.sh
-  when: manual
-  tags:
-    - rsync
 
-move_pkgs_to_stable:
-  stage: stable
-  except:
-    - master
+production:
+  stage: deploy
+  only:
+    - master@chakra/packages/core
+  when: manual
+  environment:
+    name: production
+    url: https://rsync.chakralinux.org/packages/core/x86_64/
   variables:
     DEPLOY_SERVER: "$DEPLOY_SERVER"
     SSH_USER: "$SSH_USER"
     SSH_PORT: "$SSH_PORT"
     GPG_PASSWORD: "$GPG_PASSWORD"
-    DEST_REPO: "gtk"
-  environment: stable-repo
-  script:
-     - _gitlab-ci-scripts/move.sh
-  when: manual
+    DEST_REPO: "core"
   tags:
     - rsync
+  script:
+     - _gitlab-ci-scripts/deploy.sh
