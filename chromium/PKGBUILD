@@ -101,7 +101,6 @@ prepare() {
 
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../patches/chromium-84-AXObject-stl-iterator.patch
-  patch -Np1 -i ../patches/chromium-84-ListContainerHelper-include-cstring.patch
   patch -Np1 -i ../patches/chromium-84-gcc-10-include-stddef.patch
   patch -Np1 -i ../patches/chromium-84-gcc-10-webrtc-include-stddef.patch
   patch -Np1 -i ../patches/chromium-84-gcc-DCHECK_EQ-unique_ptr.patch
