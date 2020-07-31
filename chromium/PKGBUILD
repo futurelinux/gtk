@@ -57,7 +57,8 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/$pkgn
         force-mp3-files-to-have-a-start-time-of-zero.patch
         chromium-fix-vaapi-on-intel.patch
         chromium-system-old-icu.patch
-        chromium-skia-harmony.patch)
+        chromium-skia-harmony.patch
+        chromium-84-gcc-include.patch)
 sha256sums=('caf4ebeb2a2333454c3067a2534aeecaab5029aa78fc0d8b27f79ad3b9c5ccac'
             '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
             'f77088dd59b170b767ba91c6b410abb778ff2e68553433b24124d398fa4d3ce7'
@@ -66,7 +67,8 @@ sha256sums=('caf4ebeb2a2333454c3067a2534aeecaab5029aa78fc0d8b27f79ad3b9c5ccac'
             'abc3fad113408332c3b187b083bf33eba59eb5c87fa3ce859023984b5804623c'
             'e495f2477091557b15bff2c99831e0a3db64ea2ebde7dcb22857a6469c944b9a'
             'e2d284311f49c529ea45083438a768db390bde52949995534034d2a814beab89'
-            '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1')
+            '771292942c0901092a402cc60ee883877a99fb804cb54d568c8c6c94565a48e1'
+            '771f8ed71c21bca185bf94790f2bd2d0e22f4e805f79792db90b098cbd5e1208')
 
 # Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Chakra Linux use ONLY. For your own distribution, please
@@ -100,11 +102,11 @@ prepare() {
   # Fixes for building with libstdc++ instead of libc++
   patch -Np1 -i ../patches/chromium-84-AXObject-stl-iterator.patch
   patch -Np1 -i ../patches/chromium-84-ListContainerHelper-include-cstring.patch
-  patch -Np1 -i ../patches/chromium-84-crashpad-include-cstring.patch
   patch -Np1 -i ../patches/chromium-84-gcc-10-include-stddef.patch
   patch -Np1 -i ../patches/chromium-84-gcc-10-webrtc-include-stddef.patch
   patch -Np1 -i ../patches/chromium-84-gcc-DCHECK_EQ-unique_ptr.patch
   patch -Np1 -i ../patches/chromium-84-std-vector-const.patch
+  patch -Np1 -i ../chromium-84-gcc-include.patch
 
   # Patch from rpmfusion: chromium-freeworld
   patch -Np1 -i ../chromium-fix-vaapi-on-intel.patch
