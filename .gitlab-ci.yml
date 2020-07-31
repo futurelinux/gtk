@@ -53,7 +53,7 @@ staging:
   tags:
     - rsync
   script:
-     - _gitlab-ci-scripts/deploy.sh
+     - sudo -u builder -E -H _gitlab-ci-scripts/deploy.sh
 
 production:
   stage: deploy
@@ -68,4 +68,4 @@ production:
   tags:
     - rsync
   script:
-     - _gitlab-ci-scripts/deploy.sh
+     - sudo -u builder -E -H _gitlab-ci-scripts/deploy.sh
