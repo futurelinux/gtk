@@ -12,6 +12,8 @@ before_script:
   - git clone --depth 1 https://code.chakralinux.org/tools/chakra-gitlab-ci-scripts _gitlab-ci-scripts
   # setup basic environment settings, as root
   - _gitlab-ci-scripts/prepare.sh
+  # setup makepkg settings (enable and sync the correct repository), as root
+  - _gitlab-ci-scripts/prepare_makepkg.sh
   # configure encryption environments
   - sudo -u builder -E -H _gitlab-ci-scripts/prepare_keys.sh
 
@@ -20,8 +22,6 @@ makepkg:
   only:
     - merge_requests
   script:
-    # setup makepkg settings (enable and sync the correct repository), as root
-    - _gitlab-ci-scripts/prepare_makepkg.sh
     # the build script can't be run as root, as makepkg would complain...
     - sudo -u builder -E -H _gitlab-ci-scripts/build.sh
 
@@ -29,6 +29,7 @@ makepkg:
     # expire artifacts per default - the gitlab web frontend can be used to keep
     # artifacts of interest for an unlimited time
     expire_in: 1 week
+    when: always
     paths:
       - ./_repo/gitlab-ci/*.pkg.tar.*
       - ./_logs/*.log
@@ -40,7 +41,7 @@ makepkg:
   tags:
     - PKGBUILD
 
-staging:
+deploy_pkgs:
   stage: deploy
   only:
     - merge_requests
@@ -50,10 +51,10 @@ staging:
     url: https://rsync.chakralinux.org/packages/testing/x86_64/
   variables:
     DEST_REPO: "testing"
-  tags:
-    - rsync
   script:
      - sudo -u builder -E -H _gitlab-ci-scripts/deploy.sh
+  tags:
+    - rsync
 
 production:
   stage: deploy
@@ -65,7 +66,7 @@ production:
     url: https://rsync.chakralinux.org/packages/gtk/x86_64/
   variables:
     DEST_REPO: "gtk"
-  tags:
-    - rsync
   script:
      - sudo -u builder -E -H _gitlab-ci-scripts/deploy.sh
+  tags:
+    - rsync
