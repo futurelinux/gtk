@@ -138,7 +138,8 @@ prepare() {
   patch -Np1 -i ../nvidia-vdpau.patch
 
   # Force script incompatible with Python 3 to use /usr/bin/python2
-  sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
+  # sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py # Arch's line
+  find . -name '*.py' -exec sed -i -r '1s|python$|&2|' {} +
 
   # Make xcbgen available to ui/gfx/x/gen_xproto.py running under Python 2
   ln -s /usr/lib/python2.*/site-packages/xcbgen "$srcdir/"
@@ -180,6 +181,7 @@ build() {
   export CXX=clang++
   export AR=ar
   export NM=nm
+  export LC_ALL=en_US.UTF-8
 
   local _flags=(
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
