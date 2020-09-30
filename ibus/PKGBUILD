@@ -1,5 +1,5 @@
 pkgname=ibus
-pkgver=1.5.22
+pkgver=1.5.23
 pkgrel=1
 pkgdesc="Next Generation Input Bus for Linux, IBus qt library and IBus qt input method plugin included"
 arch=('x86_64')
@@ -12,16 +12,17 @@ makedepends=('gobject-introspection' 'vala' 'intltool' 'gnome-common' 'gtk-doc' 
 options=('!emptydirs')
 install=ibus.install
 source=("$pkgname-$pkgver.tar.gz::https://github.com/ibus/ibus/archive/$pkgver.tar.gz")
-sha1sums=('45ff93739977a683757dc6d1eb627ea46b0df302')
+sha1sums=('627e2e5956bffa4742c78e11cd12ff715eb273d2')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   sed -i 's|$(libibus) $(libibus_emoji_dialog)|$(libibus_emoji_dialog) $(libibus)|' ui/gtk3/Makefile.am
+  NOCONFIGURE=1 ./autogen.sh
 }
 
 build() {
   cd ${pkgname}-${pkgver}
-  ./autogen.sh \
+  ./configure \
     --prefix=/usr \
     --libexecdir=/usr/lib/ibus \
     --sysconfdir=/etc \
@@ -34,6 +35,7 @@ build() {
     --enable-python-library \
     --with-python=python3 \
     --with-ucd-dir=/usr/share/unicode/
+  sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
 }
 
